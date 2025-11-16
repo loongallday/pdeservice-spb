@@ -1,0 +1,217 @@
+---
+alwaysApply: true
+---
+
+# Authentication & Authorization
+
+## Overview
+All API endpoints MUST be authenticated. Authorization is level-based using employee levels (0-10).
+
+## Authentication Flow
+
+1. **JWT Token Validation**
+   - All requests must include JWT token in Authorization header
+   - Token validated via Supabase Auth
+   - Employee record fetched from database
+
+2. **Employee Lookup**
+   - Auth user ID linked to employee record
+   - Employee level determines permissions
+
+## Standard Pattern
+
+Every API endpoint MUST follow this pattern:
+
+```typescript
+import { authenticate } from './_shared/auth.ts';
+import { handleError } from './_shared/error.ts';
+import { error } from './_shared/response.ts';
+
+Deno.serve(async (req) => {
+  try {
+    // ALWAYS authenticate first
+    const { employee } = await authenticate(req);
+    
+    // Route to handlers, passing employee
+    return await someHandler(req, employee);
+    
+  } catch (err) {
+    const { message, statusCode } = handleError(err);
+    return error(message, statusCode);
+  }
+});
+```
+
+## Handler-Level Authorization
+
+In each handler, check required permission level:
+
+```typescript
+import { requireMinLevel } from '../_shared/auth.ts';
+import type { Employee } from '../_shared/auth.ts';
+
+export async function list(req: Request, employee: Employee) {
+  // Check permissions - Level X and above can perform this action
+  await requireMinLevel(employee, X);
+  
+  // Proceed with handler logic
+}
+```
+
+## Authorization Levels
+
+Standard level requirements by operation type:
+
+### Read Operations (GET)
+- **Level 0+**: Basic read access
+  - List resources
+  - View single resource
+  - Search
+
+### Create Operations (POST)
+- **Level 1+**: Basic create operations
+  - Create basic records
+  - Upload files
+  
+- **Level 2+**: Advanced create operations
+  - Link auth accounts
+  - Create with complex relationships
+
+### Update Operations (PUT/PATCH)
+- **Level 1+**: Own records
+  - Update own profile
+  - Update own requests
+
+- **Level 2+**: Any records
+  - Update any resource
+  - Approve/reject requests
+
+### Delete Operations (DELETE)
+- **Level 2+**: Standard delete
+  - Delete most resources
+  
+- **Level 3+**: Critical delete
+  - Delete employees
+  - Delete with cascading effects
+
+### Administrative Operations
+- **Level 5+**: Admin operations
+  - Feature management
+  - Role management
+  - System configuration
+
+- **Level 10**: Super admin
+  - All permissions
+  - Critical system changes
+
+## Employee Type Definition
+
+```typescript
+export interface Employee {
+  id: string;
+  emp_code: string;
+  name_th: string;
+  name_en: string;
+  nickname: string;
+  level: number;
+  role_id: string | null;
+  department_id: string | null;
+  status: string;
+  auth_uid: string | null;
+  created_at: string;
+  updated_at: string;
+}
+```
+
+## Authorization Helpers
+
+### requireMinLevel
+
+```typescript
+// In handler
+await requireMinLevel(employee, 2);
+// Throws AuthorizationError if employee.level < 2
+```
+
+### Custom Authorization Logic
+
+For resource-specific authorization:
+
+```typescript
+export async function update(req: Request, employee: Employee, id: string) {
+  const resource = await ResourceService.getById(id);
+  
+  // Custom logic: Can update own resources or if level 2+
+  if (resource.created_by !== employee.id && employee.level < 2) {
+    throw new AuthorizationError('ไม่มีสิทธิ์แก้ไขข้อมูลนี้');
+  }
+  
+  // Proceed with update
+}
+```
+
+## Unauthenticated Endpoints
+
+**NEVER** create unauthenticated endpoints unless explicitly required and approved.
+
+If needed, handle separately:
+
+```typescript
+// Only for truly public endpoints (very rare)
+Deno.serve(async (req) => {
+  const corsResponse = handleCORS(req);
+  if (corsResponse) return corsResponse;
+  
+  // No authentication for this specific endpoint
+  // Document clearly why this is public
+  
+  return await publicHandler(req);
+});
+```
+
+## Error Messages
+
+Use Thai language for user-facing messages:
+
+```typescript
+// Authentication errors
+throw new AuthenticationError('ไม่ได้รับอนุญาต');
+throw new AuthenticationError('Token หมดอายุ');
+
+// Authorization errors
+throw new AuthorizationError('ไม่มีสิทธิ์เข้าถึง');
+throw new AuthorizationError('ต้องการสิทธิ์ระดับ 2 ขึ้นไป');
+```
+
+## Testing Authorization
+
+When testing APIs:
+
+1. Test with different employee levels
+2. Test unauthorized access
+3. Test with expired/invalid tokens
+4. Test edge cases (level boundaries)
+
+## Auth Linking (Employees Only)
+
+Special case: Linking Supabase Auth users to employees
+
+```typescript
+// Create auth first, then link
+POST /api-employees/:id/link-auth
+{
+  "email": "user@example.com",
+  "password": "secure-password"
+}
+
+// Or link existing auth
+POST /api-employees/:id/link-existing-auth
+{
+  "auth_uid": "existing-auth-uid"
+}
+
+// Unlink auth
+POST /api-employees/:id/unlink-auth
+```
+
+Only employees with level 2+ can link/unlink auth accounts.

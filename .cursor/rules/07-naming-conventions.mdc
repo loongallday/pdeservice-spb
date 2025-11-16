@@ -1,0 +1,342 @@
+---
+alwaysApply: true
+---
+
+# Naming Conventions
+
+## File Naming
+
+### Directory Names
+- **API Resources**: `api-{resource}` (kebab-case, plural)
+  - ✅ `api-employees`, `api-leave-requests`, `api-work-results`
+  - ❌ `api-employee`, `apiEmployees`, `api_employees`
+
+- **Shared Utilities**: `_shared`
+
+- **Handler Directories**: `handlers`, `services`, `validators`
+
+### File Names
+- **TypeScript Files**: `camelCase.ts`
+  - ✅ `employeeService.ts`, `leaveService.ts`
+  - ❌ `employee_service.ts`, `EmployeeService.ts`
+
+- **Handler Files**: Action name in camelCase
+  - ✅ `create.ts`, `update.ts`, `getByCode.ts`, `linkAuth.ts`
+  - ❌ `create-handler.ts`, `get_by_code.ts`
+
+- **Entry Point**: Always `index.ts`
+
+## TypeScript Naming
+
+### Interfaces & Types
+- **PascalCase** for type/interface names
+- **camelCase** for properties
+
+```typescript
+interface Employee {
+  id: string;
+  empCode: string;
+  nameTh: string;
+  nameEn: string;
+  level: number;
+}
+
+interface PaginationInfo {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasPrevious: boolean;
+}
+
+type Employee = {
+  // ... properties
+};
+```
+
+### Classes
+- **PascalCase** for class names
+- **camelCase** for methods
+- **UPPER_SNAKE_CASE** for constants
+
+```typescript
+export class EmployeeService {
+  private static readonly MAX_LEVEL = 10;
+  
+  static async getById(id: string): Promise<Employee> {
+    // ...
+  }
+  
+  static async getAll(params: QueryParams): Promise<any> {
+    // ...
+  }
+}
+```
+
+### Functions
+- **camelCase** for function names
+- Use descriptive verbs
+
+```typescript
+// Handler exports
+export async function list(req: Request, employee: Employee) { }
+export async function get(req: Request, employee: Employee, id: string) { }
+export async function create(req: Request, employee: Employee) { }
+export async function update(req: Request, employee: Employee, id: string) { }
+export async function deleteEmployee(req: Request, employee: Employee, id: string) { }
+
+// Utility functions
+export function handleError(err: unknown) { }
+export function calculatePagination(page: number, limit: number, total: number) { }
+export function sanitizeData(data: Record<string, unknown>, validFields: string[]) { }
+```
+
+### Variables & Constants
+- **camelCase** for variables
+- **UPPER_SNAKE_CASE** for constants
+
+```typescript
+// Variables
+const employeeData = await getEmployee();
+const relativePath = pathParts.slice(functionIndex + 1);
+let currentUser: Employee | null = null;
+
+// Constants
+const MAX_PAGE_SIZE = 100;
+const DEFAULT_LIMIT = 20;
+const API_VERSION = 'v1';
+```
+
+### Boolean Variables
+- Prefix with `is`, `has`, `should`, `can`
+
+```typescript
+const isValid = true;
+const hasPermission = false;
+const shouldUpdate = checkCondition();
+const canDelete = employee.level >= 2;
+```
+
+## Database Naming
+
+### Table Names
+- **snake_case**, **plural**
+- ✅ `employees`, `leave_requests`, `work_results`
+- ❌ `employee`, `leaveRequests`, `leave-requests`
+
+### Column Names
+- **snake_case**
+- Use clear, descriptive names
+
+```typescript
+// Good column names
+id
+emp_code
+name_th
+name_en
+created_at
+updated_at
+company_id
+department_id
+work_result_id
+```
+
+### Foreign Keys
+- **{referenced_table_singular}_id**
+- ✅ `company_id`, `department_id`, `role_id`
+- ❌ `companyId`, `company`, `company_fk`
+
+### Primary Keys
+- Always `id` (UUID)
+
+### Timestamps
+- `created_at` - creation timestamp
+- `updated_at` - last update timestamp
+
+## API Naming
+
+### Route Paths
+- **kebab-case**, descriptive
+- Use plural for collections
+- Use singular for single resource
+
+```typescript
+// Collections
+GET /api-employees
+GET /api-leave-requests
+GET /api-work-results
+
+// Single resource
+GET /api-employees/:id
+GET /api-leave-requests/:id
+
+// Actions (verb)
+POST /api-employees/:id/link-auth
+POST /api-leave-requests/:id/approve
+POST /api-polls/:id/vote
+
+// Sub-resources
+GET /api-contacts/site/:siteId
+GET /api-employees/role/:role
+POST /api-work-results/photos
+DELETE /api-work-results/photos/:photoId
+
+// Special endpoints
+GET /api-companies/search
+GET /api-sites/recent
+POST /api-sites/find-or-create
+```
+
+### Query Parameters
+- **snake_case**
+- ✅ `?page=1&limit=20&company_id=123&search=query`
+- ❌ `?Page=1&companyId=123`
+
+## Import Naming
+
+### Relative Imports
+```typescript
+// From _shared
+import { authenticate, requireMinLevel } from '../_shared/auth.ts';
+import { error, success } from '../_shared/response.ts';
+import { handleError, NotFoundError } from '../_shared/error.ts';
+
+// From services
+import { EmployeeService } from '../services/employeeService.ts';
+import { CompanyService } from '../services/companyService.ts';
+
+// From handlers
+import { list } from './handlers/list.ts';
+import { get } from './handlers/get.ts';
+import { create } from './handlers/create.ts';
+```
+
+### Type Imports
+```typescript
+import type { Employee } from '../_shared/auth.ts';
+import type { PaginationInfo } from '../_shared/response.ts';
+```
+
+### Deno Standard Library
+```typescript
+// No special naming, just standard imports
+// (No external imports in this project)
+```
+
+## Error Messages
+
+### Use Thai Language
+- All user-facing messages in Thai
+- Error codes in UPPER_SNAKE_CASE
+
+```typescript
+// Error messages (Thai)
+throw new ValidationError('กรุณาระบุชื่อ');
+throw new NotFoundError('ไม่พบข้อมูลพนักงาน');
+throw new AuthorizationError('ไม่มีสิทธิ์เข้าถึง');
+
+// Error codes (English, if needed)
+throw new APIError('message', 400, 'VALIDATION_ERROR');
+throw new APIError('message', 404, 'NOT_FOUND');
+```
+
+## Comment Naming
+
+### JSDoc Comments
+```typescript
+/**
+ * Get employee by ID
+ * @param id - Employee ID (UUID)
+ * @returns Employee data
+ * @throws NotFoundError if employee not found
+ */
+static async getById(id: string): Promise<Employee> {
+  // Implementation
+}
+```
+
+### Inline Comments
+```typescript
+// Check permissions - Level 2 and above can update
+await requireMinLevel(employee, 2);
+
+// Sanitize input data
+const sanitized = this.sanitizeEmployeeData(data);
+
+// Get total count for pagination
+const { count, error: countError } = await supabase...
+```
+
+## Consistency Rules
+
+1. **Be Consistent Within Files**
+   - If a file uses a pattern, stick to it
+
+2. **Match Database Schema**
+   - When working with DB fields, use exact column names
+   - Convert between camelCase (TS) and snake_case (DB) if needed
+
+3. **Follow Existing Patterns**
+   - Look at similar APIs for reference
+   - Don't introduce new patterns without good reason
+
+4. **Descriptive > Short**
+   - `getEmployeeByCode` better than `getEmpByCode`
+   - `workResultId` better than `wrId`
+
+5. **Avoid Abbreviations**
+   - ✅ `employee`, `company`, `department`
+   - ❌ `emp`, `comp`, `dept` (except in database legacy fields like `emp_code`)
+
+## Special Cases
+
+### Delete Functions
+```typescript
+// Named to avoid conflict with 'delete' keyword
+export async function deleteEmployee(req: Request, employee: Employee, id: string) { }
+export async function deleteCompany(req: Request, employee: Employee, id: string) { }
+export async function deleteTicket(req: Request, employee: Employee, id: string) { }
+```
+
+### Get By X Functions
+```typescript
+// Handler names
+getByCode.ts
+getByRole.ts
+getBySite.ts
+getByTicket.ts
+
+// Function exports
+export async function getByCode(req: Request, employee: Employee, code: string) { }
+export async function getByRole(req: Request, employee: Employee, role: string) { }
+```
+
+### Multi-word Actions
+```typescript
+// Handler files
+linkAuth.ts
+unlinkAuth.ts
+findOrCreate.ts
+linkExistingAuth.ts
+
+// Functions
+export async function linkAuth(...) { }
+export async function findOrCreate(...) { }
+```
+
+## Quick Reference
+
+| Item | Convention | Example |
+|------|-----------|---------|
+| API directory | kebab-case, plural | `api-employees` |
+| TS file | camelCase.ts | `employeeService.ts` |
+| Interface/Type | PascalCase | `Employee`, `PaginationInfo` |
+| Class | PascalCase | `EmployeeService` |
+| Function | camelCase | `getById`, `createEmployee` |
+| Variable | camelCase | `employeeData`, `relativePath` |
+| Constant | UPPER_SNAKE_CASE | `MAX_LEVEL`, `DEFAULT_LIMIT` |
+| DB table | snake_case, plural | `employees`, `leave_requests` |
+| DB column | snake_case | `emp_code`, `created_at` |
+| Route path | kebab-case | `/api-employees`, `/link-auth` |
+| Query param | snake_case | `?company_id=123` |

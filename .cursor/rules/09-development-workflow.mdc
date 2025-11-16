@@ -1,0 +1,864 @@
+---
+alwaysApply: true
+---
+
+# Development Workflow & Best Practices
+
+## Development Setup
+
+### Prerequisites
+- Supabase CLI installed
+- Deno runtime (for local testing, optional)
+- Git for version control
+
+### Local Development
+
+```bash
+# Start Supabase locally
+supabase start
+
+# Get API URL and keys
+supabase status
+
+# Deploy a function locally
+supabase functions serve api-{resource}
+
+# Test with curl or Postman
+curl -X GET "http://localhost:54321/functions/v1/api-{resource}" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+### Environment Variables
+
+Access Supabase environment automatically in edge functions:
+
+```typescript
+// _shared/supabase.ts
+import { createClient } from 'supabase';
+
+export function createServiceClient() {
+  return createClient(
+    Deno.env.get('SUPABASE_URL') ?? '',
+    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+  );
+}
+```
+
+## Code Development Process
+
+### 1. Planning Phase
+
+Before coding:
+1. **Define the resource** - What data does it manage?
+2. **Design the schema** - What tables/columns needed?
+3. **Plan the routes** - What operations are needed?
+4. **Define authorization** - Who can do what?
+5. **List dependencies** - What does it relate to?
+
+### 2. Database First
+
+Create migration FIRST:
+
+```bash
+supabase migration new create_{table_name}
+```
+
+```sql
+-- Write migration
+CREATE TABLE {table_name} (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  -- columns
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Add indexes, constraints, RLS
+```
+
+Apply migration:
+
+```bash
+supabase db reset  # For local development
+# OR
+supabase db push   # For production
+```
+
+### 3. API Development
+
+Follow this order:
+
+1. **Create directory structure**
+   ```bash
+   mkdir -p supabase/functions/api-{resource}/{_shared,handlers,services}
+   ```
+
+2. **Copy _shared files** (or create symlinks)
+   ```bash
+   cp -r supabase/functions/api-employees/_shared supabase/functions/api-{resource}/
+   ```
+
+3. **Create service layer** first
+   - `services/{resource}Service.ts`
+   - Define sanitization
+   - Implement CRUD methods
+
+4. **Create handlers**
+   - `handlers/list.ts`
+   - `handlers/get.ts`
+   - `handlers/create.ts`
+   - `handlers/update.ts`
+   - `handlers/delete.ts`
+   - Custom handlers as needed
+
+5. **Create index.ts**
+   - Import handlers
+   - Define routes
+   - Order routes properly (specific before generic)
+
+6. **Create deno.json**
+   ```json
+   {
+     "imports": {
+       "supabase": "https://esm.sh/@supabase/supabase-js@2.39.3"
+     }
+   }
+   ```
+
+### 4. Testing
+
+Test in this order:
+
+1. **Unit test service methods** (if applicable)
+2. **Test with curl/Postman**
+   - Authentication
+   - Authorization levels
+   - Each endpoint
+   - Error cases
+3. **Test edge cases**
+   - Invalid input
+   - Missing data
+   - Constraint violations
+4. **Test pagination**
+5. **Test search/filters**
+
+### 4.1. Test Maintenance
+
+**CRITICAL RULE: When you update code, you MUST update tests too.**
+
+#### When to Update Tests
+
+Update tests whenever you:
+
+1. **Add new functionality**
+   - New endpoints → Add new test cases
+   - New handlers → Add handler tests
+   - New service methods → Add service tests
+
+2. **Modify existing functionality**
+   - Changed handler logic → Update corresponding tests
+   - Changed service methods → Update service tests
+   - Changed validation rules → Update validation tests
+   - Changed authorization levels → Update permission tests
+
+3. **Change API contracts**
+   - Modified request/response format → Update test expectations
+   - Changed error messages → Update error assertion tests
+   - Added/removed fields → Update test data structures
+
+4. **Fix bugs**
+   - Bug fix → Add test case to prevent regression
+   - Edge case fix → Add edge case test
+
+5. **Refactor code**
+   - Refactored handlers → Ensure tests still pass
+   - Refactored services → Update test mocks if needed
+   - Changed function signatures → Update test calls
+
+#### Test Update Checklist
+
+When modifying code, ask yourself:
+
+- [ ] Does this change affect existing functionality?
+  - If yes → Update existing tests
+- [ ] Does this add new functionality?
+  - If yes → Add new tests
+- [ ] Does this change error handling?
+  - If yes → Update error test cases
+- [ ] Does this change authorization?
+  - If yes → Update permission tests
+- [ ] Does this change validation?
+  - If yes → Update validation tests
+- [ ] Do all existing tests still pass?
+  - If no → Fix broken tests
+
+#### Test Update Process
+
+1. **Before making code changes**
+   ```bash
+   # Run existing tests to establish baseline
+   deno test tests/
+   ```
+
+2. **Make code changes**
+   - Implement feature/fix
+   - Update related code
+
+3. **Update tests immediately**
+   - Don't defer test updates
+   - Update tests in the same commit/PR
+   - Ensure tests reflect new behavior
+
+4. **Verify tests pass**
+   ```bash
+   # Run tests to verify
+   deno test tests/
+   
+   # Run specific test file
+   deno test tests/api-{resource}/handlers.test.ts
+   ```
+
+5. **Commit together**
+   ```bash
+   # Commit code and tests together
+   git add supabase/functions/api-{resource}/
+   git add tests/api-{resource}/
+   git commit -m "feat(api-{resource}): add new endpoint with tests"
+   ```
+
+#### Examples
+
+**Example 1: Adding a new endpoint**
+
+```typescript
+// 1. Add handler
+// handlers/getByCode.ts
+export async function getByCode(req: Request, employee: Employee, code: string) {
+  // ... implementation
+}
+
+// 2. Add route in index.ts
+if (method === 'GET' && relativePath[0] === 'code' && relativePath[1]) {
+  const code = relativePath[1];
+  return await getByCode(req, employee, code);
+}
+
+// 3. IMMEDIATELY add test
+// tests/api-{resource}/handlers.test.ts
+Deno.test('get by code - success', async () => {
+  const employee = createMockEmployeeWithLevel(0);
+  const request = createMockRequest('GET', 'http://localhost/api-{resource}/code/CODE001');
+  
+  // Mock service
+  const originalGetByCode = (await import('...')).Service.getByCode;
+  (await import('...')).Service.getByCode = async () => mockResource;
+  
+  try {
+    const response = await getByCode(request, employee, 'CODE001');
+    const data = await assertSuccessResponse(response);
+    assertEquals(data.code, 'CODE001');
+  } finally {
+    // Restore original
+  }
+});
+```
+
+**Example 2: Changing authorization level**
+
+```typescript
+// 1. Update handler
+// handlers/update.ts
+export async function update(req: Request, employee: Employee, id: string) {
+  // Changed from level 2 to level 1
+  await requireMinLevel(employee, 1); // Was: 2
+  // ... rest of handler
+}
+
+// 2. Update test
+// tests/api-{resource}/handlers.test.ts
+Deno.test('update - requires level 1', async () => {
+  const employee = createMockEmployeeWithLevel(0); // Level 0 should fail
+  const request = createMockJsonRequest('PUT', 'http://localhost/api-{resource}/123', {});
+  
+  await assertRejects(
+    async () => await update(request, employee, '123'),
+    Error,
+    'ต้องมีสิทธิ์ระดับ 1' // Updated message
+  );
+});
+
+Deno.test('update - level 1 can update', async () => {
+  const employee = createMockEmployeeWithLevel(1); // Level 1 should succeed
+  // ... test implementation
+});
+```
+
+**Example 3: Changing error message**
+
+```typescript
+// 1. Update handler
+// handlers/create.ts
+if (!body.name_th) {
+  throw new ValidationError('กรุณาระบุชื่อภาษาไทย'); // Changed message
+}
+
+// 2. Update test
+Deno.test('create - missing name_th', async () => {
+  // ...
+  await assertRejects(
+    async () => await create(request, employee),
+    Error,
+    'กรุณาระบุชื่อภาษาไทย' // Updated expected message
+  );
+});
+```
+
+#### Test Coverage Requirements
+
+- **All handlers must have tests**
+  - Success cases
+  - Error cases
+  - Authorization cases
+
+- **All service methods should have tests** (if testable)
+  - Success paths
+  - Error paths
+  - Edge cases
+
+- **All validation should have tests**
+  - Required fields
+  - Format validation
+  - Range validation
+
+#### Running Tests
+
+```bash
+# Run all tests
+deno test tests/
+
+# Run tests for specific API
+deno test tests/api-{resource}/
+
+# Run specific test file
+deno test tests/api-{resource}/handlers.test.ts
+
+# Run with watch mode (auto-rerun on changes)
+deno test --watch tests/
+
+# Run with coverage
+deno test --coverage=cov_profile tests/
+deno coverage cov_profile
+```
+
+#### Test File Structure
+
+Tests should mirror the code structure:
+
+```
+tests/
+├── _shared/
+│   └── mocks.ts          # Shared test utilities
+└── api-{resource}/
+    ├── handlers.test.ts  # Handler tests
+    └── services.test.ts  # Service tests (if applicable)
+```
+
+#### Common Test Patterns
+
+**Testing handlers:**
+```typescript
+Deno.test('handler name - success', async () => {
+  const employee = createMockEmployeeWithLevel(1);
+  const request = createMockRequest('GET', 'http://localhost/api-resource');
+  
+  // Mock service if needed
+  const response = await handler(request, employee);
+  const data = await assertSuccessResponse(response);
+  
+  // Assertions
+  assertEquals(data.expectedField, expectedValue);
+});
+
+Deno.test('handler name - authorization error', async () => {
+  const employee = createMockEmployeeWithLevel(0); // Insufficient level
+  const request = createMockRequest('POST', 'http://localhost/api-resource');
+  
+  await assertRejects(
+    async () => await handler(request, employee),
+    Error,
+    'ต้องมีสิทธิ์ระดับ'
+  );
+});
+```
+
+**Testing validation:**
+```typescript
+Deno.test('create - missing required field', async () => {
+  const employee = createMockEmployeeWithLevel(1);
+  const request = createMockJsonRequest('POST', 'http://localhost/api-resource', {
+    // Missing required field
+  });
+  
+  await assertRejects(
+    async () => await create(request, employee),
+    Error,
+    'กรุณาระบุ'
+  );
+});
+```
+
+#### Test Maintenance Best Practices
+
+1. **Keep tests up to date**
+   - Update tests in the same PR as code changes
+   - Don't create separate PRs for test updates
+   - Review tests during code review
+
+2. **Test what matters**
+   - Test business logic
+   - Test error cases
+   - Test authorization
+   - Don't test implementation details
+
+3. **Use meaningful test names**
+   ```typescript
+   // ✅ Good
+   Deno.test('create company - requires level 1', ...)
+   Deno.test('update company - missing required fields', ...)
+   
+   // ❌ Bad
+   Deno.test('test 1', ...)
+   Deno.test('handler test', ...)
+   ```
+
+4. **Keep tests independent**
+   - Each test should be able to run alone
+   - Don't rely on test execution order
+   - Clean up mocks after each test
+
+5. **Use test utilities**
+   - Use `createMockEmployeeWithLevel()` for employees
+   - Use `createMockRequest()` for requests
+   - Use `assertSuccessResponse()` and `assertErrorResponse()` for assertions
+
+#### When Tests Fail
+
+If tests fail after code changes:
+
+1. **Determine if test or code is wrong**
+   - If code changed intentionally → Update test
+   - If code has a bug → Fix code
+   - If test was wrong → Fix test
+
+2. **Don't delete failing tests**
+   - Fix them instead
+   - Tests exist for a reason
+
+3. **Don't skip tests**
+   - Fix the underlying issue
+   - Skipped tests hide problems
+
+### 5. Documentation
+
+Update:
+1. **Postman collection** - Add new endpoints
+2. **README** - Document new API
+3. **Comments** - Add JSDoc comments
+4. **Migration comments** - Explain schema changes
+
+## Best Practices
+
+### Code Quality
+
+1. **DRY (Don't Repeat Yourself)**
+   - Extract common logic to _shared
+   - Reuse service methods
+   - Create utility functions for repeated patterns
+
+2. **Single Responsibility**
+   - Handlers: Parse request, validate, call service, return response
+   - Services: Business logic, database operations
+   - Validators: Input validation only
+
+3. **Error Handling**
+   - Let errors bubble up to main handler
+   - Use appropriate error classes
+   - Provide helpful error messages
+
+4. **Type Safety**
+   - Define interfaces for data structures
+   - Use TypeScript strictly
+   - Avoid `any` type
+
+5. **Comments**
+   - Explain WHY, not WHAT
+   - Document complex logic
+   - Add JSDoc for public functions
+
+6. **Test Maintenance**
+   - Update tests when updating code
+   - Add tests for new functionality
+   - Keep tests in sync with code changes
+   - Run tests before committing
+
+### Performance
+
+1. **Database Queries**
+   - Use indexes for frequently queried columns
+   - Avoid N+1 queries
+   - Use `.select()` to specify needed columns
+   - Use pagination for large datasets
+
+2. **Data Transfer**
+   - Only return needed fields
+   - Use pagination
+   - Compress large responses (if needed)
+
+3. **Caching**
+   - Cache static/reference data
+   - Use service-level caching for expensive operations
+   - Invalidate cache on updates
+
+### Security
+
+1. **Always Authenticate**
+   - Every endpoint must call `authenticate(req)`
+   - No exceptions (unless truly public, which should be rare)
+
+2. **Always Authorize**
+   - Check permission level in every handler
+   - Use `requireMinLevel()` consistently
+   - Implement resource-level authorization when needed
+
+3. **Sanitize All Input**
+   - Use `sanitizeData()` before database operations
+   - Validate input format
+   - Check required fields
+
+4. **Prevent SQL Injection**
+   - Use Supabase client methods (never raw SQL from user input)
+   - Use parameterized queries
+   - Sanitize data
+
+5. **Sensitive Data**
+   - Never log sensitive data (passwords, tokens)
+   - Don't return sensitive fields unless needed
+   - Use service role key only on server
+
+### Database
+
+1. **Migrations**
+   - Always create migration files
+   - Never modify existing migrations
+   - Test migrations locally first
+   - Add rollback logic when possible
+
+2. **Schema Design**
+   - Use UUIDs for IDs
+   - Add created_at/updated_at timestamps
+   - Use appropriate data types
+   - Add foreign key constraints
+   - Create indexes for performance
+
+3. **RLS (Row Level Security)**
+   - Enable RLS on tables
+   - Create appropriate policies
+   - Test policies thoroughly
+   - Document policy logic
+
+## Common Patterns
+
+### Search Functionality
+
+```typescript
+// In service
+static async search(params: { query: string; page: number; limit: number }) {
+  const supabase = createServiceClient();
+  const { query, page, limit } = params;
+  
+  const offset = (page - 1) * limit;
+  
+  const { data, error } = await supabase
+    .from('table_name')
+    .select('*')
+    .or(`name_th.ilike.%${query}%,name_en.ilike.%${query}%`)
+    .range(offset, offset + limit - 1);
+  
+  // ... handle error, return data
+}
+```
+
+### Find or Create Pattern
+
+```typescript
+static async findOrCreate(criteria: Record<string, unknown>, defaults: Record<string, unknown>) {
+  const supabase = createServiceClient();
+  
+  // Try to find
+  let query = supabase.from('table_name').select('*');
+  for (const [key, value] of Object.entries(criteria)) {
+    query = query.eq(key, value);
+  }
+  
+  const { data: existing } = await query.single();
+  
+  if (existing) {
+    return { data: existing, created: false };
+  }
+  
+  // Create if not found
+  const { data, error } = await supabase
+    .from('table_name')
+    .insert({ ...criteria, ...defaults })
+    .select()
+    .single();
+  
+  if (error) throw new DatabaseError();
+  
+  return { data, created: true };
+}
+```
+
+### Soft Delete Pattern
+
+```typescript
+// Instead of DELETE, update status
+static async softDelete(id: string) {
+  const supabase = createServiceClient();
+  
+  const { data, error } = await supabase
+    .from('table_name')
+    .update({ status: 'deleted', deleted_at: new Date().toISOString() })
+    .eq('id', id)
+    .select()
+    .single();
+  
+  if (error) throw new DatabaseError();
+  return data;
+}
+
+// Filter out deleted in queries
+static async getAll(params: QueryParams) {
+  const { data, error } = await supabase
+    .from('table_name')
+    .select('*')
+    .neq('status', 'deleted')  // Exclude deleted
+    .order('created_at', { ascending: false });
+}
+```
+
+### Action Pattern (Approve, Reject, etc.)
+
+```typescript
+// Handler
+export async function approve(req: Request, employee: Employee, id: string) {
+  await requireMinLevel(employee, 2);
+  
+  const body = await req.json();
+  const result = await LeaveRequestService.approve(id, {
+    approved_by: employee.id,
+    approved_at: new Date().toISOString(),
+    notes: body.notes,
+  });
+  
+  return success(result);
+}
+
+// Service
+static async approve(id: string, approvalData: Record<string, unknown>) {
+  const supabase = createServiceClient();
+  
+  const { data, error } = await supabase
+    .from('leave_requests')
+    .update({
+      status: 'approved',
+      ...approvalData,
+    })
+    .eq('id', id)
+    .select()
+    .single();
+  
+  if (error) throw new DatabaseError();
+  if (!data) throw new NotFoundError();
+  
+  return data;
+}
+```
+
+## Debugging
+
+### Enable Logging
+
+```typescript
+// Add at the start of handler
+console.log('[api-{resource}] Request:', {
+  method: req.method,
+  url: req.url,
+  employee: employee.id,
+});
+
+// Log errors with context
+catch (err) {
+  console.error('[api-{resource}] Error:', err);
+  throw err;
+}
+```
+
+### Check Database
+
+```bash
+# Connect to local database
+supabase db shell
+
+# Run queries
+SELECT * FROM employees;
+SELECT * FROM companies WHERE name_th LIKE '%test%';
+```
+
+### View Logs
+
+```bash
+# View edge function logs
+supabase functions logs api-{resource}
+
+# View database logs
+supabase logs postgres
+```
+
+## Deployment
+
+### Deploy Single Function
+
+```bash
+supabase functions deploy api-{resource}
+```
+
+### Deploy All Functions
+
+```bash
+# Loop through and deploy all
+for dir in supabase/functions/api-*/; do
+  name=$(basename "$dir")
+  supabase functions deploy "$name"
+done
+```
+
+### Deploy Migrations
+
+```bash
+supabase db push
+```
+
+### Verify Deployment
+
+```bash
+# Test deployed function
+curl -X GET "https://your-project.supabase.co/functions/v1/api-{resource}" \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+## Version Control
+
+### Commit Messages
+
+Follow conventional commits:
+
+```
+feat(api-employees): add get by code endpoint
+fix(api-companies): fix search pagination
+refactor(shared): improve error handling
+docs(readme): update API documentation
+```
+
+### Git Workflow
+
+```bash
+# Create feature branch
+git checkout -b feature/api-new-resource
+
+# Make changes
+git add .
+git commit -m "feat(api-new): implement new resource API"
+
+# Push to remote
+git push origin feature/api-new-resource
+
+# Create pull request
+# After review, merge to main
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **CORS Errors**
+   - Ensure `handleCORS` is called first
+   - Check CORS headers in response
+
+2. **Authentication Fails**
+   - Verify JWT token is valid
+   - Check token expiration
+   - Ensure auth_uid is linked to employee
+
+3. **Authorization Fails**
+   - Check employee level
+   - Verify `requireMinLevel` value
+   - Ensure employee record exists
+
+4. **Database Errors**
+   - Check table/column names
+   - Verify foreign key references
+   - Check RLS policies
+   - Review constraints
+
+5. **404 Not Found**
+   - Check route order (specific before generic)
+   - Verify path parsing
+   - Check function name in `indexOf()`
+
+6. **400 Validation Errors**
+   - Verify required fields
+   - Check data formats
+   - Review sanitization fields list
+
+## Performance Monitoring
+
+### Key Metrics
+
+- Response time per endpoint
+- Error rate
+- Database query time
+- Memory usage
+
+### Optimization Tips
+
+1. Add database indexes
+2. Implement caching
+3. Reduce payload size
+4. Optimize queries (use select specific fields)
+5. Use pagination everywhere
+6. Batch operations when possible
+
+## Code Review Checklist
+
+Before submitting code:
+
+- [ ] Follows project structure
+- [ ] Uses standard patterns
+- [ ] Has proper authentication
+- [ ] Has proper authorization
+- [ ] Validates all input
+- [ ] Sanitizes data before DB
+- [ ] Handles errors properly
+- [ ] Returns proper status codes
+- [ ] Has Thai error messages
+- [ ] Follows naming conventions
+- [ ] Has comments where needed
+- [ ] **Tests updated for all code changes**
+- [ ] **New functionality has corresponding tests**
+- [ ] **All tests pass (run `deno test tests/`)**
+- [ ] **Test coverage maintained or improved**
+- [ ] Tested all endpoints
+- [ ] Updated documentation
+- [ ] No console.logs left in prod code
+- [ ] No hardcoded values
+- [ ] No sensitive data exposed

@@ -1,0 +1,480 @@
+---
+alwaysApply: true
+---
+
+# Data Handling Standards
+
+## Data Sanitization
+
+ALL data going to the database MUST be sanitized to prevent:
+- SQL injection
+- Unexpected field insertion
+- Schema mismatches
+
+## Sanitization Pattern
+
+### In Service Layer
+
+```typescript
+import { sanitizeData } from '../_shared/sanitize.ts';
+
+export class ResourceService {
+  /**
+   * Sanitize resource data based on actual database schema
+   */
+  private static sanitizeResourceData(data: Record<string, unknown>): Record<string, unknown> {
+    // List ONLY fields that exist in the database table
+    const validFields = [
+      'field1',
+      'field2',
+      'field3',
+      // ... all valid columns
+    ];
+    return sanitizeData(data, validFields);
+  }
+
+  static async create(resourceData: Record<string, unknown>): Promise<any> {
+    const sanitized = this.sanitizeResourceData(resourceData);
+    // Use sanitized data for insert
+  }
+
+  static async update(id: string, resourceData: Record<string, unknown>): Promise<any> {
+    const sanitized = this.sanitizeResourceData(resourceData);
+    // Use sanitized data for update
+  }
+}
+```
+
+### Valid Fields List
+
+**CRITICAL**: The validFields array MUST match the actual database schema.
+
+To find valid fields:
+1. Check the migration file for table schema
+2. Exclude auto-generated fields (id, created_at, updated_at)
+3. Include all user-settable columns
+
+Example for employees table:
+
+```typescript
+private static sanitizeEmployeeData(data: Record<string, unknown>): Record<string, unknown> {
+  const validFields = [
+    'emp_code',      // Employee code
+    'name_th',       // Thai name
+    'name_en',       // English name
+    'nickname',      // Nickname
+    'level',         // Permission level
+    'role_id',       // Foreign key to roles
+    'department_id', // Foreign key to departments
+    'status',        // Active/inactive
+    'position',      // Job position
+    'email',         // Email address
+    'phone',         // Phone number
+    // Do NOT include: id, created_at, updated_at, auth_uid
+  ];
+  return sanitizeData(data, validFields);
+}
+```
+
+## Pagination
+
+### Standard Pagination Parameters
+
+```typescript
+// In handler
+import { parsePaginationParams } from '../_shared/validation.ts';
+
+const url = new URL(req.url);
+const { page, limit } = parsePaginationParams(url);
+// page: default 1, limit: default 20
+```
+
+### Service Layer Pagination
+
+```typescript
+import { calculatePagination } from '../_shared/response.ts';
+import type { PaginationInfo } from '../_shared/response.ts';
+
+static async getAll(params: { page: number; limit: number }): Promise<{
+  data: any[];
+  pagination: PaginationInfo;
+}> {
+  const supabase = createServiceClient();
+  const { page, limit } = params;
+
+  // Get total count
+  const { count, error: countError } = await supabase
+    .from('table_name')
+    .select('*', { count: 'exact', head: true });
+
+  if (countError) {
+    throw new DatabaseError();
+  }
+
+  const total = count || 0;
+
+  // Get paginated data
+  const offset = (page - 1) * limit;
+  const { data, error } = await supabase
+    .from('table_name')
+    .select('*')
+    .range(offset, offset + limit - 1)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    throw new DatabaseError();
+  }
+
+  const pagination = calculatePagination(page, limit, total);
+
+  return { data, pagination };
+}
+```
+
+### Returning Paginated Data
+
+```typescript
+import { success } from '../_shared/response.ts';
+
+export async function list(req: Request, employee: Employee) {
+  await requireMinLevel(employee, 0);
+
+  const url = new URL(req.url);
+  const { page, limit } = parsePaginationParams(url);
+
+  const result = await ResourceService.getAll({ page, limit });
+
+  // Returns with pagination info
+  return success(result);
+}
+```
+
+## Response Format
+
+### Success Response
+
+```typescript
+import { success } from '../_shared/response.ts';
+
+// Single item
+return success(item);
+// Returns: { data: item }
+
+// List with pagination
+return success({ data: items, pagination: paginationInfo });
+// Returns: { data: { data: [...], pagination: {...} } }
+```
+
+### Success Response Structure
+
+```json
+{
+  "data": {
+    "data": [...items],
+    "pagination": {
+      "page": 1,
+      "limit": 20,
+      "total": 100,
+      "totalPages": 5,
+      "hasNext": true,
+      "hasPrevious": false
+    }
+  }
+}
+```
+
+## Query Parameters
+
+### Standard Query Parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| page | number | 1 | Page number (1-indexed) |
+| limit | number | 20 | Items per page |
+| search | string | - | Search query |
+| sort | string | - | Sort field |
+| order | 'asc'\|'desc' | 'desc' | Sort order |
+
+### Parsing Query Parameters
+
+```typescript
+const url = new URL(req.url);
+
+// Pagination
+const { page, limit } = parsePaginationParams(url);
+
+// Search
+const search = url.searchParams.get('search') || undefined;
+
+// Filter by ID
+const companyId = url.searchParams.get('company_id') || undefined;
+
+// Boolean flags
+const activeOnly = url.searchParams.get('active') === 'true';
+
+// Pass to service
+const result = await Service.getAll({
+  page,
+  limit,
+  search,
+  companyId,
+  activeOnly,
+});
+```
+
+## Data Validation
+
+### Input Validation in Handlers
+
+```typescript
+export async function create(req: Request, employee: Employee) {
+  await requireMinLevel(employee, 1);
+
+  const body = await req.json();
+
+  // Validate required fields
+  if (!body.name_th) {
+    throw new ValidationError('กรุณาระบุชื่อภาษาไทย');
+  }
+
+  if (!body.emp_code) {
+    throw new ValidationError('กรุณาระบุรหัสพนักงาน');
+  }
+
+  // Validate format
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (body.email && !emailRegex.test(body.email)) {
+    throw new ValidationError('รูปแบบอีเมลไม่ถูกต้อง');
+  }
+
+  // Validate range
+  if (body.level !== undefined && (body.level < 0 || body.level > 10)) {
+    throw new ValidationError('ระดับต้องอยู่ระหว่าง 0-10');
+  }
+
+  const result = await ResourceService.create(body);
+  return success(result);
+}
+```
+
+### Complex Validators
+
+For complex validation, create validator files:
+
+```typescript
+// validators/employeeValidator.ts
+import { ValidationError } from '../_shared/error.ts';
+
+export interface EmployeeCreateInput {
+  emp_code: string;
+  name_th: string;
+  name_en?: string;
+  nickname?: string;
+  level?: number;
+  // ... other fields
+}
+
+export function validateEmployeeCreate(data: unknown): EmployeeCreateInput {
+  if (!data || typeof data !== 'object') {
+    throw new ValidationError('ข้อมูลไม่ถูกต้อง');
+  }
+
+  const input = data as Record<string, unknown>;
+
+  if (!input.emp_code || typeof input.emp_code !== 'string') {
+    throw new ValidationError('กรุณาระบุรหัสพนักงาน');
+  }
+
+  if (!input.name_th || typeof input.name_th !== 'string') {
+    throw new ValidationError('กรุณาระบุชื่อภาษาไทย');
+  }
+
+  if (input.level !== undefined) {
+    const level = Number(input.level);
+    if (isNaN(level) || level < 0 || level > 10) {
+      throw new ValidationError('ระดับต้องอยู่ระหว่าง 0-10');
+    }
+  }
+
+  return {
+    emp_code: input.emp_code,
+    name_th: input.name_th,
+    name_en: input.name_en as string | undefined,
+    nickname: input.nickname as string | undefined,
+    level: input.level as number | undefined,
+  };
+}
+```
+
+## Database Queries
+
+### Standard Query Pattern
+
+```typescript
+const supabase = createServiceClient();
+
+// Select all fields
+const { data, error } = await supabase
+  .from('table_name')
+  .select('*')
+  .eq('id', id)
+  .single();
+
+// Select specific fields
+const { data, error } = await supabase
+  .from('table_name')
+  .select('id, name_th, name_en, status')
+  .eq('some_field', value);
+
+// With joins
+const { data, error } = await supabase
+  .from('table_name')
+  .select(`
+    *,
+    related_table:related_table_id (
+      id,
+      name
+    )
+  `)
+  .eq('id', id)
+  .single();
+```
+
+### Ordering
+
+```typescript
+// Default: newest first
+.order('created_at', { ascending: false })
+
+// Custom ordering
+.order('name_th', { ascending: true })
+```
+
+### Filtering
+
+```typescript
+// Equality
+.eq('status', 'active')
+
+// Not equal
+.neq('status', 'deleted')
+
+// Greater than/less than
+.gt('level', 0)
+.gte('level', 1)
+.lt('level', 10)
+.lte('level', 9)
+
+// In array
+.in('status', ['active', 'pending'])
+
+// Like (case-insensitive search)
+.ilike('name_th', `%${search}%`)
+
+// Multiple conditions (AND)
+.eq('status', 'active')
+.eq('department_id', deptId)
+
+// OR conditions
+.or(`status.eq.active,status.eq.pending`)
+```
+
+### Insert
+
+```typescript
+const { data, error } = await supabase
+  .from('table_name')
+  .insert(sanitizedData)
+  .select()
+  .single();
+```
+
+### Update
+
+```typescript
+const { data, error } = await supabase
+  .from('table_name')
+  .update(sanitizedData)
+  .eq('id', id)
+  .select()
+  .single();
+```
+
+### Delete
+
+```typescript
+const { error } = await supabase
+  .from('table_name')
+  .delete()
+  .eq('id', id);
+```
+
+### Count
+
+```typescript
+const { count, error } = await supabase
+  .from('table_name')
+  .select('*', { count: 'exact', head: true });
+```
+
+## Type Safety
+
+Use TypeScript types for better type safety:
+
+```typescript
+interface Employee {
+  id: string;
+  emp_code: string;
+  name_th: string;
+  name_en: string | null;
+  level: number;
+  // ... other fields
+}
+
+static async getById(id: string): Promise<Employee> {
+  const supabase = createServiceClient();
+  
+  const { data, error } = await supabase
+    .from('employees')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error) throw new DatabaseError();
+  if (!data) throw new NotFoundError();
+
+  return data as Employee;
+}
+```
+
+## Data Transformation
+
+Transform data after retrieval if needed:
+
+```typescript
+static async getAll(params: QueryParams): Promise<any> {
+  // Fetch data
+  const { data, error } = await supabase...
+  
+  if (error) throw new DatabaseError();
+
+  // Transform if needed
+  const transformed = data.map(item => ({
+    ...item,
+    // Add computed fields
+    full_name: `${item.name_th} (${item.nickname})`,
+    // Format dates
+    created_at_formatted: new Date(item.created_at).toLocaleDateString('th-TH'),
+  }));
+
+  return transformed;
+}
+```
+
+## File Uploads (Work Results, Photos, Documents)
+
+See specific implementation in `api-work-results` for handling:
+- Photo uploads
+- Document uploads
+- Multi-page documents
+- File deletion

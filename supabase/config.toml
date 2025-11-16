@@ -1,0 +1,77 @@
+# Supabase Configuration File
+# https://supabase.com/docs/guides/cli/config
+
+[api]
+# Port to use for the local API
+port = 54321
+# Schemas to expose in your API
+schemas = ["public"]
+# Extra schemas to add to the search_path of every request
+extra_search_path = ["public"]
+# The maximum number of rows returns from a view, table, or stored procedure
+max_rows = 1000
+
+[db]
+# Port to use for the local database
+port = 54322
+# The database major version to use
+major_version = 17
+
+[studio]
+# Port to use for the local Supabase Studio
+port = 54323
+
+[inbucket]
+# Port to use for the local inbucket email testing server
+port = 54324
+
+[auth]
+# Enable or disable auth
+enabled = true
+
+[storage]
+# The maximum file size allowed (in bytes)
+file_size_limit = 52428800 # 50MB
+
+[functions]
+# Edge Functions configuration
+
+[functions.api-features]
+verify_jwt = false
+
+[functions.api-tickets]
+verify_jwt = false
+
+[functions.api-employees]
+verify_jwt = false
+
+[functions.api-sites]
+verify_jwt = false
+
+[functions.api-companies]
+verify_jwt = false
+
+[functions.api-contacts]
+verify_jwt = false
+
+[functions.api-work-results]
+verify_jwt = false
+
+[functions.api-leave-requests]
+verify_jwt = false
+
+[functions.api-departments]
+verify_jwt = false
+
+[functions.api-roles]
+verify_jwt = false
+
+[functions.api-polls]
+verify_jwt = false
+
+[functions.api-reference-data]
+verify_jwt = false
+
+[functions.api-appointments]
+verify_jwt = false
+

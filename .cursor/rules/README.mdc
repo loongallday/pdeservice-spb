@@ -1,0 +1,323 @@
+# PDE Service - Cursor Rules Documentation
+
+This directory contains comprehensive development rules and patterns for the PDE Service project.
+
+## 📚 Rule Files
+
+### Core Documentation
+
+1. **[01-project-overview.mdc](./01-project-overview.mdc)**
+   - Project description and architecture
+   - Technology stack
+   - Directory structure
+   - Core principles
+
+2. **[02-api-structure.mdc](./02-api-structure.mdc)**
+   - API directory structure
+   - index.ts routing pattern
+   - Handler and service structure
+   - Route ordering and conflict prevention
+   - Path parsing standards
+
+3. **[03-authentication-authorization.mdc](./03-authentication-authorization.mdc)**
+   - Authentication flow
+   - JWT token validation
+   - Authorization levels (0-10)
+   - Employee type definition
+   - Level requirements by operation
+
+4. **[04-error-handling.mdc](./04-error-handling.mdc)**
+   - Error classes and usage
+   - Error handling patterns
+   - Common validation patterns
+   - Thai language error messages
+   - HTTP status codes
+
+5. **[05-data-handling.mdc](./05-data-handling.mdc)**
+   - Data sanitization requirements
+   - Pagination standards
+   - Response formats
+   - Query parameters
+   - Input validation
+   - Database query patterns
+   - Type safety
+
+6. **[06-cors-and-http.mdc](./06-cors-and-http.mdc)**
+   - CORS handling standards
+   - HTTP methods by operation
+   - HTTP status codes
+   - Request/response flow
+   - URL patterns
+   - Headers
+
+7. **[07-naming-conventions.mdc](./07-naming-conventions.mdc)**
+   - File naming (kebab-case, camelCase)
+   - TypeScript naming (PascalCase, camelCase)
+   - Database naming (snake_case)
+   - API route naming
+   - Import conventions
+   - Consistency rules
+
+8. **[08-templates.mdc](./08-templates.mdc)**
+   - New API resource template
+   - Handler templates (list, get, create, update, delete)
+   - Service layer template
+   - Migration template
+   - Testing checklist template
+
+9. **[09-development-workflow.mdc](./09-development-workflow.mdc)**
+   - Development setup
+   - Code development process
+   - Best practices
+   - Common patterns
+   - Debugging techniques
+   - Deployment process
+   - Troubleshooting guide
+
+## 🚀 Quick Start
+
+### For New Developers
+
+1. Read **01-project-overview.mdc** - Understand the project
+2. Read **02-api-structure.mdc** - Learn the API patterns
+3. Read **03-authentication-authorization.mdc** - Understand security
+4. Read **07-naming-conventions.mdc** - Learn naming standards
+5. Use **08-templates.mdc** - Copy templates for new APIs
+
+### For Existing Developers
+
+Reference these as needed:
+- **04-error-handling.mdc** - When handling errors
+- **05-data-handling.mdc** - When working with data
+- **06-cors-and-http.mdc** - When dealing with HTTP
+- **09-development-workflow.mdc** - For development tasks
+
+## 📋 Key Principles
+
+### 1. Consistency is King
+All APIs follow the same structure, patterns, and conventions. If you see a pattern in one API, use it in all APIs.
+
+### 2. Security First
+- Always authenticate
+- Always authorize
+- Always sanitize
+- Never trust user input
+
+### 3. Error Messages in Thai
+All user-facing error messages must be in Thai language.
+
+### 4. Standard Structure
+```
+api-{resource}/
+├── _shared/          # Shared utilities
+├── handlers/         # Request handlers
+├── services/         # Business logic
+├── validators/       # Input validation (optional)
+├── index.ts          # Main entry point
+└── deno.json         # Dependencies
+```
+
+### 5. Standard Flow
+```
+Request → CORS → Auth → Route → Handler → Service → Database → Response
+```
+
+## 🎯 Common Tasks
+
+### Creating a New API
+
+1. Follow **08-templates.mdc** - New API Resource Template
+2. Copy structure from similar existing API
+3. Update all {resource} placeholders
+4. Test thoroughly
+5. Update documentation
+
+### Adding a New Endpoint
+
+1. Create handler in `handlers/`
+2. Import handler in `index.ts`
+3. Add route in correct order
+4. Test authentication/authorization
+5. Test functionality
+
+### Modifying Database
+
+1. Create new migration file
+2. Write forward migration
+3. Add indexes and constraints
+4. Test locally
+5. Deploy to production
+
+### Debugging Issues
+
+1. Check authentication (401 errors)
+2. Check authorization (403 errors)
+3. Check validation (400 errors)
+4. Check database (500 errors)
+5. Check route order (404 errors)
+
+## 📖 Pattern Reference
+
+### Authentication Pattern
+```typescript
+const { employee } = await authenticate(req);
+```
+
+### Authorization Pattern
+```typescript
+await requireMinLevel(employee, X);
+```
+
+### Error Pattern
+```typescript
+throw new ValidationError('กรุณาระบุข้อมูล');
+throw new NotFoundError('ไม่พบข้อมูล');
+throw new AuthorizationError('ไม่มีสิทธิ์เข้าถึง');
+```
+
+### Response Pattern
+```typescript
+return success(data);           // 200
+return success(data, 201);      // 201 Created
+return error('message', 400);   // Error
+```
+
+### Sanitization Pattern
+```typescript
+const sanitized = this.sanitizeResourceData(data);
+```
+
+### Pagination Pattern
+```typescript
+const { page, limit } = parsePaginationParams(url);
+const pagination = calculatePagination(page, limit, total);
+return success({ data, pagination });
+```
+
+## 🔍 Finding Information
+
+### By Topic
+
+| Topic | File |
+|-------|------|
+| Project structure | 01-project-overview.mdc |
+| API structure | 02-api-structure.mdc |
+| Security | 03-authentication-authorization.mdc |
+| Errors | 04-error-handling.mdc |
+| Data | 05-data-handling.mdc |
+| HTTP/CORS | 06-cors-and-http.mdc |
+| Naming | 07-naming-conventions.mdc |
+| Templates | 08-templates.mdc |
+| Development | 09-development-workflow.mdc |
+
+### By Task
+
+| Task | Files to Read |
+|------|---------------|
+| Create new API | 02, 08, 09 |
+| Handle errors | 04 |
+| Add authentication | 03 |
+| Work with database | 05, 09 |
+| Debug CORS issues | 06 |
+| Name things correctly | 07 |
+| Deploy code | 09 |
+
+### By Error
+
+| Error Type | Files to Check |
+|------------|---------------|
+| 401 Unauthorized | 03-authentication-authorization.mdc |
+| 403 Forbidden | 03-authentication-authorization.mdc |
+| 404 Not Found | 02-api-structure.mdc (routing order) |
+| 400 Bad Request | 04-error-handling.mdc, 05-data-handling.mdc |
+| 500 Server Error | 04-error-handling.mdc, 05-data-handling.mdc |
+| CORS errors | 06-cors-and-http.mdc |
+
+## ⚡ Quick Commands
+
+```bash
+# Start local development
+supabase start
+
+# Deploy function
+supabase functions deploy api-{resource}
+
+# Create migration
+supabase migration new {name}
+
+# Apply migrations
+supabase db reset  # local
+supabase db push   # production
+
+# View logs
+supabase functions logs api-{resource}
+```
+
+## 🎓 Learning Path
+
+### Week 1: Fundamentals
+- Day 1-2: Read 01-project-overview.mdc
+- Day 3-4: Read 02-api-structure.mdc, study existing APIs
+- Day 5: Read 03-authentication-authorization.mdc
+
+### Week 2: Development
+- Day 1-2: Read 04-error-handling.mdc, 05-data-handling.mdc
+- Day 3: Read 06-cors-and-http.mdc, 07-naming-conventions.mdc
+- Day 4-5: Read 08-templates.mdc, 09-development-workflow.mdc
+
+### Week 3: Practice
+- Create a simple CRUD API
+- Add search functionality
+- Add custom actions
+- Deploy and test
+
+## 🛠 Maintenance
+
+### When to Update Rules
+
+Update these rules when:
+- Adding new patterns that should be standard
+- Finding better ways to do things
+- Discovering common mistakes to prevent
+- Adding new project-wide conventions
+
+### How to Update
+
+1. Edit the appropriate .mdc file
+2. Keep examples clear and concise
+3. Update README.mdc if structure changes
+4. Announce changes to team
+
+## 📞 Getting Help
+
+1. **Search these rules** - Use Ctrl+F in each file
+2. **Look at existing code** - Find similar patterns in other APIs
+3. **Check error messages** - They usually point to the issue
+4. **Review templates** - 08-templates.mdc has working examples
+5. **Ask team** - When rules are unclear or contradictory
+
+## ✅ Validation
+
+Before committing code, verify:
+
+- [ ] Follows structure in 02-api-structure.mdc
+- [ ] Has authentication (03-authentication-authorization.mdc)
+- [ ] Handles errors correctly (04-error-handling.mdc)
+- [ ] Sanitizes data (05-data-handling.mdc)
+- [ ] Handles CORS (06-cors-and-http.mdc)
+- [ ] Follows naming conventions (07-naming-conventions.mdc)
+- [ ] Tested thoroughly (09-development-workflow.mdc)
+
+## 📝 Notes
+
+- These rules are living documents
+- When in doubt, follow existing patterns
+- Consistency > perfection
+- Security is non-negotiable
+- Thai language for user-facing messages
+
+---
+
+**Last Updated**: 2025-11-16
+**Version**: 1.0
+**Maintainer**: Development Team

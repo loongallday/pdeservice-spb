@@ -1,0 +1,383 @@
+---
+alwaysApply: true
+---
+
+# CORS & HTTP Standards
+
+## CORS Handling
+
+ALL API endpoints MUST handle CORS properly.
+
+### Standard CORS Pattern
+
+```typescript
+import { handleCORS } from './_shared/cors.ts';
+
+Deno.serve(async (req) => {
+  // Handle CORS preflight - ALWAYS first
+  const corsResponse = handleCORS(req);
+  if (corsResponse) return corsResponse;
+
+  // Rest of the handler
+});
+```
+
+**NEVER** write custom CORS handling. Always use `handleCORS` from `_shared/cors.ts`.
+
+### CORS Configuration
+
+The `handleCORS` function handles:
+- OPTIONS preflight requests
+- CORS headers on all responses
+
+```typescript
+// _shared/cors.ts
+export const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+};
+
+export function handleCORS(req: Request): Response | null {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders });
+  }
+  return null;
+}
+```
+
+### Response Headers
+
+All responses automatically include CORS headers via `response.ts`:
+
+```typescript
+// _shared/response.ts
+import { corsHeaders } from './cors.ts';
+
+export function success<T>(data: T, status = 200): Response {
+  return new Response(
+    JSON.stringify({ data }),
+    {
+      status,
+      headers: { 
+        'Content-Type': 'application/json',
+        ...corsHeaders  // CORS headers included
+      },
+    }
+  );
+}
+```
+
+## HTTP Methods
+
+### Standard HTTP Methods by Operation
+
+| Method | Operation | Usage |
+|--------|-----------|-------|
+| GET | Read | List, retrieve single, search, get by relation |
+| POST | Create/Action | Create new resource, trigger actions (approve, vote, etc.) |
+| PUT | Update | Update entire resource |
+| DELETE | Delete | Remove resource |
+
+### Method Usage Patterns
+
+#### GET - Read Operations
+```typescript
+// List all
+GET /api-resource
+
+// Get single by ID
+GET /api-resource/:id
+
+// Get by parameter
+GET /api-resource/:param/:value
+// Example: GET /api-employees/code/EMP001
+
+// Search
+GET /api-resource/search?q=query
+
+// Get related
+GET /api-resource/:id/related
+// Example: GET /api-contacts/site/123
+```
+
+#### POST - Create & Actions
+```typescript
+// Create
+POST /api-resource
+Body: { field: "value", ... }
+
+// Actions on resource
+POST /api-resource/:id/action
+// Examples:
+// POST /api-leave-requests/:id/approve
+// POST /api-polls/:id/vote
+
+// Sub-resource create
+POST /api-resource/sub-resource
+// Example: POST /api-work-results/photos
+```
+
+#### PUT - Update
+```typescript
+// Update resource
+PUT /api-resource/:id
+Body: { field: "new value", ... }
+```
+
+#### DELETE - Delete
+```typescript
+// Delete resource
+DELETE /api-resource/:id
+
+// Delete sub-resource
+DELETE /api-resource/sub-resource/:id
+// Example: DELETE /api-work-results/photos/:photoId
+```
+
+## HTTP Status Codes
+
+### Success Codes (2xx)
+
+| Code | Meaning | Usage |
+|------|---------|-------|
+| 200 | OK | Successful GET, PUT, DELETE |
+| 201 | Created | Successful POST (creation) |
+
+### Client Error Codes (4xx)
+
+| Code | Meaning | Usage |
+|------|---------|-------|
+| 400 | Bad Request | Validation errors, malformed input |
+| 401 | Unauthorized | Missing or invalid authentication |
+| 403 | Forbidden | Valid auth but insufficient permissions |
+| 404 | Not Found | Resource doesn't exist, invalid route |
+| 409 | Conflict | Duplicate data, constraint violations |
+
+### Server Error Codes (5xx)
+
+| Code | Meaning | Usage |
+|------|---------|-------|
+| 500 | Internal Server Error | Unexpected errors, database failures |
+| 501 | Not Implemented | Feature not yet implemented |
+
+### Status Code Usage
+
+```typescript
+// 200 OK - default for success
+return success(data);
+return success(data, 200);
+
+// 201 Created - for successful creation
+return success(newResource, 201);
+
+// 400 Bad Request - validation
+throw new ValidationError('message');
+
+// 401 Unauthorized - authentication
+throw new AuthenticationError('message');
+
+// 403 Forbidden - authorization
+throw new AuthorizationError('message');
+
+// 404 Not Found - resource or route
+throw new NotFoundError('message');
+return error('Not found', 404);
+
+// 409 Conflict - duplicate/constraint
+if (exists) {
+  throw new ValidationError('ข้อมูลซ้ำในระบบ');
+}
+
+// 500 Internal Server Error
+throw new DatabaseError('message');
+
+// 501 Not Implemented
+return error('Not implemented yet', 501);
+```
+
+## Request Body Handling
+
+### JSON Body Parsing
+
+```typescript
+export async function create(req: Request, employee: Employee) {
+  // Parse JSON body
+  const body = await req.json();
+  
+  // Validate
+  if (!body.required_field) {
+    throw new ValidationError('กรุณาระบุข้อมูล');
+  }
+  
+  // Use
+  const result = await Service.create(body);
+  return success(result);
+}
+```
+
+### Handle Empty Body
+
+```typescript
+let body;
+try {
+  body = await req.json();
+} catch {
+  throw new ValidationError('ข้อมูลไม่ถูกต้อง');
+}
+```
+
+### Multipart/Form Data (File Uploads)
+
+For file uploads (photos, documents):
+
+```typescript
+export async function addPhoto(req: Request, employee: Employee) {
+  await requireMinLevel(employee, 1);
+
+  const formData = await req.formData();
+  const file = formData.get('file') as File;
+  const workResultId = formData.get('work_result_id') as string;
+
+  if (!file) {
+    throw new ValidationError('กรุณาเลือกไฟล์');
+  }
+
+  if (!workResultId) {
+    throw new ValidationError('กรุณาระบุ work_result_id');
+  }
+
+  // Process file upload
+  const result = await WorkResultService.addPhoto(workResultId, file);
+  return success(result);
+}
+```
+
+## URL Patterns
+
+### Standard URL Structure
+
+```
+https://{project}.supabase.co/functions/v1/api-{resource}/{path}
+```
+
+Examples:
+```
+GET  /api-employees
+GET  /api-employees/123
+GET  /api-employees/code/EMP001
+GET  /api-employees/role/admin
+POST /api-employees
+POST /api-employees/123/link-auth
+PUT  /api-employees/123
+DELETE /api-employees/123
+```
+
+### Path Parameters
+
+Extract from `relativePath`:
+
+```typescript
+// Single parameter
+// GET /api-resource/:id
+if (method === 'GET' && relativePath.length === 1) {
+  const id = relativePath[0];
+  return await get(req, employee, id);
+}
+
+// Multiple parameters
+// GET /api-resource/:type/:value
+if (method === 'GET' && relativePath.length === 2 && relativePath[0] === 'type') {
+  const value = relativePath[1];
+  return await getByType(req, employee, value);
+}
+
+// Action with parameter
+// POST /api-resource/:id/action
+if (method === 'POST' && relativePath.length === 2 && relativePath[1] === 'action') {
+  const id = relativePath[0];
+  return await doAction(req, employee, id);
+}
+```
+
+### Query Parameters
+
+Extract from URL:
+
+```typescript
+const url = new URL(req.url);
+
+// Single parameter
+const search = url.searchParams.get('search');
+const status = url.searchParams.get('status');
+
+// Multiple parameters
+const page = parseInt(url.searchParams.get('page') || '1');
+const limit = parseInt(url.searchParams.get('limit') || '20');
+
+// Boolean parameters
+const active = url.searchParams.get('active') === 'true';
+
+// Array parameters (repeated)
+const ids = url.searchParams.getAll('id');
+```
+
+## Content-Type
+
+### Request Content-Type
+
+Accept:
+- `application/json` - for JSON bodies (most common)
+- `multipart/form-data` - for file uploads
+
+### Response Content-Type
+
+Always return:
+- `Content-Type: application/json`
+- This is handled automatically by `success()` and `error()` functions
+
+## Headers
+
+### Request Headers
+
+Required:
+- `Authorization: Bearer {jwt_token}` - for authentication
+
+Optional:
+- `Content-Type: application/json` - for JSON requests
+
+Supabase-specific:
+- `apikey` - Supabase anon key
+- `x-client-info` - Client information
+
+### Response Headers
+
+Automatically included:
+- `Content-Type: application/json`
+- `Access-Control-Allow-Origin: *`
+- `Access-Control-Allow-Headers: ...`
+- `Access-Control-Allow-Methods: ...`
+
+## Request/Response Flow
+
+```
+Client Request
+    ↓
+OPTIONS preflight? → Yes → Return CORS headers (200)
+    ↓ No
+Authenticate user (JWT)
+    ↓
+Parse URL path
+    ↓
+Route to handler
+    ↓
+Check permissions (level)
+    ↓
+Validate input
+    ↓
+Call service layer
+    ↓
+Return success response (200/201)
+
+(Any errors → catch → return error response with appropriate status code)
+```

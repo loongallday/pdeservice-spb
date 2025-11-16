@@ -1,0 +1,343 @@
+---
+alwaysApply: true
+---
+
+# API Structure & Architecture
+
+## Directory Structure for Each API
+
+Every API endpoint MUST follow this exact structure:
+
+```
+api-{resource}/
+├── _shared/              # Copy of global shared utilities
+│   ├── auth.ts
+│   ├── constants.ts
+│   ├── cors.ts
+│   ├── error.ts
+│   ├── response.ts
+│   ├── sanitize.ts (if needed)
+│   ├── supabase.ts
+│   ├── types.ts
+│   └── validation.ts
+├── handlers/             # HTTP request handlers
+│   ├── create.ts
+│   ├── delete.ts
+│   ├── get.ts
+│   ├── list.ts
+│   ├── update.ts
+│   └── {custom}.ts       # Resource-specific handlers
+├── services/             # Business logic layer
+│   └── {resource}Service.ts
+├── validators/           # Input validation (optional)
+│   └── {resource}Validator.ts
+├── index.ts              # Main entry point with routing
+└── deno.json             # Deno configuration
+```
+
+## index.ts Structure (Main Entry Point)
+
+ALWAYS follow this exact pattern for routing:
+
+```typescript
+/**
+ * {Resource} API Edge Function
+ * {Description of what this API handles}
+ */
+
+import { handleCORS } from './_shared/cors.ts';
+import { error } from './_shared/response.ts';
+import { authenticate } from './_shared/auth.ts';
+import { handleError } from './_shared/error.ts';
+import { list } from './handlers/list.ts';
+import { get } from './handlers/get.ts';
+import { create } from './handlers/create.ts';
+import { update } from './handlers/update.ts';
+import { deleteResource } from './handlers/delete.ts';
+// Import other handlers as needed
+
+Deno.serve(async (req) => {
+  // Handle CORS preflight
+  const corsResponse = handleCORS(req);
+  if (corsResponse) return corsResponse;
+
+  try {
+    // Authenticate user
+    const { employee } = await authenticate(req);
+
+    // Route to appropriate handler
+    const url = new URL(req.url);
+    const pathParts = url.pathname.split('/').filter(Boolean);
+    // Find the function name in the path and slice after it
+    const functionIndex = pathParts.indexOf('api-{resource}');
+    const relativePath = functionIndex >= 0 ? pathParts.slice(functionIndex + 1) : [];
+    const method = req.method;
+
+    // Define routes here (see routing rules)
+    
+    return error('Not found', 404);
+  } catch (err) {
+    const { message, statusCode } = handleError(err);
+    return error(message, statusCode);
+  }
+});
+```
+
+## Routing Order & Pattern
+
+Routes MUST be checked in this order to avoid conflicts:
+
+1. **Specific GET routes with keywords first**
+   ```typescript
+   // GET /search - Search resources
+   if (method === 'GET' && relativePath[0] === 'search' && relativePath.length === 1) {
+     return await search(req, employee);
+   }
+   
+   // GET /recent - Get recent resources
+   if (method === 'GET' && relativePath[0] === 'recent' && relativePath.length === 1) {
+     return await recent(req, employee);
+   }
+   ```
+
+2. **Parameterized GET routes**
+   ```typescript
+   // GET /ticket/:ticketId - Get by ticket ID
+   if (method === 'GET' && relativePath[0] === 'ticket' && relativePath[1]) {
+     const ticketId = relativePath[1];
+     return await getByTicket(req, employee, ticketId);
+   }
+   ```
+
+3. **List route (empty path)**
+   ```typescript
+   // GET / - List all resources
+   if (method === 'GET' && relativePath.length === 0) {
+     return await list(req, employee);
+   }
+   ```
+
+4. **Single resource GET by ID**
+   ```typescript
+   // GET /:id - Get single resource
+   if (method === 'GET' && relativePath.length === 1) {
+     const id = relativePath[0];
+     return await get(req, employee, id);
+   }
+   ```
+
+5. **Specific POST routes**
+   ```typescript
+   // POST /find-or-create - Find or create
+   if (method === 'POST' && relativePath[0] === 'find-or-create' && relativePath.length === 1) {
+     return await findOrCreate(req, employee);
+   }
+   
+   // POST /:id/action - Action on resource
+   if (method === 'POST' && relativePath.length === 2 && relativePath[1] === 'approve') {
+     const id = relativePath[0];
+     return await approve(req, employee, id);
+   }
+   ```
+
+6. **Create route**
+   ```typescript
+   // POST / - Create resource
+   if (method === 'POST' && relativePath.length === 0) {
+     return await create(req, employee);
+   }
+   ```
+
+7. **Sub-resource routes**
+   ```typescript
+   // POST /photos - Add photo
+   if (method === 'POST' && relativePath[0] === 'photos') {
+     return await addPhoto(req, employee);
+   }
+   
+   // DELETE /photos/:id - Delete photo
+   if (method === 'DELETE' && relativePath[0] === 'photos' && relativePath[1]) {
+     const photoId = relativePath[1];
+     return await deletePhoto(req, employee, photoId);
+   }
+   ```
+
+8. **Update route**
+   ```typescript
+   // PUT /:id - Update resource
+   if (method === 'PUT' && relativePath.length === 1) {
+     const id = relativePath[0];
+     return await update(req, employee, id);
+   }
+   ```
+
+9. **Delete route**
+   ```typescript
+   // DELETE /:id - Delete resource
+   if (method === 'DELETE' && relativePath.length === 1) {
+     const id = relativePath[0];
+     return await deleteResource(req, employee, id);
+   }
+   ```
+
+## Path Parsing Standard
+
+ALWAYS use this exact pattern for path parsing:
+
+```typescript
+const url = new URL(req.url);
+const pathParts = url.pathname.split('/').filter(Boolean);
+// Find the function name in the path and slice after it
+const functionIndex = pathParts.indexOf('api-{resource}');
+const relativePath = functionIndex >= 0 ? pathParts.slice(functionIndex + 1) : [];
+const method = req.method;
+```
+
+**NEVER** use:
+- ❌ `pathParts.slice(3)` - hardcoded index
+- ❌ Different parsing methods across APIs
+- ❌ Inconsistent patterns
+
+## Path Conflict Prevention
+
+To prevent route conflicts:
+
+1. **Check specific keywords before generic ID routes**
+   ```typescript
+   // ✅ CORRECT ORDER
+   if (method === 'GET' && relativePath[0] === 'search') { ... }  // Check first
+   if (method === 'GET' && relativePath.length === 1) { ... }      // Check second
+   
+   // ❌ WRONG ORDER - 'search' would be treated as an ID
+   if (method === 'GET' && relativePath.length === 1) { ... }      // Too early
+   if (method === 'GET' && relativePath[0] === 'search') { ... }  // Never reached
+   ```
+
+2. **Add guards for special routes in generic handlers**
+   ```typescript
+   // Prevent special keywords from being treated as IDs
+   if (method === 'GET' && relativePath.length === 1) {
+     const id = relativePath[0];
+     if (['search', 'recent', 'list'].includes(id)) {
+       return error('Not found', 404);
+     }
+     return await get(req, employee, id);
+   }
+   ```
+
+3. **Use UUID validation when needed**
+   ```typescript
+   // For resources that need strict ID validation
+   if (method === 'GET' && relativePath.length === 1) {
+     const id = relativePath[0];
+     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+     if (uuidRegex.test(id)) {
+       return await get(req, employee, id);
+     }
+     // Fall through to 404
+   }
+   ```
+
+## Handler File Structure
+
+Each handler file MUST follow this pattern:
+
+```typescript
+/**
+ * {Action} {resource} handler
+ */
+
+import { success, error } from '../_shared/response.ts';
+import { requireMinLevel } from '../_shared/auth.ts';
+import { {Resource}Service } from '../services/{resource}Service.ts';
+import type { Employee } from '../_shared/auth.ts';
+
+export async function {handlerName}(req: Request, employee: Employee, ...params: string[]) {
+  // Check permissions
+  await requireMinLevel(employee, {level});
+
+  // Parse request (if needed)
+  const body = await req.json();
+  
+  // Validate input (if needed)
+  
+  // Call service layer
+  const result = await {Resource}Service.{method}(...);
+
+  return success(result);
+}
+```
+
+## Service File Structure
+
+Service files contain business logic:
+
+```typescript
+/**
+ * {Resource} service - Business logic for {resource} operations
+ */
+
+import { createServiceClient } from '../_shared/supabase.ts';
+import { NotFoundError, DatabaseError } from '../_shared/error.ts';
+import { calculatePagination } from '../_shared/response.ts';
+import { sanitizeData } from '../_shared/sanitize.ts';
+import type { PaginationInfo } from '../_shared/response.ts';
+
+export class {Resource}Service {
+  /**
+   * Sanitize {resource} data based on actual schema
+   */
+  private static sanitize{Resource}Data(data: Record<string, unknown>): Record<string, unknown> {
+    const validFields = [
+      // List all valid database columns
+    ];
+    return sanitizeData(data, validFields);
+  }
+
+  /**
+   * Get all {resources} with pagination
+   */
+  static async getAll(params: QueryParams): Promise<{ data: any[]; pagination: PaginationInfo }> {
+    const supabase = createServiceClient();
+    // Implementation
+  }
+
+  /**
+   * Get single {resource} by ID
+   */
+  static async getById(id: string): Promise<any> {
+    const supabase = createServiceClient();
+    // Implementation
+    if (!data) {
+      throw new NotFoundError('ไม่พบข้อมูล');
+    }
+    return data;
+  }
+
+  /**
+   * Create new {resource}
+   */
+  static async create(data: Record<string, unknown>): Promise<any> {
+    const supabase = createServiceClient();
+    const sanitized = this.sanitize{Resource}Data(data);
+    // Implementation
+  }
+
+  /**
+   * Update {resource}
+   */
+  static async update(id: string, data: Record<string, unknown>): Promise<any> {
+    const supabase = createServiceClient();
+    const sanitized = this.sanitize{Resource}Data(data);
+    // Implementation
+  }
+
+  /**
+   * Delete {resource}
+   */
+  static async delete(id: string): Promise<void> {
+    const supabase = createServiceClient();
+    // Implementation
+  }
+}
+```

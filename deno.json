@@ -1,0 +1,12 @@
+{
+  "tasks": {
+    "test": "deno test --allow-all --no-check",
+    "test:watch": "deno test --watch --allow-all --no-check",
+    "test:coverage": "deno test --coverage=coverage --allow-all --no-check",
+    "test:check": "deno test --allow-all"
+  },
+  "imports": {
+    "supabase": "https://esm.sh/@supabase/supabase-js@2.39.3"
+  }
+}
+

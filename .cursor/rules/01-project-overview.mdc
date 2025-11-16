@@ -1,0 +1,70 @@
+---
+alwaysApply: true
+---
+
+# PDE Service - Project Overview
+
+## Project Description
+PDE Service is a Supabase-based edge function API service for managing enterprise operations including:
+- Employee management
+- Company & site management
+- Ticket & appointment management
+- Work results & documentation
+- Leave requests & approvals
+- Polls & features
+- Reference data
+
+## Technology Stack
+- **Backend**: Supabase Edge Functions (Deno runtime)
+- **Database**: PostgreSQL (via Supabase)
+- **Authentication**: Supabase Auth
+- **Language**: TypeScript (Deno)
+- **API Style**: RESTful
+
+## Project Structure
+```
+supabase/
+├── functions/
+│   ├── _shared/              # Global shared utilities
+│   │   ├── auth.ts           # Authentication & authorization
+│   │   ├── cors.ts           # CORS handling
+│   │   ├── error.ts          # Error classes & handling
+│   │   ├── response.ts       # Response utilities
+│   │   ├── sanitize.ts       # Data sanitization
+│   │   ├── supabase.ts       # Supabase client
+│   │   ├── types.ts          # Shared types
+│   │   └── validation.ts     # Validation utilities
+│   │
+│   └── api-{resource}/       # Each API resource follows this structure
+│       ├── _shared/          # Resource-specific utilities (copy of global _shared)
+│       ├── handlers/         # Request handlers
+│       ├── services/         # Business logic
+│       ├── validators/       # Input validators (optional)
+│       ├── index.ts          # Main entry point & routing
+│       └── deno.json         # Deno configuration
+│
+└── migrations/               # Database migrations
+```
+
+## API Resources
+- `api-appointments` - Appointment management
+- `api-companies` - Company records
+- `api-contacts` - Contact information
+- `api-departments` - Department organization
+- `api-employees` - Employee records & auth linking
+- `api-features` - Feature flags & menu items
+- `api-leave-requests` - Leave request workflow
+- `api-polls` - Poll creation & voting
+- `api-reference-data` - Static reference data (read-only)
+- `api-roles` - Role management
+- `api-sites` - Site/location management
+- `api-tickets` - Ticket tracking
+- `api-work-results` - Work results with photos & documents
+
+## Core Principles
+1. **Consistency**: All APIs follow the same structure and patterns
+2. **Security**: JWT authentication on all endpoints, level-based authorization
+3. **Type Safety**: Full TypeScript typing throughout
+4. **Error Handling**: Standardized error responses with Thai messages
+5. **Data Sanitization**: All inputs sanitized before database operations
+6. **CORS**: Properly handled for cross-origin requests

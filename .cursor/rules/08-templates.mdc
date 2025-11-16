@@ -1,0 +1,485 @@
+---
+alwaysApply: true
+---
+
+# Code Templates
+
+## New API Resource Template
+
+### 1. Create Directory Structure
+
+```
+supabase/functions/api-{resource}/
+├── _shared/          # Copy from another API or _shared
+├── handlers/
+├── services/
+├── validators/       # Optional
+├── index.ts
+└── deno.json
+```
+
+### 2. index.ts Template
+
+```typescript
+/**
+ * {Resource} API Edge Function
+ * Handles all {resource} CRUD operations
+ */
+
+import { handleCORS } from './_shared/cors.ts';
+import { error } from './_shared/response.ts';
+import { authenticate } from './_shared/auth.ts';
+import { handleError } from './_shared/error.ts';
+import { list } from './handlers/list.ts';
+import { get } from './handlers/get.ts';
+import { create } from './handlers/create.ts';
+import { update } from './handlers/update.ts';
+import { deleteResource } from './handlers/delete.ts';
+
+Deno.serve(async (req) => {
+  // Handle CORS preflight
+  const corsResponse = handleCORS(req);
+  if (corsResponse) return corsResponse;
+
+  try {
+    // Authenticate user
+    const { employee } = await authenticate(req);
+
+    // Route to appropriate handler
+    const url = new URL(req.url);
+    const pathParts = url.pathname.split('/').filter(Boolean);
+    // Find the function name in the path and slice after it
+    const functionIndex = pathParts.indexOf('api-{resource}');
+    const relativePath = functionIndex >= 0 ? pathParts.slice(functionIndex + 1) : [];
+    const method = req.method;
+
+    // GET / - List {resources}
+    if (method === 'GET' && relativePath.length === 0) {
+      return await list(req, employee);
+    }
+
+    // GET /:id - Get single {resource}
+    if (method === 'GET' && relativePath.length === 1) {
+      const id = relativePath[0];
+      return await get(req, employee, id);
+    }
+
+    // POST / - Create {resource}
+    if (method === 'POST' && relativePath.length === 0) {
+      return await create(req, employee);
+    }
+
+    // PUT /:id - Update {resource}
+    if (method === 'PUT' && relativePath.length === 1) {
+      const id = relativePath[0];
+      return await update(req, employee, id);
+    }
+
+    // DELETE /:id - Delete {resource}
+    if (method === 'DELETE' && relativePath.length === 1) {
+      const id = relativePath[0];
+      return await deleteResource(req, employee, id);
+    }
+
+    return error('Not found', 404);
+  } catch (err) {
+    const { message, statusCode } = handleError(err);
+    return error(message, statusCode);
+  }
+});
+```
+
+### 3. deno.json Template
+
+```json
+{
+  "imports": {
+    "supabase": "https://esm.sh/@supabase/supabase-js@2.39.3"
+  }
+}
+```
+
+### 4. Handler Templates
+
+#### handlers/list.ts
+
+```typescript
+/**
+ * List {resources} handler
+ */
+
+import { success } from '../_shared/response.ts';
+import { requireMinLevel } from '../_shared/auth.ts';
+import { parsePaginationParams } from '../_shared/validation.ts';
+import { {Resource}Service } from '../services/{resource}Service.ts';
+import type { Employee } from '../_shared/auth.ts';
+
+export async function list(req: Request, employee: Employee) {
+  // Check permissions - Level 0 and above can list {resources}
+  await requireMinLevel(employee, 0);
+
+  // Parse query parameters
+  const url = new URL(req.url);
+  const { page, limit } = parsePaginationParams(url);
+
+  // Get {resources} from service
+  const result = await {Resource}Service.getAll({ page, limit });
+
+  return success(result);
+}
+```
+
+#### handlers/get.ts
+
+```typescript
+/**
+ * Get single {resource} handler
+ */
+
+import { success } from '../_shared/response.ts';
+import { requireMinLevel } from '../_shared/auth.ts';
+import { {Resource}Service } from '../services/{resource}Service.ts';
+import type { Employee } from '../_shared/auth.ts';
+
+export async function get(req: Request, employee: Employee, id: string) {
+  // Check permissions - Level 0 and above can view {resources}
+  await requireMinLevel(employee, 0);
+
+  // Get {resource} from service
+  const result = await {Resource}Service.getById(id);
+
+  return success(result);
+}
+```
+
+#### handlers/create.ts
+
+```typescript
+/**
+ * Create {resource} handler
+ */
+
+import { success } from '../_shared/response.ts';
+import { requireMinLevel } from '../_shared/auth.ts';
+import { ValidationError } from '../_shared/error.ts';
+import { {Resource}Service } from '../services/{resource}Service.ts';
+import type { Employee } from '../_shared/auth.ts';
+
+export async function create(req: Request, employee: Employee) {
+  // Check permissions - Level 1 and above can create {resources}
+  await requireMinLevel(employee, 1);
+
+  // Parse request body
+  const body = await req.json();
+
+  // Validate required fields
+  if (!body.required_field) {
+    throw new ValidationError('กรุณาระบุ{field_name_thai}');
+  }
+
+  // Create {resource}
+  const result = await {Resource}Service.create(body);
+
+  return success(result, 201);
+}
+```
+
+#### handlers/update.ts
+
+```typescript
+/**
+ * Update {resource} handler
+ */
+
+import { success } from '../_shared/response.ts';
+import { requireMinLevel } from '../_shared/auth.ts';
+import { {Resource}Service } from '../services/{resource}Service.ts';
+import type { Employee } from '../_shared/auth.ts';
+
+export async function update(req: Request, employee: Employee, id: string) {
+  // Check permissions - Level 2 and above can update {resources}
+  await requireMinLevel(employee, 2);
+
+  // Parse request body
+  const body = await req.json();
+
+  // Update {resource}
+  const result = await {Resource}Service.update(id, body);
+
+  return success(result);
+}
+```
+
+#### handlers/delete.ts
+
+```typescript
+/**
+ * Delete {resource} handler
+ */
+
+import { success } from '../_shared/response.ts';
+import { requireMinLevel } from '../_shared/auth.ts';
+import { {Resource}Service } from '../services/{resource}Service.ts';
+import type { Employee } from '../_shared/auth.ts';
+
+export async function deleteResource(req: Request, employee: Employee, id: string) {
+  // Check permissions - Level 2 and above can delete {resources}
+  await requireMinLevel(employee, 2);
+
+  // Delete {resource}
+  await {Resource}Service.delete(id);
+
+  return success({ message: 'ลบข้อมูลสำเร็จ' });
+}
+```
+
+### 5. Service Template
+
+#### services/{resource}Service.ts
+
+```typescript
+/**
+ * {Resource} service - Business logic for {resource} operations
+ */
+
+import { createServiceClient } from '../_shared/supabase.ts';
+import { NotFoundError, DatabaseError } from '../_shared/error.ts';
+import { calculatePagination } from '../_shared/response.ts';
+import { sanitizeData } from '../_shared/sanitize.ts';
+import type { PaginationInfo } from '../_shared/response.ts';
+
+export interface {Resource}QueryParams {
+  page: number;
+  limit: number;
+  search?: string;
+}
+
+export class {Resource}Service {
+  /**
+   * Sanitize {resource} data based on actual schema
+   */
+  private static sanitize{Resource}Data(data: Record<string, unknown>): Record<string, unknown> {
+    const validFields = [
+      // TODO: Add valid database columns here
+      'field1',
+      'field2',
+      'field3',
+    ];
+    return sanitizeData(data, validFields);
+  }
+
+  /**
+   * Get all {resources} with pagination
+   */
+  static async getAll(params: {Resource}QueryParams): Promise<{
+    data: Record<string, unknown>[];
+    pagination: PaginationInfo;
+  }> {
+    const supabase = createServiceClient();
+    const { page, limit } = params;
+
+    // Get total count
+    const { count, error: countError } = await supabase
+      .from('{resources}')
+      .select('*', { count: 'exact', head: true });
+
+    if (countError) {
+      throw new DatabaseError();
+    }
+
+    const total = count || 0;
+
+    // Get paginated data
+    const offset = (page - 1) * limit;
+    const { data, error } = await supabase
+      .from('{resources}')
+      .select('*')
+      .range(offset, offset + limit - 1)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      throw new DatabaseError();
+    }
+
+    const pagination = calculatePagination(page, limit, total);
+
+    return { data, pagination };
+  }
+
+  /**
+   * Get single {resource} by ID
+   */
+  static async getById(id: string): Promise<Record<string, unknown>> {
+    const supabase = createServiceClient();
+
+    const { data, error } = await supabase
+      .from('{resources}')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error) {
+      throw new DatabaseError();
+    }
+
+    if (!data) {
+      throw new NotFoundError('ไม่พบข้อมูล');
+    }
+
+    return data;
+  }
+
+  /**
+   * Create new {resource}
+   */
+  static async create(resourceData: Record<string, unknown>): Promise<Record<string, unknown>> {
+    const supabase = createServiceClient();
+    const sanitized = this.sanitize{Resource}Data(resourceData);
+
+    const { data, error } = await supabase
+      .from('{resources}')
+      .insert(sanitized)
+      .select()
+      .single();
+
+    if (error) {
+      if (error.message.includes('duplicate key')) {
+        throw new ValidationError('ข้อมูลซ้ำในระบบ');
+      }
+      throw new DatabaseError('ไม่สามารถสร้างข้อมูลได้');
+    }
+
+    return data;
+  }
+
+  /**
+   * Update {resource}
+   */
+  static async update(id: string, resourceData: Record<string, unknown>): Promise<Record<string, unknown>> {
+    const supabase = createServiceClient();
+    const sanitized = this.sanitize{Resource}Data(resourceData);
+
+    const { data, error } = await supabase
+      .from('{resources}')
+      .update(sanitized)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) {
+      throw new DatabaseError('ไม่สามารถอัพเดทข้อมูลได้');
+    }
+
+    if (!data) {
+      throw new NotFoundError('ไม่พบข้อมูล');
+    }
+
+    return data;
+  }
+
+  /**
+   * Delete {resource}
+   */
+  static async delete(id: string): Promise<void> {
+    const supabase = createServiceClient();
+
+    // Check if exists first
+    await this.getById(id);
+
+    const { error } = await supabase
+      .from('{resources}')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      if (error.message.includes('foreign key')) {
+        throw new ValidationError('ไม่สามารถลบข้อมูลที่มีการใช้งานอยู่');
+      }
+      throw new DatabaseError('ไม่สามารถลบข้อมูลได้');
+    }
+  }
+}
+```
+
+## Migration Template
+
+```sql
+-- Migration: {description}
+-- Created: {date}
+
+-- Create table
+CREATE TABLE IF NOT EXISTS {table_name} (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  
+  -- Add your columns here
+  name TEXT NOT NULL,
+  description TEXT,
+  status TEXT NOT NULL DEFAULT 'active',
+  
+  -- Foreign keys
+  created_by UUID REFERENCES employees(id),
+  
+  -- Timestamps
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Add indexes
+CREATE INDEX idx_{table_name}_status ON {table_name}(status);
+CREATE INDEX idx_{table_name}_created_at ON {table_name}(created_at);
+
+-- Add RLS policies (if needed)
+ALTER TABLE {table_name} ENABLE ROW LEVEL SECURITY;
+
+-- Add comments
+COMMENT ON TABLE {table_name} IS '{description}';
+COMMENT ON COLUMN {table_name}.name IS 'Name of the {resource}';
+```
+
+## Testing Checklist Template
+
+When creating a new API, test:
+
+```markdown
+## {Resource} API Testing Checklist
+
+### Authentication
+- [ ] Request without token returns 401
+- [ ] Request with invalid token returns 401
+- [ ] Request with valid token succeeds
+
+### Authorization
+- [ ] Users with insufficient level get 403
+- [ ] Users with sufficient level can access
+
+### List Endpoint (GET /)
+- [ ] Returns paginated list
+- [ ] Pagination parameters work (page, limit)
+- [ ] Search parameter works (if applicable)
+- [ ] Filter parameters work (if applicable)
+
+### Get Endpoint (GET /:id)
+- [ ] Returns single resource
+- [ ] Invalid ID returns 404
+- [ ] Valid ID returns 200
+
+### Create Endpoint (POST /)
+- [ ] Missing required fields returns 400
+- [ ] Invalid data format returns 400
+- [ ] Valid data creates resource (201)
+- [ ] Duplicate data returns appropriate error
+
+### Update Endpoint (PUT /:id)
+- [ ] Updates existing resource (200)
+- [ ] Invalid ID returns 404
+- [ ] Invalid data returns 400
+
+### Delete Endpoint (DELETE /:id)
+- [ ] Deletes existing resource (200)
+- [ ] Invalid ID returns 404
+- [ ] Resource with dependencies returns error
+
+### Custom Endpoints
+- [ ] {Custom endpoint 1} works as expected
+- [ ] {Custom endpoint 2} works as expected
+```
