@@ -77,7 +77,7 @@ Get a single company by its tax ID.
 
 ### Create Company
 
-Create a new company. **Note**: When a company is created, a head office site is automatically created with the same address information.
+Create a new company or update an existing one if the same `tax_id` already exists. **Note**: When a company is created or updated, a main branch site is automatically created or updated with the same address information.
 
 **Endpoint**: `POST /`
 
@@ -97,23 +97,34 @@ Create a new company. **Note**: When a company is created, a head office site is
 ```
 
 **Required Fields**:
-- `tax_id`: Company tax ID (unique)
+- `tax_id`: Company tax ID (unique, used as primary key)
 - `name_th`: Company name in Thai
 
-**Automatic Site Creation**:
-- A site named `สำนักงานใหญ่ (company name)` is automatically created
-- The site uses the same address information as the company:
-  - `address_detail` or `address_full` → site `address_detail`
-  - `address_tambon_code` → site `subdistrict_code`
-  - `address_district_code` → site `district_code`
-  - `address_province_code` → site `province_code`
-- The site is linked to the company via `company_id` (tax_id)
+**Behavior**:
+- **If `tax_id` doesn't exist**: Creates a new company record
+- **If `tax_id` already exists**: Replaces/updates the existing company record with new data
+
+**Automatic Main Branch Site Management**:
+- **New Company**: A main branch site is automatically created with:
+  - Name: `สำนักงานใหญ่ (company name)`
+  - `is_main_branch = true`
+  - Same address information as the company:
+    - `address_detail` or `address_full` → site `address_detail`
+    - `address_tambon_code` → site `subdistrict_code`
+    - `address_district_code` → site `district_code`
+    - `address_province_code` → site `province_code`
+  - Linked to the company via `company_id` (tax_id)
+
+- **Existing Company (Update)**: The existing main branch site (`is_main_branch = true`) is updated with:
+  - Updated name: `สำนักงานใหญ่ (company name)`
+  - Updated address information from the company
+  - No duplicate sites are created
 
 ---
 
 ### Find or Create Company
 
-Find an existing company or create a new one if not found. **Note**: If a new company is created, a head office site is automatically created with the same address information (see Create Company section for details).
+Find an existing company or create a new one if not found. **Note**: If a new company is created, a main branch site is automatically created with `is_main_branch = true` and the same address information (see Create Company section for details).
 
 **Endpoint**: `POST /find-or-create`
 
@@ -131,6 +142,7 @@ Find an existing company or create a new one if not found. **Note**: If a new co
 **Response**:
 - Returns existing company if found by `tax_id`
 - Creates new company if not found
+- Main branch site is only created if it doesn't already exist
 
 ---
 
@@ -170,5 +182,10 @@ Standard error responses apply (400, 401, 403, 404, 500).
 
 - Tax ID is the primary identifier (not UUID)
 - Tax ID must be unique
+- **Upsert Behavior**: Creating a company with an existing `tax_id` will replace/update the existing company record
+- **Main Branch Site**: Each company has one main branch site (`is_main_branch = true`) that is automatically managed:
+  - Created when company is first created
+  - Updated when company is updated (same `tax_id`)
+  - Contains the company's head office address information
 - Search is case-insensitive and searches both Thai and English names
 
