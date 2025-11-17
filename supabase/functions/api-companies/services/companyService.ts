@@ -152,7 +152,56 @@ export class CompanyService {
     if (error) throw new DatabaseError(error.message);
     if (!data) throw new DatabaseError('Failed to create company');
 
+    // Automatically create head office site with same address info
+    await this.createHeadOfficeSite(data);
+
     return data;
+  }
+
+  /**
+   * Create head office site for a company
+   * Site name: "สำนักงานใหญ่ (company name)"
+   */
+  private static async createHeadOfficeSite(company: Record<string, unknown>): Promise<void> {
+    const { SiteService } = await import('../../api-sites/services/siteService.ts');
+
+    // Prepare site data from company address info
+    const siteData: Record<string, unknown> = {
+      name: `สำนักงานใหญ่ (${company.name_th})`,
+      company_id: company.tax_id,
+      address_detail: company.address_detail || company.address_full || null,
+    };
+
+    // Map address codes (convert string to integer if needed)
+    if (company.address_tambon_code) {
+      const subdistrictCode = typeof company.address_tambon_code === 'string' 
+        ? parseInt(company.address_tambon_code, 10) 
+        : company.address_tambon_code;
+      if (!isNaN(subdistrictCode as number)) {
+        siteData.subdistrict_code = subdistrictCode;
+      }
+    }
+
+    if (company.address_district_code) {
+      const districtCode = typeof company.address_district_code === 'string'
+        ? parseInt(company.address_district_code, 10)
+        : company.address_district_code;
+      if (!isNaN(districtCode as number)) {
+        siteData.district_code = districtCode;
+      }
+    }
+
+    if (company.address_province_code) {
+      const provinceCode = typeof company.address_province_code === 'string'
+        ? parseInt(company.address_province_code, 10)
+        : company.address_province_code;
+      if (!isNaN(provinceCode as number)) {
+        siteData.province_code = provinceCode;
+      }
+    }
+
+    // Create the site (errors will be thrown and handled by caller)
+    await SiteService.create(siteData);
   }
 
   /**
@@ -232,6 +281,10 @@ export class CompanyService {
       .single();
 
     if (createError) throw new DatabaseError(createError.message);
+    if (!newCompany) throw new DatabaseError('Failed to create company');
+
+    // Automatically create head office site with same address info
+    await this.createHeadOfficeSite(newCompany);
 
     return newCompany;
   }

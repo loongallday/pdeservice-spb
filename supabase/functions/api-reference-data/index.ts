@@ -11,6 +11,7 @@ import { getWorkTypes } from './handlers/workTypes.ts';
 import { getStatuses } from './handlers/statuses.ts';
 import { getLeaveTypes } from './handlers/leaveTypes.ts';
 import { getProvinces } from './handlers/provinces.ts';
+import { getAllConstants } from './handlers/constants.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -36,6 +37,11 @@ Deno.serve(async (req) => {
     const endpoint = relativePath[0] || '';
 
     // Route based on endpoint
+    // GET /constants - Get all constants
+    if (endpoint === 'constants' && relativePath.length === 1) {
+      return await getAllConstants(req, employee);
+    }
+
     if (endpoint === 'work-types') {
       return await getWorkTypes(req, employee);
     }

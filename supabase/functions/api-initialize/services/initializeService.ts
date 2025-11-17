@@ -9,8 +9,7 @@ import type { Employee } from '../_shared/auth.ts';
 
 export interface InitializeData {
   employee: Employee;
-  roles: Record<string, unknown>[];
-  departments: Record<string, unknown>[];
+  department: Record<string, unknown> | null;
   features: Record<string, unknown>[];
 }
 
@@ -26,22 +25,7 @@ export class InitializeService {
     const employeeRole = employee.role_data?.code || null;
 
     // Fetch all data in parallel for better performance
-    const [rolesResult, departmentsResult, featuresResult, employeeResult] = await Promise.all([
-      // Get all roles
-      supabase
-        .from('roles')
-        .select(`
-          *,
-          department:departments(*)
-        `)
-        .order('level'),
-
-      // Get all departments
-      supabase
-        .from('departments')
-        .select('*')
-        .order('code'),
-
+    const [featuresResult, employeeResult] = await Promise.all([
       // Get enabled features for this employee (only active features)
       supabase
         .from('feature')
@@ -80,14 +64,6 @@ export class InitializeService {
     ]);
 
     // Handle errors
-    if (rolesResult.error) {
-      throw new DatabaseError('ไม่สามารถดึงข้อมูลบทบาทได้');
-    }
-
-    if (departmentsResult.error) {
-      throw new DatabaseError('ไม่สามารถดึงข้อมูลแผนกได้');
-    }
-
     if (featuresResult.error) {
       throw new DatabaseError('ไม่สามารถดึงข้อมูลฟีเจอร์ได้');
     }
@@ -120,10 +96,14 @@ export class InitializeService {
     // Remove min_level from response (security: users don't need to know level requirements)
     const features = filteredFeatures.map(({ min_level: _min_level, ...rest }) => rest);
 
+    // Extract user's department from employee role data
+    const employeeData = employeeResult.data as Employee;
+    const roleData = employeeData.role_data as (Record<string, unknown> & { department?: Record<string, unknown> | null }) | null;
+    const userDepartment = roleData?.department || null;
+
     return {
-      employee: employeeResult.data as Employee,
-      roles: rolesResult.data || [],
-      departments: departmentsResult.data || [],
+      employee: employeeData,
+      department: userDepartment,
       features,
     };
   }

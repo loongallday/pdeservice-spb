@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Initialize API returns all initial data needed to bootstrap the application in a single request. This includes employee information, roles, departments, and enabled features.
+The Initialize API returns all initial data needed to bootstrap the application in a single request. This includes employee information, user's department, and enabled features.
 
 **Base URL**: `/functions/v1/api-initialize`
 
@@ -59,33 +59,14 @@ Authorization: Bearer <token>
         }
       }
     },
-    "roles": [
-      {
-        "id": "123e4567-e89b-12d3-a456-426614174001",
-        "code": "ADMIN",
-        "name_th": "ผู้ดูแลระบบ",
-        "name_en": "Administrator",
-        "level": 2,
-        "department_id": "123e4567-e89b-12d3-a456-426614174003",
-        "is_active": true,
-        "department": {
-          "id": "123e4567-e89b-12d3-a456-426614174003",
-          "code": "IT",
-          "name_th": "แผนกเทคโนโลยี",
-          "name_en": "IT Department"
-        }
-      }
-    ],
-    "departments": [
-      {
-        "id": "123e4567-e89b-12d3-a456-426614174003",
-        "code": "IT",
-        "name_th": "แผนกเทคโนโลยี",
-        "name_en": "IT Department",
-        "description": "Information Technology",
-        "is_active": true
-      }
-    ],
+    "department": {
+      "id": "123e4567-e89b-12d3-a456-426614174003",
+      "code": "IT",
+      "name_th": "แผนกเทคโนโลยี",
+      "name_en": "IT Department",
+      "description": "Information Technology",
+      "is_active": true
+    },
     "features": [
       {
         "id": "123e4567-e89b-12d3-a456-426614174004",
@@ -103,9 +84,8 @@ Authorization: Bearer <token>
 
 **Response Fields**:
 
-- `employee`: Full employee data with role and department information
-- `roles`: All roles in the system with department information
-- `departments`: All departments in the system
+- `employee`: Full employee data with role and department information (role is in `employee.role_data`)
+- `department`: User's department from their role (null if employee has no role or role has no department)
 - `features`: Enabled features filtered by employee level and role
 
 **Notes**:
@@ -147,8 +127,7 @@ Authorization: Bearer <token>
 ## Use Cases
 
 - **App Initialization**: Call this endpoint once when the app starts to get all essential data
-- **User Context**: Get current user's full profile with permissions
-- **Dropdown Data**: Get all roles and departments for form dropdowns
+- **User Context**: Get current user's full profile with permissions, role, and department
 - **Feature Flags**: Get enabled features for UI rendering
 
 ---

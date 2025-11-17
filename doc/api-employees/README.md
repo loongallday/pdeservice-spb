@@ -51,6 +51,135 @@ Authorization: Bearer <token>
 
 ---
 
+### Get Employee Counts by Department
+
+Get consolidated data about employee counts for each department.
+
+**Endpoint**: `GET /department-counts`
+
+**Required Level**: 0 (all authenticated users)
+
+**Example Request**:
+```http
+GET /functions/v1/api-employees/department-counts
+Authorization: Bearer <token>
+```
+
+**Example Response**:
+```jsons
+{
+  "data": [
+    {
+      "department_id": "123e4567-e89b-12d3-a456-426614174000",
+      "department_code": "IT",
+      "department_name_th": "แผนกเทคโนโลยีสารสนเทศ",
+      "department_name_en": "Information Technology",
+      "total_employees": 15,
+      "active_employees": 12,
+      "inactive_employees": 3
+    },
+    {
+      "department_id": "223e4567-e89b-12d3-a456-426614174000",
+      "department_code": "HR",
+      "department_name_th": "แผนกทรัพยากรบุคคล",
+      "department_name_en": "Human Resources",
+      "total_employees": 8,
+      "active_employees": 8,
+      "inactive_employees": 0
+    }
+  ]
+}
+```
+
+**Response Fields**:
+- `department_id`: UUID of the department
+- `department_code`: Department code
+- `department_name_th`: Department name in Thai
+- `department_name_en`: Department name in English (nullable)
+- `total_employees`: Total number of employees in the department
+- `active_employees`: Number of active employees
+- `inactive_employees`: Number of inactive employees
+
+**Notes**:
+- Returns all active departments, even if they have zero employees
+- Departments are sorted by Thai name alphabetically
+- Employee counts are based on the relationship: employees → roles → departments
+- Only employees with roles that have a department_id are counted
+
+---
+
+### Get Employee Counts by Role
+
+Get consolidated data about employee counts for each role.
+
+**Endpoint**: `GET /role-counts`
+
+**Required Level**: 0 (all authenticated users)
+
+**Example Request**:
+```http
+GET /functions/v1/api-employees/role-counts
+Authorization: Bearer <token>
+```
+
+**Example Response**:
+```json
+{
+  "data": [
+    {
+      "role_id": "123e4567-e89b-12d3-a456-426614174000",
+      "role_code": "ADMIN",
+      "role_name_th": "ผู้ดูแลระบบ",
+      "role_name_en": "Administrator",
+      "role_level": 10,
+      "department_id": "223e4567-e89b-12d3-a456-426614174000",
+      "department_code": "IT",
+      "department_name_th": "แผนกเทคโนโลยีสารสนเทศ",
+      "department_name_en": "Information Technology",
+      "total_employees": 5,
+      "active_employees": 4,
+      "inactive_employees": 1
+    },
+    {
+      "role_id": "323e4567-e89b-12d3-a456-426614174000",
+      "role_code": "MANAGER",
+      "role_name_th": "ผู้จัดการ",
+      "role_name_en": "Manager",
+      "role_level": 5,
+      "department_id": null,
+      "department_code": null,
+      "department_name_th": null,
+      "department_name_en": null,
+      "total_employees": 8,
+      "active_employees": 8,
+      "inactive_employees": 0
+    }
+  ]
+}
+```
+
+**Response Fields**:
+- `role_id`: UUID of the role
+- `role_code`: Role code
+- `role_name_th`: Role name in Thai
+- `role_name_en`: Role name in English (nullable)
+- `role_level`: Permission level of the role (nullable)
+- `department_id`: UUID of the department this role belongs to (nullable)
+- `department_code`: Department code (nullable)
+- `department_name_th`: Department name in Thai (nullable)
+- `department_name_en`: Department name in English (nullable)
+- `total_employees`: Total number of employees with this role
+- `active_employees`: Number of active employees with this role
+- `inactive_employees`: Number of inactive employees with this role
+
+**Notes**:
+- Returns all active roles, even if they have zero employees
+- Roles are sorted by Thai name alphabetically
+- Includes department information for roles that belong to a department
+- Only employees with assigned roles are counted
+
+---
+
 ### Get Employee by Code
 
 Get an employee by their employee code.

@@ -200,7 +200,68 @@ export class EmployeeService {
     if (error) throw new DatabaseError(error.message);
     if (!data) throw new DatabaseError('Failed to create employee');
 
+    // Create initial leave balances for the new employee
+    await this.createInitialLeaveBalances(data.id as string);
+
     return data;
+  }
+
+  /**
+   * Create initial leave balances for a new employee
+   * Note: Uses hardcoded values, not days_per_year from leave_types table
+   */
+  private static async createInitialLeaveBalances(employeeId: string): Promise<void> {
+    const supabase = createServiceClient();
+    const currentYear = new Date().getFullYear();
+
+    // Define leave types and their initial balances (hardcoded, not from leave_types.days_per_year)
+    const leaveBalances = [
+      { code: 'sick_leave', totalDays: 30 },
+      { code: 'vacation_leave', totalDays: 6 },
+      { code: 'personal_leave', totalDays: 3 },
+    ];
+
+    // Look up leave type IDs by code
+    const leaveTypeIds: Record<string, string> = {};
+    for (const leaveBalance of leaveBalances) {
+      const { data: leaveType, error: leaveTypeError } = await supabase
+        .from('leave_types')
+        .select('id')
+        .eq('code', leaveBalance.code)
+        .maybeSingle();
+
+      if (leaveTypeError) {
+        throw new DatabaseError(`Failed to lookup leave type ${leaveBalance.code}: ${leaveTypeError.message}`);
+      }
+
+      if (!leaveType) {
+        // Skip if leave type doesn't exist (might not be seeded yet)
+        continue;
+      }
+
+      leaveTypeIds[leaveBalance.code] = leaveType.id;
+    }
+
+    // Create leave balance records
+    const balanceRecords = leaveBalances
+      .filter(lb => leaveTypeIds[lb.code])
+      .map(lb => ({
+        employee_id: employeeId,
+        leave_type_id: leaveTypeIds[lb.code],
+        year: currentYear,
+        total_days: lb.totalDays,
+        used_days: 0,
+      }));
+
+    if (balanceRecords.length > 0) {
+      const { error: balanceError } = await supabase
+        .from('leave_balances')
+        .insert(balanceRecords);
+
+      if (balanceError) {
+        throw new DatabaseError(`Failed to create leave balances: ${balanceError.message}`);
+      }
+    }
   }
 
   /**
@@ -416,6 +477,228 @@ export class EmployeeService {
     if (error) throw new DatabaseError(error.message);
 
     return data;
+  }
+
+  /**
+   * Get employee counts grouped by department
+   * Returns consolidated data about employee counts for each department
+   */
+  static async getEmployeeCountsByDepartment(): Promise<Record<string, unknown>[]> {
+    const supabase = createServiceClient();
+
+    // Get all departments with employee counts
+    const { data: departments, error: deptError } = await supabase
+      .from('departments')
+      .select(`
+        id,
+        code,
+        name_th,
+        name_en,
+        is_active,
+        head_id
+      `)
+      .eq('is_active', true)
+      .order('name_th');
+
+    if (deptError) throw new DatabaseError(deptError.message);
+
+    // Get all employees with their roles and departments
+    const { data: employees, error: empError } = await supabase
+      .from('employees')
+      .select(`
+        id,
+        is_active,
+        role_id,
+        role:roles!role_id(
+          department_id,
+          department:departments!department_id(
+            id,
+            code,
+            name_th,
+            name_en
+          )
+        )
+      `);
+
+    if (empError) throw new DatabaseError(empError.message);
+
+    // Group employees by department and count
+    const departmentCounts = new Map<string, {
+      department_id: string;
+      department_code: string;
+      department_name_th: string;
+      department_name_en: string | null;
+      total_employees: number;
+      active_employees: number;
+      inactive_employees: number;
+    }>();
+
+    // Initialize all departments with zero counts
+    departments?.forEach(dept => {
+      departmentCounts.set(dept.id, {
+        department_id: dept.id,
+        department_code: dept.code,
+        department_name_th: dept.name_th,
+        department_name_en: dept.name_en || null,
+        total_employees: 0,
+        active_employees: 0,
+        inactive_employees: 0,
+      });
+    });
+
+    // Count employees by department
+    employees?.forEach(emp => {
+      const role = emp.role as Record<string, unknown> | null;
+      const department = (role?.department as Record<string, unknown> | null) || null;
+      
+      if (department?.id) {
+        const deptId = department.id as string;
+        const count = departmentCounts.get(deptId);
+        
+        if (count) {
+          count.total_employees++;
+          if (emp.is_active) {
+            count.active_employees++;
+          } else {
+            count.inactive_employees++;
+          }
+        } else {
+          // Department not in active list, but has employees
+          departmentCounts.set(deptId, {
+            department_id: deptId,
+            department_code: (department.code as string) || '',
+            department_name_th: (department.name_th as string) || '',
+            department_name_en: (department.name_en as string) || null,
+            total_employees: 1,
+            active_employees: emp.is_active ? 1 : 0,
+            inactive_employees: emp.is_active ? 0 : 1,
+          });
+        }
+      }
+    });
+
+    // Convert map to array and sort by department name
+    return Array.from(departmentCounts.values())
+      .sort((a, b) => a.department_name_th.localeCompare(b.department_name_th));
+  }
+
+  /**
+   * Get employee counts grouped by role
+   * Returns consolidated data about employee counts for each role
+   */
+  static async getEmployeeCountsByRole(): Promise<Record<string, unknown>[]> {
+    const supabase = createServiceClient();
+
+    // Get all active roles
+    const { data: roles, error: roleError } = await supabase
+      .from('roles')
+      .select(`
+        id,
+        code,
+        name_th,
+        name_en,
+        level,
+        is_active,
+        department_id,
+        department:departments!department_id(
+          id,
+          code,
+          name_th,
+          name_en
+        )
+      `)
+      .eq('is_active', true)
+      .order('name_th');
+
+    if (roleError) throw new DatabaseError(roleError.message);
+
+    // Get all employees with their roles
+    const { data: employees, error: empError } = await supabase
+      .from('employees')
+      .select(`
+        id,
+        is_active,
+        role_id
+      `);
+
+    if (empError) throw new DatabaseError(empError.message);
+
+    // Group employees by role and count
+    const roleCounts = new Map<string, {
+      role_id: string;
+      role_code: string;
+      role_name_th: string;
+      role_name_en: string | null;
+      role_level: number | null;
+      department_id: string | null;
+      department_code: string | null;
+      department_name_th: string | null;
+      department_name_en: string | null;
+      total_employees: number;
+      active_employees: number;
+      inactive_employees: number;
+    }>();
+
+    // Initialize all roles with zero counts
+    roles?.forEach(role => {
+      const department = (role.department as Record<string, unknown> | null) || null;
+      roleCounts.set(role.id, {
+        role_id: role.id,
+        role_code: role.code,
+        role_name_th: role.name_th,
+        role_name_en: role.name_en || null,
+        role_level: role.level || null,
+        department_id: role.department_id || null,
+        department_code: (department?.code as string) || null,
+        department_name_th: (department?.name_th as string) || null,
+        department_name_en: (department?.name_en as string) || null,
+        total_employees: 0,
+        active_employees: 0,
+        inactive_employees: 0,
+      });
+    });
+
+    // Count employees by role
+    employees?.forEach(emp => {
+      if (emp.role_id) {
+        const roleId = emp.role_id as string;
+        const count = roleCounts.get(roleId);
+        
+        if (count) {
+          count.total_employees++;
+          if (emp.is_active) {
+            count.active_employees++;
+          } else {
+            count.inactive_employees++;
+          }
+        } else {
+          // Role not in active list, but has employees - need to fetch role info
+          // This shouldn't happen often, but handle it gracefully
+          const role = roles?.find(r => r.id === roleId);
+          if (role) {
+            const department = (role.department as Record<string, unknown> | null) || null;
+            roleCounts.set(roleId, {
+              role_id: roleId,
+              role_code: role.code,
+              role_name_th: role.name_th,
+              role_name_en: role.name_en || null,
+              role_level: role.level || null,
+              department_id: role.department_id || null,
+              department_code: (department?.code as string) || null,
+              department_name_th: (department?.name_th as string) || null,
+              department_name_en: (department?.name_en as string) || null,
+              total_employees: 1,
+              active_employees: emp.is_active ? 1 : 0,
+              inactive_employees: emp.is_active ? 0 : 1,
+            });
+          }
+        }
+      }
+    });
+
+    // Convert map to array and sort by role name
+    return Array.from(roleCounts.values())
+      .sort((a, b) => a.role_name_th.localeCompare(b.role_name_th));
   }
 }
 

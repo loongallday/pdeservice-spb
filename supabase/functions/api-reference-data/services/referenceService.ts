@@ -67,5 +67,60 @@ export class ReferenceService {
     // Return empty array until provinces table is created
     return [];
   }
+
+  /**
+   * Get all active roles
+   */
+  static async getRoles(): Promise<Record<string, unknown>[]> {
+    const supabase = createServiceClient();
+    
+    const { data, error } = await supabase
+      .from('roles')
+      .select('*')
+      .eq('is_active', true)
+      .order('name_th');
+    
+    if (error) throw new DatabaseError(error.message);
+    
+    return data || [];
+  }
+
+  /**
+   * Get all active departments
+   */
+  static async getDepartments(): Promise<Record<string, unknown>[]> {
+    const supabase = createServiceClient();
+    
+    const { data, error } = await supabase
+      .from('departments')
+      .select('*')
+      .eq('is_active', true)
+      .order('name_th');
+    
+    if (error) throw new DatabaseError(error.message);
+    
+    return data || [];
+  }
+
+  /**
+   * Get all constants (roles, departments, work_types, ticket_statuses, leave_types)
+   */
+  static async getAllConstants(): Promise<Record<string, unknown>> {
+    const [roles, departments, workTypes, ticketStatuses, leaveTypes] = await Promise.all([
+      this.getRoles(),
+      this.getDepartments(),
+      this.getWorkTypes(),
+      this.getTicketStatuses(),
+      this.getLeaveTypes(),
+    ]);
+
+    return {
+      roles,
+      departments,
+      work_types: workTypes,
+      ticket_statuses: ticketStatuses,
+      leave_types: leaveTypes,
+    };
+  }
 }
 

@@ -77,7 +77,7 @@ Get a single company by its tax ID.
 
 ### Create Company
 
-Create a new company.
+Create a new company. **Note**: When a company is created, a head office site is automatically created with the same address information.
 
 **Endpoint**: `POST /`
 
@@ -88,7 +88,11 @@ Create a new company.
 {
   "tax_id": "1234567890123",
   "name_th": "บริษัท ทดสอบ จำกัด",
-  "name_en": "Test Company Ltd."
+  "name_en": "Test Company Ltd.",
+  "address_detail": "123 ถนนสุขุมวิท",
+  "address_tambon_code": "10101",
+  "address_district_code": "1001",
+  "address_province_code": "10"
 }
 ```
 
@@ -96,11 +100,20 @@ Create a new company.
 - `tax_id`: Company tax ID (unique)
 - `name_th`: Company name in Thai
 
+**Automatic Site Creation**:
+- A site named `สำนักงานใหญ่ (company name)` is automatically created
+- The site uses the same address information as the company:
+  - `address_detail` or `address_full` → site `address_detail`
+  - `address_tambon_code` → site `subdistrict_code`
+  - `address_district_code` → site `district_code`
+  - `address_province_code` → site `province_code`
+- The site is linked to the company via `company_id` (tax_id)
+
 ---
 
 ### Find or Create Company
 
-Find an existing company or create a new one if not found.
+Find an existing company or create a new one if not found. **Note**: If a new company is created, a head office site is automatically created with the same address information (see Create Company section for details).
 
 **Endpoint**: `POST /find-or-create`
 

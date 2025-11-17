@@ -17,6 +17,8 @@ import { deleteEmployee } from './handlers/delete.ts';
 import { linkAuth } from './handlers/linkAuth.ts';
 import { linkExistingAuth } from './handlers/linkExistingAuth.ts';
 import { unlinkAuth } from './handlers/unlinkAuth.ts';
+import { getDepartmentCounts } from './handlers/departmentCounts.ts';
+import { getRoleCounts } from './handlers/roleCounts.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -50,6 +52,16 @@ Deno.serve(async (req) => {
     if (method === 'GET' && relativePath.length === 2 && relativePath[0] === 'role') {
       const role = relativePath[1];
       return await getByRole(req, employee, role);
+    }
+
+    // GET /department-counts - Get employee counts by department
+    if (method === 'GET' && relativePath.length === 1 && relativePath[0] === 'department-counts') {
+      return await getDepartmentCounts(req, employee);
+    }
+
+    // GET /role-counts - Get employee counts by role
+    if (method === 'GET' && relativePath.length === 1 && relativePath[0] === 'role-counts') {
+      return await getRoleCounts(req, employee);
     }
 
     // GET /:id - Get single employee

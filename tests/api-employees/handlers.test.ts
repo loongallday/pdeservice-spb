@@ -7,6 +7,8 @@ import { list } from '../../supabase/functions/api-employees/handlers/list.ts';
 import { get } from '../../supabase/functions/api-employees/handlers/get.ts';
 import { getByCode } from '../../supabase/functions/api-employees/handlers/getByCode.ts';
 import { create } from '../../supabase/functions/api-employees/handlers/create.ts';
+import { getDepartmentCounts } from '../../supabase/functions/api-employees/handlers/departmentCounts.ts';
+import { getRoleCounts } from '../../supabase/functions/api-employees/handlers/roleCounts.ts';
 import { createMockRequest, createMockJsonRequest, createMockEmployeeWithLevel, assertSuccessResponse } from '../_shared/mocks.ts';
 
 const mockEmployee = {
@@ -169,6 +171,104 @@ Deno.test('list employees - pagination with multiple pages', async () => {
     assertEquals(data.pagination.hasPrevious, true);
   } finally {
     (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getAll = originalGetAll;
+  }
+});
+
+Deno.test('get department counts - success', async () => {
+  const employee = createMockEmployeeWithLevel(0);
+  const request = createMockRequest('GET', 'http://localhost/api-employees/department-counts');
+
+  const mockDepartmentCounts = [
+    {
+      department_id: '123e4567-e89b-12d3-a456-426614174000',
+      department_code: 'IT',
+      department_name_th: 'แผนกเทคโนโลยีสารสนเทศ',
+      department_name_en: 'Information Technology',
+      total_employees: 15,
+      active_employees: 12,
+      inactive_employees: 3,
+    },
+    {
+      department_id: '223e4567-e89b-12d3-a456-426614174000',
+      department_code: 'HR',
+      department_name_th: 'แผนกทรัพยากรบุคคล',
+      department_name_en: 'Human Resources',
+      total_employees: 8,
+      active_employees: 8,
+      inactive_employees: 0,
+    },
+  ];
+
+  // Mock EmployeeService.getEmployeeCountsByDepartment
+  const originalGetEmployeeCountsByDepartment = (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getEmployeeCountsByDepartment;
+  (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getEmployeeCountsByDepartment = async () => mockDepartmentCounts;
+
+  try {
+    const response = await getDepartmentCounts(request, employee);
+    const data = await assertSuccessResponse<Record<string, unknown>[]>(response);
+    assertEquals(Array.isArray(data), true);
+    assertEquals(data.length, 2);
+    assertEquals(data[0].department_code, 'IT');
+    assertEquals(data[0].total_employees, 15);
+    assertEquals(data[0].active_employees, 12);
+    assertEquals(data[0].inactive_employees, 3);
+  } finally {
+    (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getEmployeeCountsByDepartment = originalGetEmployeeCountsByDepartment;
+  }
+});
+
+Deno.test('get role counts - success', async () => {
+  const employee = createMockEmployeeWithLevel(0);
+  const request = createMockRequest('GET', 'http://localhost/api-employees/role-counts');
+
+  const mockRoleCounts = [
+    {
+      role_id: '123e4567-e89b-12d3-a456-426614174000',
+      role_code: 'ADMIN',
+      role_name_th: 'ผู้ดูแลระบบ',
+      role_name_en: 'Administrator',
+      role_level: 10,
+      department_id: '223e4567-e89b-12d3-a456-426614174000',
+      department_code: 'IT',
+      department_name_th: 'แผนกเทคโนโลยีสารสนเทศ',
+      department_name_en: 'Information Technology',
+      total_employees: 5,
+      active_employees: 4,
+      inactive_employees: 1,
+    },
+    {
+      role_id: '323e4567-e89b-12d3-a456-426614174000',
+      role_code: 'MANAGER',
+      role_name_th: 'ผู้จัดการ',
+      role_name_en: 'Manager',
+      role_level: 5,
+      department_id: null,
+      department_code: null,
+      department_name_th: null,
+      department_name_en: null,
+      total_employees: 8,
+      active_employees: 8,
+      inactive_employees: 0,
+    },
+  ];
+
+  // Mock EmployeeService.getEmployeeCountsByRole
+  const originalGetEmployeeCountsByRole = (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getEmployeeCountsByRole;
+  (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getEmployeeCountsByRole = async () => mockRoleCounts;
+
+  try {
+    const response = await getRoleCounts(request, employee);
+    const data = await assertSuccessResponse<Record<string, unknown>[]>(response);
+    assertEquals(Array.isArray(data), true);
+    assertEquals(data.length, 2);
+    assertEquals(data[0].role_code, 'ADMIN');
+    assertEquals(data[0].role_level, 10);
+    assertEquals(data[0].total_employees, 5);
+    assertEquals(data[0].active_employees, 4);
+    assertEquals(data[0].inactive_employees, 1);
+    assertEquals(data[1].department_id, null);
+  } finally {
+    (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getEmployeeCountsByRole = originalGetEmployeeCountsByRole;
   }
 });
 

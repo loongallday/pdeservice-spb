@@ -21,7 +21,7 @@ export async function create(req: Request, employee: Employee) {
 
   // Validate required fields
   validateRequired(body.code, 'รหัสแผนก');
-  validateRequired(body.name, 'ชื่อแผนก');
+  validateRequired(body.name_th, 'ชื่อแผนก');
 
   // Create department
   const department = await DepartmentService.create(body);

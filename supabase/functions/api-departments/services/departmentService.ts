@@ -4,8 +4,23 @@
 
 import { createServiceClient } from '../../_shared/supabase.ts';
 import { DatabaseError, NotFoundError } from '../../_shared/error.ts';
+import { sanitizeData } from '../../_shared/sanitize.ts';
 
 export class DepartmentService {
+  /**
+   * Sanitize department data based on actual schema
+   */
+  private static sanitizeDepartmentData(data: Record<string, unknown>): Record<string, unknown> {
+    const validFields = [
+      'code',
+      'name_th',
+      'name_en',
+      'description',
+      'is_active',
+      'head_id',
+    ];
+    return sanitizeData(data, validFields);
+  }
   /**
    * Get all departments
    */
@@ -49,10 +64,11 @@ export class DepartmentService {
    */
   static async create(data: Record<string, unknown>): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
+    const sanitized = this.sanitizeDepartmentData(data);
     
     const { data: department, error } = await supabase
       .from('departments')
-      .insert([data])
+      .insert([sanitized])
       .select()
       .single();
     
@@ -66,10 +82,11 @@ export class DepartmentService {
    */
   static async update(id: string, data: Record<string, unknown>): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
+    const sanitized = this.sanitizeDepartmentData(data);
     
     const { data: department, error } = await supabase
       .from('departments')
-      .update(data)
+      .update(sanitized)
       .eq('id', id)
       .select()
       .single();

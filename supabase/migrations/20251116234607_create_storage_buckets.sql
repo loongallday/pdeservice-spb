@@ -85,7 +85,7 @@ BEGIN
   END IF;
 END $$;
 
-COMMENT ON TABLE storage.buckets IS 'Supabase Storage buckets for file storage';
-COMMENT ON COLUMN storage.buckets.id IS 'Bucket identifier (must match name)';
-COMMENT ON COLUMN storage.buckets.public IS 'Whether the bucket is publicly accessible (true) or requires authentication (false)';
+-- COMMENT ON TABLE storage.buckets IS 'Supabase Storage buckets for file storage';
+-- COMMENT ON COLUMN storage.buckets.id IS 'Bucket identifier (must match name)';
+-- COMMENT ON COLUMN storage.buckets.public IS 'Whether the bucket is publicly accessible (true) or requires authentication (false)';
 
