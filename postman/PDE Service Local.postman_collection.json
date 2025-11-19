@@ -706,8 +706,9 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"description\": \"Updated description\"\n}"
+							"raw": "{\n  \"ticketData\": {\n    \"description\": \"Updated description\",\n    \"status_id\": \"uuid-here\"\n  },\n  \"employeeIds\": [\"employee-uuid-1\", \"employee-uuid-2\"],\n  \"merchandiseIds\": [\"merchandise-uuid-1\", \"merchandise-uuid-2\"]\n}"
 						},
+						"description": "Update ticket data, employee assignments, and/or merchandise associations. employeeIds and merchandiseIds replace all existing associations (not append). Omit fields to keep existing associations.",
 						"url": {
 							"raw": "{{baseUrl}}/functions/v1/api-tickets/:id",
 							"host": [
@@ -758,6 +759,126 @@
 								}
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Merchandise for Ticket",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-tickets/:id/merchandise",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-tickets",
+								":id",
+								"merchandise"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here",
+									"description": "Ticket ID"
+								}
+							]
+						},
+						"description": "Get all merchandise linked to a specific ticket. Merchandise must be in the same site as the ticket."
+					},
+					"response": []
+				},
+				{
+					"name": "Add Merchandise to Ticket",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"merchandise_id\": \"uuid-here\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-tickets/:id/merchandise",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-tickets",
+								":id",
+								"merchandise"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here",
+									"description": "Ticket ID"
+								}
+							]
+						},
+						"description": "Link merchandise to a ticket. The merchandise must be in the same site as the ticket. Requires level 1+."
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Merchandise from Ticket",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-tickets/:id/merchandise/:merchandiseId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-tickets",
+								":id",
+								"merchandise",
+								":merchandiseId"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here",
+									"description": "Ticket ID"
+								},
+								{
+									"key": "merchandiseId",
+									"value": "uuid-here",
+									"description": "Merchandise ID"
+								}
+							]
+						},
+						"description": "Unlink merchandise from a ticket. Requires level 1+."
 					},
 					"response": []
 				}
@@ -1001,7 +1122,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Test Site\",\n  \"company_id\": \"uuid-here\",\n  \"address_detail\": \"123 Test Street\"\n}"
+							"raw": "{\n  \"name\": \"Test Site\",\n  \"company_id\": \"uuid-here\",\n  \"address_detail\": \"123 Test Street\",\n  \"safety_standard\": [\"safety_shoes\", \"safety_vest\", \"safety_helmet\"]\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/functions/v1/api-sites",
@@ -1013,7 +1134,121 @@
 								"v1",
 								"api-sites"
 							]
-						}
+						},
+						"description": "Create a new site. safety_standard is optional array of safety requirements."
+					},
+					"response": []
+				},
+				{
+					"name": "Find or Create Site",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Test Site\",\n  \"company_id\": \"uuid-here\",\n  \"address_detail\": \"123 Test Street\",\n  \"safety_standard\": [\"safety_shoes\", \"safety_vest\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-sites/find-or-create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-sites",
+								"find-or-create"
+							]
+						},
+						"description": "Find an existing site or create a new one if not found. Uses name, company_id, and subdistrict_code to match."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Site",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Updated Site Name\",\n  \"address_detail\": \"Updated Address\",\n  \"safety_standard\": [\"safety_shoes\", \"safety_vest\", \"safety_helmet\", \"training\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-sites/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-sites",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here",
+									"description": "Site ID"
+								}
+							]
+						},
+						"description": "Update an existing site. All fields are optional. To clear safety_standard, send null or empty array []."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Site",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-sites/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-sites",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here",
+									"description": "Site ID"
+								}
+							]
+						},
+						"description": "Delete a site. Requires level 1+."
 					},
 					"response": []
 				}
@@ -1901,6 +2136,802 @@
 							"variable": [
 								{
 									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Merchandise",
+			"item": [
+				{
+					"name": "List Merchandise",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-merchandise?page=1&limit=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-merchandise"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Merchandise by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-merchandise/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-merchandise",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Merchandise by Site",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-merchandise/site/:siteId?page=1&limit=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-merchandise",
+								"site",
+								":siteId"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								}
+							],
+							"variable": [
+								{
+									"key": "siteId",
+									"value": "uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Merchandise",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"serial_no\": \"SN12345\",\n  \"model_id\": \"uuid-here\",\n  \"site_id\": \"uuid-here\",\n  \"pm_count\": 10,\n  \"distributor_id\": \"tax-id-here\",\n  \"dealer_id\": \"tax-id-here\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-merchandise",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-merchandise"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Merchandise",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"pm_count\": 15,\n  \"dealer_id\": \"tax-id-here\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-merchandise/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-merchandise",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Merchandise",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-merchandise/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-merchandise",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Models",
+			"item": [
+				{
+					"name": "List Models",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-models?page=1&limit=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-models"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Model by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-models/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-models",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Model by Code",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-models/model/:model",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-models",
+								"model",
+								":model"
+							],
+							"variable": [
+								{
+									"key": "model",
+									"value": "MODEL-001"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Model",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"model\": \"MODEL-001\",\n  \"name\": \"Premium Machine Model 001\",\n  \"website_url\": \"https://manufacturer.com/products/model-001\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-models",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-models"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Model",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Updated Model Name\",\n  \"website_url\": \"https://new-website.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-models/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-models",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Model",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-models/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-models",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PM Log",
+			"item": [
+				{
+					"name": "List PM Logs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-pmlog?page=1&limit=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-pmlog"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get PM Log by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-pmlog/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-pmlog",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get PM Logs by Merchandise",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-pmlog/merchandise/:merchandiseId?page=1&limit=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-pmlog",
+								"merchandise",
+								":merchandiseId"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								}
+							],
+							"variable": [
+								{
+									"key": "merchandiseId",
+									"value": "uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create PM Log",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"merchandise_id\": \"uuid-here\",\n  \"description\": \"เปลี่ยนน้ำมันเครื่อง ตรวจสอบสายพาน และทำความสะอาด\",\n  \"performed_at\": \"2025-11-17T10:30:00Z\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-pmlog",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-pmlog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update PM Log",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"เปลี่ยนน้ำมันเครื่อง ตรวจสอบสายพาน ทำความสะอาด และเปลี่ยนฟิลเตอร์\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-pmlog/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-pmlog",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete PM Log",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-pmlog/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-pmlog",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PM Summary",
+			"item": [
+				{
+					"name": "Get PM Summary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-pm-summary?page=1&limit=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-pm-summary"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "site_id",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "merchandise_id",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "needs_renewal",
+									"value": "true",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Merchandise Summary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-pm-summary/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-pm-summary",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get PM Logs for Merchandise",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-pm-summary/:merchandiseId/logs?page=1&limit=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-pm-summary",
+								":merchandiseId",
+								"logs"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								}
+							],
+							"variable": [
+								{
+									"key": "merchandiseId",
 									"value": "uuid-here"
 								}
 							]

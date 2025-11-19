@@ -59,6 +59,10 @@ After signing in, you can test any endpoint:
 - **Work Results** - Work result documentation
 - **Leave Requests** - Leave request management
 - **Polls** - Poll creation and voting
+- **Merchandise** - Merchandise/equipment management
+- **Models** - Merchandise model management
+- **PM Log** - Preventive maintenance log entries
+- **PM Summary** - PM summary and warranty renewal tracking
 
 ## Collection Structure
 
@@ -81,7 +85,11 @@ PDE Service - Local Development
 ├── Appointments (3 requests)
 ├── Work Results (3 requests)
 ├── Leave Requests (3 requests)
-└── Polls (4 requests)
+├── Polls (4 requests)
+├── Merchandise (6 requests)
+├── Models (6 requests)
+├── PM Log (6 requests)
+└── PM Summary (3 requests)
 ```
 
 ## Tips
@@ -112,7 +120,7 @@ PDE Service - Local Development
 2. **Import Collection** → `PDE Service Local.postman_collection.json`
 3. **Select Environment** → Choose "PDE Service - Local" in top-right dropdown
 4. **Sign In** → Run **Authentication → Sign In** (one click!)
-5. **Test APIs** → All 45+ requests are now ready to use!
+5. **Test APIs** → All 60+ requests are now ready to use!
 
 ### First API to Try
 After signing in, try these in order:

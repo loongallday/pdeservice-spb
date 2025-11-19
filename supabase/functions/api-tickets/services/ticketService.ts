@@ -3,7 +3,7 @@
  */
 
 import { createServiceClient } from '../_shared/supabase.ts';
-import { NotFoundError, DatabaseError } from '../_shared/error.ts';
+import { NotFoundError, DatabaseError, ValidationError } from '../_shared/error.ts';
 import { calculatePagination } from '../_shared/response.ts';
 import type { PaginationInfo } from '../_shared/response.ts';
 
@@ -464,7 +464,7 @@ export class TicketService {
   /**
    * Update existing ticket
    */
-  static async update(id: string, ticketData: Record<string, unknown>, employeeIds?: string[]): Promise<Record<string, unknown>> {
+  static async update(id: string, ticketData: Record<string, unknown>, employeeIds?: string[], merchandiseIds?: string[]): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
 
     // Filter out appointment fields that don't belong in tickets table
@@ -519,6 +519,57 @@ export class TicketService {
       }
     }
 
+    // Update merchandise associations if provided
+    if (merchandiseIds !== undefined) {
+      // Delete existing merchandise associations
+      const { error: deleteMerchError } = await supabase
+        .from('ticket_merchandise')
+        .delete()
+        .eq('ticket_id', id);
+
+      if (deleteMerchError) throw new DatabaseError(deleteMerchError.message);
+
+      // Insert new associations with validation
+      if (merchandiseIds.length > 0) {
+        const uniqueMerchandiseIds = [...new Set(merchandiseIds)];
+
+        // Validate all merchandise exist and are in the same site
+        for (const merchandiseId of uniqueMerchandiseIds) {
+          const { data: merchandise, error: merchError } = await supabase
+            .from('merchandise')
+            .select('id, site_id')
+            .eq('id', merchandiseId)
+            .single();
+
+          if (merchError) throw new DatabaseError(`ไม่สามารถดึงข้อมูลอุปกรณ์ ${merchandiseId} ได้`);
+          if (!merchandise) throw new NotFoundError(`ไม่พบอุปกรณ์ ${merchandiseId}`);
+
+          // Validate site match if ticket has a site
+          if (ticket.site_id && merchandise.site_id && ticket.site_id !== merchandise.site_id) {
+            throw new ValidationError(`อุปกรณ์ ${merchandiseId} ต้องอยู่ในสถานที่เดียวกับตั๋วงาน`);
+          }
+        }
+
+        // Insert all associations
+        const { error: insertError } = await supabase
+          .from('ticket_merchandise')
+          .insert(
+            uniqueMerchandiseIds.map(merchandiseId => ({
+              ticket_id: id,
+              merchandise_id: merchandiseId
+            }))
+          );
+
+        if (insertError) {
+          // Check for site mismatch error from trigger
+          if (insertError.message.includes('same site')) {
+            throw new ValidationError('อุปกรณ์ต้องอยู่ในสถานที่เดียวกับตั๋วงาน');
+          }
+          throw new DatabaseError(insertError.message);
+        }
+      }
+    }
+
     return ticket;
   }
 
@@ -534,6 +585,229 @@ export class TicketService {
       .eq('id', id);
 
     if (error) throw new DatabaseError(error.message);
+  }
+
+  /**
+   * Get merchandise linked to a ticket
+   */
+  static async getMerchandise(ticketId: string): Promise<Record<string, unknown>[]> {
+    const supabase = createServiceClient();
+
+    // First verify ticket exists
+    const { data: ticket, error: ticketError } = await supabase
+      .from('tickets')
+      .select('id')
+      .eq('id', ticketId)
+      .single();
+
+    if (ticketError) {
+      throw new DatabaseError('ไม่สามารถดึงข้อมูลตั๋วงานได้');
+    }
+
+    if (!ticket) {
+      throw new NotFoundError('ไม่พบตั๋วงาน');
+    }
+
+    // Get merchandise with full details
+    const { data, error } = await supabase
+      .from('ticket_merchandise')
+      .select(`
+        id,
+        created_at,
+        merchandise:merchandise_id (
+          id,
+          serial_no,
+          model_id,
+          site_id,
+          pm_count,
+          distributor_id,
+          dealer_id,
+          replaced_by_id,
+          created_at,
+          updated_at,
+          model:models!merchandise_model_id_fkey (
+            id,
+            model,
+            name,
+            website_url
+          ),
+          site:sites!merchandise_site_id_fkey (
+            id,
+            name
+          )
+        )
+      `)
+      .eq('ticket_id', ticketId)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      throw new DatabaseError('ไม่สามารถดึงข้อมูลอุปกรณ์ได้');
+    }
+
+    return data || [];
+  }
+
+  /**
+   * Add merchandise to ticket
+   * Returns the association and a flag indicating if it was newly created
+   */
+  static async addMerchandise(ticketId: string, merchandiseId: string): Promise<{ data: Record<string, unknown>; created: boolean }> {
+    const supabase = createServiceClient();
+
+    // Verify ticket exists
+    const { data: ticket, error: ticketError } = await supabase
+      .from('tickets')
+      .select('id, site_id')
+      .eq('id', ticketId)
+      .single();
+
+    if (ticketError) {
+      throw new DatabaseError('ไม่สามารถดึงข้อมูลตั๋วงานได้');
+    }
+
+    if (!ticket) {
+      throw new NotFoundError('ไม่พบตั๋วงาน');
+    }
+
+    // Verify merchandise exists
+    const { data: merchandise, error: merchandiseError } = await supabase
+      .from('merchandise')
+      .select('id, site_id')
+      .eq('id', merchandiseId)
+      .single();
+
+    if (merchandiseError) {
+      throw new DatabaseError('ไม่สามารถดึงข้อมูลอุปกรณ์ได้');
+    }
+
+    if (!merchandise) {
+      throw new NotFoundError('ไม่พบอุปกรณ์');
+    }
+
+    // Validate site match (database trigger will also enforce this, but we check here for better error messages)
+    if (ticket.site_id && merchandise.site_id && ticket.site_id !== merchandise.site_id) {
+      throw new ValidationError('อุปกรณ์ต้องอยู่ในสถานที่เดียวกับตั๋วงาน');
+    }
+
+    // Check if already linked - if so, return existing association (idempotent)
+    const { data: existing, error: checkError } = await supabase
+      .from('ticket_merchandise')
+      .select(`
+        id,
+        created_at,
+        merchandise:merchandise_id (
+          id,
+          serial_no,
+          model_id,
+          site_id,
+          pm_count,
+          distributor_id,
+          dealer_id,
+          replaced_by_id,
+          created_at,
+          updated_at,
+          model:models!merchandise_model_id_fkey (
+            id,
+            model,
+            name,
+            website_url
+          ),
+          site:sites!merchandise_site_id_fkey (
+            id,
+            name
+          )
+        )
+      `)
+      .eq('ticket_id', ticketId)
+      .eq('merchandise_id', merchandiseId)
+      .single();
+
+    if (checkError && checkError.code !== 'PGRST116') { // PGRST116 = no rows returned
+      throw new DatabaseError('ไม่สามารถตรวจสอบข้อมูลได้');
+    }
+
+    // If already linked, return existing association (idempotent operation)
+    if (existing) {
+      return { data: existing, created: false };
+    }
+
+    // Insert new association
+    const { data, error } = await supabase
+      .from('ticket_merchandise')
+      .insert({
+        ticket_id: ticketId,
+        merchandise_id: merchandiseId,
+      })
+      .select(`
+        id,
+        created_at,
+        merchandise:merchandise_id (
+          id,
+          serial_no,
+          model_id,
+          site_id,
+          pm_count,
+          distributor_id,
+          dealer_id,
+          replaced_by_id,
+          created_at,
+          updated_at,
+          model:models!merchandise_model_id_fkey (
+            id,
+            model,
+            name,
+            website_url
+          ),
+          site:sites!merchandise_site_id_fkey (
+            id,
+            name
+          )
+        )
+      `)
+      .single();
+
+    if (error) {
+      // Check for site mismatch error from trigger
+      if (error.message.includes('same site')) {
+        throw new ValidationError('อุปกรณ์ต้องอยู่ในสถานที่เดียวกับตั๋วงาน');
+      }
+      throw new DatabaseError('ไม่สามารถเชื่อมโยงอุปกรณ์ได้');
+    }
+
+    return { data, created: true };
+  }
+
+  /**
+   * Remove merchandise from ticket
+   */
+  static async removeMerchandise(ticketId: string, merchandiseId: string): Promise<void> {
+    const supabase = createServiceClient();
+
+    // Verify ticket exists
+    const { data: ticket, error: ticketError } = await supabase
+      .from('tickets')
+      .select('id')
+      .eq('id', ticketId)
+      .single();
+
+    if (ticketError) {
+      throw new DatabaseError('ไม่สามารถดึงข้อมูลตั๋วงานได้');
+    }
+
+    if (!ticket) {
+      throw new NotFoundError('ไม่พบตั๋วงาน');
+    }
+
+    // Delete association
+    const { error } = await supabase
+      .from('ticket_merchandise')
+      .delete()
+      .eq('ticket_id', ticketId)
+      .eq('merchandise_id', merchandiseId);
+
+    if (error) {
+      throw new DatabaseError('ไม่สามารถลบการเชื่อมโยงได้');
+    }
   }
 }
 

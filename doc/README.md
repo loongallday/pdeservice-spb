@@ -24,7 +24,7 @@ PDE Service is a Supabase-based edge function API service for managing enterpris
 
 ### Business Operations
 
-- **[Tickets API](./api-tickets/README.md)** - Ticket/work order management
+- **[Tickets API](./api-tickets/README.md)** - Ticket/work order management (includes merchandise linking)
 - **[Appointments API](./api-appointments/README.md)** - Appointment scheduling
 - **[Work Results API](./api-work-results/README.md)** - Work result documentation with photos and documents
 - **[Leave Requests API](./api-leave-requests/README.md)** - Leave request management and approvals
@@ -32,8 +32,15 @@ PDE Service is a Supabase-based edge function API service for managing enterpris
 ### Company & Location Management
 
 - **[Companies API](./api-companies/README.md)** - Company records management
-- **[Sites API](./api-sites/README.md)** - Site/location management
+- **[Sites API](./api-sites/README.md)** - Site/location management (includes safety standards)
 - **[Contacts API](./api-contacts/README.md)** - Contact information management
+
+### Equipment & Maintenance
+
+- **[Merchandise API](./api-merchandise/README.md)** - Equipment/merchandise management
+- **[Models API](./api-models/README.md)** - Equipment model catalog
+- **[PM Log API](./api-pmlog/README.md)** - Preventive maintenance log entries
+- **[PM Summary API](./api-pm-summary/README.md)** - PM summary and warranty tracking
 
 ### Additional Features
 

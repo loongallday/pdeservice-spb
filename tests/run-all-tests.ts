@@ -19,6 +19,10 @@ const testFiles = [
   'tests/api-polls/handlers.test.ts',
   'tests/api-reference-data/handlers.test.ts',
   'tests/api-work-results/handlers.test.ts',
+  'tests/api-merchandise/handlers.test.ts',
+  'tests/api-models/handlers.test.ts',
+  'tests/api-pmlog/handlers.test.ts',
+  'tests/api-pm-summary/handlers.test.ts',
 ];
 
 console.log('Running all unit tests...\n');

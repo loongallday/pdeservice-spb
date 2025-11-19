@@ -19,13 +19,14 @@ export async function update(req: Request, employee: Employee, id: string) {
   const body = await parseRequestBody<{
     ticketData: Record<string, unknown>;
     employeeIds?: string[];
+    merchandiseIds?: string[];
   }>(req);
 
   // Validate required fields
   validateRequired(body.ticketData, 'ข้อมูลตั๋วงาน');
 
   // Update ticket
-  const ticket = await TicketService.update(id, body.ticketData, body.employeeIds);
+  const ticket = await TicketService.update(id, body.ticketData, body.employeeIds, body.merchandiseIds);
 
   return success(ticket);
 }
