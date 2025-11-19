@@ -8,8 +8,8 @@ import { ModelService } from '../services/modelService.ts';
 import type { Employee } from '../_shared/auth.ts';
 
 export async function update(req: Request, employee: Employee, id: string) {
-  // Check permissions - Level 2 and above can update models
-  await requireMinLevel(employee, 2);
+  // Check permissions - Level 1 and above can update models
+  await requireMinLevel(employee, 1);
 
   // Parse request body
   const body = await req.json();

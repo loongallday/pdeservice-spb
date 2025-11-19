@@ -88,7 +88,7 @@ GET /api-models/model/MODEL-001
 
 **Endpoint:** `POST /`
 
-**Authorization:** Level 2+
+**Authorization:** Level 1+
 
 **Request Body:**
 ```json
@@ -125,7 +125,7 @@ GET /api-models/model/MODEL-001
 
 **Endpoint:** `PUT /:id`
 
-**Authorization:** Level 2+
+**Authorization:** Level 1+
 
 **Request Body:** (เหมือน create แต่ทุก field เป็น optional)
 ```json
@@ -147,7 +147,7 @@ GET /api-models/model/MODEL-001
 
 **Endpoint:** `DELETE /:id`
 
-**Authorization:** Level 2+
+**Authorization:** Level 1+
 
 **Response:**
 ```json
