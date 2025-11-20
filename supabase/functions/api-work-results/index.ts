@@ -18,6 +18,7 @@ import { addDocument } from './handlers/addDocument.ts';
 import { deleteDocument } from './handlers/deleteDocument.ts';
 import { addDocumentPage } from './handlers/addDocumentPage.ts';
 import { deleteDocumentPage } from './handlers/deleteDocumentPage.ts';
+import { search } from './handlers/search.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -40,6 +41,11 @@ Deno.serve(async (req) => {
     if (method === 'GET' && relativePath[0] === 'ticket' && relativePath[1]) {
       const ticketId = relativePath[1];
       return await getByTicket(req, employee, ticketId);
+    }
+
+    // GET /search - Search work results
+    if (method === 'GET' && relativePath.length === 1 && relativePath[0] === 'search') {
+      return await search(req, employee);
     }
 
     // GET /:id - Get work result by ID

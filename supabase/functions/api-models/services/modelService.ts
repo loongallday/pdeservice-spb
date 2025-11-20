@@ -202,5 +202,27 @@ export class ModelService {
       throw new DatabaseError('ไม่สามารถลบข้อมูลได้');
     }
   }
+
+  /**
+   * Search models by model or name
+   */
+  static async search(query: string): Promise<Record<string, unknown>[]> {
+    const supabase = createServiceClient();
+
+    if (!query || query.length < 1) {
+      return [];
+    }
+
+    const { data, error} = await supabase
+      .from('models')
+      .select('*')
+      .or(`model.ilike.%${query}%,name.ilike.%${query}%`)
+      .limit(20)
+      .order('created_at', { ascending: false});
+
+    if (error) throw new DatabaseError(error.message);
+
+    return data || [];
+  }
 }
 

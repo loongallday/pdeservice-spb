@@ -809,5 +809,27 @@ export class TicketService {
       throw new DatabaseError('ไม่สามารถลบการเชื่อมโยงได้');
     }
   }
+
+  /**
+   * Search tickets by ticket number or description
+   */
+  static async search(query: string): Promise<Record<string, unknown>[]> {
+    const supabase = createServiceClient();
+
+    if (!query || query.length < 1) {
+      return [];
+    }
+
+    const { data, error } = await supabase
+      .from('tickets')
+      .select('*')
+      .or(`ticket_number.ilike.%${query}%,description.ilike.%${query}%`)
+      .limit(20)
+      .order('created_at', { ascending: false });
+
+    if (error) throw new DatabaseError(error.message);
+
+    return data || [];
+  }
 }
 

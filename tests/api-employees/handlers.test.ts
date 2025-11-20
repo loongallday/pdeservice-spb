@@ -9,6 +9,7 @@ import { getByCode } from '../../supabase/functions/api-employees/handlers/getBy
 import { create } from '../../supabase/functions/api-employees/handlers/create.ts';
 import { getDepartmentCounts } from '../../supabase/functions/api-employees/handlers/departmentCounts.ts';
 import { getRoleCounts } from '../../supabase/functions/api-employees/handlers/roleCounts.ts';
+import { search } from '../../supabase/functions/api-employees/handlers/search.ts';
 import { createMockRequest, createMockJsonRequest, createMockEmployeeWithLevel, assertSuccessResponse } from '../_shared/mocks.ts';
 
 const mockEmployee = {
@@ -269,6 +270,83 @@ Deno.test('get role counts - success', async () => {
     assertEquals(data[1].department_id, null);
   } finally {
     (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getEmployeeCountsByRole = originalGetEmployeeCountsByRole;
+  }
+});
+
+Deno.test('search employees - success', async () => {
+  const employee = createMockEmployeeWithLevel(0);
+  const request = createMockRequest('GET', 'http://localhost/api-employees/search?q=john');
+
+  const mockSearchResults = [
+    {
+      id: '123e4567-e89b-12d3-a456-426614174000',
+      emp_code: 'EMP001',
+      name_th: 'จอห์น สมิธ',
+      name_en: 'John Smith',
+      nickname: 'John',
+      level: 0,
+      is_active: true,
+    },
+    {
+      id: '223e4567-e89b-12d3-a456-426614174000',
+      emp_code: 'EMP002',
+      name_th: 'จอห์นนี่ โด',
+      name_en: 'Johnny Doe',
+      nickname: 'Johnny',
+      level: 0,
+      is_active: true,
+    },
+  ];
+
+  // Mock EmployeeService.search
+  const originalSearch = (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.search;
+  (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.search = async () => mockSearchResults;
+
+  try {
+    const response = await search(request, employee);
+    const data = await assertSuccessResponse<Record<string, unknown>[]>(response);
+    assertEquals(Array.isArray(data), true);
+    assertEquals(data.length, 2);
+    assertEquals(data[0].nickname, 'John');
+    assertEquals(data[1].nickname, 'Johnny');
+  } finally {
+    (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.search = originalSearch;
+  }
+});
+
+Deno.test('search employees - empty query returns empty array', async () => {
+  const employee = createMockEmployeeWithLevel(0);
+  const request = createMockRequest('GET', 'http://localhost/api-employees/search?q=');
+
+  // Mock EmployeeService.search
+  const originalSearch = (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.search;
+  (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.search = async () => [];
+
+  try {
+    const response = await search(request, employee);
+    const data = await assertSuccessResponse<Record<string, unknown>[]>(response);
+    assertEquals(Array.isArray(data), true);
+    assertEquals(data.length, 0);
+  } finally {
+    (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.search = originalSearch;
+  }
+});
+
+Deno.test('search employees - no results', async () => {
+  const employee = createMockEmployeeWithLevel(0);
+  const request = createMockRequest('GET', 'http://localhost/api-employees/search?q=nonexistent');
+
+  // Mock EmployeeService.search
+  const originalSearch = (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.search;
+  (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.search = async () => [];
+
+  try {
+    const response = await search(request, employee);
+    const data = await assertSuccessResponse<Record<string, unknown>[]>(response);
+    assertEquals(Array.isArray(data), true);
+    assertEquals(data.length, 0);
+  } finally {
+    (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.search = originalSearch;
   }
 });
 

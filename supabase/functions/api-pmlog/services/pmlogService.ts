@@ -259,5 +259,27 @@ export class PMLogService {
       throw new DatabaseError('ไม่สามารถลบข้อมูลได้');
     }
   }
+
+  /**
+   * Search PM logs by description
+   */
+  static async search(query: string): Promise<Record<string, unknown>[]> {
+    const supabase = createServiceClient();
+
+    if (!query || query.length < 1) {
+      return [];
+    }
+
+    const { data, error } = await supabase
+      .from('pmlog')
+      .select('*')
+      .ilike('description', `%${query}%`)
+      .limit(20)
+      .order('performed_at', { ascending: false});
+
+    if (error) throw new DatabaseError(error.message);
+
+    return data || [];
+  }
 }
 

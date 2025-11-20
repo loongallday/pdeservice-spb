@@ -13,6 +13,7 @@ import { create } from './handlers/create.ts';
 import { update } from './handlers/update.ts';
 import { deletePMLog } from './handlers/delete.ts';
 import { getByMerchandise } from './handlers/getByMerchandise.ts';
+import { search } from './handlers/search.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -40,6 +41,11 @@ Deno.serve(async (req) => {
     // GET / - List PM logs
     if (method === 'GET' && relativePath.length === 0) {
       return await list(req, employee);
+    }
+
+    // GET /search - Search PM logs
+    if (method === 'GET' && relativePath.length === 1 && relativePath[0] === 'search') {
+      return await search(req, employee);
     }
 
     // GET /:id - Get single PM log

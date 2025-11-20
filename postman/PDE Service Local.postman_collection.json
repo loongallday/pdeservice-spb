@@ -593,33 +593,6 @@
 					"response": []
 				},
 				{
-					"name": "Get Department Counts",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "apikey",
-								"value": "{{apikey}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-employees/department-counts",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"functions",
-								"v1",
-								"api-employees",
-								"department-counts"
-							]
-						},
-						"description": "Get employee counts grouped by department"
-					},
-					"response": []
-				},
-				{
 					"name": "Get Role Counts",
 					"request": {
 						"method": "GET",
@@ -1988,7 +1961,7 @@
 			"name": "Departments",
 			"item": [
 				{
-					"name": "List Departments",
+					"name": "Search Departments",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -1999,16 +1972,62 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-departments",
+							"raw": "{{baseUrl}}/functions/v1/api-departments/search?q=technician&page=1&limit=20",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"functions",
 								"v1",
-								"api-departments"
+								"api-departments",
+								"search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "technician",
+									"description": "Search query (searches code, name_th, name_en)"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number (default: 1)"
+								},
+								{
+									"key": "limit",
+									"value": "20",
+									"description": "Items per page (default: 50, max: 100)"
+								}
 							]
-						}
+						},
+						"description": "Search departments by code or name with pagination. Requires level 0+."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Department Summary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-departments/department-summary",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-departments",
+								"department-summary"
+							]
+						},
+						"description": "Get department summary with employee counts (total, active, inactive). Requires level 0+."
 					},
 					"response": []
 				},
@@ -2040,7 +2059,8 @@
 									"value": "uuid-here"
 								}
 							]
-						}
+						},
+						"description": "Get a single department by ID. Requires level 0+."
 					},
 					"response": []
 				},

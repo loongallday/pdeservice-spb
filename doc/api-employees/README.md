@@ -51,6 +51,60 @@ Authorization: Bearer <token>
 
 ---
 
+### Search Employees
+
+Search for employees by name (Thai/English), nickname, or employee code.
+
+**Endpoint**: `GET /search`
+
+**Required Level**: 0 (all authenticated users)
+
+**Query Parameters**:
+- `q` (required): Search query string (1+ characters)
+
+**Example Request**:
+```http
+GET /functions/v1/api-employees/search?q=john
+Authorization: Bearer <token>
+```
+
+**Example Response**:
+```json
+{
+  "data": [
+    {
+      "id": "123e4567-e89b-12d3-a456-426614174000",
+      "emp_code": "EMP001",
+      "name_th": "จอห์น สมิธ",
+      "name_en": "John Smith",
+      "nickname": "John",
+      "level": 0,
+      "role_id": "123e4567-e89b-12d3-a456-426614174001",
+      "department_id": null,
+      "is_active": true,
+      "auth_uid": null,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  ]
+}
+```
+
+**Searchable Fields**:
+- `name_th` - Thai name (partial match)
+- `name_en` - English name (partial match)
+- `nickname` - Nickname (partial match)
+- `emp_code` - Employee code (partial match)
+
+**Notes**:
+- Search is case-insensitive
+- Returns up to 20 results
+- Results are sorted by Thai name
+- Empty query returns empty array
+- Partial matches are supported (e.g., "john" matches "Johnny")
+
+---
+
 ### Get Employee Counts by Department
 
 Get consolidated data about employee counts for each department.

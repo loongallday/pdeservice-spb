@@ -206,5 +206,30 @@ export class LeaveService {
   static async cancel(id: string): Promise<Record<string, unknown>> {
     return this.update(id, { status: 'cancelled' });
   }
+
+  /**
+   * Search leave requests by reason or employee name
+   */
+  static async search(query: string): Promise<Record<string, unknown>[]> {
+    const supabase = createServiceClient();
+
+    if (!query || query.length < 1) {
+      return [];
+    }
+
+    const { data, error } = await supabase
+      .from('leave_requests')
+      .select(`
+        *,
+        employee:employees!leave_requests_employee_id_fkey(id, emp_code, name_th, name_en, nickname)
+      `)
+      .or(`reason.ilike.%${query}%`)
+      .limit(20)
+      .order('created_at', { ascending: false});
+
+    if (error) throw new DatabaseError(error.message);
+
+    return data || [];
+  }
 }
 

@@ -13,6 +13,7 @@ import { create } from './handlers/create.ts';
 import { update } from './handlers/update.ts';
 import { deletePoll } from './handlers/delete.ts';
 import { vote } from './handlers/vote.ts';
+import { search } from './handlers/search.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -36,8 +37,13 @@ Deno.serve(async (req) => {
       return await list(req, employee);
     }
 
+    // GET /search - Search polls
+    if (method === 'GET' && relativePath.length === 1 && relativePath[0] === 'search') {
+      return await search(req, employee);
+    }
+
     // GET /:id - Get single poll
-    if (method === 'GET' && relativePath.length === 1 && relativePath[0] !== 'results') {
+    if (method === 'GET' && relativePath.length === 1 && relativePath[0] !== 'results' && relativePath[0] !== 'search') {
       const id = relativePath[0];
       return await get(req, employee, id);
     }

@@ -111,6 +111,28 @@ export class RoleService {
   }
 
   /**
+   * Search roles by code or name
+   */
+  static async search(query: string): Promise<Record<string, unknown>[]> {
+    const supabase = createServiceClient();
+
+    if (!query || query.length < 1) {
+      return [];
+    }
+
+    const { data, error } = await supabase
+      .from('roles')
+      .select('*')
+      .or(`code.ilike.%${query}%,name_th.ilike.%${query}%,name_en.ilike.%${query}%`)
+      .limit(20)
+      .order('level');
+
+    if (error) throw new DatabaseError(error.message);
+
+    return data || [];
+  }
+
+  /**
    * Delete role
    */
   static async delete(id: string): Promise<void> {

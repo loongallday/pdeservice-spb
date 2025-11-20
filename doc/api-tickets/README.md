@@ -78,6 +78,54 @@ Get a single ticket by its ID.
 
 ---
 
+### Search Tickets
+
+Search for tickets by ticket number or description.
+
+**Endpoint**: `GET /search`
+
+**Required Level**: 0 (all authenticated users)
+
+**Query Parameters**:
+- `q` (required): Search query string (1+ characters)
+
+**Example Request**:
+```http
+GET /functions/v1/api-tickets/search?q=TKT-001
+Authorization: Bearer <token>
+```
+
+**Example Response**:
+```json
+{
+  "data": [
+    {
+      "id": "123e4567-e89b-12d3-a456-426614174000",
+      "ticket_number": "TKT-001",
+      "description": "Fix printer issue",
+      "site_id": "123e4567-e89b-12d3-a456-426614174001",
+      "work_type_id": "123e4567-e89b-12d3-a456-426614174002",
+      "status_id": "123e4567-e89b-12d3-a456-426614174003",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  ]
+}
+```
+
+**Searchable Fields**:
+- `ticket_number` - Ticket number (partial match)
+- `description` - Ticket description (partial match)
+
+**Notes**:
+- Search is case-insensitive
+- Returns up to 20 results
+- Results are sorted by creation date (newest first)
+- Empty query returns empty array
+- Partial matches are supported
+
+---
+
 ### Create Ticket
 
 Create a new ticket.

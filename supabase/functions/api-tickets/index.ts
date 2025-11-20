@@ -18,6 +18,7 @@ import { removeMerchandise } from './handlers/removeMerchandise.ts';
 import { createMaster } from './handlers/createMaster.ts';
 import { updateMaster } from './handlers/updateMaster.ts';
 import { deleteMaster } from './handlers/deleteMaster.ts';
+import { search } from './handlers/search.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -96,6 +97,11 @@ Deno.serve(async (req) => {
     // GET / - List tickets
     if (method === 'GET' && relativePath.length === 0) {
       return await list(req, employee);
+    }
+
+    // GET /search - Search tickets
+    if (method === 'GET' && relativePath.length === 1 && relativePath[0] === 'search') {
+      return await search(req, employee);
     }
 
     // GET /:id - Get single ticket

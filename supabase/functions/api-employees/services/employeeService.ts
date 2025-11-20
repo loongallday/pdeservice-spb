@@ -502,7 +502,8 @@ export class EmployeeService {
 
     if (deptError) throw new DatabaseError(deptError.message);
 
-    // Get all employees with their roles and departments
+    // Get all employees with their roles
+    // Query roles separately to avoid issues with invalid department_id references
     const { data: employees, error: empError } = await supabase
       .from('employees')
       .select(`
@@ -510,17 +511,45 @@ export class EmployeeService {
         is_active,
         role_id,
         role:roles!role_id(
-          department_id,
-          department:departments!department_id(
-            id,
-            code,
-            name_th,
-            name_en
-          )
+          id,
+          department_id
         )
       `);
 
-    if (empError) throw new DatabaseError(empError.message);
+    if (empError) {
+      throw new DatabaseError(empError.message);
+    }
+
+    // Get all role department_ids and fetch department info separately
+    const roleDepartmentIds = new Set<string>();
+    employees?.forEach(emp => {
+      const role = emp.role as Record<string, unknown> | null;
+      const deptId = role?.department_id as string | null | undefined;
+      if (deptId) {
+        roleDepartmentIds.add(deptId);
+      }
+    });
+
+    // Fetch department information for all referenced departments
+    const departmentIds = Array.from(roleDepartmentIds);
+    const departmentMap = new Map<string, Record<string, unknown>>();
+    
+    if (departmentIds.length > 0) {
+      const { data: deptData, error: deptDataError } = await supabase
+        .from('departments')
+        .select('id, code, name_th, name_en')
+        .in('id', departmentIds);
+
+      if (deptDataError) {
+        // If department lookup fails, continue without department info
+        // This handles cases where department_id references don't exist
+        // Invalid department references will be skipped in the counting logic below
+      } else {
+        deptData?.forEach(dept => {
+          departmentMap.set(dept.id as string, dept);
+        });
+      }
+    }
 
     // Group employees by department and count
     const departmentCounts = new Map<string, {
@@ -549,21 +578,22 @@ export class EmployeeService {
     // Count employees by department
     employees?.forEach(emp => {
       const role = emp.role as Record<string, unknown> | null;
-      const department = (role?.department as Record<string, unknown> | null) || null;
+      const deptId = role?.department_id as string | null | undefined;
       
-      if (department?.id) {
-        const deptId = department.id as string;
+      if (deptId) {
+        const department = departmentMap.get(deptId);
         const count = departmentCounts.get(deptId);
         
         if (count) {
+          // Department is in active list
           count.total_employees++;
           if (emp.is_active) {
             count.active_employees++;
           } else {
             count.inactive_employees++;
           }
-        } else {
-          // Department not in active list, but has employees
+        } else if (department) {
+          // Department exists but not in active list, add it
           departmentCounts.set(deptId, {
             department_id: deptId,
             department_code: (department.code as string) || '',
@@ -574,12 +604,35 @@ export class EmployeeService {
             inactive_employees: emp.is_active ? 0 : 1,
           });
         }
+        // If department doesn't exist in database, skip it (invalid reference)
       }
     });
 
     // Convert map to array and sort by department name
     return Array.from(departmentCounts.values())
       .sort((a, b) => a.department_name_th.localeCompare(b.department_name_th));
+  }
+
+  /**
+   * Search employees by name or employee code
+   */
+  static async search(query: string): Promise<Record<string, unknown>[]> {
+    const supabase = createServiceClient();
+
+    if (!query || query.length < 1) {
+      return [];
+    }
+
+    const { data, error } = await supabase
+      .from('employees')
+      .select('*')
+      .or(`name_th.ilike.%${query}%,name_en.ilike.%${query}%,nickname.ilike.%${query}%,emp_code.ilike.%${query}%`)
+      .limit(20)
+      .order('name_th');
+
+    if (error) throw new DatabaseError(error.message);
+
+    return data || [];
   }
 
   /**

@@ -319,5 +319,27 @@ export class MerchandiseService {
       throw new DatabaseError('ไม่สามารถลบข้อมูลได้');
     }
   }
+
+  /**
+   * Search merchandise by serial number
+   */
+  static async search(query: string): Promise<Record<string, unknown>[]> {
+    const supabase = createServiceClient();
+
+    if (!query || query.length < 1) {
+      return [];
+    }
+
+    const { data, error } = await supabase
+      .from('merchandise')
+      .select('*')
+      .ilike('serial_no', `%${query}%`)
+      .limit(20)
+      .order('created_at', { ascending: false});
+
+    if (error) throw new DatabaseError(error.message);
+
+    return data || [];
+  }
 }
 

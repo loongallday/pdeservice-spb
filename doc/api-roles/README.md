@@ -63,6 +63,57 @@ Get a single role by its ID.
 
 ---
 
+### Search Roles
+
+Search for roles by code or name.
+
+**Endpoint**: `GET /search`
+
+**Required Level**: 0 (all authenticated users)
+
+**Query Parameters**:
+- `q` (required): Search query string (1+ characters)
+
+**Example Request**:
+```http
+GET /functions/v1/api-roles/search?q=admin
+Authorization: Bearer <token>
+```
+
+**Example Response**:
+```json
+{
+  "data": [
+    {
+      "id": "123e4567-e89b-12d3-a456-426614174000",
+      "code": "ADMIN",
+      "name_th": "ผู้ดูแลระบบ",
+      "name_en": "Administrator",
+      "level": 10,
+      "department_id": null,
+      "is_active": true,
+      "requires_auth": true,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  ]
+}
+```
+
+**Searchable Fields**:
+- `code` - Role code (partial match)
+- `name_th` - Thai name (partial match)
+- `name_en` - English name (partial match)
+
+**Notes**:
+- Search is case-insensitive
+- Returns up to 20 results
+- Results are sorted by level
+- Empty query returns empty array
+- Partial matches are supported
+
+---
+
 ### Create Role
 
 Create a new role.

@@ -139,5 +139,27 @@ export class PollService {
 
     return vote;
   }
+
+  /**
+   * Search polls by question
+   */
+  static async search(query: string): Promise<Record<string, unknown>[]> {
+    const supabase = createServiceClient();
+
+    if (!query || query.length < 1) {
+      return [];
+    }
+
+    const { data, error } = await supabase
+      .from('polls')
+      .select('*')
+      .ilike('question', `%${query}%`)
+      .limit(20)
+      .order('created_at', { ascending: false});
+
+    if (error) throw new DatabaseError(error.message);
+
+    return data || [];
+  }
 }
 
