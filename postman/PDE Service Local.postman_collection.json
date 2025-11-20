@@ -326,7 +326,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-employees/code/ADMIN001",
+							"raw": "{{baseUrl}}/functions/v1/api-employees/network-search?q=ADMIN001",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -334,8 +334,14 @@
 								"functions",
 								"v1",
 								"api-employees",
-								"code",
-								"ADMIN001"
+								"network-search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "ADMIN001",
+									"description": "Text search (searches name and email)"
+								}
 							]
 						},
 						"description": "Verifies the admin user was created and linked correctly.\n\nShould return employee with:\n- code: ADMIN001\n- auth_user_id: set (not null)\n- role_id: pointing to SUPER_ADMIN role\n- role level: 10"
@@ -469,7 +475,7 @@
 			"name": "Employees",
 			"item": [
 				{
-					"name": "List Employees",
+					"name": "Network Search Employees",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -480,16 +486,77 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-employees",
+							"raw": "{{baseUrl}}/functions/v1/api-employees/network-search?q=john&page=1&limit=20&role=admin&department_id=123e4567-e89b-12d3-a456-426614174000&is_active=true",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"functions",
 								"v1",
-								"api-employees"
+								"api-employees",
+								"network-search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "john",
+									"description": "Text search (searches name and email)"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number (default: 1)"
+								},
+								{
+									"key": "limit",
+									"value": "20",
+									"description": "Items per page (default: 20, max: 100)"
+								},
+								{
+									"key": "role",
+									"value": "admin",
+									"description": "Filter by role code (exact match)"
+								},
+								{
+									"key": "department_id",
+									"value": "123e4567-e89b-12d3-a456-426614174000",
+									"description": "Filter by department ID (UUID)"
+								},
+								{
+									"key": "is_active",
+									"value": "true",
+									"description": "Filter by active status (true/false)"
+								}
 							]
-						}
+						},
+						"description": "Network search employees - Network user search API for employee management. Supports text search (name, email) and network-relevant filters (department, role, active status). Supports pagination. Requires level 0+."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Employee Summary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-employees/employee-summary",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-employees",
+								"employee-summary"
+							]
+						},
+						"description": "Get employee summary with minimal fields (id, name, email, role_name, is_link_auth). Only active employees. No pagination. Requires level 0+."
 					},
 					"response": []
 				},
@@ -521,101 +588,8 @@
 									"value": "{{adminEmployeeId}}"
 								}
 							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Employee by Code",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "apikey",
-								"value": "{{apikey}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-employees/code/:code",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"functions",
-								"v1",
-								"api-employees",
-								"code",
-								":code"
-							],
-							"variable": [
-								{
-									"key": "code",
-									"value": "ADMIN001"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Employees by Role",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "apikey",
-								"value": "{{apikey}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-employees/role/:role",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"functions",
-								"v1",
-								"api-employees",
-								"role",
-								":role"
-							],
-							"variable": [
-								{
-									"key": "role",
-									"value": "SUPER_ADMIN"
-								}
-							]
 						},
-						"description": "Get all employees with a specific role code"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Role Counts",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "apikey",
-								"value": "{{apikey}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-employees/role-counts",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"functions",
-								"v1",
-								"api-employees",
-								"role-counts"
-							]
-						},
-						"description": "Get employee counts grouped by role"
+						"description": "Get a single employee by ID. Requires level 0+."
 					},
 					"response": []
 				},
@@ -693,6 +667,102 @@
 							]
 						},
 						"description": "Update an employee. Requires level 2+."
+					},
+					"response": []
+				},
+				{
+					"name": "Link Auth to Employee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"secure-password\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-employees/:id/link-auth",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-employees",
+								":id",
+								"link-auth"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{adminEmployeeId}}"
+								}
+							]
+						},
+						"description": "Link auth account to employee. Creates auth user if it doesn't exist, or links existing one. Requires level 2+."
+					},
+					"response": []
+				},
+				{
+					"name": "Link Existing Auth to Employee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"auth_uid\": \"uuid-of-existing-auth-user\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-employees/:id/link-existing-auth",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-employees",
+								":id",
+								"link-existing-auth"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{adminEmployeeId}}"
+								}
+							]
+						},
+						"description": "Link an existing auth user to employee. Use this if you already created the auth user manually or via Supabase Dashboard. Requires level 2+."
 					},
 					"response": []
 				},
