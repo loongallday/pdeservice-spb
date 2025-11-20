@@ -67,9 +67,9 @@ export class DepartmentService {
     const { data, error } = await dataQuery
       .order('code')
       .range(offset, offset + limit - 1);
-
+    
     if (error) throw new DatabaseError(error.message);
-
+    
     return {
       data: data || [],
       pagination: calculatePagination(page, limit, total),

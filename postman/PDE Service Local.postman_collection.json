@@ -2180,7 +2180,7 @@
 			"name": "Roles",
 			"item": [
 				{
-					"name": "List Roles",
+					"name": "Search Roles",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -2191,16 +2191,62 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-roles",
+							"raw": "{{baseUrl}}/functions/v1/api-roles/search?q=manager&page=1&limit=20",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"functions",
 								"v1",
-								"api-roles"
+								"api-roles",
+								"search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "manager",
+									"description": "Search query (searches code, name_th, name_en)"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number (default: 1)"
+								},
+								{
+									"key": "limit",
+									"value": "20",
+									"description": "Items per page (default: 50, max: 100)"
+								}
 							]
-						}
+						},
+						"description": "Search roles by code or name with pagination. Requires level 0+."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Role Summary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-roles/role-summary",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-roles",
+								"role-summary"
+							]
+						},
+						"description": "Get role summary with employee counts (total, active, inactive). Requires level 0+."
 					},
 					"response": []
 				},
