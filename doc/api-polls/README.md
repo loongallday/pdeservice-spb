@@ -136,7 +136,7 @@ Update an existing poll (only if no votes cast).
 
 **Endpoint**: `PUT /:id`
 
-**Required Level**: 1 (non-technician_l1 and above)
+**Required Level**: 0 (all authenticated users)
 
 ---
 
@@ -146,7 +146,7 @@ Delete a poll and all associated votes.
 
 **Endpoint**: `DELETE /:id`
 
-**Required Level**: 1 (non-technician_l1 and above)
+**Required Level**: 0 (all authenticated users)
 
 ---
 

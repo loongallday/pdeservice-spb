@@ -47,7 +47,7 @@ export async function authenticate(req: Request): Promise<AuthContext> {
   const { data: { user }, error: authError } = await supabase.auth.getUser(authToken);
   
   if (authError || !user) {
-    throw new AuthenticationError('รหัสยืนยันตัวตนไม่ถูกต้อง');
+    throw new AuthenticationError('Session หมดอายุกรุณาเข้าใช้งานใหม่');
   }
   
   // Get employee info with role data

@@ -63,7 +63,7 @@ Create a new department.
 
 **Endpoint**: `POST /`
 
-**Required Level**: 1 (non-technician_l1 and above)
+**Required Level**: 3 (Superadmin only)
 
 **Request Body**:
 ```json
@@ -88,7 +88,22 @@ Update an existing department.
 
 **Endpoint**: `PUT /:id`
 
-**Required Level**: 1 (non-technician_l1 and above)
+**Required Level**: 3 (Superadmin only)
+
+**Path Parameters**:
+- `id` (required): Department ID (UUID)
+
+**Request Body**:
+```json
+{
+  "name_th": "แผนกเทคโนโลยี (อัพเดท)",
+  "name_en": "IT Department (Updated)",
+  "description": "Updated description",
+  "is_active": true
+}
+```
+
+**Note**: All fields are optional. Only provided fields will be updated.
 
 ---
 
@@ -98,7 +113,10 @@ Delete a department.
 
 **Endpoint**: `DELETE /:id`
 
-**Required Level**: 1 (non-technician_l1 and above)
+**Required Level**: 3 (Superadmin only)
+
+**Path Parameters**:
+- `id` (required): Department ID (UUID)
 
 ---
 

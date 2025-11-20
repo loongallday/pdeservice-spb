@@ -101,7 +101,7 @@ Update an existing work result.
 
 **Endpoint**: `PUT /:id`
 
-**Required Level**: 1 (non-technician_l1 and above)
+**Required Level**: 0 (all authenticated users)
 
 ---
 
@@ -111,7 +111,7 @@ Delete a work result and all associated photos/documents.
 
 **Endpoint**: `DELETE /:id`
 
-**Required Level**: 1 (non-technician_l1 and above)
+**Required Level**: 0 (all authenticated users)
 
 ---
 

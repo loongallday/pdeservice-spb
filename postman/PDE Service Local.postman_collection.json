@@ -559,6 +559,94 @@
 					"response": []
 				},
 				{
+					"name": "Get Employees by Role",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-employees/role/:role",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-employees",
+								"role",
+								":role"
+							],
+							"variable": [
+								{
+									"key": "role",
+									"value": "SUPER_ADMIN"
+								}
+							]
+						},
+						"description": "Get all employees with a specific role code"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Department Counts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-employees/department-counts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-employees",
+								"department-counts"
+							]
+						},
+						"description": "Get employee counts grouped by department"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Role Counts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-employees/role-counts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-employees",
+								"role-counts"
+							]
+						},
+						"description": "Get employee counts grouped by role"
+					},
+					"response": []
+				},
+				{
 					"name": "Create Employee",
 					"request": {
 						"method": "POST",
@@ -576,7 +664,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"code\": \"EMP001\",\n  \"name\": \"John Doe\",\n  \"nickname\": \"John\",\n  \"email\": \"john@example.com\",\n  \"role_id\": \"uuid-here\",\n  \"is_active\": true\n}"
+							"raw": "{\n  \"emp_code\": \"EMP001\",\n  \"name_th\": \"จอห์น โด\",\n  \"name_en\": \"John Doe\",\n  \"nickname\": \"John\",\n  \"level\": 0,\n  \"role_id\": \"uuid-here\",\n  \"department_id\": \"uuid-here\",\n  \"status\": \"active\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/functions/v1/api-employees",
@@ -588,7 +676,122 @@
 								"v1",
 								"api-employees"
 							]
-						}
+						},
+						"description": "Create a new employee. Requires level 2+."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Employee",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name_th\": \"จอห์น โด (อัพเดท)\",\n  \"name_en\": \"John Doe (Updated)\",\n  \"level\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-employees/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-employees",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{adminEmployeeId}}"
+								}
+							]
+						},
+						"description": "Update an employee. Requires level 2+."
+					},
+					"response": []
+				},
+				{
+					"name": "Unlink Auth from Employee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-employees/:id/unlink-auth",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-employees",
+								":id",
+								"unlink-auth"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{adminEmployeeId}}"
+								}
+							]
+						},
+						"description": "Unlink auth account from employee. Requires level 2+."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Employee",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-employees/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-employees",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Delete an employee. Requires level 3+."
 					},
 					"response": []
 				}
@@ -597,6 +800,119 @@
 		{
 			"name": "Tickets",
 			"item": [
+				{
+					"name": "Create Master Ticket",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ticketData\": {\n    \"company_id\": \"uuid-here\",\n    \"site_id\": \"uuid-here\",\n    \"work_type_id\": \"uuid-here\",\n    \"description\": \"Master ticket with all related data\"\n  },\n  \"employeeIds\": [\"employee-uuid-1\", \"employee-uuid-2\"],\n  \"merchandiseIds\": [\"merchandise-uuid-1\", \"merchandise-uuid-2\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-tickets/master",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-tickets",
+								"master"
+							]
+						},
+						"description": "Create a ticket with all related data (employees and merchandise) in a single request. Requires level 1+."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Master Ticket",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ticketData\": {\n    \"description\": \"Updated description\"\n  },\n  \"employeeIds\": [\"employee-uuid-1\"],\n  \"merchandiseIds\": [\"merchandise-uuid-1\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-tickets/master/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-tickets",
+								"master",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Update ticket with all related data (employees and merchandise) in a single request. employeeIds and merchandiseIds replace all existing associations."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Master Ticket",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-tickets/master/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-tickets",
+								"master",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Delete a ticket and all its related data (employee assignments, merchandise links, appointments, work results). Requires level 2+."
+					},
+					"response": []
+				},
 				{
 					"name": "List Tickets",
 					"request": {
@@ -888,31 +1204,6 @@
 			"name": "Companies",
 			"item": [
 				{
-					"name": "List Companies",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "apikey",
-								"value": "{{apikey}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-companies",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"functions",
-								"v1",
-								"api-companies"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Search Companies",
 					"request": {
 						"method": "GET",
@@ -939,6 +1230,65 @@
 									"key": "q",
 									"value": "test"
 								}
+							]
+						},
+						"description": "Search companies by name or tax ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recent Companies",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-companies/recent?limit=5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-companies",
+								"recent"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "5"
+								}
+							]
+						},
+						"description": "Get recently created companies. Default limit is 5."
+					},
+					"response": []
+				},
+				{
+					"name": "List Companies",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-companies",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-companies"
 							]
 						}
 					},
@@ -977,6 +1327,42 @@
 					"response": []
 				},
 				{
+					"name": "Find or Create Company",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"tax_id\": \"1234567890123\",\n  \"name_th\": \"บริษัท ทดสอบ จำกัด\",\n  \"name_en\": \"Test Company Ltd.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-companies/find-or-create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-companies",
+								"find-or-create"
+							]
+						},
+						"description": "Find an existing company by tax_id or create a new one if not found. Requires level 1+."
+					},
+					"response": []
+				},
+				{
 					"name": "Create Company",
 					"request": {
 						"method": "POST",
@@ -1006,19 +1392,57 @@
 								"v1",
 								"api-companies"
 							]
-						}
+						},
+						"description": "Create a new company. Requires level 1+."
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "Sites",
-			"item": [
+				},
 				{
-					"name": "List Sites",
+					"name": "Update Company",
 					"request": {
-						"method": "GET",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name_th\": \"บริษัท ทดสอบ จำกัด (อัพเดท)\",\n  \"name_en\": \"Test Company Ltd. (Updated)\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-companies/:taxId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-companies",
+								":taxId"
+							],
+							"variable": [
+								{
+									"key": "taxId",
+									"value": "1234567890123"
+								}
+							]
+						},
+						"description": "Update a company. Uses tax_id as identifier. Requires level 1+."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Company",
+					"request": {
+						"method": "DELETE",
 						"header": [
 							{
 								"key": "apikey",
@@ -1027,19 +1451,32 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-sites",
+							"raw": "{{baseUrl}}/functions/v1/api-companies/:taxId",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"functions",
 								"v1",
-								"api-sites"
+								"api-companies",
+								":taxId"
+							],
+							"variable": [
+								{
+									"key": "taxId",
+									"value": "1234567890123"
+								}
 							]
-						}
+						},
+						"description": "Delete a company. Uses tax_id as identifier. Requires level 1+."
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "Sites",
+			"item": [
 				{
 					"name": "Search Sites",
 					"request": {
@@ -1067,6 +1504,59 @@
 									"key": "q",
 									"value": "test"
 								}
+							]
+						},
+						"description": "Search sites by name or address"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recent Sites",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-sites/recent",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-sites",
+								"recent"
+							]
+						},
+						"description": "Get recently created sites"
+					},
+					"response": []
+				},
+				{
+					"name": "List Sites",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-sites",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-sites"
 							]
 						}
 					},
@@ -1258,7 +1748,7 @@
 			"name": "Contacts",
 			"item": [
 				{
-					"name": "List Contacts",
+					"name": "Search Contacts",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -1269,16 +1759,24 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-contacts",
+							"raw": "{{baseUrl}}/functions/v1/api-contacts/search?q=test",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"functions",
 								"v1",
-								"api-contacts"
+								"api-contacts",
+								"search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "test"
+								}
 							]
-						}
+						},
+						"description": "Search contacts by name, phone, or email"
 					},
 					"response": []
 				},
@@ -1311,7 +1809,66 @@
 									"value": "uuid-here"
 								}
 							]
+						},
+						"description": "Get all contacts for a specific site"
+					},
+					"response": []
+				},
+				{
+					"name": "List Contacts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-contacts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-contacts"
+							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Contact by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-contacts/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-contacts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Get a single contact by UUID"
 					},
 					"response": []
 				},
@@ -1345,7 +1902,83 @@
 								"v1",
 								"api-contacts"
 							]
-						}
+						},
+						"description": "Create a new contact. Requires level 1+."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Contact",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"person_name\": \"John Doe (Updated)\",\n  \"phone\": \"0812345679\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-contacts/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-contacts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Update a contact. Requires level 2+."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Contact",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-contacts/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-contacts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Delete a contact. Requires level 2+."
 					},
 					"response": []
 				}
@@ -1441,7 +2074,83 @@
 								"v1",
 								"api-departments"
 							]
-						}
+						},
+						"description": "Create a new department. Requires level 3+ (Superadmin only)."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Department",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name_th\": \"ฝ่ายขาย (อัพเดท)\",\n  \"name_en\": \"Sales Department (Updated)\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-departments/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-departments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Update a department. Requires level 3+ (Superadmin only)."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Department",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-departments/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-departments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Delete a department. Requires level 3+ (Superadmin only)."
 					},
 					"response": []
 				}
@@ -1537,7 +2246,83 @@
 								"v1",
 								"api-roles"
 							]
-						}
+						},
+						"description": "Create a new role. Requires level 3+ (Superadmin only)."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Role",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name_th\": \"ผู้จัดการ (อัพเดท)\",\n  \"name_en\": \"Manager (Updated)\",\n  \"level\": 6\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-roles/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-roles",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Update a role. Requires level 3+ (Superadmin only)."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Role",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-roles/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-roles",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Delete a role. Requires level 3+ (Superadmin only)."
 					},
 					"response": []
 				}
@@ -1705,14 +2490,9 @@
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "Appointments",
-			"item": [
+				},
 				{
-					"name": "List Appointments",
+					"name": "Get All Constants",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -1723,19 +2503,26 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-appointments",
+							"raw": "{{baseUrl}}/functions/v1/api-reference-data/constants",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"functions",
 								"v1",
-								"api-appointments"
+								"api-reference-data",
+								"constants"
 							]
-						}
+						},
+						"description": "Get all reference data constants (work types, statuses, leave types, provinces) in a single response"
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "Appointments",
+			"item": [
 				{
 					"name": "Get Appointment by Ticket",
 					"request": {
@@ -1762,6 +2549,64 @@
 							"variable": [
 								{
 									"key": "ticketId",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Get appointment for a specific ticket"
+					},
+					"response": []
+				},
+				{
+					"name": "List Appointments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-appointments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-appointments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Appointment by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-appointments/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-appointments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
 									"value": "uuid-here"
 								}
 							]
@@ -1799,7 +2644,83 @@
 								"v1",
 								"api-appointments"
 							]
-						}
+						},
+						"description": "Create a new appointment. Requires level 1+."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Appointment",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"appointment_date\": \"2025-01-02\",\n  \"appointment_time\": \"15:00:00\",\n  \"notes\": \"Updated appointment\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-appointments/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-appointments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Update an appointment. Requires level 2+."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Appointment",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-appointments/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-appointments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Delete an appointment. Requires level 2+."
 					},
 					"response": []
 				}
@@ -1809,7 +2730,7 @@
 			"name": "Work Results",
 			"item": [
 				{
-					"name": "List Work Results",
+					"name": "Get Work Result by Ticket",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -1820,16 +2741,25 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-work-results",
+							"raw": "{{baseUrl}}/functions/v1/api-work-results/ticket/:ticketId",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"functions",
 								"v1",
-								"api-work-results"
+								"api-work-results",
+								"ticket",
+								":ticketId"
+							],
+							"variable": [
+								{
+									"key": "ticketId",
+									"value": "uuid-here"
+								}
 							]
-						}
+						},
+						"description": "Get work result for a specific ticket"
 					},
 					"response": []
 				},
@@ -1898,6 +2828,316 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Update Work Result",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"Updated work description\",\n  \"result_note\": \"Updated notes\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-work-results/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-work-results",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Update a work result. Requires level 0+ (all authenticated users)."
+					},
+					"response": []
+				},
+				{
+					"name": "Add Photo to Work Result",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "work_result_id",
+									"value": "uuid-here",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-work-results/photos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-work-results",
+								"photos"
+							]
+						},
+						"description": "Upload a photo to a work result. Requires multipart/form-data with work_result_id and file. Requires level 1+."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Photo",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-work-results/photos/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-work-results",
+								"photos",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Delete a photo from a work result. Requires level 1+."
+					},
+					"response": []
+				},
+				{
+					"name": "Add Document to Work Result",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "work_result_id",
+									"value": "uuid-here",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-work-results/documents",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-work-results",
+								"documents"
+							]
+						},
+						"description": "Upload a document to a work result. Requires multipart/form-data with work_result_id and file. Requires level 1+."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Document",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-work-results/documents/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-work-results",
+								"documents",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Delete a document from a work result. Requires level 1+."
+					},
+					"response": []
+				},
+				{
+					"name": "Add Document Page",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "document_id",
+									"value": "uuid-here",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "page_number",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-work-results/documents/pages",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-work-results",
+								"documents",
+								"pages"
+							]
+						},
+						"description": "Add a page to a multi-page document. Requires multipart/form-data with document_id, file, and page_number. Requires level 1+."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Document Page",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-work-results/documents/pages/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-work-results",
+								"documents",
+								"pages",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Delete a page from a document. Requires level 1+."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Work Result",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-work-results/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-work-results",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Delete a work result. Requires level 0+ (all authenticated users)."
+					},
+					"response": []
 				}
 			]
 		},
@@ -1924,6 +3164,38 @@
 								"functions",
 								"v1",
 								"api-leave-requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Leave Request by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-leave-requests/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-leave-requests",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
 							]
 						}
 					},
@@ -1960,6 +3232,48 @@
 								"api-leave-requests"
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Leave Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reason\": \"Updated reason\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-leave-requests/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-leave-requests",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Update a leave request. Can only update pending requests. Requires level 1+."
 					},
 					"response": []
 				},
@@ -2001,7 +3315,127 @@
 									"value": "uuid-here"
 								}
 							]
-						}
+						},
+						"description": "Approve a leave request. Requires level 2+."
+					},
+					"response": []
+				},
+				{
+					"name": "Reject Leave Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"notes\": \"Rejected due to insufficient leave balance\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-leave-requests/:id/reject",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-leave-requests",
+								":id",
+								"reject"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Reject a leave request. Requires level 2+."
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Leave Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"notes\": \"Cancelled by employee\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-leave-requests/:id/cancel",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-leave-requests",
+								":id",
+								"cancel"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Cancel a leave request. Can only cancel pending requests. Requires level 1+."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Leave Request",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-leave-requests/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-leave-requests",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Delete a leave request. Requires level 2+."
 					},
 					"response": []
 				}
@@ -2139,7 +3573,83 @@
 									"value": "uuid-here"
 								}
 							]
-						}
+						},
+						"description": "Vote on a poll. Requires level 0+."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Poll",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"question\": \"Updated question?\",\n  \"expires_at\": \"2025-12-31T23:59:59Z\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-polls/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-polls",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Update a poll. Requires level 0+ (all authenticated users)."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Poll",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-polls/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-polls",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Delete a poll. Requires level 0+ (all authenticated users)."
 					},
 					"response": []
 				}
@@ -2259,7 +3769,52 @@
 									"value": "uuid-here"
 								}
 							]
-						}
+						},
+						"description": "Get all merchandise for a specific site"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Merchandise by Model",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-merchandise/model/:modelId?page=1&limit=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-merchandise",
+								"model",
+								":modelId"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								}
+							],
+							"variable": [
+								{
+									"key": "modelId",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Get all merchandise for a specific model"
 					},
 					"response": []
 				},

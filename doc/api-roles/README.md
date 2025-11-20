@@ -69,7 +69,7 @@ Create a new role.
 
 **Endpoint**: `POST /`
 
-**Required Level**: 2 (admin and above)
+**Required Level**: 3 (Superadmin only)
 
 **Request Body**:
 ```json
@@ -97,7 +97,26 @@ Update an existing role.
 
 **Endpoint**: `PUT /:id`
 
-**Required Level**: 2 (admin and above)
+**Required Level**: 3 (Superadmin only)
+
+**Path Parameters**:
+- `id` (required): Role ID (UUID)
+
+**Request Body**:
+```json
+{
+  "name_th": "ผู้จัดการ (อัพเดท)",
+  "name_en": "Manager (Updated)",
+  "description": "Updated description",
+  "level": 6,
+  "department_id": "123e4567-e89b-12d3-a456-426614174001"
+}
+```
+
+**Note**: 
+- All fields are optional. Only provided fields will be updated.
+- `is_active` and `requires_auth` fields are temporarily excluded from updates until PostgREST schema cache refreshes. They will maintain their current database values during updates.
+- At least one field must be provided for update.
 
 ---
 
@@ -107,7 +126,10 @@ Delete a role.
 
 **Endpoint**: `DELETE /:id`
 
-**Required Level**: 2 (admin and above)
+**Required Level**: 3 (Superadmin only)
+
+**Path Parameters**:
+- `id` (required): Role ID (UUID)
 
 ---
 

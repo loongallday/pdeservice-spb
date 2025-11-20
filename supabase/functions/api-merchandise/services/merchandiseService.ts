@@ -314,7 +314,7 @@ export class MerchandiseService {
 
     if (error) {
       if (error.message.includes('foreign key')) {
-        throw new ValidationError('ไม่สามารถลบข้อมูลที่มีการใช้งานอยู่');
+        throw new ValidationError('มีข้อมูลอ้างอิงที่ใช้งานอยู่ ไม่สามารถลบได้');
       }
       throw new DatabaseError('ไม่สามารถลบข้อมูลได้');
     }

@@ -10,7 +10,7 @@ import type { Employee } from '../../_shared/auth.ts';
 
 export async function deleteContact(req: Request, employee: Employee, id: string) {
   // Check permissions - Level 1 (non-technician_l1) and above can delete contacts
-  await requireMinLevel(employee, 1);
+  await requireMinLevel(employee, 2);
 
   // Validate ID
   validateUUID(id, 'Contact ID');
