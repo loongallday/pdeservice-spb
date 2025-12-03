@@ -314,10 +314,195 @@ export class MerchandiseService {
 
     if (error) {
       if (error.message.includes('foreign key')) {
-        throw new ValidationError('ไม่สามารถลบข้อมูลที่มีการใช้งานอยู่');
+        throw new ValidationError('มีข้อมูลอ้างอิงที่ใช้งานอยู่ ไม่สามารถลบได้');
       }
       throw new DatabaseError('ไม่สามารถลบข้อมูลได้');
     }
+  }
+
+  /**
+   * Search merchandise by serial number
+   * If no query provided, returns all merchandise (up to 20)
+   */
+  static async search(query: string): Promise<Record<string, unknown>[]> {
+    const supabase = createServiceClient();
+
+    let queryBuilder = supabase
+      .from('merchandise')
+      .select(`
+        id,
+        serial_no,
+        model_id,
+        site_id,
+        pm_count,
+        site:sites!merchandise_site_id_fkey (
+          id,
+          name
+        ),
+        model:models!merchandise_model_id_fkey (
+          id,
+          model,
+          name
+        ),
+        distributor_id,
+        dealer_id,
+        distributor:companies!merchandise_distributor_id_fkey (
+          tax_id,
+          name_th,
+          name_en
+        ),
+        dealer:companies!merchandise_dealer_id_fkey (
+          tax_id,
+          name_th,
+          name_en
+        ),
+        replaced_by_id,
+        created_at,
+        updated_at
+      `);
+
+    // Apply search filter if query is provided
+    if (query && query.length > 0) {
+      queryBuilder = queryBuilder.ilike('serial_no', `%${query}%`);
+    }
+    // If no query, return all merchandise (no filter applied)
+
+    const { data, error } = await queryBuilder
+      .limit(20)
+      .order('created_at', { ascending: false });
+
+    if (error) throw new DatabaseError(error.message);
+
+    // Collect all unique replaced_by_id values
+    const replacedByIds = (data || [])
+      .map((m: Record<string, unknown>) => m.replaced_by_id)
+      .filter((id: unknown): id is string => typeof id === 'string' && id.length > 0);
+
+    // Fetch all replaced_by merchandise serial_nos in one query
+    let replacedByMap: Record<string, string> = {};
+    if (replacedByIds.length > 0) {
+      const { data: replacedByData, error: replacedByError } = await supabase
+        .from('merchandise')
+        .select('id, serial_no')
+        .in('id', replacedByIds);
+
+      if (!replacedByError && replacedByData) {
+        replacedByMap = replacedByData.reduce((acc: Record<string, string>, item: Record<string, unknown>) => {
+          if (item.id && item.serial_no) {
+            acc[item.id as string] = item.serial_no as string;
+          }
+          return acc;
+        }, {});
+      }
+    }
+
+    // Transform data to remove site_id, model_id, pm_count, distributor_id, dealer_id, replaced_by_id
+    // and format distributor, dealer as nested objects, replaced_by as string
+    const transformedData = (data || []).map((merchandise) => {
+      const { site_id, model_id, pm_count, distributor_id, dealer_id, replaced_by_id, ...rest } = merchandise;
+      
+      return {
+        ...rest,
+        distributor: merchandise.distributor ? {
+          id: merchandise.distributor.tax_id,
+          name: merchandise.distributor.name_th || merchandise.distributor.name_en || null,
+        } : null,
+        dealer: merchandise.dealer ? {
+          id: merchandise.dealer.tax_id,
+          name: merchandise.dealer.name_th || merchandise.dealer.name_en || null,
+        } : null,
+        replaced_by: replaced_by_id && typeof replaced_by_id === 'string' 
+          ? (replacedByMap[replaced_by_id] || null)
+          : null,
+      };
+    });
+
+    return transformedData;
+  }
+
+  /**
+   * Get merchandise hints (up to 5 merchandise)
+   * If query is empty, returns 5 merchandise ordered by created_at descending
+   * If query is provided, searches by serial_no and returns up to 5 matching merchandise
+   * If site_id is provided, filters by site
+   */
+  static async hint(query: string, siteId?: string): Promise<Record<string, unknown>[]> {
+    const supabase = createServiceClient();
+
+    let queryBuilder = supabase
+      .from('merchandise')
+      .select(`
+        id,
+        serial_no,
+        model_id,
+        site_id,
+        model:models!merchandise_model_id_fkey (
+          id,
+          model,
+          name
+        ),
+        site:sites!merchandise_site_id_fkey (
+          id,
+          name
+        )
+      `);
+
+    if (query && query.length > 0) {
+      // Search by serial_no
+      queryBuilder = queryBuilder.ilike('serial_no', `%${query}%`);
+    }
+
+    if (siteId) {
+      // Filter by site_id
+      queryBuilder = queryBuilder.eq('site_id', siteId);
+    }
+
+    // Always limit to 5 and order by created_at descending
+    const { data, error } = await queryBuilder
+      .order('created_at', { ascending: false })
+      .limit(5);
+
+    if (error) throw new DatabaseError(error.message);
+
+    // Transform data to return with formatted fields
+    const transformedData = (data || []).map((merchandise) => ({
+      id: merchandise.id,
+      serial_no: merchandise.serial_no,
+      model_id: merchandise.model_id || null,
+      site_id: merchandise.site_id || null,
+      model_name: merchandise.model ? (merchandise.model.name || merchandise.model.model || null) : null,
+      site_name: merchandise.site ? merchandise.site.name || null : null,
+    }));
+
+    return transformedData;
+  }
+
+  /**
+   * Check if a serial number already exists
+   * Returns the merchandise record if found, null otherwise
+   */
+  static async checkDuplicateSerial(serialNo: string): Promise<Record<string, unknown> | null> {
+    const supabase = createServiceClient();
+
+    if (!serialNo || serialNo.trim().length === 0) {
+      throw new ValidationError('กรุณาระบุ serial number');
+    }
+
+    const { data, error } = await supabase
+      .from('merchandise')
+      .select('id, serial_no, model_id, site_id, created_at')
+      .eq('serial_no', serialNo.trim())
+      .single();
+
+    if (error) {
+      if (error.code === 'PGRST116') {
+        // No record found - not a duplicate
+        return null;
+      }
+      throw new DatabaseError(`ไม่สามารถตรวจสอบ serial number ได้: ${error.message}`);
+    }
+
+    return data || null;
   }
 }
 

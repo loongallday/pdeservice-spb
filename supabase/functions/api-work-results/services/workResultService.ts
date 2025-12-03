@@ -106,5 +106,27 @@ export class WorkResultService {
 
     if (error) throw new DatabaseError(error.message);
   }
+
+  /**
+   * Search work results by notes
+   */
+  static async search(query: string): Promise<Record<string, unknown>[]> {
+    const supabase = createServiceClient();
+
+    if (!query || query.length < 1) {
+      return [];
+    }
+
+    const { data, error } = await supabase
+      .from('work_results')
+      .select('*')
+      .ilike('notes', `%${query}%`)
+      .limit(20)
+      .order('created_at', { ascending: false });
+
+    if (error) throw new DatabaseError(error.message);
+
+    return data || [];
+  }
 }
 

@@ -1,13 +1,14 @@
 /**
  * Initialize API Edge Function
- * Returns all initial data needed to bootstrap the application
+ * Returns current user information
  */
 
 import { handleCORS } from './_shared/cors.ts';
 import { error } from './_shared/response.ts';
 import { authenticate } from './_shared/auth.ts';
 import { handleError } from './_shared/error.ts';
-import { initialize } from './handlers/initialize.ts';
+import { me } from './handlers/me.ts';
+import { features } from './handlers/features.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -26,9 +27,14 @@ Deno.serve(async (req) => {
     const relativePath = functionIndex >= 0 ? pathParts.slice(functionIndex + 1) : [];
     const method = req.method;
 
-    // GET / - Initialize (get all initial data)
-    if (method === 'GET' && relativePath.length === 0) {
-      return await initialize(req, employee);
+    // GET /me - Get current user info
+    if (method === 'GET' && relativePath.length === 1 && relativePath[0] === 'me') {
+      return await me(req, employee);
+    }
+
+    // GET /features - Get enabled features
+    if (method === 'GET' && relativePath.length === 1 && relativePath[0] === 'features') {
+      return await features(req, employee);
     }
 
     return error('Not found', 404);

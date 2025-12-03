@@ -13,6 +13,7 @@ import { getByTicket } from './handlers/getByTicket.ts';
 import { create } from './handlers/create.ts';
 import { update } from './handlers/update.ts';
 import { deleteAppointment } from './handlers/delete.ts';
+import { search } from './handlers/search.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -40,6 +41,11 @@ Deno.serve(async (req) => {
     // GET / - List appointments
     if (method === 'GET' && relativePath.length === 0) {
       return await list(req, employee);
+    }
+
+    // GET /search - Search appointments
+    if (method === 'GET' && relativePath.length === 1 && relativePath[0] === 'search') {
+      return await search(req, employee);
     }
 
     // GET /:id - Get single appointment

@@ -15,6 +15,7 @@ import { deleteLeaveRequest } from './handlers/delete.ts';
 import { approve } from './handlers/approve.ts';
 import { reject } from './handlers/reject.ts';
 import { cancel } from './handlers/cancel.ts';
+import { search } from './handlers/search.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -38,8 +39,13 @@ Deno.serve(async (req) => {
       return await list(req, employee);
     }
 
+    // GET /search - Search leave requests
+    if (method === 'GET' && relativePath.length === 1 && relativePath[0] === 'search') {
+      return await search(req, employee);
+    }
+
     // GET /:id - Get single leave request
-    if (method === 'GET' && relativePath.length === 1 && !['approve', 'reject', 'cancel'].includes(relativePath[0])) {
+    if (method === 'GET' && relativePath.length === 1 && !['approve', 'reject', 'cancel', 'search'].includes(relativePath[0])) {
       const id = relativePath[0];
       return await get(req, employee, id);
     }

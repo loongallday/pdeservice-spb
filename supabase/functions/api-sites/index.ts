@@ -7,14 +7,13 @@ import { handleCORS } from './_shared/cors.ts';
 import { error } from './_shared/response.ts';
 import { authenticate } from './_shared/auth.ts';
 import { handleError } from './_shared/error.ts';
-import { list } from './handlers/list.ts';
-import { get } from './handlers/get.ts';
-import { search } from './handlers/search.ts';
-import { recent } from './handlers/recent.ts';
+import { getById } from './handlers/getById.ts';
+import { globalSearch } from './handlers/globalSearch.ts';
+import { hint } from './handlers/hint.ts';
 import { create } from './handlers/create.ts';
+import { createOrReplace } from './handlers/createOrReplace.ts';
 import { update } from './handlers/update.ts';
 import { deleteSite } from './handlers/delete.ts';
-import { findOrCreate } from './handlers/findOrCreate.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -33,47 +32,64 @@ Deno.serve(async (req) => {
     const relativePath = functionIndex >= 0 ? pathParts.slice(functionIndex + 1) : [];
     const method = req.method;
 
-    // GET /search - Search sites
-    if (method === 'GET' && relativePath.length === 1 && relativePath[0] === 'search') {
-      return await search(req, employee);
-    }
+    switch (method) {
+      case "GET":
+        // GET /global-search - Global search sites (paginated)
+        if (relativePath.length === 1 && relativePath[0] === "global-search") {
+          return await globalSearch(req, employee);
+        }
 
-    // GET /recent - Get recent sites
-    if (method === 'GET' && relativePath.length === 1 && relativePath[0] === 'recent') {
-      return await recent(req, employee);
-    }
+        // GET /hint - Get site hints (up to 5 sites)
+        if (relativePath.length === 1 && relativePath[0] === "hint") {
+          return await hint(req, employee);
+        }
 
-    // GET / - List sites
-    if (method === 'GET' && relativePath.length === 0) {
-      return await list(req, employee);
-    }
+        // GET /:id - Get single site
+        if (relativePath.length === 1) {
+          const id = relativePath[0];
+          // Validate it's not a special route
+          if (id === 'global-search' || id === 'hint' || id === 'create-or-replace') {
+            return error('Not found', 404);
+          }
+          return await getById(req, employee, id);
+        }
+        break;
 
-    // GET /:id - Get single site
-    if (method === 'GET' && relativePath.length === 1) {
-      const id = relativePath[0];
-      return await get(req, employee, id);
-    }
+      case "POST":
+        // POST /create-or-replace - Create or replace site
+        if (relativePath.length === 1 && relativePath[0] === "create-or-replace") {
+          return await createOrReplace(req, employee);
+        }
 
-    // POST /find-or-create - Find or create site
-    if (method === 'POST' && relativePath.length === 1 && relativePath[0] === 'find-or-create') {
-      return await findOrCreate(req, employee);
-    }
+        // POST / - Create site
+        if (relativePath.length === 0) {
+          return await create(req, employee);
+        }
+        break;
 
-    // POST / - Create site
-    if (method === 'POST' && relativePath.length === 0) {
-      return await create(req, employee);
-    }
+      case "PUT":
+        // PUT /:id - Update site
+        if (relativePath.length === 1) {
+          const id = relativePath[0];
+          // Validate it's not a special route
+          if (id === 'global-search' || id === 'hint' || id === 'create-or-replace') {
+            return error('Not found', 404);
+          }
+          return await update(req, employee, id);
+        }
+        break;
 
-    // PUT /:id - Update site
-    if (method === 'PUT' && relativePath.length === 1) {
-      const id = relativePath[0];
-      return await update(req, employee, id);
-    }
-
-    // DELETE /:id - Delete site
-    if (method === 'DELETE' && relativePath.length === 1) {
-      const id = relativePath[0];
-      return await deleteSite(req, employee, id);
+      case "DELETE":
+        // DELETE /:id - Delete site
+        if (relativePath.length === 1) {
+          const id = relativePath[0];
+          // Validate it's not a special route
+          if (id === 'global-search' || id === 'hint' || id === 'create-or-replace') {
+            return error('Not found', 404);
+          }
+          return await deleteSite(req, employee, id);
+        }
+        break;
     }
 
     return error('Not found', 404);

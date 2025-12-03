@@ -44,16 +44,53 @@ Authorization: Bearer <token>
 
 ---
 
-### Get Department by ID
+### Search Departments
 
-Get a single department by its ID.
+Search for departments by code or name.
 
-**Endpoint**: `GET /:id`
+**Endpoint**: `GET /search`
 
 **Required Level**: 0 (all authenticated users)
 
-**Path Parameters**:
-- `id` (required): Department ID (UUID)
+**Query Parameters**:
+- `q` (required): Search query string (1+ characters)
+
+**Example Request**:
+```http
+GET /functions/v1/api-departments/search?q=IT
+Authorization: Bearer <token>
+```
+
+**Example Response**:
+```json
+{
+  "data": [
+    {
+      "id": "123e4567-e89b-12d3-a456-426614174000",
+      "code": "IT",
+      "name_th": "แผนกเทคโนโลยีสารสนเทศ",
+      "name_en": "Information Technology",
+      "description": "IT and Software Development",
+      "is_active": true,
+      "head_id": null,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  ]
+}
+```
+
+**Searchable Fields**:
+- `code` - Department code (partial match)
+- `name_th` - Thai name (partial match)
+- `name_en` - English name (partial match)
+
+**Notes**:
+- Search is case-insensitive
+- Returns up to 20 results
+- Results are sorted by code
+- Empty query returns empty array
+- Partial matches are supported
 
 ---
 
@@ -63,7 +100,7 @@ Create a new department.
 
 **Endpoint**: `POST /`
 
-**Required Level**: 1 (non-technician_l1 and above)
+**Required Level**: 3 (Superadmin only)
 
 **Request Body**:
 ```json
@@ -88,7 +125,22 @@ Update an existing department.
 
 **Endpoint**: `PUT /:id`
 
-**Required Level**: 1 (non-technician_l1 and above)
+**Required Level**: 3 (Superadmin only)
+
+**Path Parameters**:
+- `id` (required): Department ID (UUID)
+
+**Request Body**:
+```json
+{
+  "name_th": "แผนกเทคโนโลยี (อัพเดท)",
+  "name_en": "IT Department (Updated)",
+  "description": "Updated description",
+  "is_active": true
+}
+```
+
+**Note**: All fields are optional. Only provided fields will be updated.
 
 ---
 
@@ -98,7 +150,10 @@ Delete a department.
 
 **Endpoint**: `DELETE /:id`
 
-**Required Level**: 1 (non-technician_l1 and above)
+**Required Level**: 3 (Superadmin only)
+
+**Path Parameters**:
+- `id` (required): Department ID (UUID)
 
 ---
 

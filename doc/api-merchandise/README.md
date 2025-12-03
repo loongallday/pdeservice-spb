@@ -1,117 +1,283 @@
-# API Merchandise
+# Merchandise API
 
-จัดการข้อมูล merchandise (อุปกรณ์/เครื่องจักร) ที่ติดตั้งอยู่ใน site ต่างๆ
+## Overview
 
-## Base URL
-```
-/api-merchandise
-```
+The Merchandise API handles equipment/merchandise management operations including search, CRUD operations, and retrieval by ID.
 
-## Authentication
-ทุก endpoint ต้องการ JWT token ใน Authorization header
+**Base URL**: `/functions/v1/api-merchandise`
+
+**Authentication**: All endpoints require Bearer token authentication.
+
+---
 
 ## Endpoints
 
-### 1. List Merchandise
-ดึงรายการ merchandise ทั้งหมดแบบแบ่งหน้า
+### Search Merchandise
 
-**Endpoint:** `GET /`
+Search for merchandise by serial number.
 
-**Authorization:** Level 0+
+**Endpoint**: `GET /search`
 
-**Query Parameters:**
+**Required Level**: 0 (all authenticated users)
+
+**Query Parameters**:
+
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| page | number | No | หมายเลขหน้า (default: 1) |
-| limit | number | No | จำนวนรายการต่อหน้า (default: 20) |
-| search | string | No | ค้นหาจาก serial number |
+| `q` | string | No | Search query for serial number (partial match, case-insensitive) |
 
-**Response:**
+**Notes**:
+- If no query is provided, returns all merchandise (up to 20 items)
+- Results are limited to 20 items, ordered by creation date (newest first)
+- Search is case-insensitive and supports partial matching
+
+**Example Request**:
+```http
+GET /functions/v1/api-merchandise/search?q=SN123
+Authorization: Bearer <token>
+```
+
+**Example Response**:
+```json
+{
+  "data": [
+    {
+      "id": "123e4567-e89b-12d3-a456-426614174000",
+      "serial_no": "SN12345",
+      "model": {
+        "id": "uuid",
+        "model": "MODEL-001",
+        "name": "Model Name"
+      },
+      "site": {
+        "id": "uuid",
+        "name": "Site Name"
+      },
+      "distributor": {
+        "id": "1234567890123",
+        "name": "บริษัทจัดจำหน่าย"
+      },
+      "dealer": {
+        "id": "9876543210987",
+        "name": "บริษัทดีลเลอร์"
+      },
+      "replaced_by": "SN99999",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  ]
+}
+```
+
+**Response Fields**:
+- `id`: Merchandise ID (UUID)
+- `serial_no`: Serial number
+- `model`: Nested model object with `id`, `model`, and `name` (nullable)
+- `site`: Nested site object with `id` and `name` (nullable)
+- `distributor`: Nested distributor company object with `id` (tax_id) and `name` (nullable)
+- `dealer`: Nested dealer company object with `id` (tax_id) and `name` (nullable)
+- `replaced_by`: Serial number of the merchandise that replaced this one (string, nullable)
+- `created_at`: Creation timestamp
+- `updated_at`: Last update timestamp
+
+---
+
+### Get Merchandise Hints
+
+Get up to 5 merchandise hints. If query is empty, returns 5 most recent merchandise. If query is provided, searches by serial number and returns matching merchandise.
+
+**Endpoint**: `GET /hint`
+
+**Required Level**: 0 (all authenticated users)
+
+**Query Parameters**:
+- `q` (optional): Search query string. If empty, returns 5 most recent merchandise ordered by creation date.
+- `site_id` (optional): Filter by site ID (UUID). If provided, only returns merchandise from the specified site.
+
+**Example Request** (with query):
+```http
+GET /functions/v1/api-merchandise/hint?q=SN123
+Authorization: Bearer <token>
+```
+
+**Example Request** (empty query - returns 5 recent merchandise):
+```http
+GET /functions/v1/api-merchandise/hint
+Authorization: Bearer <token>
+```
+
+**Example Request** (with site_id filter):
+```http
+GET /functions/v1/api-merchandise/hint?site_id=123e4567-e89b-12d3-a456-426614174000
+Authorization: Bearer <token>
+```
+
+**Example Request** (with query and site_id):
+```http
+GET /functions/v1/api-merchandise/hint?q=SN123&site_id=123e4567-e89b-12d3-a456-426614174000
+Authorization: Bearer <token>
+```
+
+**Example Response**:
+```json
+{
+  "data": [
+    {
+      "id": "123e4567-e89b-12d3-a456-426614174000",
+      "serial_no": "SN12345",
+      "model_id": "uuid",
+      "site_id": "uuid",
+      "model_name": "Model Name",
+      "site_name": "Site Name"
+    },
+    {
+      "id": "123e4567-e89b-12d3-a456-426614174001",
+      "serial_no": "SN12346",
+      "model_id": "uuid",
+      "site_id": "uuid",
+      "model_name": "Another Model",
+      "site_name": "Another Site"
+    }
+  ]
+}
+```
+
+**Response Fields**:
+- `id`: Merchandise ID (UUID)
+- `serial_no`: Serial number
+- `model_id`: Model ID (UUID, nullable)
+- `site_id`: Site ID (UUID, nullable)
+- `model_name`: Model name (from related model, nullable)
+- `site_name`: Site name (from related site, nullable)
+
+**Note**: Always returns up to 5 merchandise maximum.
+
+---
+
+### Check Duplicate Serial Number
+
+Check if a serial number already exists in the system. Useful for validating before creating new merchandise.
+
+**Endpoint**: `GET /check-duplicate`
+
+**Required Level**: 0 (all authenticated users)
+
+**Query Parameters**:
+- `serial_no` (required): Serial number to check
+
+**Example Request**:
+```http
+GET /functions/v1/api-merchandise/check-duplicate?serial_no=SN12345
+Authorization: Bearer <token>
+```
+
+**Example Response** (when duplicate exists):
 ```json
 {
   "data": {
-    "data": [
-      {
-        "id": "uuid",
-        "serial_no": "SN12345",
-        "model_id": "uuid",
-        "model": {
-          "id": "uuid",
-          "model": "MODEL-001",
-          "name": "Model Name",
-          "website_url": "https://..."
-        },
-        "site_id": "uuid",
-        "site": {
-          "id": "uuid",
-          "name": "Site Name"
-        },
-        "pm_count": 10,
-        "distributor_id": "uuid",
-        "dealer_id": "uuid",
-        "replaced_by_id": "uuid",
-        "distributor": { "id": "uuid", "name_th": "บริษัทจัดจำหน่าย" },
-        "dealer": { "id": "uuid", "name_th": "บริษัทดีลเลอร์" },
-        "replaced_by": { "id": "uuid", "serial_no": "SN99999" },
-        "created_at": "2025-11-17T...",
-        "updated_at": "2025-11-17T..."
-      }
-    ],
-    "pagination": {
-      "page": 1,
-      "limit": 20,
-      "total": 100,
-      "totalPages": 5,
-      "hasNext": true,
-      "hasPrevious": false
+    "is_duplicate": true,
+    "merchandise": {
+      "id": "123e4567-e89b-12d3-a456-426614174000",
+      "serial_no": "SN12345",
+      "model_id": "uuid",
+      "site_id": "uuid",
+      "created_at": "2024-01-01T00:00:00Z"
     }
   }
 }
 ```
 
-### 2. Get Merchandise by ID
-ดึงข้อมูล merchandise รายการเดียว
+**Example Response** (when no duplicate):
+```json
+{
+  "data": {
+    "is_duplicate": false,
+    "merchandise": null
+  }
+}
+```
 
-**Endpoint:** `GET /:id`
+**Response Fields**:
+- `is_duplicate`: Boolean indicating if the serial number exists
+- `merchandise`: Merchandise object if found, `null` otherwise. Contains `id`, `serial_no`, `model_id`, `site_id`, and `created_at`
 
-**Authorization:** Level 0+
+**Error Responses**:
+- `400 Bad Request`: Missing `serial_no` parameter
+- `401 Unauthorized`: Missing or invalid authentication token
+- `500 Internal Server Error`: Database error
 
-**Response:** (เหมือน item ใน list)
+**Notes**:
+- This endpoint performs an exact match on the serial number (case-sensitive)
+- Use this endpoint before creating new merchandise to avoid duplicates
+- Returns basic merchandise information if a duplicate is found
 
-### 3. Get Merchandise by Site
-ดึงรายการ merchandise ของ site ที่ระบุ
+---
 
-**Endpoint:** `GET /site/:siteId`
+### Get Merchandise by ID
 
-**Authorization:** Level 0+
+Get a single merchandise item by its ID.
 
-**Query Parameters:**
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| page | number | No | หมายเลขหน้า |
-| limit | number | No | จำนวนรายการต่อหน้า |
+**Endpoint**: `GET /:id`
 
-**Response:** (เหมือน list)
+**Required Level**: 0 (all authenticated users)
 
-### 4. Get Merchandise by Model
-ดึงรายการ merchandise ของ model ที่ระบุ
+**Path Parameters**:
+- `id` (required): Merchandise ID (UUID)
 
-**Endpoint:** `GET /model/:modelId`
+**Example Request**:
+```http
+GET /functions/v1/api-merchandise/123e4567-e89b-12d3-a456-426614174000
+Authorization: Bearer <token>
+```
 
-**Authorization:** Level 0+
+**Example Response**:
+```json
+{
+  "data": {
+    "id": "123e4567-e89b-12d3-a456-426614174000",
+    "serial_no": "SN12345",
+    "model_id": "uuid",
+    "model": {
+      "id": "uuid",
+      "model": "MODEL-001",
+      "name": "Model Name",
+      "website_url": "https://manufacturer.com/model-001"
+    },
+    "site_id": "uuid",
+    "site": {
+      "id": "uuid",
+      "name": "Site Name"
+    },
+    "pm_count": 10,
+    "distributor_id": "uuid",
+    "dealer_id": "uuid",
+    "replaced_by_id": null,
+    "distributor": {
+      "id": "uuid",
+      "name_th": "บริษัทจัดจำหน่าย"
+    },
+    "dealer": {
+      "id": "uuid",
+      "name_th": "บริษัทดีลเลอร์"
+    },
+    "replaced_by": null,
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z"
+  }
+}
+```
 
-**Query Parameters:** (เหมือน get by site)
+---
 
-**Response:** (เหมือน list)
+### Create Merchandise
 
-### 5. Create Merchandise
-สร้าง merchandise ใหม่
+Create a new merchandise item.
 
-**Endpoint:** `POST /`
+**Endpoint**: `POST /`
 
-**Authorization:** Level 1+
+**Required Level**: 1 (create operations)
 
-**Request Body:**
+**Request Body**:
 ```json
 {
   "serial_no": "SN12345",
@@ -124,48 +290,139 @@
 }
 ```
 
-**Required Fields:**
-- `serial_no` - Serial number ของอุปกรณ์
-- `model_id` - ID ของ model (ต้องมีใน models table)
-- `site_id` - ID ของ site (ต้องมีใน sites table)
+**Required Fields**:
+- `serial_no`: Serial number of the equipment (unique)
+- `model_id`: ID of the model (must exist in models table)
+- `site_id`: ID of the site (must exist in sites table)
 
-**Optional Fields:**
-- `pm_count` - จำนวน PM สูงสุดก่อนต้องต่ออายุประกัน
-- `distributor_id` - ID ของบริษัทจัดจำหน่าย
-- `dealer_id` - ID ของบริษัทดีลเลอร์
-- `replaced_by_id` - ID ของ merchandise ที่มาแทนที่
+**Optional Fields**:
+- `pm_count`: Maximum PM count before warranty renewal is required
+- `distributor_id`: ID of the distributor company
+- `dealer_id`: ID of the dealer company
+- `replaced_by_id`: ID of the merchandise that replaces this one
 
-**Response:** (201 Created)
-```json
+**Example Request**:
+```http
+POST /functions/v1/api-merchandise
+Authorization: Bearer <token>
+Content-Type: application/json
+
 {
-  "data": { /* merchandise object */ }
+  "serial_no": "SN12345",
+  "model_id": "uuid-here",
+  "site_id": "uuid-here",
+  "pm_count": 10
 }
 ```
 
-### 6. Update Merchandise
-แก้ไขข้อมูล merchandise
-
-**Endpoint:** `PUT /:id`
-
-**Authorization:** Level 2+
-
-**Request Body:** (เหมือน create แต่ทุก field เป็น optional)
-
-**Response:**
+**Example Response** (201 Created):
 ```json
 {
-  "data": { /* updated merchandise object */ }
+  "data": {
+    "id": "123e4567-e89b-12d3-a456-426614174000",
+    "serial_no": "SN12345",
+    "model_id": "uuid",
+    "model": {
+      "id": "uuid",
+      "model": "MODEL-001",
+      "name": "Model Name",
+      "website_url": "https://manufacturer.com/model-001"
+    },
+    "site_id": "uuid",
+    "site": {
+      "id": "uuid",
+      "name": "Site Name"
+    },
+    "pm_count": 10,
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z"
+  }
 }
 ```
 
-### 7. Delete Merchandise
-ลบ merchandise
+---
 
-**Endpoint:** `DELETE /:id`
+### Update Merchandise
 
-**Authorization:** Level 2+
+Update an existing merchandise item.
 
-**Response:**
+**Endpoint**: `PUT /:id`
+
+**Required Level**: 2 (update operations)
+
+**Path Parameters**:
+- `id` (required): Merchandise ID (UUID)
+
+**Request Body** (all fields optional):
+```json
+{
+  "serial_no": "SN12346",
+  "model_id": "uuid",
+  "site_id": "uuid",
+  "pm_count": 15,
+  "distributor_id": "uuid",
+  "dealer_id": "uuid",
+  "replaced_by_id": "uuid"
+}
+```
+
+**Example Request**:
+```http
+PUT /functions/v1/api-merchandise/123e4567-e89b-12d3-a456-426614174000
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "pm_count": 15,
+  "dealer_id": "uuid-here"
+}
+```
+
+**Example Response**:
+```json
+{
+  "data": {
+    "id": "123e4567-e89b-12d3-a456-426614174000",
+    "serial_no": "SN12345",
+    "model_id": "uuid",
+    "model": {
+      "id": "uuid",
+      "model": "MODEL-001",
+      "name": "Model Name",
+      "website_url": "https://manufacturer.com/model-001"
+    },
+    "site_id": "uuid",
+    "site": {
+      "id": "uuid",
+      "name": "Site Name"
+    },
+    "pm_count": 15,
+    "dealer_id": "uuid-here",
+    "updated_at": "2024-01-02T00:00:00Z"
+  }
+}
+```
+
+---
+
+### Delete Merchandise
+
+Delete a merchandise item.
+
+**Endpoint**: `DELETE /:id`
+
+**Required Level**: 2 (delete operations)
+
+**Path Parameters**:
+- `id` (required): Merchandise ID (UUID)
+
+**Example Request**:
+```http
+DELETE /functions/v1/api-merchandise/123e4567-e89b-12d3-a456-426614174000
+Authorization: Bearer <token>
+```
+
+**Example Response**:
 ```json
 {
   "data": {
@@ -174,12 +431,19 @@
 }
 ```
 
+---
+
 ## Error Responses
 
 ### 400 Bad Request
 ```json
 {
   "error": "กรุณาระบุ serial number"
+}
+```
+```json
+{
+  "error": "ข้อมูลซ้ำในระบบ"
 }
 ```
 
@@ -203,8 +467,52 @@
   "error": "ไม่พบข้อมูล"
 }
 ```
+```json
+{
+  "error": "ไม่พบ model ที่ระบุ"
+}
+```
+```json
+{
+  "error": "ไม่พบ site ที่ระบุ"
+}
+```
+
+### 409 Conflict
+```json
+{
+  "error": "มีข้อมูลอ้างอิงที่ใช้งานอยู่ ไม่สามารถลบได้"
+}
+```
+
+### 500 Internal Server Error
+```json
+{
+  "error": "เกิดข้อผิดพลาดในการเข้าถึงข้อมูล"
+}
+```
+
+---
 
 ## Examples
+
+### Get Merchandise Hints
+```bash
+curl -X GET "https://your-project.supabase.co/functions/v1/api-merchandise/hint?q=SN123" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+### Search Merchandise
+```bash
+curl -X GET "https://your-project.supabase.co/functions/v1/api-merchandise/search?q=SN123" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+### Get Merchandise by ID
+```bash
+curl -X GET "https://your-project.supabase.co/functions/v1/api-merchandise/123e4567-e89b-12d3-a456-426614174000" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
 
 ### Create Merchandise
 ```bash
@@ -215,33 +523,35 @@ curl -X POST "https://your-project.supabase.co/functions/v1/api-merchandise" \
     "serial_no": "SN12345",
     "model_id": "model-uuid",
     "site_id": "site-uuid",
-    "pm_count": 10,
-    "distributor_id": "company-uuid"
+    "pm_count": 10
   }'
-```
-
-### Get Merchandise by Site
-```bash
-curl -X GET "https://your-project.supabase.co/functions/v1/api-merchandise/site/SITE_UUID?page=1&limit=20" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 
 ### Update Merchandise
 ```bash
-curl -X PUT "https://your-project.supabase.co/functions/v1/api-merchandise/MERCHANDISE_UUID" \
+curl -X PUT "https://your-project.supabase.co/functions/v1/api-merchandise/123e4567-e89b-12d3-a456-426614174000" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "pm_count": 15,
-    "dealer_id": "new-dealer-uuid"
+    "dealer_id": "dealer-uuid"
   }'
 ```
 
-## Notes
-- ต้องตรวจสอบว่า `model_id` และ `site_id` ต้องมีอยู่จริงในระบบ
-- `pm_count` ใช้สำหรับตรวจสอบว่าต้องต่ออายุประกันหรือไม่ (ดูใน PM Summary API)
-- `replaced_by_id` ใช้สำหรับติดตามว่า merchandise นี้ถูกแทนที่ด้วยอันไหน
-- ไม่สามารถลบ merchandise ที่มี PM logs หรือถูกอ้างอิงจากที่อื่น
-- Merchandise สามารถเชื่อมโยงกับ tickets ได้ผ่าน Tickets API (`POST /api-tickets/:id/merchandise`)
-- Merchandise ที่เชื่อมโยงกับ ticket ต้องอยู่ใน site เดียวกันกับ ticket (ตรวจสอบอัตโนมัติ)
+### Delete Merchandise
+```bash
+curl -X DELETE "https://your-project.supabase.co/functions/v1/api-merchandise/123e4567-e89b-12d3-a456-426614174000" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
 
+---
+
+## Notes
+
+- `serial_no` must be unique in the system
+- `model_id` and `site_id` must exist in the database before creating merchandise
+- `pm_count` is used to check if warranty renewal is needed (see PM Summary API)
+- `replaced_by_id` is used to track which merchandise replaces this one
+- Cannot delete merchandise that has PM logs or is referenced elsewhere
+- Merchandise can be linked to tickets through the Tickets API
+- Merchandise linked to a ticket must be in the same site as the ticket (automatically validated)

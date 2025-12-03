@@ -7,17 +7,13 @@ import { handleCORS } from './_shared/cors.ts';
 import { error } from './_shared/response.ts';
 import { authenticate } from './_shared/auth.ts';
 import { handleError } from './_shared/error.ts';
-import { list } from './handlers/list.ts';
 import { get } from './handlers/get.ts';
 import { create } from './handlers/create.ts';
 import { update } from './handlers/update.ts';
 import { deleteTicket } from './handlers/delete.ts';
-import { listMerchandise } from './handlers/listMerchandise.ts';
-import { addMerchandise } from './handlers/addMerchandise.ts';
-import { removeMerchandise } from './handlers/removeMerchandise.ts';
-import { createMaster } from './handlers/createMaster.ts';
-import { updateMaster } from './handlers/updateMaster.ts';
-import { deleteMaster } from './handlers/deleteMaster.ts';
+import { search } from './handlers/search.ts';
+import { searchDuration } from './handlers/searchDuration.ts';
+import { removeTicketEmployee } from './handlers/removeTicketEmployee.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -36,93 +32,60 @@ Deno.serve(async (req) => {
     const relativePath = functionIndex >= 0 ? pathParts.slice(functionIndex + 1) : [];
     const method = req.method;
 
-    // Master ticket operations (handle these FIRST before regular routes)
-    
-    // DELETE /master/:id - Delete master ticket with all related data
-    if (method === 'DELETE' && relativePath.length === 2 && relativePath[0] === 'master') {
-      const ticketId = relativePath[1];
-      return await deleteMaster(req, employee, ticketId);
-    }
+    switch (method) {
+      case 'GET':
+        // GET /search - Search tickets
+        if (relativePath.length === 1 && relativePath[0] === 'search') {
+          return await search(req, employee);
+        }
 
-    // PUT /master/:id - Update master ticket with all related data
-    if (method === 'PUT' && relativePath.length === 2 && relativePath[0] === 'master') {
-      const ticketId = relativePath[1];
-      return await updateMaster(req, employee, ticketId);
-    }
+        // GET /search-duration - Search tickets by duration
+        if (relativePath.length === 1 && relativePath[0] === 'search-duration') {
+          return await searchDuration(req, employee);
+        }
 
-    // POST /master - Create master ticket with all related data
-    if (method === 'POST' && relativePath.length === 1 && relativePath[0] === 'master') {
-      return await createMaster(req, employee);
-    }
+        // GET /:id - Get single ticket
+        if (relativePath.length === 1) {
+          const id = relativePath[0];
+          // Validate it's not a special route
+          if (id === 'search' || id === 'search-duration') {
+            return error('Not found', 404);
+          }
+          return await get(req, employee, id);
+        }
+        break;
 
-    // GET /employee/:employeeId - Get tickets by employee (check this FIRST before single ticket)
-    if (method === 'GET' && relativePath.length === 2 && relativePath[0] === 'employee') {
-      const employeeId = relativePath[1];
-      // TODO: Implement getByEmployee handler
-      return error('Not implemented yet', 501);
-    }
+      case 'POST':
+        // POST / - Create ticket
+        if (relativePath.length === 0) {
+          return await create(req, employee);
+        }
+        break;
 
-    // DELETE /:id/merchandise/:merchandiseId - Remove merchandise from ticket
-    if (method === 'DELETE' && relativePath.length === 3 && relativePath[1] === 'merchandise') {
-      const ticketId = relativePath[0];
-      const merchandiseId = relativePath[2];
-      // Validate it's not a special route
-      if (ticketId === 'employee') {
-        return error('Not found', 404);
-      }
-      return await removeMerchandise(req, employee, ticketId, merchandiseId);
-    }
+      case 'PUT':
+        // PUT /:id - Update ticket
+        if (relativePath.length === 1) {
+          const id = relativePath[0];
+          return await update(req, employee, id);
+        }
+        break;
 
-    // POST /:id/merchandise - Add merchandise to ticket
-    if (method === 'POST' && relativePath.length === 2 && relativePath[1] === 'merchandise') {
-      const ticketId = relativePath[0];
-      // Validate it's not a special route
-      if (ticketId === 'employee') {
-        return error('Not found', 404);
-      }
-      return await addMerchandise(req, employee, ticketId);
-    }
+      case 'DELETE':
+        // DELETE /employees - Remove ticket-employee assignment
+        if (relativePath.length === 1 && relativePath[0] === 'employees') {
+          return await removeTicketEmployee(req, employee);
+        }
 
-    // GET /:id/merchandise - List merchandise for ticket
-    if (method === 'GET' && relativePath.length === 2 && relativePath[1] === 'merchandise') {
-      const ticketId = relativePath[0];
-      // Validate it's not a special route
-      if (ticketId === 'employee') {
-        return error('Not found', 404);
-      }
-      return await listMerchandise(req, employee, ticketId);
-    }
-
-    // GET / - List tickets
-    if (method === 'GET' && relativePath.length === 0) {
-      return await list(req, employee);
-    }
-
-    // GET /:id - Get single ticket
-    if (method === 'GET' && relativePath.length === 1) {
-      const id = relativePath[0];
-      // Validate it's not a special route
-      if (id === 'employee' || id === 'merchandise') {
-        return error('Not found', 404);
-      }
-      return await get(req, employee, id);
-    }
-
-    // POST / - Create ticket
-    if (method === 'POST' && relativePath.length === 0) {
-      return await create(req, employee);
-    }
-
-    // PUT /:id - Update ticket
-    if (method === 'PUT' && relativePath.length === 1) {
-      const id = relativePath[0];
-      return await update(req, employee, id);
-    }
-
-    // DELETE /:id - Delete ticket
-    if (method === 'DELETE' && relativePath.length === 1) {
-      const id = relativePath[0];
-      return await deleteTicket(req, employee, id);
+        // DELETE /:id - Delete ticket
+        if (relativePath.length === 1) {
+          const id = relativePath[0];
+          // Validate it's not a special route
+          if (id === 'employees') {
+            return error('Not found', 404);
+          }
+          return await deleteTicket(req, employee, id);
+        }
+        break;
     }
 
     return error('Not found', 404);

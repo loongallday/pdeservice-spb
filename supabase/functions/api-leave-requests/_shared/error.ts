@@ -58,7 +58,7 @@ export function handleError(err: unknown): { message: string; statusCode: number
     // Check for common Supabase/Postgres errors
     if (err.message.includes('JWT')) {
       return {
-        message: 'รหัสยืนยันตัวตนไม่ถูกต้อง',
+        message: 'Session หมดอายุกรุณาเข้าใช้งานใหม่',
         statusCode: 401,
       };
     }
@@ -72,7 +72,7 @@ export function handleError(err: unknown): { message: string; statusCode: number
     
     if (err.message.includes('foreign key')) {
       return {
-        message: 'ไม่สามารถลบข้อมูลที่มีการใช้งานอยู่',
+        message: 'มีข้อมูลอ้างอิงที่ใช้งานอยู่ ไม่สามารถลบได้',
         statusCode: 409,
       };
     }

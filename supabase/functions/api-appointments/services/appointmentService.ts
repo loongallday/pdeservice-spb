@@ -155,5 +155,27 @@ export class AppointmentService {
       }
     }
   }
+
+  /**
+   * Search appointments by notes or appointment type
+   */
+  static async search(query: string): Promise<Record<string, unknown>[]> {
+    const supabase = createServiceClient();
+
+    if (!query || query.length < 1) {
+      return [];
+    }
+
+    const { data, error } = await supabase
+      .from('appointments')
+      .select('*')
+      .or(`notes.ilike.%${query}%,appointment_type.ilike.%${query}%`)
+      .limit(20)
+      .order('appointment_date', { ascending: false });
+
+    if (error) throw new DatabaseError(error.message);
+
+    return data || [];
+  }
 }
 

@@ -15,6 +15,111 @@ export interface InitializeData {
 
 export class InitializeService {
   /**
+   * Get enabled features for the current employee
+   * Features are filtered by employee level and role
+   */
+  static async getFeatures(employee: Employee): Promise<Record<string, unknown>[]> {
+    const supabase = createServiceClient();
+    
+    // Get employee level and role for feature filtering
+    const employeeLevel = getEmployeeLevel(employee);
+    const employeeRole = employee.role_data?.code || null;
+
+    // Get enabled features for this employee (only active features)
+    const { data: featuresResult, error: featuresError } = await supabase
+      .from('feature')
+      .select('*')
+      .eq('is_active', true)
+      .lte('min_level', employeeLevel)
+      .order('id');
+
+    // Handle errors
+    if (featuresError) {
+      throw new DatabaseError('ไม่สามารถดึงข้อมูลฟีเจอร์ได้');
+    }
+
+    // Filter features: ensure only active features, user can use (level >= min_level), and by allowed_roles (if specified)
+    const filteredFeatures = (featuresResult || []).filter((item) => {
+      // First, ensure feature is active
+      if (!item.is_active) {
+        return false;
+      }
+      
+      // Ensure user's level meets the minimum level requirement (user level >= feature min_level)
+      const featureMinLevel = item.min_level as number | null | undefined;
+      if (featureMinLevel !== null && featureMinLevel !== undefined) {
+        if (employeeLevel < featureMinLevel) {
+          return false;
+        }
+      }
+      
+      const allowedRoles = item.allowed_roles as string[] | null;
+      
+      // If no role restriction specified, user can use it (already passed level check)
+      if (!allowedRoles || allowedRoles.length === 0) {
+        return true;
+      }
+      
+      // If role restriction exists, employee must have one of the allowed roles
+      if (!employeeRole) {
+        return false;
+      }
+      
+      // Normalize and check if employee role is in allowed roles
+      const normalizedAllowedRoles = allowedRoles.map((r: string) => r.trim().toLowerCase());
+      const normalizedEmployeeRole = employeeRole.trim().toLowerCase();
+      
+      return normalizedAllowedRoles.includes(normalizedEmployeeRole);
+    });
+    
+    // Remove min_level from response (security: users don't need to know level requirements)
+    const features = filteredFeatures.map(({ min_level: _min_level, ...rest }) => rest);
+
+    return features;
+  }
+
+  /**
+   * Get current user information (employee with role and department)
+   */
+  static async getCurrentUserInfo(employee: Employee): Promise<Employee> {
+    const supabase = createServiceClient();
+
+    // Get full employee details with role data
+    const { data: employeeResult, error: employeeError } = await supabase
+      .from('employees')
+      .select(`
+        *,
+        role_data:roles!role_id(
+          id,
+          code,
+          name_th,
+          name_en,
+          description,
+          level,
+          department_id,
+          is_active,
+          requires_auth,
+          department:departments!roles_department_id_fkey(
+            id,
+            code,
+            name_th,
+            name_en,
+            description,
+            is_active
+          )
+        )
+      `)
+      .eq('id', employee.id)
+      .single();
+
+    if (employeeError || !employeeResult) {
+      throw new DatabaseError('ไม่สามารถดึงข้อมูลพนักงานได้');
+    }
+
+    return employeeResult as Employee;
+  }
+
+  /**
    * Get all initialization data for the app
    */
   static async getInitializeData(employee: Employee): Promise<InitializeData> {

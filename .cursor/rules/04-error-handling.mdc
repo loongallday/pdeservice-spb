@@ -174,7 +174,7 @@ export class ResourceService {
 
     if (error) {
       if (error.message.includes('foreign key')) {
-        throw new ValidationError('ไม่สามารถลบข้อมูลที่มีการใช้งานอยู่');
+        throw new ValidationError('มีข้อมูลอ้างอิงที่ใช้งานอยู่ ไม่สามารถลบได้');
       }
       throw new DatabaseError('ไม่สามารถลบข้อมูลได้');
     }
@@ -237,13 +237,13 @@ export function handleError(err: unknown): { message: string; statusCode: number
   if (err instanceof Error) {
     // Check for common database errors
     if (err.message.includes('JWT')) {
-      return { message: 'รหัสยืนยันตัวตนไม่ถูกต้อง', statusCode: 401 };
+      return { message: 'Session หมดอายุกรุณาเข้าใช้งานใหม่', statusCode: 401 };
     }
     if (err.message.includes('duplicate key')) {
       return { message: 'ข้อมูลซ้ำ', statusCode: 409 };
     }
     if (err.message.includes('foreign key')) {
-      return { message: 'ไม่สามารถลบข้อมูลที่มีการใช้งานอยู่', statusCode: 409 };
+      return { message: 'มีข้อมูลอ้างอิงที่ใช้งานอยู่ ไม่สามารถลบได้', statusCode: 409 };
     }
     return { message: err.message, statusCode: 500 };
   }

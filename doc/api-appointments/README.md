@@ -96,6 +96,53 @@ Authorization: Bearer <token>
 
 ---
 
+### Search Appointments
+
+Search for appointments by notes or appointment type.
+
+**Endpoint**: `GET /search`
+
+**Required Level**: 0 (all authenticated users)
+
+**Query Parameters**:
+- `q` (required): Search query string (1+ characters)
+
+**Example Request**:
+```http
+GET /functions/v1/api-appointments/search?q=meeting
+Authorization: Bearer <token>
+```
+
+**Example Response**:
+```json
+{
+  "data": [
+    {
+      "id": "123e4567-e89b-12d3-a456-426614174000",
+      "ticket_id": "123e4567-e89b-12d3-a456-426614174001",
+      "appointment_type": "meeting",
+      "appointment_date": "2024-01-15",
+      "notes": "Initial meeting with client",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  ]
+}
+```
+
+**Searchable Fields**:
+- `notes` - Appointment notes (partial match)
+- `appointment_type` - Appointment type (partial match)
+
+**Notes**:
+- Search is case-insensitive
+- Returns up to 20 results
+- Results are sorted by appointment date (newest first)
+- Empty query returns empty array
+- Partial matches are supported
+
+---
+
 ### Get Appointment by Ticket ID
 
 Get appointment(s) associated with a specific ticket.

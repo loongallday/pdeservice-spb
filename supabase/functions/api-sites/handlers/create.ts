@@ -18,6 +18,10 @@ export async function create(req: Request, employee: Employee) {
 
   // Validate required fields
   validateRequired(body.name, 'ชื่อสถานที่');
+  validateRequired(body.subdistrict_code, 'รหัสตำบล');
+  validateRequired(body.district_code, 'รหัสอำเภอ');
+  validateRequired(body.province_code, 'รหัสจังหวัด');
+  validateRequired(body.postal_code, 'รหัสไปรษณีย์');
 
   // Create site
   const site = await SiteService.create(body);

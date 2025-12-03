@@ -7,18 +7,16 @@ import { handleCORS } from './_shared/cors.ts';
 import { error } from './_shared/response.ts';
 import { authenticate } from './_shared/auth.ts';
 import { handleError } from './_shared/error.ts';
-import { list } from './handlers/list.ts';
-import { get } from './handlers/get.ts';
-import { getByCode } from './handlers/getByCode.ts';
-import { getByRole } from './handlers/getByRole.ts';
+import { getById } from './handlers/getById.ts';
 import { create } from './handlers/create.ts';
 import { update } from './handlers/update.ts';
 import { deleteEmployee } from './handlers/delete.ts';
 import { linkAuth } from './handlers/linkAuth.ts';
 import { linkExistingAuth } from './handlers/linkExistingAuth.ts';
 import { unlinkAuth } from './handlers/unlinkAuth.ts';
-import { getDepartmentCounts } from './handlers/departmentCounts.ts';
-import { getRoleCounts } from './handlers/roleCounts.ts';
+import { networkSearch } from './handlers/networkSearch.ts';
+import { getEmployeeSummary } from './handlers/employeeSummary.ts';
+import { getTechnicianAvailability } from './handlers/technicianAvailability.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -37,75 +35,73 @@ Deno.serve(async (req) => {
     const relativePath = functionIndex >= 0 ? pathParts.slice(functionIndex + 1) : [];
     const method = req.method;
 
-    // GET / - List employees
-    if (method === 'GET' && relativePath.length === 0) {
-      return await list(req, employee);
+    switch (method) {
+      case "GET":
+        // GET /technicians/availability - Get technicians with availability
+        if (relativePath.length === 2 && relativePath[0] === "technicians" && relativePath[1] === "availability") {
+          return await getTechnicianAvailability(req, employee);
+        }
+
+        // GET /network-search - Network search employees (for employee management)
+        if (relativePath.length === 1 && relativePath[0] === "network-search") {
+          return await networkSearch(req, employee);
+        }
+
+        // GET /employee-summary - Get employee summary
+        if (relativePath.length === 1 && relativePath[0] === "employee-summary") {
+          return await getEmployeeSummary(req, employee);
+        }
+
+        // GET /:id - Get single employee
+        if (relativePath.length === 1) {
+          const id = relativePath[0];
+          return await getById(req, employee, id);
+        }
+        break;
+
+      case "POST":
+        // POST / - Create employee
+        if (relativePath.length === 0) {
+          return await create(req, employee);
+        }
+
+        // POST /:id/link-auth - Link auth account
+        if (relativePath.length === 2 && relativePath[1] === "link-auth") {
+          const id = relativePath[0];
+          return await linkAuth(req, employee, id);
+        }
+
+        // POST /:id/link-existing-auth - Link existing auth account
+        if (relativePath.length === 2 && relativePath[1] === "link-existing-auth") {
+          const id = relativePath[0];
+          return await linkExistingAuth(req, employee, id);
+        }
+
+        // POST /:id/unlink-auth - Unlink auth account
+        if (relativePath.length === 2 && relativePath[1] === "unlink-auth") {
+          const id = relativePath[0];
+          return await unlinkAuth(req, employee, id);
+        }
+        break;
+
+      case "PUT":
+        // PUT /:id - Update employee
+        if (relativePath.length === 1) {
+          const id = relativePath[0];
+          return await update(req, employee, id);
+        }
+        break;
+
+      case "DELETE":
+        // DELETE /:id - Delete employee
+        if (relativePath.length === 1) {
+          const id = relativePath[0];
+          return await deleteEmployee(req, employee, id);
+        }
+        break;
     }
 
-    // GET /code/:code - Get employee by code
-    if (method === 'GET' && relativePath.length === 2 && relativePath[0] === 'code') {
-      const code = relativePath[1];
-      return await getByCode(req, employee, code);
-    }
-
-    // GET /role/:role - Get employees by role
-    if (method === 'GET' && relativePath.length === 2 && relativePath[0] === 'role') {
-      const role = relativePath[1];
-      return await getByRole(req, employee, role);
-    }
-
-    // GET /department-counts - Get employee counts by department
-    if (method === 'GET' && relativePath.length === 1 && relativePath[0] === 'department-counts') {
-      return await getDepartmentCounts(req, employee);
-    }
-
-    // GET /role-counts - Get employee counts by role
-    if (method === 'GET' && relativePath.length === 1 && relativePath[0] === 'role-counts') {
-      return await getRoleCounts(req, employee);
-    }
-
-    // GET /:id - Get single employee
-    if (method === 'GET' && relativePath.length === 1) {
-      const id = relativePath[0];
-      return await get(req, employee, id);
-    }
-
-    // POST / - Create employee
-    if (method === 'POST' && relativePath.length === 0) {
-      return await create(req, employee);
-    }
-
-    // POST /:id/link-auth - Link auth account
-    if (method === 'POST' && relativePath.length === 2 && relativePath[1] === 'link-auth') {
-      const id = relativePath[0];
-      return await linkAuth(req, employee, id);
-    }
-
-    // POST /:id/link-existing-auth - Link existing auth account
-    if (method === 'POST' && relativePath.length === 2 && relativePath[1] === 'link-existing-auth') {
-      const id = relativePath[0];
-      return await linkExistingAuth(req, employee, id);
-    }
-
-    // POST /:id/unlink-auth - Unlink auth account
-    if (method === 'POST' && relativePath.length === 2 && relativePath[1] === 'unlink-auth') {
-      const id = relativePath[0];
-      return await unlinkAuth(req, employee, id);
-    }
-
-    // PUT /:id - Update employee
-    if (method === 'PUT' && relativePath.length === 1) {
-      const id = relativePath[0];
-      return await update(req, employee, id);
-    }
-
-    // DELETE /:id - Delete employee
-    if (method === 'DELETE' && relativePath.length === 1) {
-      const id = relativePath[0];
-      return await deleteEmployee(req, employee, id);
-    }
-
-    return error('Not found', 404);
+    return error("Not found", 404);
   } catch (err) {
     const { message, statusCode } = handleError(err);
     return error(message, statusCode);
