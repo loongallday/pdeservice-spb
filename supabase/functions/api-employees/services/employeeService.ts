@@ -622,8 +622,41 @@ export class EmployeeService {
 
     if (error) throw new DatabaseError(error.message);
 
+    // Transform data to flatten nested objects into display fields
+    const transformedData = (data || []).map(employee => {
+      const roleData = employee.role_data as {
+        id?: string;
+        code?: string;
+        name_th?: string;
+        name_en?: string;
+        department?: {
+          id?: string;
+          code?: string;
+          name_th?: string;
+          name_en?: string;
+        } | null;
+      } | null;
+
+      return {
+        id: employee.id,
+        code: employee.code,
+        name: employee.name,
+        email: employee.email,
+        nickname: employee.nickname,
+        is_active: employee.is_active,
+        role_id: employee.role_id,
+        role_code: roleData?.code || null,
+        role_name: roleData?.name_th || roleData?.name_en || null,
+        department_id: roleData?.department?.id || null,
+        department_code: roleData?.department?.code || null,
+        department_name: roleData?.department?.name_th || roleData?.department?.name_en || null,
+        created_at: employee.created_at,
+        updated_at: employee.updated_at,
+      };
+    });
+
     return {
-      data: data || [],
+      data: transformedData,
       pagination: calculatePagination(page, limit, total),
     };
   }
@@ -636,16 +669,19 @@ export class EmployeeService {
     q?: string;
     page: number;
     limit: number;
-    department_id?: string;
+    department_id?: string | string[];
     role?: string;
+    role_id?: string;
     is_active?: boolean;
   }): Promise<{ data: Record<string, unknown>[]; pagination: PaginationInfo }> {
     const supabase = createServiceClient();
-    const { q, page, limit, department_id, role, is_active } = params;
+    const { q, page, limit, department_id, role, role_id, is_active } = params;
 
-    // If role filter is provided (role code), look up the role_id
-    let roleId: string | undefined = undefined;
-    if (role) {
+    // Determine which role filter to use (role_id takes precedence over role code)
+    let roleId: string | undefined = role_id;
+    
+    // If role_id is not provided but role (code) is, look up the role_id
+    if (!roleId && role) {
       const { data: roleData, error: roleError } = await supabase
         .from('roles')
         .select('id')
@@ -663,17 +699,23 @@ export class EmployeeService {
       roleId = roleData.id;
     }
 
-    // If department_id filter is provided, get all role_ids for that department
+    // If department_id filter is provided, get all role_ids for those department(s)
     let roleIdsForDepartment: string[] | undefined = undefined;
     if (department_id) {
+      // Normalize to array for consistent handling
+      const departmentIds = Array.isArray(department_id) 
+        ? department_id 
+        : [department_id];
+
+      // Get role IDs that belong to these departments
       const { data: rolesData, error: rolesError } = await supabase
         .from('roles')
         .select('id')
-        .eq('department_id', department_id);
+        .in('department_id', departmentIds);
 
       if (rolesError) throw new DatabaseError(`Failed to lookup roles by department: ${rolesError.message}`);
       if (!rolesData || rolesData.length === 0) {
-        // No roles in this department, return empty result
+        // No roles in these departments, return empty result
         return {
           data: [],
           pagination: calculatePagination(page, limit, 0),
@@ -744,8 +786,41 @@ export class EmployeeService {
 
     if (error) throw new DatabaseError(error.message);
 
+    // Transform data to flatten nested objects into display fields
+    const transformedData = (data || []).map(employee => {
+      const roleData = employee.role_data as {
+        id?: string;
+        code?: string;
+        name_th?: string;
+        name_en?: string;
+        department?: {
+          id?: string;
+          code?: string;
+          name_th?: string;
+          name_en?: string;
+        } | null;
+      } | null;
+
+      return {
+        id: employee.id,
+        code: employee.code,
+        name: employee.name,
+        email: employee.email,
+        nickname: employee.nickname,
+        is_active: employee.is_active,
+        role_id: employee.role_id,
+        role_code: roleData?.code || null,
+        role_name: roleData?.name_th || roleData?.name_en || null,
+        department_id: roleData?.department?.id || null,
+        department_code: roleData?.department?.code || null,
+        department_name: roleData?.department?.name_th || roleData?.department?.name_en || null,
+        created_at: employee.created_at,
+        updated_at: employee.updated_at,
+      };
+    });
+
     return {
-      data: data || [],
+      data: transformedData,
       pagination: calculatePagination(page, limit, total),
     };
   }
@@ -781,6 +856,126 @@ export class EmployeeService {
       email: emp.email || null,
       role_name: (emp.role as Record<string, unknown> | null)?.name_th || null,
       is_link_auth: emp.auth_user_id !== null && emp.auth_user_id !== undefined,
+    }));
+  }
+
+  /**
+   * Get technicians with availability status for a given date/time
+   * Returns all active employees from 'technical' department with availability boolean
+   */
+  static async getTechniciansWithAvailability(
+    date: string,
+    timeStart?: string,
+    timeEnd?: string
+  ): Promise<Array<{ id: string; name: string; availability: boolean }>> {
+    const supabase = createServiceClient();
+
+    // Step 1: Get department ID for 'technical' department
+    const { data: department, error: deptError } = await supabase
+      .from('departments')
+      .select('id')
+      .eq('code', 'technical')
+      .single();
+
+    if (deptError || !department) {
+      throw new DatabaseError('ไม่พบข้อมูลฝ่ายช่างเทคนิค');
+    }
+
+    const departmentId = department.id as string;
+
+    // Step 2: Get all active technicians from technical department
+    const { data: technicians, error: techError } = await supabase
+      .from('employees')
+      .select(`
+        id,
+        name,
+        role:roles!role_id(
+          department_id
+        )
+      `)
+      .eq('is_active', true);
+
+    if (techError) {
+      throw new DatabaseError(`ไม่สามารถดึงข้อมูลพนักงานได้: ${techError.message}`);
+    }
+
+    if (!technicians || technicians.length === 0) {
+      return [];
+    }
+
+    // Filter technicians by department
+    const technicalEmployees = technicians.filter(tech => {
+      const role = tech.role as Record<string, unknown> | null;
+      return role && (role.department_id as string) === departmentId;
+    });
+
+    if (technicalEmployees.length === 0) {
+      return [];
+    }
+
+    const technicianIds = technicalEmployees.map(t => t.id as string);
+
+    // Step 3: Query for conflicting appointments
+    // Build the query with proper joins
+    const conflictQuery = supabase
+      .from('ticket_employees')
+      .select(`
+        employee_id,
+        ticket:tickets!ticket_employees_ticket_id_fkey(
+          appointment:appointments!tickets_appointment_id_fkey(
+            appointment_date,
+            appointment_time_start,
+            appointment_time_end
+          )
+        )
+      `)
+      .in('employee_id', technicianIds);
+
+    const { data: ticketEmployees, error: conflictError } = await conflictQuery;
+
+    if (conflictError) {
+      throw new DatabaseError(`ไม่สามารถตรวจสอบความพร้อมได้: ${conflictError.message}`);
+    }
+
+    // Step 4: Build set of employee IDs with conflicts
+    const conflictedEmployeeIds = new Set<string>();
+
+    if (ticketEmployees) {
+      ticketEmployees.forEach(te => {
+        const ticket = te.ticket as Record<string, unknown> | null;
+        const appointment = ticket?.appointment as Record<string, unknown> | null;
+
+        if (!appointment) return;
+
+        const appointmentDate = appointment.appointment_date as string | null;
+        if (appointmentDate !== date) return;
+
+        const empId = te.employee_id as string;
+        if (!empId) return;
+
+        // If time is provided, check for time overlap
+        if (timeStart && timeEnd) {
+          const apptTimeStart = appointment.appointment_time_start as string | null;
+          const apptTimeEnd = appointment.appointment_time_end as string | null;
+
+          if (apptTimeStart && apptTimeEnd) {
+            // Check if time ranges overlap: start1 < end2 AND start2 < end1
+            if (apptTimeStart < timeEnd && apptTimeEnd > timeStart) {
+              conflictedEmployeeIds.add(empId);
+            }
+          }
+        } else {
+          // If only date provided, any appointment on that date = conflict
+          conflictedEmployeeIds.add(empId);
+        }
+      });
+    }
+
+    // Step 5: Map technicians with availability status
+    return technicalEmployees.map(tech => ({
+      id: tech.id as string,
+      name: tech.name as string,
+      availability: !conflictedEmployeeIds.has(tech.id as string),
     }));
   }
 

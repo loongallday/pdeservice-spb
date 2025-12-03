@@ -8,7 +8,7 @@ import { validateUUID } from '../_shared/validation.ts';
 import { SiteService } from '../services/siteService.ts';
 import type { Employee } from '../_shared/auth.ts';
 
-export async function get(req: Request, employee: Employee, id: string) {
+export async function getById(req: Request, employee: Employee, id: string) {
   // Check permissions - Level 0 and above can view sites
   await requireMinLevel(employee, 0);
 

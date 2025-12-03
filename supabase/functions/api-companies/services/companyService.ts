@@ -70,15 +70,16 @@ export class CompanyService {
   }
 
   /**
-   * Get single company by tax ID
+   * Get single company by ID (tax_id) with sites list
    */
-  static async getByTaxId(taxId: string): Promise<Record<string, unknown>> {
+  static async getById(id: string): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
 
+    // Get company data
     const { data, error } = await supabase
       .from('companies')
       .select('*')
-      .eq('tax_id', taxId)
+      .eq('tax_id', id)
       .single();
 
     if (error) {
@@ -92,11 +93,106 @@ export class CompanyService {
       throw new NotFoundError('ไม่พบข้อมูลบริษัท');
     }
 
-    return data;
+    // Get sites for this company (only id, name, and is_main_branch)
+    const { data: sites, error: sitesError } = await supabase
+      .from('sites')
+      .select('id, name, is_main_branch')
+      .eq('company_id', id)
+      .order('name');
+
+    if (sitesError) {
+      throw new DatabaseError(sitesError.message);
+    }
+
+    // Separate main branch site from regular sites
+    const allSites = sites || [];
+    const mainSite = allSites.find((site: Record<string, unknown>) => site.is_main_branch === true);
+    const regularSites = allSites.filter((site: Record<string, unknown>) => site.is_main_branch !== true);
+
+    // Format main site (only id and name)
+    const mainSiteFormatted = mainSite ? {
+      id: mainSite.id,
+      name: mainSite.name,
+    } : null;
+
+    // Format regular sites (only id and name)
+    const sitesFormatted = regularSites.map((site: Record<string, unknown>) => ({
+      id: site.id,
+      name: site.name,
+    }));
+
+    // Add sites list to company data
+    return {
+      ...data,
+      'main-site': mainSiteFormatted,
+      sites: sitesFormatted,
+    };
   }
 
   /**
-   * Search companies by name or tax ID
+   * Global search companies by name or tax ID with pagination
+   */
+  static async globalSearch(params: {
+    q?: string;
+    page: number;
+    limit: number;
+  }): Promise<{ data: Record<string, unknown>[]; pagination: PaginationInfo }> {
+    const supabase = createServiceClient();
+    const { q, page, limit } = params;
+
+    // Build count query
+    let countQuery = supabase
+      .from('companies')
+      .select('*', { count: 'exact', head: true });
+
+    // Apply search filter if query is provided
+    if (q && q.length >= 1) {
+      countQuery = countQuery.or(
+        `name_th.ilike.%${q}%,name_en.ilike.%${q}%,tax_id.ilike.%${q}%`
+      );
+    }
+
+    // Get total count
+    const { count, error: countError } = await countQuery;
+    if (countError) throw new DatabaseError(countError.message);
+    const total = count || 0;
+
+    // Get paginated data - only return summary fields
+    const offset = (page - 1) * limit;
+    let dataQuery = supabase
+      .from('companies')
+      .select('tax_id, name_th, name_en, address_detail');
+
+    // Apply search filter if query is provided
+    if (q && q.length >= 1) {
+      dataQuery = dataQuery.or(
+        `name_th.ilike.%${q}%,name_en.ilike.%${q}%,tax_id.ilike.%${q}%`
+      );
+    }
+
+    const { data, error } = await dataQuery
+      .order('name_th')
+      .range(offset, offset + limit - 1);
+    
+    if (error) throw new DatabaseError(error.message);
+    
+    // Transform data to return only required fields with aggregated description
+    const transformedData = (data || []).map((company) => ({
+      tax_id: company.tax_id,
+      name_th: company.name_th,
+      name_en: company.name_en,
+      description: company.address_detail || null,
+    }));
+    
+    return {
+      data: transformedData,
+      pagination: calculatePagination(page, limit, total),
+    };
+  }
+
+  /**
+   * Search companies by name or tax ID (legacy, non-paginated)
+   * @deprecated Use globalSearch instead
    */
   static async search(query: string): Promise<Record<string, unknown>[]> {
     const supabase = createServiceClient();
@@ -118,16 +214,28 @@ export class CompanyService {
   }
 
   /**
-   * Get recent companies
+   * Get company hints (up to 5 companies)
+   * If query is empty, returns 5 most recent companies
+   * If query is provided, searches and returns up to 5 matching companies
    */
-  static async getRecent(limit: number): Promise<Record<string, unknown>[]> {
+  static async hint(query: string): Promise<Record<string, unknown>[]> {
     const supabase = createServiceClient();
 
-    const { data, error } = await supabase
+    let queryBuilder = supabase
       .from('companies')
-      .select('*')
+      .select('*');
+
+    if (query && query.length > 0) {
+      // Search by name or tax_id
+      queryBuilder = queryBuilder.or(
+        `name_th.ilike.%${query}%,name_en.ilike.%${query}%,tax_id.ilike.%${query}%`
+      );
+    }
+
+    // Always limit to 5 and order by created_at descending
+    const { data, error } = await queryBuilder
       .order('created_at', { ascending: false })
-      .limit(limit);
+      .limit(5);
 
     if (error) throw new DatabaseError(error.message);
 
@@ -321,7 +429,7 @@ export class CompanyService {
   /**
    * Update existing company
    */
-  static async update(taxId: string, companyData: Record<string, unknown>): Promise<Record<string, unknown>> {
+  static async update(id: string, companyData: Record<string, unknown>): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
 
     // Sanitize data to remove invalid fields
@@ -330,12 +438,26 @@ export class CompanyService {
     const { data, error } = await supabase
       .from('companies')
       .update(sanitizedData)
-      .eq('tax_id', taxId)
+      .eq('tax_id', id)
       .select('*')
       .single();
 
     if (error) throw new DatabaseError(error.message);
     if (!data) throw new NotFoundError('ไม่พบข้อมูลบริษัท');
+
+    // Update main branch site if address info changed
+    const { data: mainBranchSite } = await supabase
+      .from('sites')
+      .select('id')
+      .eq('company_id', id)
+      .eq('is_main_branch', true)
+      .maybeSingle();
+
+    if (mainBranchSite) {
+      await this.updateMainBranchSite(data);
+    } else {
+      await this.createHeadOfficeSite(data);
+    }
 
     return data;
   }
@@ -343,14 +465,14 @@ export class CompanyService {
   /**
    * Delete company
    */
-  static async delete(taxId: string): Promise<void> {
+  static async delete(id: string): Promise<void> {
     const supabase = createServiceClient();
 
     // First check if company exists
     const { data: existingCompany, error: selectError } = await supabase
       .from('companies')
       .select('tax_id')
-      .eq('tax_id', taxId)
+      .eq('tax_id', id)
       .maybeSingle();
 
     if (selectError) throw new DatabaseError(selectError.message);
@@ -360,15 +482,15 @@ export class CompanyService {
     const { error } = await supabase
       .from('companies')
       .delete()
-      .eq('tax_id', taxId);
+      .eq('tax_id', id);
 
     if (error) throw new DatabaseError(error.message);
   }
 
   /**
-   * Find or create company
+   * Create or update company
    */
-  static async findOrCreate(companyData: Record<string, unknown>): Promise<Record<string, unknown>> {
+  static async createOrUpdate(companyData: Record<string, unknown>): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
 
     // Sanitize data to remove invalid fields
@@ -384,7 +506,32 @@ export class CompanyService {
     if (searchError) throw new DatabaseError(searchError.message);
 
     if (existingCompany) {
-      return existingCompany;
+      // Update existing company
+      const { data: updatedCompany, error: updateError } = await supabase
+        .from('companies')
+        .update(sanitizedData)
+        .eq('tax_id', sanitizedData.tax_id as string)
+        .select('*')
+        .single();
+
+      if (updateError) throw new DatabaseError(updateError.message);
+      if (!updatedCompany) throw new DatabaseError('Failed to update company');
+
+      // Update main branch site if it exists
+      const { data: mainBranchSite } = await supabase
+        .from('sites')
+        .select('id')
+        .eq('company_id', sanitizedData.tax_id as string)
+        .eq('is_main_branch', true)
+        .maybeSingle();
+
+      if (mainBranchSite) {
+        await this.updateMainBranchSite(updatedCompany);
+      } else {
+        await this.createHeadOfficeSite(updatedCompany);
+      }
+
+      return updatedCompany;
     }
 
     // Create new company

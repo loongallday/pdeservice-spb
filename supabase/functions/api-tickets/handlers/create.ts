@@ -1,39 +1,41 @@
 /**
- * Create ticket handler
+ * Create ticket handler - Comprehensive ticket creation with all related data
  */
 
 import { success } from '../_shared/response.ts';
-import { requireLevelGreaterThanZero } from '../_shared/auth.ts';
-import { parseRequestBody, validateRequired } from '../_shared/validation.ts';
+import { requireMinLevel } from '../_shared/auth.ts';
+import { ValidationError } from '../_shared/error.ts';
 import { TicketService } from '../services/ticketService.ts';
-import { HTTP_STATUS } from '../_shared/constants.ts';
 import type { Employee } from '../_shared/auth.ts';
+import type { MasterTicketCreateInput } from '../services/ticketService.ts';
 
 export async function create(req: Request, employee: Employee) {
-  // Check permissions - Level > 0 can create tickets
-  await requireLevelGreaterThanZero(employee);
+  // Check permissions - Level 1 and above can create tickets
+  await requireMinLevel(employee, 1);
 
   // Parse request body
-  const body = await parseRequestBody<{
-    ticketData: Record<string, unknown>;
-    employeeIds: string[];
-    appointmentData?: Record<string, unknown> | null;
-  }>(req);
+  const body = await req.json() as MasterTicketCreateInput;
 
   // Validate required fields
-  validateRequired(body.ticketData, 'ข้อมูลตั๋วงาน');
-  validateRequired(body.ticketData.site_id, 'สถานที่');
-  validateRequired(body.ticketData.work_type_id, 'ประเภทงาน');
-  validateRequired(body.ticketData.status_id, 'สถานะ');
-  validateRequired(body.ticketData.assigner_id, 'ผู้มอบหมายงาน');
+  if (!body.ticket) {
+    throw new ValidationError('กรุณาระบุข้อมูลตั๋วงาน');
+  }
 
-  // Create ticket (appointment will be created inside if provided)
-  const ticket = await TicketService.create(
-    body.ticketData, 
-    body.employeeIds || [],
-    body.appointmentData || null
-  );
+  if (!body.ticket.work_type_id) {
+    throw new ValidationError('กรุณาระบุประเภทงาน');
+  }
 
-  return success(ticket, HTTP_STATUS.CREATED);
+  if (!body.ticket.assigner_id) {
+    throw new ValidationError('กรุณาระบุผู้มอบหมายงาน');
+  }
+
+  if (!body.ticket.status_id) {
+    throw new ValidationError('กรุณาระบุสถานะตั๋วงาน');
+  }
+
+  // Create comprehensive ticket
+  const result = await TicketService.create(body, employee.id);
+
+  return success(result, 201);
 }
 

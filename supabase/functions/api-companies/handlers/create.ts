@@ -19,6 +19,9 @@ export async function create(req: Request, employee: Employee) {
   // Validate required fields
   validateRequired(body.tax_id, 'เลขผู้เสียภาษี');
   validateRequired(body.name_th, 'ชื่อบริษัท');
+  validateRequired(body.address_tambon_code, 'รหัสตำบล');
+  validateRequired(body.address_district_code, 'รหัสอำเภอ');
+  validateRequired(body.address_province_code, 'รหัสจังหวัด');
 
   // Create company
   const company = await CompanyService.create(body);

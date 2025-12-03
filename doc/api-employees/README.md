@@ -25,12 +25,13 @@ Network user search API for employee management. Optimized for network-based emp
 - `page` (optional): Page number (default: 1)
 - `limit` (optional): Items per page (default: 20, max: 100)
 - `role` (optional): Filter by role code (exact match)
+- `role_id` (optional): Filter by role ID (UUID, takes precedence over `role`)
 - `department_id` (optional): Filter by department ID (UUID)
 - `is_active` (optional): Filter by active status (`true` or `false`)
 
 **Example Request**:
 ```http
-GET /functions/v1/api-employees/network-search?q=john&page=1&limit=20&role=admin&department_id=123e4567-e89b-12d3-a456-426614174000&is_active=true
+GET /functions/v1/api-employees/network-search?q=john&page=1&limit=20&role_id=123e4567-e89b-12d3-a456-426614174001&department_id=123e4567-e89b-12d3-a456-426614174000&is_active=true
 Authorization: Bearer <token>
 ```
 
@@ -85,6 +86,7 @@ Authorization: Bearer <token>
 
 **Filter Notes**:
 - `role`: Filters by role code (e.g., "admin", "manager"). Looks up role_id internally.
+- `role_id`: Filters by role ID directly (UUID). Takes precedence over `role` if both are provided.
 - `department_id`: Filters employees by department. Works by finding all roles in that department and filtering employees with those roles.
 - `is_active`: Boolean filter for active/inactive status.
 - All filters can be combined. Filters are applied with AND logic.
@@ -151,6 +153,75 @@ Authorization: Bearer <token>
 - No pagination - returns all active employees
 - Results are sorted by name
 - `is_link_auth` is `true` if `auth_user_id` is not null, `false` otherwise
+
+---
+
+### Get Technician Availability
+
+Get technicians from the 'technical' department with their availability status for a given date/time.
+
+**Endpoint**: `GET /technicians/availability`
+
+**Required Level**: 1 (non-technician_l1 and above)
+
+**Query Parameters**:
+- `date` (required): Appointment date in YYYY-MM-DD format
+- `time_start` (optional): Start time in HH:MM:SS format (must be provided with `time_end`)
+- `time_end` (optional): End time in HH:MM:SS format (must be provided with `time_start`)
+
+**Example Request (Date Only)**:
+```http
+GET /functions/v1/api-employees/technicians/availability?date=2025-01-15
+Authorization: Bearer <token>
+```
+
+**Example Request (Date with Time Range)**:
+```http
+GET /functions/v1/api-employees/technicians/availability?date=2025-01-15&time_start=09:00:00&time_end=17:00:00
+Authorization: Bearer <token>
+```
+
+**Example Response**:
+```json
+{
+  "data": [
+    {
+      "id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "John Technician",
+      "availability": true
+    },
+    {
+      "id": "223e4567-e89b-12d3-a456-426614174001",
+      "name": "Jane Technician",
+      "availability": false
+    }
+  ]
+}
+```
+
+**Response Fields**:
+- `id`: Employee ID (UUID)
+- `name`: Employee name
+- `availability`: Boolean indicating if technician is available
+  - `true`: No conflicting appointments
+  - `false`: Has conflicting appointment
+
+**Availability Logic**:
+- If only `date` is provided: Any appointment on that date = unavailable
+- If `date`, `time_start`, and `time_end` are provided: Checks for time range overlap
+  - Two time ranges overlap if: `start1 < end2 AND start2 < end1`
+  - Only appointments with both `appointment_time_start` and `appointment_time_end` are checked for overlap
+
+**Validation**:
+- `date` must be in YYYY-MM-DD format
+- `time_start` and `time_end` must be provided together (both or neither)
+- `time_start` and `time_end` must be in HH:MM:SS format
+- `time_start` must be less than `time_end`
+
+**Notes**:
+- Only returns active employees from the 'technical' department
+- Availability is based on ticket appointments, not leave requests
+- Returns minimal fields for performance (id, name, availability only)
 
 ---
 

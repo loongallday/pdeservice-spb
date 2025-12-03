@@ -1,5 +1,5 @@
 /**
- * Search models handler
+ * Search models handler - Search by description and code
  */
 
 import { success } from '../_shared/response.ts';
@@ -13,10 +13,11 @@ export async function search(req: Request, employee: Employee) {
 
   // Parse query parameters
   const url = new URL(req.url);
-  const query = url.searchParams.get('q') || '';
+  const description = url.searchParams.get('description') || undefined;
+  const code = url.searchParams.get('code') || undefined;
 
-  // Search models
-  const results = await ModelService.search(query);
+  // Search models by description and/or code
+  const results = await ModelService.search({ description, code });
 
   return success(results);
 }

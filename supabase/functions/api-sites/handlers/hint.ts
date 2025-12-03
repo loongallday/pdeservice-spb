@@ -1,5 +1,6 @@
 /**
- * Search sites handler
+ * Hint sites handler
+ * Returns up to 5 site hints based on query string
  */
 
 import { success } from '../_shared/response.ts';
@@ -7,17 +8,17 @@ import { requireMinLevel } from '../_shared/auth.ts';
 import { SiteService } from '../services/siteService.ts';
 import type { Employee } from '../_shared/auth.ts';
 
-export async function search(req: Request, employee: Employee) {
-  // Check permissions - Level 0 and above can search sites
+export async function hint(req: Request, employee: Employee) {
+  // Check permissions - Level 0 and above can get site hints
   await requireMinLevel(employee, 0);
 
   // Parse query parameters
   const url = new URL(req.url);
-  const query = url.searchParams.get('q') || '';
+  const q = url.searchParams.get('q') || '';
   const company_id = url.searchParams.get('company_id') || undefined;
 
-  // Search sites
-  const sites = await SiteService.search(query, company_id);
+  // Get site hints
+  const sites = await SiteService.hint(q, company_id);
 
   return success(sites);
 }

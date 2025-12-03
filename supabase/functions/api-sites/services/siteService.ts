@@ -101,11 +101,12 @@ export class SiteService {
   }
 
   /**
-   * Get single site by ID
+   * Get single site by ID with tickets, merchandise, and contacts
    */
   static async getById(id: string): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
 
+    // Get site data
     const { data, error } = await supabase
       .from('sites')
       .select('*, company:companies(tax_id, name_th, name_en)')
@@ -123,11 +124,189 @@ export class SiteService {
       throw new NotFoundError('ไม่พบสถานที่');
     }
 
-    return data;
+    // Get tickets for this site (id, details, worktype)
+    const { data: tickets, error: ticketsError } = await supabase
+      .from('tickets')
+      .select('id, details, work_type:work_types(name)')
+      .eq('site_id', id)
+      .order('created_at', { ascending: false });
+
+    if (ticketsError) {
+      throw new DatabaseError(ticketsError.message);
+    }
+
+    // Format tickets
+    const ticketsFormatted = (tickets || []).map((ticket: Record<string, unknown>) => ({
+      id: ticket.id,
+      description: ticket.details || null,
+      worktype: ticket.work_type ? (ticket.work_type as Record<string, unknown>).name || null : null,
+    }));
+
+    // Get merchandise for this site (id, model, serial)
+    const { data: merchandise, error: merchandiseError } = await supabase
+      .from('merchandise')
+      .select('id, serial_no, model:models(model)')
+      .eq('site_id', id)
+      .order('created_at', { ascending: false });
+
+    if (merchandiseError) {
+      throw new DatabaseError(merchandiseError.message);
+    }
+
+    // Format merchandise
+    const merchandiseFormatted = (merchandise || []).map((merch: Record<string, unknown>) => ({
+      id: merch.id,
+      model: merch.model ? (merch.model as Record<string, unknown>).model || null : null,
+      serial: merch.serial_no || null,
+    }));
+
+    // Get contacts for this site (id, contact name)
+    const { data: contacts, error: contactsError } = await supabase
+      .from('contacts')
+      .select('id, person_name')
+      .eq('site_id', id)
+      .order('person_name');
+
+    if (contactsError) {
+      throw new DatabaseError(contactsError.message);
+    }
+
+    // Format contacts
+    const contactsFormatted = (contacts || []).map((contact: Record<string, unknown>) => ({
+      id: contact.id,
+      contact_name: contact.person_name || null,
+    }));
+
+    // Add lists to site data
+    return {
+      ...data,
+      tickets: ticketsFormatted,
+      merchandise: merchandiseFormatted,
+      contacts: contactsFormatted,
+    };
   }
 
   /**
-   * Search sites by name or location
+   * Global search sites by name or address_detail with pagination
+   * Returns only summary fields: id, name, address_detail, company_id
+   */
+  static async globalSearch(params: {
+    q?: string;
+    page: number;
+    limit: number;
+    company_id?: string;
+  }): Promise<{ data: Record<string, unknown>[]; pagination: PaginationInfo }> {
+    const supabase = createServiceClient();
+    const { q, page, limit, company_id } = params;
+
+    // Build count query
+    let countQuery = supabase
+      .from('sites')
+      .select('*', { count: 'exact', head: true });
+
+    // Apply search filter if query is provided
+    if (q && q.length >= 1) {
+      countQuery = countQuery.or(
+        `name.ilike.%${q}%,address_detail.ilike.%${q}%`
+      );
+    }
+
+    // Apply company filter if provided
+    if (company_id) {
+      countQuery = countQuery.eq('company_id', company_id);
+    }
+
+    // Get total count
+    const { count, error: countError } = await countQuery;
+    if (countError) throw new DatabaseError(countError.message);
+    const total = count || 0;
+
+    // Get paginated data - only summary fields
+    const offset = (page - 1) * limit;
+    let dataQuery = supabase
+      .from('sites')
+      .select('id, name, address_detail, company_id, is_main_branch, company:companies(name_th, name_en)');
+
+    // Apply search filter if query is provided
+    if (q && q.length >= 1) {
+      dataQuery = dataQuery.or(
+        `name.ilike.%${q}%,address_detail.ilike.%${q}%`
+      );
+    }
+
+    // Apply company filter if provided
+    if (company_id) {
+      dataQuery = dataQuery.eq('company_id', company_id);
+    }
+
+    const { data, error } = await dataQuery
+      .order('name')
+      .range(offset, offset + limit - 1);
+    
+    if (error) throw new DatabaseError(error.message);
+    
+    // Transform data to return with description field
+    const transformedData = (data || []).map((site) => ({
+      id: site.id,
+      name: site.name,
+      description: site.address_detail || null,
+      company_id: site.company_id || null,
+      is_main_branch: site.is_main_branch || false,
+      company_name: site.company ? (site.company.name_th || site.company.name_en || null) : null,
+    }));
+    
+    return {
+      data: transformedData,
+      pagination: calculatePagination(page, limit, total),
+    };
+  }
+
+  /**
+   * Get site hints (up to 5 sites)
+   * If query is empty, returns 5 sites ordered by name
+   * If query is provided, searches and returns up to 5 matching sites
+   */
+  static async hint(query: string, companyId?: string): Promise<Record<string, unknown>[]> {
+    const supabase = createServiceClient();
+
+    let queryBuilder = supabase
+      .from('sites')
+      .select('id, name, address_detail, company_id, is_main_branch, company:companies(name_th, name_en)');
+
+    if (query && query.length > 0) {
+      // Search by name or address_detail
+      queryBuilder = queryBuilder.or(
+        `name.ilike.%${query}%,address_detail.ilike.%${query}%`
+      );
+    }
+
+    if (companyId) {
+      queryBuilder = queryBuilder.eq('company_id', companyId);
+    }
+
+    // Always limit to 5 and order by name
+    const { data, error } = await queryBuilder
+      .order('name')
+      .limit(5);
+
+    if (error) throw new DatabaseError(error.message);
+
+    // Transform data to return with description field
+    const transformedData = (data || []).map((site) => ({
+      id: site.id,
+      name: site.name,
+      description: site.address_detail || null,
+      company_id: site.company_id || null,
+      is_main_branch: site.is_main_branch || false,
+      company_name: site.company ? (site.company.name_th || site.company.name_en || null) : null,
+    }));
+
+    return transformedData;
+  }
+
+  /**
+   * Search sites by name or location (legacy, non-paginated)
+   * @deprecated Use globalSearch instead
    */
   static async search(query: string, companyId?: string): Promise<Record<string, unknown>[]> {
     const supabase = createServiceClient();
@@ -158,29 +337,6 @@ export class SiteService {
     return data || [];
   }
 
-  /**
-   * Get recent sites
-   * Note: sites table doesn't have created_at column, so we just return by name order
-   */
-  static async getRecent(limit: number, companyId?: string): Promise<Record<string, unknown>[]> {
-    const supabase = createServiceClient();
-
-    let query = supabase
-      .from('sites')
-      .select('*')
-      .order('name', { ascending: true })
-      .limit(limit);
-
-    if (companyId) {
-      query = query.eq('company_id', companyId);
-    }
-
-    const { data, error } = await query;
-
-    if (error) throw new DatabaseError(error.message);
-
-    return data || [];
-  }
 
   /**
    * Create new site
@@ -201,6 +357,61 @@ export class SiteService {
     if (!data) throw new DatabaseError('Failed to create site');
 
     return data;
+  }
+
+  /**
+   * Create or replace site
+   * If site with given ID exists, replaces it completely
+   * If site doesn't exist, creates a new one
+   */
+  static async createOrReplace(siteData: Record<string, unknown>): Promise<Record<string, unknown>> {
+    const supabase = createServiceClient();
+
+    // Validate ID is provided
+    if (!siteData.id || typeof siteData.id !== 'string') {
+      throw new DatabaseError('Site ID is required for create or replace');
+    }
+
+    const siteId = siteData.id as string;
+
+    // Sanitize data to remove invalid fields
+    const sanitizedData = this.sanitizeSiteData(siteData);
+
+    // Check if site exists
+    const { data: existingSite, error: checkError } = await supabase
+      .from('sites')
+      .select('id')
+      .eq('id', siteId)
+      .maybeSingle();
+
+    if (checkError) throw new DatabaseError(checkError.message);
+
+    if (existingSite) {
+      // Replace existing site
+      const { data, error } = await supabase
+        .from('sites')
+        .update(sanitizedData)
+        .eq('id', siteId)
+        .select('*')
+        .single();
+
+      if (error) throw new DatabaseError(error.message);
+      if (!data) throw new DatabaseError('Failed to replace site');
+
+      return data;
+    } else {
+      // Create new site
+      const { data, error } = await supabase
+        .from('sites')
+        .insert([sanitizedData])
+        .select('*')
+        .single();
+
+      if (error) throw new DatabaseError(error.message);
+      if (!data) throw new DatabaseError('Failed to create site');
+
+      return data;
+    }
   }
 
   /**

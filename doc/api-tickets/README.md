@@ -2,72 +2,282 @@
 
 ## Overview
 
-The Tickets API handles ticket management operations for work orders and service requests. It also provides endpoints for linking merchandise/equipment to tickets.
+The Tickets API handles comprehensive ticket management operations for work orders and service requests. It provides a unified interface for creating, updating, and managing tickets along with all related data (company, site, contact, appointment, employees, merchandise) in single API calls.
 
 **Base URL**: `/functions/v1/api-tickets`
 
 **Authentication**: All endpoints require Bearer token authentication.
 
 **Key Features**:
-- Ticket CRUD operations
-- Merchandise linking (link equipment to tickets)
+- Comprehensive ticket CRUD operations with automatic handling of related data
+- Create/update tickets with company, site, contact, appointment, employees, and merchandise in one call
+- Select existing entities by ID or create new ones (no updates after creation)
+- Full search and filtering capabilities with pagination
+- Date-based search with selectable date types (create, update, appointed)
 - Site validation (merchandise must be in the same site as ticket)
-
----
-
-## 🚀 Master Ticket API (Recommended)
-
-**For creating/updating tickets with all related data in one call**, see the [Master Ticket API Documentation](./MASTER-TICKET-API.md).
-
-The Master Ticket API allows you to:
-- ✅ Create ticket with company, site, contact, appointment, merchandise, and employees in **one API call**
-- ✅ Update ticket and all related data simultaneously
-- ✅ Delete ticket with automatic cleanup
-- ✅ Automatic find-or-create for company/site/contact
-
-**Quick Example**:
-```json
-POST /api-tickets/master
-{
-  "ticket": { "work_type_id": "...", "assigner_id": "...", "status_id": "..." },
-  "company": { "tax_id": "...", "name_th": "..." },
-  "site": { "name": "...", "address_detail": "..." },
-  "contact": { "person_name": "...", "phone": ["..."] },
-  "appointment": { "appointment_date": "2025-11-20", ... },
-  "employee_ids": ["...", "..."],
-  "merchandise_ids": ["...", "..."]
-}
-```
-
-[📖 View Master Ticket API Documentation](./MASTER-TICKET-API.md)
-
----
-
-## Individual Endpoints
-
-The following endpoints operate on individual resources. For comprehensive operations, use the [Master Ticket API](./MASTER-TICKET-API.md) instead.
 
 ---
 
 ## Endpoints
 
-### List Tickets
+### Search Tickets
 
-Get a paginated list of all tickets.
+Search for tickets with filters on all ticket fields. Supports pagination. **Use this endpoint instead of the old list endpoint.**
 
-**Endpoint**: `GET /`
+**Endpoint**: `GET /search`
 
 **Required Level**: 0 (all authenticated users)
 
 **Query Parameters**:
+
+**Pagination**:
 - `page` (optional): Page number (default: 1)
 - `limit` (optional): Items per page (default: 20)
+
+**Filters** (all optional, can be combined):
+- `id`: Ticket ID (UUID)
+- `details`: Search in ticket details (partial match, case-insensitive)
+- `work_type_id`: Filter by work type ID (UUID)
+- `assigner_id`: Filter by assigner employee ID (UUID)
+- `status_id`: Filter by status ID (UUID)
+- `additional`: Search in additional notes (partial match, case-insensitive)
+- `site_id`: Filter by site ID (UUID)
+- `contact_id`: Filter by contact ID (UUID)
+- `work_result_id`: Filter by work result ID (UUID)
+- `appointment_id`: Filter by appointment ID (UUID)
+- `created_at`: Filter by creation date. Supports:
+  - Single date: `YYYY-MM-DD` (matches that day)
+  - Date range: `YYYY-MM-DD,YYYY-MM-DD` (matches dates in range, inclusive)
+- `updated_at`: Filter by update date. Supports:
+  - Single date: `YYYY-MM-DD` (matches that day)
+  - Date range: `YYYY-MM-DD,YYYY-MM-DD` (matches dates in range, inclusive)
+- `start_date`: Start date for filtering by appointment date (YYYY-MM-DD). Must be used with `end_date`. Automatically excludes tickets with null appointment dates.
+- `end_date`: End date for filtering by appointment date (YYYY-MM-DD). Must be used with `start_date`. Automatically excludes tickets with null appointment dates.
+- `exclude_backlog`: Set to `true` to exclude tickets with null appointment_id (backlog tickets)
+- `department_id`: Filter by department ID(s). Supports:
+  - Single value: `department_id=abc-123` (filters tickets with employees from that department)
+  - Multiple values: `department_id=abc-123%def-456%ghi-789` (percent-separated, filters tickets with employees from any of those departments)
+  - Filters through the relationship: departments → roles → employees → ticket_employees → tickets
+
+**Example Request** (basic search):
+```http
+GET /functions/v1/api-tickets/search?status_id=xxx&site_id=yyy&page=1&limit=20
+Authorization: Bearer <token>
+```
+
+**Example Request** (filter by appointment date):
+```http
+GET /functions/v1/api-tickets/search?start_date=2025-11-23&end_date=2025-11-23&exclude_backlog=true&page=1&limit=20
+Authorization: Bearer <token>
+```
+
+**Example Request** (filter by department):
+```http
+GET /functions/v1/api-tickets/search?department_id=abc-123&page=1&limit=20
+Authorization: Bearer <token>
+```
+
+**Example Request** (filter by multiple departments):
+```http
+GET /functions/v1/api-tickets/search?department_id=abc-123%def-456%ghi-789&page=1&limit=20
+Authorization: Bearer <token>
+```
+
+**Example Response**:
+```json
+{
+  "data": {
+    "data": [
+      {
+        "id": "123e4567-e89b-12d3-a456-426614174000",
+        "details": "Fix printer issue",
+        "work_type_name": "PM",
+        "work_type_code": "pm",
+        "assigner_name": "John Doe",
+        "assigner_code": "EMP001",
+        "creator_name": "Jane Smith",
+        "creator_code": "ADMIN001",
+        "created_by": "123e4567-e89b-12d3-a456-426614174008",
+        "status_name": "In Progress",
+        "status_code": "in_progress",
+        "additional": "Additional notes",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-01-01T00:00:00Z",
+        "site_name": "Main Office",
+        "company_name": "Example Company",
+        "provinceCode": 10,
+        "districtCode": 101,
+        "subDistrictCode": 10101,
+        "contact_name": "Jane Smith",
+        "appointment_id": "123e4567-e89b-12d3-a456-426614174007",
+        "appointment_date": "2024-01-15",
+        "appointment_time_start": "09:00:00",
+        "appointment_time_end": "12:00:00",
+        "appointment_type": "time_range",
+        "employee_names": ["Employee 1", "Employee 2"],
+        "employee_count": 2,
+        "merchandise": [
+          {
+            "id": "123e4567-e89b-12d3-a456-426614174010",
+            "serial": "SN12345",
+            "model": "MODEL-001"
+          }
+        ],
+        "merchandise_count": 1
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "limit": 20,
+      "total": 50,
+      "totalPages": 3,
+      "hasNext": true,
+      "hasPrevious": false
+    }
+  }
+}
+```
+
+**Response Fields**:
+- `id`: Ticket ID (UUID) - used to fetch full details or update
+- `details`: Ticket description
+- `work_type_name`: Work type display name
+- `work_type_code`: Work type code
+- `assigner_name`: Assigner display name
+- `assigner_code`: Assigner employee code
+- `creator_name`: Creator display name (employee who created the ticket)
+- `creator_code`: Creator employee code (employee who created the ticket)
+- `created_by`: Creator employee ID (UUID, automatically set by backend when creating ticket)
+- `status_name`: Status display name
+- `status_code`: Status code
+- `additional`: Additional notes
+- `created_at`: Creation timestamp
+- `updated_at`: Last update timestamp
+- `site_name`: Site display name
+- `company_name`: Company name (Thai preferred, English fallback)
+- `provinceCode`: Province code (integer, from site, nullable)
+- `districtCode`: District code (integer, from site, nullable)
+- `subDistrictCode`: Subdistrict code (integer, from site, nullable)
+- `contact_name`: Contact person name (if exists)
+- `appointment_id`: Appointment ID (UUID, if exists)
+- `appointment_date`: Appointment date (YYYY-MM-DD, if exists)
+- `appointment_time_start`: Appointment start time (if exists)
+- `appointment_time_end`: Appointment end time (if exists)
+- `appointment_type`: Appointment type (e.g., "time_range", "all_day", etc., if exists)
+- `employee_names`: Array of assigned employee names
+- `employee_count`: Number of assigned employees
+- `merchandise`: Array of merchandise items linked to the ticket. Each item contains:
+  - `id`: Merchandise ID
+  - `serial`: Serial number
+  - `model`: Model code
+- `merchandise_count`: Number of merchandise items
+
+**Notes**:
+- All filters are optional and can be combined
+- Text fields (`details`, `additional`) support partial matching (case-insensitive)
+- Date filters support single date or date range
+- When using `start_date` and `end_date` together, filters by appointment date and automatically excludes tickets with null appointment dates
+- `exclude_backlog=true` excludes tickets where `appointment_id` is null (backlog tickets)
+- Results are sorted by creation date (newest first)
+- Returns paginated results with pagination metadata
+- Response contains flattened display fields (no nested objects)
+- `created_by` is automatically set by the backend when creating tickets (cannot be manually set)
+
+---
+
+### Search Tickets by Duration
+
+Search tickets by date range with selectable date type (create, update, or appointed date).
+
+**Endpoint**: `GET /search-duration`
+
+**Required Level**: 0 (all authenticated users)
+
+**Query Parameters**:
+
+**Required**:
+- `startDate` (required): Start date in `YYYY-MM-DD` format
+- `endDate` (required): End date in `YYYY-MM-DD` format
+- `date_type` (optional): Date type to filter by. Options:
+  - `create` (default): Filter by ticket creation date (`created_at`)
+  - `update`: Filter by ticket update date (`updated_at`)
+  - `appointed`: Filter by appointment date (`appointment_date` from appointments table)
+
+**Pagination**:
+- `page` (optional): Page number (default: 1)
+- `limit` (optional): Items per page (default: 20)
+
+**Example Request** (filter by creation date):
+```http
+GET /functions/v1/api-tickets/search-duration?startDate=2024-01-01&endDate=2024-01-31&date_type=create&page=1&limit=20
+Authorization: Bearer <token>
+```
+
+**Example Request** (filter by appointment date):
+```http
+GET /functions/v1/api-tickets/search-duration?startDate=2024-01-15&endDate=2024-01-20&date_type=appointed&page=1&limit=20
+Authorization: Bearer <token>
+```
+
+**Example Response**:
+```json
+{
+  "data": {
+    "data": [
+      {
+        "id": "123e4567-e89b-12d3-a456-426614174000",
+        "details": "Fix printer issue",
+        "work_type_name": "PM",
+        "work_type_code": "pm",
+        "assigner_name": "John Doe",
+        "assigner_code": "EMP001",
+        "creator_name": "Jane Smith",
+        "status_name": "In Progress",
+        "status_code": "in_progress",
+        "additional": "Additional notes",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-01-01T00:00:00Z",
+        "site_name": "Main Office",
+        "company_name": "Example Company",
+        "provinceCode": 10,
+        "districtCode": 101,
+        "subDistrictCode": 10101,
+        "contact_name": null,
+        "appointment_id": "123e4567-e89b-12d3-a456-426614174007",
+        "appointment_date": "2024-01-15",
+        "appointment_time_start": "09:00:00",
+        "appointment_time_end": "12:00:00",
+        "appointment_type": "time_range",
+        "employee_names": ["Employee 1"],
+        "employee_count": 1,
+        "merchandise": [],
+        "merchandise_count": 0
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "limit": 20,
+      "total": 50,
+      "totalPages": 3,
+      "hasNext": true,
+      "hasPrevious": false
+    }
+  }
+}
+```
+
+**Notes**:
+- Date range is inclusive (includes both start and end dates)
+- For `date_type=appointed`, only tickets with appointments in the date range are returned
+- Results are sorted by creation date (newest first)
+- Returns paginated results with pagination metadata
+- Response contains flattened display fields (no nested objects)
 
 ---
 
 ### Get Ticket by ID
 
-Get a single ticket by its ID.
+Get a single ticket by its ID with full details including site, appointment, and work result.
 
 **Endpoint**: `GET /:id`
 
@@ -76,59 +286,157 @@ Get a single ticket by its ID.
 **Path Parameters**:
 - `id` (required): Ticket ID (UUID)
 
----
-
-### Search Tickets
-
-Search for tickets by ticket number or description.
-
-**Endpoint**: `GET /search`
-
-**Required Level**: 0 (all authenticated users)
-
-**Query Parameters**:
-- `q` (required): Search query string (1+ characters)
-
 **Example Request**:
 ```http
-GET /functions/v1/api-tickets/search?q=TKT-001
+GET /functions/v1/api-tickets/123e4567-e89b-12d3-a456-426614174000
 Authorization: Bearer <token>
 ```
 
 **Example Response**:
 ```json
 {
-  "data": [
-    {
-      "id": "123e4567-e89b-12d3-a456-426614174000",
-      "ticket_number": "TKT-001",
-      "description": "Fix printer issue",
-      "site_id": "123e4567-e89b-12d3-a456-426614174001",
-      "work_type_id": "123e4567-e89b-12d3-a456-426614174002",
-      "status_id": "123e4567-e89b-12d3-a456-426614174003",
+  "data": {
+    "id": "123e4567-e89b-12d3-a456-426614174000",
+    "details": "Fix printer issue",
+    "work_type_id": "123e4567-e89b-12d3-a456-426614174002",
+    "assigner_id": "123e4567-e89b-12d3-a456-426614174003",
+    "status_id": "123e4567-e89b-12d3-a456-426614174004",
+    "additional": "Additional notes",
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "created_by": "123e4567-e89b-12d3-a456-426614174008",
+    "site_id": "123e4567-e89b-12d3-a456-426614174001",
+    "contact_id": "123e4567-e89b-12d3-a456-426614174005",
+    "work_result_id": "123e4567-e89b-12d3-a456-426614174006",
+    "appointment_id": "123e4567-e89b-12d3-a456-426614174007",
+    "work_type": {
+      "id": "123e4567-e89b-12d3-a456-426614174002",
+      "code": "pm",
+      "name": "PM",
+      "created_at": "2024-01-01T00:00:00Z"
+    },
+    "assigner": {
+      "id": "123e4567-e89b-12d3-a456-426614174003",
+      "code": "EMP001",
+      "name": "John Doe",
+      "email": "john@example.com",
+      "role_id": "...",
+      "nickname": "John",
+      "is_active": true,
       "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-01T00:00:00Z"
-    }
-  ]
+      "updated_at": "2024-01-01T00:00:00Z",
+      "auth_user_id": null,
+      "supervisor_id": null,
+      "profile_image_url": null
+    },
+    "creator": {
+      "id": "123e4567-e89b-12d3-a456-426614174008",
+      "code": "ADMIN001",
+      "name": "System Administrator",
+      "email": "admin@example.com",
+      "role_id": "...",
+      "nickname": "Admin",
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z",
+      "auth_user_id": "...",
+      "supervisor_id": null,
+      "profile_image_url": null
+    },
+    "status": {
+      "id": "123e4567-e89b-12d3-a456-426614174004",
+      "code": "in_progress",
+      "name": "In Progress"
+    },
+    "site": {
+      "id": "123e4567-e89b-12d3-a456-426614174001",
+      "name": "Main Office",
+      "company": {
+        "tax_id": "1234567890123",
+        "name_th": "บริษัทตัวอย่าง",
+        "name_en": "Example Company",
+        "address_detail": "เลขที่ 123, ถนน Main",
+        "address_tambon": "บางรัก",
+        "address_district": "บางรัก",
+        "address_province": "กรุงเทพมหานคร",
+        "address_tambon_code": "100405",
+        "address_district_code": "1004",
+        "address_province_code": "1"
+      },
+      "map_url": null,
+      "company_id": "1234567890123",
+      "contact_ids": [],
+      "postal_code": 10100,
+      "district_code": 1004,
+      "province_code": 1,
+      "address_detail": "123 Main Street",
+      "is_main_branch": true,
+      "safety_standard": null,
+      "subdistrict_code": 100405
+    },
+    "contact": {
+      "id": "123e4567-e89b-12d3-a456-426614174005",
+      "person_name": "Jane Smith",
+      "phone": ["0812345678"],
+      "email": ["jane@example.com"]
+    },
+    "appointment": {
+      "id": "123e4567-e89b-12d3-a456-426614174007",
+      "ticket_id": "123e4567-e89b-12d3-a456-426614174000",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z",
+      "appointment_date": "2024-01-15",
+      "appointment_type": "scheduled",
+      "appointment_time_start": "09:00:00",
+      "appointment_time_end": "12:00:00"
+    },
+    "employees": [
+      {
+        "id": "123e4567-e89b-12d3-a456-426614174009",
+        "name": "Employee 1",
+        "code": "EMP002"
+      }
+    ],
+    "merchandise": [
+      {
+        "id": "123e4567-e89b-12d3-a456-426614174010",
+        "serial_no": "SN12345",
+        "model": {
+          "id": "...",
+          "model": "MODEL-001",
+          "name": "Model Name"
+        }
+      }
+    ],
+    "time": "2024-01-01T00:00:00Z",
+    "work_result": null,
+    "creator_name": "System Administrator",
+    "creator_code": "ADMIN001"
+  }
 }
 ```
 
-**Searchable Fields**:
-- `ticket_number` - Ticket number (partial match)
-- `description` - Ticket description (partial match)
-
-**Notes**:
-- Search is case-insensitive
-- Returns up to 20 results
-- Results are sorted by creation date (newest first)
-- Empty query returns empty array
-- Partial matches are supported
+**Response Fields**:
+- All ticket fields (id, details, work_type_id, assigner_id, status_id, etc.)
+- `created_by`: Creator employee ID (UUID, automatically set by backend when creating ticket)
+- `work_type`: Work type details (id, name, code)
+- `assigner`: Assigner employee details
+- `creator`: Creator employee details (employee who created the ticket, automatically set by backend)
+- `status`: Ticket status details (id, name, code)
+- `site`: Full site details including company information
+- `contact`: Contact person details
+- `appointment`: Appointment details (always present - created automatically if not provided)
+- `work_result`: Work result details with photos and documents (if exists)
+- `employees`: Array of assigned employees
+- `time`: Alias for created_at (for frontend compatibility)
+- `creator_name`: Creator display name (for frontend compatibility)
+- `creator_code`: Creator employee code (for frontend compatibility)
 
 ---
 
 ### Create Ticket
 
-Create a new ticket.
+Create a new ticket with all related data (company, site, contact, appointment, employees, merchandise) in one API call.
 
 **Endpoint**: `POST /`
 
@@ -137,23 +445,89 @@ Create a new ticket.
 **Request Body**:
 ```json
 {
-  "company_id": "1234567890123",
-  "site_id": "123e4567-e89b-12d3-a456-426614174000",
-  "work_type_id": "123e4567-e89b-12d3-a456-426614174001",
-  "description": "Ticket description",
-  "priority": "normal"
+  "ticket": {
+    "work_type_id": "123e4567-e89b-12d3-a456-426614174001",
+    "assigner_id": "123e4567-e89b-12d3-a456-426614174002",
+    "status_id": "123e4567-e89b-12d3-a456-426614174003",
+    "details": "Ticket description",
+    "additional": "Additional notes"
+  },
+  "company": {
+    "tax_id": "1234567890123",
+    "name_th": "บริษัทตัวอย่าง",
+    "name_en": "Example Company",
+    "address_detail": "123 Main Street",
+    "address_tambon_code": "10101",
+    "address_district_code": "1001",
+    "address_province_code": "10"
+  },
+  "site": {
+    "id": "123e4567-e89b-12d3-a456-426614174010",
+    "name": "Main Office",
+    "address_detail": "123 Main Street",
+    "subdistrict_code": 10101,
+    "district_code": 101,
+    "province_code": 10,
+    "postal_code": 10100
+  },
+  "contact": {
+    "id": "123e4567-e89b-12d3-a456-426614174011",
+    "person_name": "John Doe",
+    "phone": ["0812345678"],
+    "email": ["john@example.com"]
+  },
+  "appointment": {
+    "appointment_date": "2024-01-15",
+    "appointment_time_start": "09:00:00",
+    "appointment_time_end": "12:00:00",
+    "appointment_type": "scheduled"
+  },
+  "employee_ids": ["123e4567-e89b-12d3-a456-426614174004"],
+  "merchandise_ids": ["123e4567-e89b-12d3-a456-426614174005"]
 }
 ```
 
 **Required Fields**:
-- `work_type_id`: Work type ID (UUID)
-- `status_id`: Ticket status ID (UUID)
+- `ticket.work_type_id`: Work type ID (UUID)
+- `ticket.assigner_id`: Assigner employee ID (UUID)
+- `ticket.status_id`: Ticket status ID (UUID)
+
+**Optional Fields**:
+- `ticket.details`: Ticket description
+- `ticket.additional`: Additional notes
+- `company`: Company data
+  - If `tax_id` exists in database: Use existing company
+  - If `tax_id` doesn't exist: Create new company
+  - **Required fields for new company**: `tax_id`, `name_th`, `address_tambon_code`, `address_district_code`, `address_province_code`
+- `site`: Site data
+  - If `id` provided: Use existing site (validates it exists)
+  - If `id` not provided: Create new site
+  - **Required fields for new site**: `name`, `subdistrict_code`, `district_code`, `province_code`, `postal_code`
+- `contact`: Contact data
+  - If `id` provided: Use existing contact (validates it exists)
+  - If `id` not provided: Create new contact
+- `appointment`: Appointment data (optional - if not provided, an empty appointment record will be created automatically)
+- `employee_ids`: Array of employee IDs to assign
+- `merchandise_ids`: Array of merchandise IDs to link
+
+**Notes**:
+- **Created By**: Automatically set by the backend system using the authenticated employee's ID. Users should not provide `created_by` in the request.
+- **Appointment**: An appointment record is **always created** for every ticket, even if no appointment data is provided. If `appointment` is not provided in the request, an empty appointment record will be created automatically.
+- **Company**: If `tax_id` exists, it will be used. Otherwise, a new company is created. No updates to existing companies.
+- **Site**: If `id` is provided, it must exist and will be used. Otherwise, a new site is created. No updates to existing sites.
+- **Contact**: If `id` is provided, it must exist and will be used. Otherwise, a new contact is created. No updates to existing contacts.
+- **Employee Assignment Validation**: When assigning employees (`employee_ids`), the system automatically validates that employees don't have overlapping appointments:
+  - If only `appointment_date` is provided: Any existing appointment on that date will cause a validation error
+  - If `appointment_date`, `appointment_time_start`, and `appointment_time_end` are provided: The system checks for time range overlap. Two time ranges overlap if: `start1 < end2 AND start2 < end1`
+  - If a conflict is detected, the request will fail with a `400 Bad Request` error listing the employees with conflicts
+  - Example error: `"พนักงานต่อไปนี้มีนัดหมายซ้อนทับในวันที่ 2025-01-15: John Technician, Jane Technician"`
+- All merchandise must be in the same site as the ticket (enforced at database level)
 
 ---
 
 ### Update Ticket
 
-Update an existing ticket. You can update ticket data, employee assignments, and merchandise associations.
+Update an existing ticket with all related data (company, site, contact, appointment, employees, merchandise).
 
 **Endpoint**: `PUT /:id`
 
@@ -165,63 +539,140 @@ Update an existing ticket. You can update ticket data, employee assignments, and
 **Request Body**:
 ```json
 {
-  "ticketData": {
-    "description": "Updated description",
-    "status_id": "uuid-here"
+  "ticket": {
+    "details": "Updated description",
+    "status_id": "uuid-here",
+    "work_type_id": "uuid-here",
+    "additional": "Updated notes"
   },
-  "employeeIds": ["employee-uuid-1", "employee-uuid-2"],
-  "merchandiseIds": ["merchandise-uuid-1", "merchandise-uuid-2"]
+  "company": {
+    "tax_id": "1234567890123",
+    "name_th": "บริษัทตัวอย่าง",
+    "address_detail": "Updated address"
+  },
+  "site": {
+    "id": "123e4567-e89b-12d3-a456-426614174010"
+  },
+  "contact": {
+    "id": "123e4567-e89b-12d3-a456-426614174011"
+  },
+  "appointment": {
+    "appointment_date": "2024-01-20",
+    "appointment_time_start": "10:00:00",
+    "appointment_time_end": "13:00:00"
+  },
+  "employee_ids": ["employee-uuid-1", "employee-uuid-2"],
+  "merchandise_ids": ["merchandise-uuid-1", "merchandise-uuid-2"]
 }
 ```
 
-**Fields**:
-- `ticketData` (required): Object containing ticket fields to update
-- `employeeIds` (optional): Array of employee IDs to replace all employee assignments
-- `merchandiseIds` (optional): Array of merchandise IDs to replace all merchandise associations
+**Fields** (all optional - only provided fields will be updated):
+- `ticket`: Ticket fields to update
+- `company`: Company data
+  - If `tax_id` exists: Use existing company
+  - If `tax_id` doesn't exist: Create new company
+  - **No updates to existing companies**
+- `site`: Site data
+  - If `id` provided: Use existing site (must exist)
+  - If `id` not provided: Create new site
+  - **No updates to existing sites**
+  - If `null`: Clear the site from ticket
+- `contact`: Contact data
+  - If `id` provided: Use existing contact (must exist)
+  - If `id` not provided: Create new contact
+  - **No updates to existing contacts**
+  - If `null`: Clear the contact from ticket
+- `appointment`: Appointment data
+  - If appointment exists: Update it
+  - If appointment doesn't exist: Create new one
+  - If `null`: Unlink appointment from ticket
+- `employee_ids`: Array of employee IDs to replace all employee assignments
+- `merchandise_ids`: Array of merchandise IDs to replace all merchandise associations
 
-**Merchandise Management Scenarios**:
-
-1. **Remove all merchandise**: Send empty array
-   ```json
-   {
-     "ticketData": {...},
-     "merchandiseIds": []
-   }
-   ```
-
-2. **Replace with new list**: Send array with desired merchandise IDs
-   ```json
-   {
-     "ticketData": {...},
-     "merchandiseIds": ["merchandise-uuid-1", "merchandise-uuid-3"]
-   }
-   ```
-   - This removes all existing merchandise and links only the ones in the array
-   - Example: If ticket had [serial-1, serial-2] and you send [serial-1], it will remove serial-2 and keep serial-1
-
-3. **Keep existing merchandise unchanged**: Omit `merchandiseIds` field
-   ```json
-   {
-     "ticketData": {...}
-     // merchandiseIds not included - existing associations remain unchanged
-   }
-   ```
+**Notes**:
+- All fields are optional - only provided fields will be updated
+- **Company/Site/Contact**: Cannot be updated after creation. You can only:
+  - Use existing entity by providing `id` (or `tax_id` for company)
+  - Create new entity by providing details without `id`
+- If `employee_ids` is provided, it replaces all existing employee assignments
+- If `merchandise_ids` is provided, it replaces all existing merchandise associations
+- To remove all employees/merchandise, send an empty array `[]`
+- To keep existing employees/merchandise unchanged, omit the field
+- To clear site/contact, send `null` for that field
 
 **Validation**:
-- All merchandise in `merchandiseIds` must exist
+- All merchandise in `merchandise_ids` must exist
 - All merchandise must be in the same site as the ticket (if ticket has a site)
 - Duplicate IDs in the array are automatically deduplicated
+- **Employee Assignment Validation**: When updating employee assignments (`employee_ids`), the system automatically validates that employees don't have overlapping appointments:
+  - Uses the appointment from the update request if provided, otherwise uses the existing appointment
+  - If only `appointment_date` is provided: Any existing appointment on that date will cause a validation error
+  - If `appointment_date`, `appointment_time_start`, and `appointment_time_end` are provided: The system checks for time range overlap. Two time ranges overlap if: `start1 < end2 AND start2 < end1`
+  - The current ticket is excluded from conflict checks (employees can be reassigned to the same ticket)
+  - If a conflict is detected, the request will fail with a `400 Bad Request` error listing the employees with conflicts
+  - Example error: `"พนักงานต่อไปนี้มีนัดหมายซ้อนทับในวันที่ 2025-01-15: John Technician, Jane Technician"`
 
-**Note**: 
-- `employeeIds` and `merchandiseIds` **replace** all existing associations (not append)
-- If `merchandiseIds` is provided (even if empty), it replaces all existing merchandise associations
-- To keep existing associations unchanged, **omit** the `merchandiseIds` field from the request
+---
+
+### Remove Ticket-Employee Assignment
+
+Remove a specific employee assignment from a ticket. The assignment is uniquely identified by the combination of `ticket_id`, `employee_id`, and `date`.
+
+**Endpoint**: `DELETE /employees`
+
+**Required Level**: 2 (level 2 and above)
+
+**Request Body**:
+```json
+{
+  "ticket_id": "123e4567-e89b-12d3-a456-426614174000",
+  "employee_id": "123e4567-e89b-12d3-a456-426614174001",
+  "date": "2024-12-02"
+}
+```
+
+**Request Fields**:
+- `ticket_id` (required): UUID of the ticket
+- `employee_id` (required): UUID of the employee to remove
+- `date` (required): Date of the assignment (YYYY-MM-DD format)
+
+**Example Request**:
+```http
+DELETE /functions/v1/api-tickets/employees
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "ticket_id": "123e4567-e89b-12d3-a456-426614174000",
+  "employee_id": "123e4567-e89b-12d3-a456-426614174001",
+  "date": "2024-12-02"
+}
+```
+
+**Example Response** (200 OK):
+```json
+{
+  "data": {
+    "message": "ลบการมอบหมายพนักงานสำเร็จ"
+  }
+}
+```
+
+**Error Responses**:
+- `400 Bad Request`: Missing required fields or invalid date format
+- `403 Forbidden`: Insufficient permission level
+- `404 Not Found`: Assignment not found
+
+**Notes**:
+- The assignment is uniquely identified by the combination of `date`, `employee_id`, and `ticket_id`
+- This endpoint allows de-assigning employees from tickets without deleting the entire ticket
+- Only level 2+ employees can remove assignments
 
 ---
 
 ### Delete Ticket
 
-Delete a ticket.
+Delete a ticket and optionally related data (appointment, contact). All related data (employees, merchandise, work results) are automatically cleaned up.
 
 **Endpoint**: `DELETE /:id`
 
@@ -230,145 +681,53 @@ Delete a ticket.
 **Path Parameters**:
 - `id` (required): Ticket ID (UUID)
 
----
+**Query Parameters** (optional):
+- `delete_appointment` (optional): Set to `true` to also delete the associated appointment (default: `false`)
+- `delete_contact` (optional): Set to `true` to also delete the associated contact if no other tickets use it (default: `false`)
 
-## Merchandise Management
-
-### List Merchandise for Ticket
-
-Get all merchandise linked to a specific ticket.
-
-**Endpoint**: `GET /:id/merchandise`
-
-**Required Level**: 0 (all authenticated users)
-
-**Path Parameters**:
-- `id` (required): Ticket ID (UUID)
-
-**Response** (200 OK):
-```json
-{
-  "data": [
-    {
-      "id": "123e4567-e89b-12d3-a456-426614174000",
-      "created_at": "2025-11-18T00:00:00Z",
-      "merchandise": {
-        "id": "123e4567-e89b-12d3-a456-426614174001",
-        "serial_no": "SN12345",
-        "model_id": "123e4567-e89b-12d3-a456-426614174002",
-        "site_id": "123e4567-e89b-12d3-a456-426614174003",
-        "pm_count": 10,
-        "distributor_id": "1234567890123",
-        "dealer_id": "1234567890124",
-        "replaced_by_id": null,
-        "created_at": "2025-11-17T00:00:00Z",
-        "updated_at": "2025-11-17T00:00:00Z",
-        "model": {
-          "id": "123e4567-e89b-12d3-a456-426614174002",
-          "model": "MODEL-001",
-          "name": "Model Name",
-          "website_url": "https://example.com"
-        },
-        "site": {
-          "id": "123e4567-e89b-12d3-a456-426614174003",
-          "name": "Site Name"
-        }
-      }
-    }
-  ]
-}
+**Example Request**:
+```http
+DELETE /functions/v1/api-tickets/123e4567-e89b-12d3-a456-426614174000?delete_appointment=true&delete_contact=true
+Authorization: Bearer <token>
 ```
 
----
-
-### Add Merchandise to Ticket
-
-Link merchandise to a ticket. The merchandise must be in the same site as the ticket. This operation is **idempotent** - if the merchandise is already linked, it will return the existing association without error.
-
-**Endpoint**: `POST /:id/merchandise`
-
-**Required Level**: 1 (non-technician_l1 and above)
-
-**Path Parameters**:
-- `id` (required): Ticket ID (UUID)
-
-**Request Body**:
-```json
-{
-  "merchandise_id": "123e4567-e89b-12d3-a456-426614174001"
-}
-```
-
-**Required Fields**:
-- `merchandise_id`: Merchandise ID (UUID)
-
-**Response** (201 Created for new association, 200 OK if already exists):
+**Example Response**:
 ```json
 {
   "data": {
-    "id": "123e4567-e89b-12d3-a456-426614174010",
-    "created_at": "2025-11-18T00:00:00Z",
-    "merchandise": {
-      "id": "123e4567-e89b-12d3-a456-426614174001",
-      "serial_no": "SN12345",
-      "model_id": "123e4567-e89b-12d3-a456-426614174002",
-      "site_id": "123e4567-e89b-12d3-a456-426614174003",
-      "pm_count": 10,
-      "model": {
-        "id": "123e4567-e89b-12d3-a456-426614174002",
-        "model": "MODEL-001",
-        "name": "Model Name",
-        "website_url": "https://example.com"
-      },
-      "site": {
-        "id": "123e4567-e89b-12d3-a456-426614174003",
-        "name": "Site Name"
-      }
-    }
+    "message": "ลบตั๋วงานสำเร็จ"
   }
 }
 ```
 
-**Validation Rules**:
-- Merchandise must exist
-- Merchandise must be in the same site as the ticket (if ticket has a site)
-- **Idempotent**: If merchandise is already linked, returns existing association (200 OK) instead of error
-
-**Error Responses**:
-- `400 Bad Request`: Invalid merchandise_id or validation failed (site mismatch)
-- `404 Not Found`: Ticket or merchandise not found
-
----
-
-### Remove Merchandise from Ticket
-
-Unlink merchandise from a ticket.
-
-**Endpoint**: `DELETE /:id/merchandise/:merchandiseId`
-
-**Required Level**: 1 (non-technician_l1 and above)
-
-**Path Parameters**:
-- `id` (required): Ticket ID (UUID)
-- `merchandiseId` (required): Merchandise ID (UUID)
-
-**Response** (200 OK):
-```json
-{
-  "data": {
-    "message": "ลบการเชื่อมโยงอุปกรณ์สำเร็จ"
-  }
-}
-```
-
-**Error Responses**:
-- `404 Not Found`: Ticket or merchandise association not found
+**Notes**:
+- Ticket is always deleted
+- Employee assignments are automatically removed
+- Merchandise associations are automatically removed
+- Work results are automatically removed
+- Appointment is only deleted if `delete_appointment=true`
+- Contact is only deleted if `delete_contact=true` and no other tickets use it
 
 ---
 
 ## Error Responses
 
 Standard error responses apply (400, 401, 403, 404, 500).
+
+### 400 Bad Request - Employee Appointment Conflict
+
+When creating or updating a ticket with employee assignments that conflict with existing appointments:
+
+```json
+{
+  "error": "พนักงานต่อไปนี้มีนัดหมายซ้อนทับในวันที่ 2025-01-15: John Technician, Jane Technician"
+}
+```
+
+This error occurs when:
+- Employees being assigned already have appointments on the same date
+- If time ranges are provided, the error occurs when time ranges overlap
+- The error message lists all employees with conflicts
 
 ---
 
@@ -380,4 +739,5 @@ Standard error responses apply (400, 401, 403, 404, 500).
 - Merchandise linked to tickets must be in the same site as the ticket (enforced at database level)
 - Multiple merchandise can be linked to a single ticket
 - Merchandise associations are automatically deleted when ticket or merchandise is deleted
-
+- **Company/Site/Contact cannot be updated after creation** - you can only select existing (by ID) or create new
+- Use the `/search` endpoint for listing and filtering tickets (replaces the old `/` list endpoint)

@@ -1,19 +1,14 @@
 /**
  * Models API Edge Function
- * Handles all model CRUD operations
+ * Handles model search and creation operations
  */
 
 import { handleCORS } from './_shared/cors.ts';
 import { error } from './_shared/response.ts';
 import { authenticate } from './_shared/auth.ts';
 import { handleError } from './_shared/error.ts';
-import { list } from './handlers/list.ts';
-import { get } from './handlers/get.ts';
-import { create } from './handlers/create.ts';
-import { update } from './handlers/update.ts';
-import { deleteModel } from './handlers/delete.ts';
-import { getByModel } from './handlers/getByModel.ts';
 import { search } from './handlers/search.ts';
+import { create } from './handlers/create.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -32,43 +27,21 @@ Deno.serve(async (req) => {
     const relativePath = functionIndex >= 0 ? pathParts.slice(functionIndex + 1) : [];
     const method = req.method;
 
-    // GET /model/:model - Get by model code
-    if (method === 'GET' && relativePath[0] === 'model' && relativePath[1]) {
-      const model = relativePath[1];
-      return await getByModel(req, employee, model);
-    }
+    // Route based on method and path
+    switch (method) {
+      case 'GET':
+        // GET /search - Search models by description and code
+        if (relativePath.length === 1 && relativePath[0] === 'search') {
+          return await search(req, employee);
+        }
+        break;
 
-    // GET / - List models
-    if (method === 'GET' && relativePath.length === 0) {
-      return await list(req, employee);
-    }
-
-    // GET /search - Search models
-    if (method === 'GET' && relativePath.length === 1 && relativePath[0] === 'search') {
-      return await search(req, employee);
-    }
-
-    // GET /:id - Get single model
-    if (method === 'GET' && relativePath.length === 1) {
-      const id = relativePath[0];
-      return await get(req, employee, id);
-    }
-
-    // POST / - Create model
-    if (method === 'POST' && relativePath.length === 0) {
-      return await create(req, employee);
-    }
-
-    // PUT /:id - Update model
-    if (method === 'PUT' && relativePath.length === 1) {
-      const id = relativePath[0];
-      return await update(req, employee, id);
-    }
-
-    // DELETE /:id - Delete model
-    if (method === 'DELETE' && relativePath.length === 1) {
-      const id = relativePath[0];
-      return await deleteModel(req, employee, id);
+      case 'POST':
+        // POST / - Create model
+        if (relativePath.length === 0) {
+          return await create(req, employee);
+        }
+        break;
     }
 
     return error('Not found', 404);

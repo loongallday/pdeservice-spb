@@ -1,33 +1,27 @@
 /**
- * Update ticket handler
+ * Update ticket handler - Comprehensive ticket updates with all related data
  */
 
 import { success } from '../_shared/response.ts';
-import { requireLevelGreaterThanZero } from '../_shared/auth.ts';
-import { parseRequestBody, validateUUID, validateRequired } from '../_shared/validation.ts';
+import { requireMinLevel } from '../_shared/auth.ts';
+import { validateUUID } from '../_shared/validation.ts';
 import { TicketService } from '../services/ticketService.ts';
 import type { Employee } from '../_shared/auth.ts';
+import type { MasterTicketUpdateInput } from '../services/ticketService.ts';
 
 export async function update(req: Request, employee: Employee, id: string) {
-  // Check permissions - Level > 0 can update tickets
-  await requireLevelGreaterThanZero(employee);
+  // Check permissions - Level 1 and above can update tickets
+  await requireMinLevel(employee, 1);
 
   // Validate ID
   validateUUID(id, 'Ticket ID');
 
   // Parse request body
-  const body = await parseRequestBody<{
-    ticketData: Record<string, unknown>;
-    employeeIds?: string[];
-    merchandiseIds?: string[];
-  }>(req);
+  const body = await req.json() as MasterTicketUpdateInput;
 
-  // Validate required fields
-  validateRequired(body.ticketData, 'ข้อมูลตั๋วงาน');
+  // Update comprehensive ticket
+  const result = await TicketService.update(id, body, employee.id);
 
-  // Update ticket
-  const ticket = await TicketService.update(id, body.ticketData, body.employeeIds, body.merchandiseIds);
-
-  return success(ticket);
+  return success(result);
 }
 

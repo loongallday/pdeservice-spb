@@ -16,6 +16,7 @@ import { linkExistingAuth } from './handlers/linkExistingAuth.ts';
 import { unlinkAuth } from './handlers/unlinkAuth.ts';
 import { networkSearch } from './handlers/networkSearch.ts';
 import { getEmployeeSummary } from './handlers/employeeSummary.ts';
+import { getTechnicianAvailability } from './handlers/technicianAvailability.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -36,13 +37,13 @@ Deno.serve(async (req) => {
 
     switch (method) {
       case "GET":
-        // GET /network-search - Network search employees (for employee management)
-        if (relativePath.length === 1 && relativePath[0] === "network-search") {
-          return await networkSearch(req, employee);
+        // GET /technicians/availability - Get technicians with availability
+        if (relativePath.length === 2 && relativePath[0] === "technicians" && relativePath[1] === "availability") {
+          return await getTechnicianAvailability(req, employee);
         }
 
-        // GET /search - Backward compatibility, redirects to network-search
-        if (relativePath.length === 1 && relativePath[0] === "search") {
+        // GET /network-search - Network search employees (for employee management)
+        if (relativePath.length === 1 && relativePath[0] === "network-search") {
           return await networkSearch(req, employee);
         }
 

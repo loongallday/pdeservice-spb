@@ -9,15 +9,15 @@ import { CompanyService } from '../services/companyService.ts';
 import { HTTP_STATUS } from '../_shared/constants.ts';
 import type { Employee } from '../_shared/auth.ts';
 
-export async function deleteCompany(req: Request, employee: Employee, taxId: string) {
+export async function deleteCompany(req: Request, employee: Employee, id: string) {
   // Check permissions - Level 1 and above can delete companies
   await requireMinLevel(employee, 1);
 
-  // Validate tax ID
-  validateRequired(taxId, 'เลขผู้เสียภาษี');
+  // Validate id (tax_id)
+  validateRequired(id, 'ID บริษัท');
 
-  // Delete company
-  await CompanyService.delete(taxId);
+  // Delete company (id is tax_id)
+  await CompanyService.delete(id);
 
   return success({ message: 'ลบบริษัทสำเร็จ' }, HTTP_STATUS.OK);
 }

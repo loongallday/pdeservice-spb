@@ -31,7 +31,47 @@ export class LeaveService {
     const { data, error, count } = await query.range(from, to);
     if (error) throw new DatabaseError(error.message);
 
-    return { data: data || [], pagination: calculatePagination(page, limit, count ?? 0) };
+    // Transform data to flatten nested objects into display fields
+    const transformedData = (data || []).map(leaveRequest => {
+      const employee = leaveRequest.employee as {
+        id?: string;
+        code?: string;
+        name?: string;
+        nickname?: string;
+      } | null;
+      const leaveType = leaveRequest.leave_type as {
+        id?: string;
+        code?: string;
+        name?: string;
+      } | null;
+      const approvedBy = leaveRequest.approved_by_employee as {
+        id?: string;
+        code?: string;
+        name?: string;
+      } | null;
+
+      return {
+        id: leaveRequest.id,
+        employee_id: leaveRequest.employee_id,
+        employee_code: employee?.code || null,
+        employee_name: employee?.name || null,
+        leave_type_id: leaveRequest.leave_type_id,
+        leave_type_code: leaveType?.code || null,
+        leave_type_name: leaveType?.name || null,
+        start_date: leaveRequest.start_date,
+        end_date: leaveRequest.end_date,
+        reason: leaveRequest.reason,
+        status: leaveRequest.status,
+        approved_by: leaveRequest.approved_by,
+        approved_by_code: approvedBy?.code || null,
+        approved_by_name: approvedBy?.name || null,
+        approved_at: leaveRequest.approved_at,
+        created_at: leaveRequest.created_at,
+        updated_at: leaveRequest.updated_at,
+      };
+    });
+
+    return { data: transformedData, pagination: calculatePagination(page, limit, count ?? 0) };
   }
 
   static async getById(id: string): Promise<Record<string, unknown>> {
@@ -221,7 +261,7 @@ export class LeaveService {
       .from('leave_requests')
       .select(`
         *,
-        employee:employees!leave_requests_employee_id_fkey(id, emp_code, name_th, name_en, nickname)
+        employee:employees!leave_requests_employee_id_fkey(id, code, name, nickname)
       `)
       .or(`reason.ilike.%${query}%`)
       .limit(20)
@@ -229,7 +269,31 @@ export class LeaveService {
 
     if (error) throw new DatabaseError(error.message);
 
-    return data || [];
+    // Transform data to flatten nested objects into display fields
+    const transformedData = (data || []).map(leaveRequest => {
+      const employee = leaveRequest.employee as {
+        id?: string;
+        code?: string;
+        name?: string;
+        nickname?: string;
+      } | null;
+
+      return {
+        id: leaveRequest.id,
+        employee_id: leaveRequest.employee_id,
+        employee_code: employee?.code || null,
+        employee_name: employee?.name || null,
+        leave_type_id: leaveRequest.leave_type_id,
+        start_date: leaveRequest.start_date,
+        end_date: leaveRequest.end_date,
+        reason: leaveRequest.reason,
+        status: leaveRequest.status,
+        created_at: leaveRequest.created_at,
+        updated_at: leaveRequest.updated_at,
+      };
+    });
+
+    return transformedData;
   }
 }
 

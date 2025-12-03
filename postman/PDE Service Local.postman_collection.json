@@ -444,7 +444,7 @@
 			"name": "Initialize",
 			"item": [
 				{
-					"name": "Initialize App",
+					"name": "Get Current User Info",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -455,17 +455,45 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-initialize",
+							"raw": "{{baseUrl}}/functions/v1/api-initialize/me",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"functions",
 								"v1",
-								"api-initialize"
+								"api-initialize",
+								"me"
 							]
 						},
-						"description": "Returns all initial data needed to bootstrap the application:\n\n**Returns:**\n- `employee`: Current user's full employee data with role and department\n- `roles`: All roles in the system\n- `departments`: All departments in the system\n- `features`: Enabled features filtered by employee level and role\n\n**Use Case:**\nCall this endpoint once when the app starts to get all essential data in a single request.\n\n**Requires:** Authentication (Bearer token)"
+						"description": "Returns current authenticated user's information:\n\n**Returns:**\n- Full employee data with all fields (id, name, code, email, nickname, role_id, auth_user_id, is_active, etc.)\n- `role_data`: Complete role information including:\n  - Role details (id, code, name_th, name_en, description, level, is_active, requires_auth)\n  - `department`: Nested department information (id, code, name_th, name_en, description, is_active)\n\n**Use Case:**\nGet the current user's profile, role, and department information for UI display and permission checks.\n\n**Requires:** Authentication (Bearer token)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Features",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-initialize/features",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-initialize",
+								"features"
+							]
+						},
+						"description": "Returns enabled features for the current authenticated user:\n\n**Returns:**\n- Array of feature objects with:\n  - `id`: Feature ID (UUID)\n  - `code`: Feature code (unique identifier)\n  - `name_th`: Feature name in Thai\n  - `name_en`: Feature name in English\n  - `is_menu_item`: Whether this feature should appear in the menu\n  - `is_active`: Whether this feature is active\n  - `allowed_roles`: Array of role codes allowed to access this feature (null if no restriction)\n\n**Filtering:**\nFeatures are automatically filtered based on:\n- `is_active = true` (only active features)\n- Employee's level (`min_level <= employee.level`)\n- Employee's role (if `allowed_roles` is specified)\n\n**Note:** `min_level` is not returned in the response for security reasons.\n\n**Use Case:**\nGet enabled features for UI rendering, feature flags, and menu generation.\n\n**Requires:** Authentication (Bearer token)"
 					},
 					"response": []
 				}
@@ -557,6 +585,51 @@
 							]
 						},
 						"description": "Get employee summary with minimal fields (id, name, email, role_name, is_link_auth). Only active employees. No pagination. Requires level 0+."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Technician Availability",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-employees/technicians/availability?date=2025-01-15&time_start=09:00:00&time_end=17:00:00",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-employees",
+								"technicians",
+								"availability"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "2025-01-15",
+									"description": "Appointment date (YYYY-MM-DD format, required)"
+								},
+								{
+									"key": "time_start",
+									"value": "09:00:00",
+									"description": "Start time (HH:MM:SS format, optional, must be provided with time_end)"
+								},
+								{
+									"key": "time_end",
+									"value": "17:00:00",
+									"description": "End time (HH:MM:SS format, optional, must be provided with time_start)"
+								}
+							]
+						},
+						"description": "Get technicians from 'technical' department with availability status for a given date/time. Returns minimal fields (id, name, availability). If only date is provided, any appointment on that date = unavailable. If time is provided, checks for time range overlap. Requires level 1+."
 					},
 					"response": []
 				},
@@ -844,120 +917,7 @@
 			"name": "Tickets",
 			"item": [
 				{
-					"name": "Create Master Ticket",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "apikey",
-								"value": "{{apikey}}",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"ticketData\": {\n    \"company_id\": \"uuid-here\",\n    \"site_id\": \"uuid-here\",\n    \"work_type_id\": \"uuid-here\",\n    \"description\": \"Master ticket with all related data\"\n  },\n  \"employeeIds\": [\"employee-uuid-1\", \"employee-uuid-2\"],\n  \"merchandiseIds\": [\"merchandise-uuid-1\", \"merchandise-uuid-2\"]\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-tickets/master",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"functions",
-								"v1",
-								"api-tickets",
-								"master"
-							]
-						},
-						"description": "Create a ticket with all related data (employees and merchandise) in a single request. Requires level 1+."
-					},
-					"response": []
-				},
-				{
-					"name": "Update Master Ticket",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "apikey",
-								"value": "{{apikey}}",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"ticketData\": {\n    \"description\": \"Updated description\"\n  },\n  \"employeeIds\": [\"employee-uuid-1\"],\n  \"merchandiseIds\": [\"merchandise-uuid-1\"]\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-tickets/master/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"functions",
-								"v1",
-								"api-tickets",
-								"master",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "uuid-here"
-								}
-							]
-						},
-						"description": "Update ticket with all related data (employees and merchandise) in a single request. employeeIds and merchandiseIds replace all existing associations."
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Master Ticket",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "apikey",
-								"value": "{{apikey}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-tickets/master/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"functions",
-								"v1",
-								"api-tickets",
-								"master",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "uuid-here"
-								}
-							]
-						},
-						"description": "Delete a ticket and all its related data (employee assignments, merchandise links, appointments, work results). Requires level 2+."
-					},
-					"response": []
-				},
-				{
-					"name": "List Tickets",
+					"name": "Search Tickets",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -968,16 +928,111 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-tickets",
+							"raw": "{{baseUrl}}/functions/v1/api-tickets/search?page=1&limit=20&start_date=2025-11-23&end_date=2025-11-23&exclude_backlog=true&status_id=uuid-here&site_id=uuid-here&department_id=uuid-here",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"functions",
 								"v1",
-								"api-tickets"
+								"api-tickets",
+								"search"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "start_date",
+									"value": "2025-11-23",
+									"description": "Start date for filtering by appointment date (YYYY-MM-DD). Must be used with end_date.",
+									"disabled": true
+								},
+								{
+									"key": "end_date",
+									"value": "2025-11-23",
+									"description": "End date for filtering by appointment date (YYYY-MM-DD). Must be used with start_date.",
+									"disabled": true
+								},
+								{
+									"key": "exclude_backlog",
+									"value": "true",
+									"description": "Exclude tickets with null appointment_id (backlog tickets)",
+									"disabled": true
+								},
+								{
+									"key": "status_id",
+									"value": "uuid-here",
+									"disabled": true
+								},
+								{
+									"key": "site_id",
+									"value": "uuid-here",
+									"disabled": true
+								},
+								{
+									"key": "department_id",
+									"value": "uuid-here",
+									"description": "Filter by department ID(s). Single value or percent-separated multiple values (e.g., 'uuid1%uuid2%uuid3'). Filters tickets with employees from the specified department(s).",
+									"disabled": true
+								}
 							]
-						}
+						},
+						"description": "Search tickets with filters on all ticket fields. Supports pagination. All query parameters are optional.\n\n**New Parameters:**\n- `start_date` & `end_date`: Filter by appointment date range (YYYY-MM-DD). When used together, automatically excludes tickets with null appointment dates.\n- `exclude_backlog`: Set to `true` to exclude tickets with null appointment_id (backlog tickets)\n- `department_id`: Filter by department ID(s). Supports single value or percent-separated multiple values (e.g., 'uuid1%uuid2%uuid3'). Filters tickets that have employees assigned from the specified department(s). Filters through: departments → roles → employees → ticket_employees → tickets.\n\n**Response includes:**\n- `appointment_id`: Appointment ID (UUID)\n- `appointment_date`: Appointment date (YYYY-MM-DD)\n- `appointment_time_start`: Appointment start time (HH:MM:SS)\n- `appointment_time_end`: Appointment end time (HH:MM:SS)\n- `appointment_type`: Appointment type (e.g., \"time_range\", \"all_day\", etc.)\n- `created_by`: Creator employee ID (UUID, automatically set by backend)\n- `creator_name`: Creator display name\n- `creator_code`: Creator employee code"
+					},
+					"response": []
+				},
+				{
+					"name": "Search Tickets by Duration",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-tickets/search-duration?startDate=2024-01-01&endDate=2024-01-31&date_type=create&page=1&limit=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-tickets",
+								"search-duration"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2024-01-01"
+								},
+								{
+									"key": "endDate",
+									"value": "2024-01-31"
+								},
+								{
+									"key": "date_type",
+									"value": "create"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								}
+							]
+						},
+						"description": "Search tickets by date range with selectable date type (create, update, or appointed). Requires startDate and endDate.\n\n**Response includes:**\n- `appointment_id`: Appointment ID (UUID)\n- `appointment_date`: Appointment date (YYYY-MM-DD)\n- `appointment_time_start`: Appointment start time (HH:MM:SS)\n- `appointment_time_end`: Appointment end time (HH:MM:SS)\n- `appointment_type`: Appointment type (e.g., \"time_range\", \"all_day\", etc.)"
 					},
 					"response": []
 				},
@@ -1031,7 +1086,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"company_id\": \"uuid-here\",\n  \"site_id\": \"uuid-here\",\n  \"work_type_id\": \"uuid-here\",\n  \"description\": \"Test ticket description\",\n  \"priority\": \"normal\"\n}"
+							"raw": "{\n  \"ticket\": {\n    \"work_type_id\": \"uuid-here\",\n    \"assigner_id\": \"uuid-here\",\n    \"status_id\": \"uuid-here\",\n    \"details\": \"Ticket description\",\n    \"additional\": \"Additional notes\"\n  },\n  \"company\": {\n    \"tax_id\": \"1234567890123\",\n    \"name_th\": \"บริษัทตัวอย่าง\",\n    \"name_en\": \"Example Company\",\n    \"address_detail\": \"123 Main Street\",\n    \"address_tambon_code\": \"10101\",\n    \"address_district_code\": \"1001\",\n    \"address_province_code\": \"10\"\n  },\n  \"site\": {\n    \"id\": \"uuid-here\",\n    \"name\": \"Main Office\",\n    \"address_detail\": \"123 Main Street\",\n    \"subdistrict_code\": 10101,\n    \"district_code\": 101,\n    \"province_code\": 10,\n    \"postal_code\": 10100\n  },\n  \"contact\": {\n    \"id\": \"uuid-here\",\n    \"person_name\": \"John Doe\",\n    \"phone\": [\"0812345678\"],\n    \"email\": [\"john@example.com\"]\n  },\n  \"appointment\": {\n    \"appointment_date\": \"2024-01-15\",\n    \"appointment_time_start\": \"09:00:00\",\n    \"appointment_time_end\": \"12:00:00\",\n    \"appointment_type\": \"scheduled\"\n  },\n  \"employee_ids\": [\"uuid-here\"],\n  \"merchandise_ids\": [\"uuid-here\"]\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/functions/v1/api-tickets",
@@ -1043,7 +1098,8 @@
 								"v1",
 								"api-tickets"
 							]
-						}
+						},
+						"description": "Create a ticket with all related data (company, site, contact, appointment, employees, merchandise) in one API call. If company tax_id exists, use it; otherwise create new. If site/contact id provided, use it; otherwise create new. Requires level 1+."
 					},
 					"response": []
 				},
@@ -1065,9 +1121,9 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"ticketData\": {\n    \"description\": \"Updated description\",\n    \"status_id\": \"uuid-here\"\n  },\n  \"employeeIds\": [\"employee-uuid-1\", \"employee-uuid-2\"],\n  \"merchandiseIds\": [\"merchandise-uuid-1\", \"merchandise-uuid-2\"]\n}"
+							"raw": "{\n  \"ticket\": {\n    \"details\": \"Updated description\",\n    \"status_id\": \"uuid-here\",\n    \"work_type_id\": \"uuid-here\",\n    \"additional\": \"Updated notes\"\n  },\n  \"company\": {\n    \"tax_id\": \"1234567890123\",\n    \"name_th\": \"บริษัทตัวอย่าง\",\n    \"address_detail\": \"Updated address\"\n  },\n  \"site\": {\n    \"id\": \"uuid-here\"\n  },\n  \"contact\": {\n    \"id\": \"uuid-here\"\n  },\n  \"appointment\": {\n    \"appointment_date\": \"2024-01-20\",\n    \"appointment_time_start\": \"10:00:00\",\n    \"appointment_time_end\": \"13:00:00\"\n  },\n  \"employee_ids\": [\"uuid-here\"],\n  \"merchandise_ids\": [\"uuid-here\"]\n}"
 						},
-						"description": "Update ticket data, employee assignments, and/or merchandise associations. employeeIds and merchandiseIds replace all existing associations (not append). Omit fields to keep existing associations.",
+						"description": "Update ticket with all related data. Company/Site/Contact cannot be updated after creation - use existing by ID or create new. employee_ids and merchandise_ids replace all existing associations. Omit fields to keep existing associations. Requires level 1+.",
 						"url": {
 							"raw": "{{baseUrl}}/functions/v1/api-tickets/:id",
 							"host": [
@@ -1101,7 +1157,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-tickets/:id",
+							"raw": "{{baseUrl}}/functions/v1/api-tickets/:id?delete_appointment=false&delete_contact=false",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1111,55 +1167,31 @@
 								"api-tickets",
 								":id"
 							],
+							"query": [
+								{
+									"key": "delete_appointment",
+									"value": "false"
+								},
+								{
+									"key": "delete_contact",
+									"value": "false"
+								}
+							],
 							"variable": [
 								{
 									"key": "id",
 									"value": "uuid-here"
 								}
 							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "List Merchandise for Ticket",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "apikey",
-								"value": "{{apikey}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-tickets/:id/merchandise",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"functions",
-								"v1",
-								"api-tickets",
-								":id",
-								"merchandise"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "uuid-here",
-									"description": "Ticket ID"
-								}
-							]
 						},
-						"description": "Get all merchandise linked to a specific ticket. Merchandise must be in the same site as the ticket."
+						"description": "Delete a ticket and optionally related data (appointment, contact). All related data (employees, merchandise, work results) are automatically cleaned up. Requires level 1+."
 					},
 					"response": []
 				},
 				{
-					"name": "Add Merchandise to Ticket",
+					"name": "Remove Ticket-Employee Assignment",
 					"request": {
-						"method": "POST",
+						"method": "DELETE",
 						"header": [
 							{
 								"key": "apikey",
@@ -1174,10 +1206,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"merchandise_id\": \"uuid-here\"\n}"
+							"raw": "{\n  \"ticket_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"employee_id\": \"123e4567-e89b-12d3-a456-426614174001\",\n  \"date\": \"2024-12-02\"\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-tickets/:id/merchandise",
+							"raw": "{{baseUrl}}/functions/v1/api-tickets/employees",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1185,59 +1217,10 @@
 								"functions",
 								"v1",
 								"api-tickets",
-								":id",
-								"merchandise"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "uuid-here",
-									"description": "Ticket ID"
-								}
+								"employees"
 							]
 						},
-						"description": "Link merchandise to a ticket. The merchandise must be in the same site as the ticket. Requires level 1+."
-					},
-					"response": []
-				},
-				{
-					"name": "Remove Merchandise from Ticket",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "apikey",
-								"value": "{{apikey}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-tickets/:id/merchandise/:merchandiseId",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"functions",
-								"v1",
-								"api-tickets",
-								":id",
-								"merchandise",
-								":merchandiseId"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "uuid-here",
-									"description": "Ticket ID"
-								},
-								{
-									"key": "merchandiseId",
-									"value": "uuid-here",
-									"description": "Merchandise ID"
-								}
-							]
-						},
-						"description": "Unlink merchandise from a ticket. Requires level 1+."
+						"description": "Remove a specific employee assignment from a ticket. The assignment is uniquely identified by the combination of ticket_id, employee_id, and date. This allows de-assigning employees from tickets without deleting the entire ticket. Requires level 2+.\n\n**Request Body Fields:**\n- `ticket_id` (required): UUID of the ticket\n- `employee_id` (required): UUID of the employee to remove\n- `date` (required): Date of the assignment (YYYY-MM-DD format)\n\n**Notes:**\n- The assignment is uniquely identified by the combination of date, employee_id, and ticket_id\n- Only level 2+ employees can remove assignments"
 					},
 					"response": []
 				}
@@ -1247,7 +1230,7 @@
 			"name": "Companies",
 			"item": [
 				{
-					"name": "Search Companies",
+					"name": "Global Search Companies",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -1258,7 +1241,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-companies/search?q=test",
+							"raw": "{{baseUrl}}/functions/v1/api-companies/global-search?q=test&page=1&limit=20",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1266,21 +1249,29 @@
 								"functions",
 								"v1",
 								"api-companies",
-								"search"
+								"global-search"
 							],
 							"query": [
 								{
 									"key": "q",
 									"value": "test"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
 								}
 							]
 						},
-						"description": "Search companies by name or tax ID"
+						"description": "Global search companies by name or tax ID with pagination. Returns paginated results."
 					},
 					"response": []
 				},
 				{
-					"name": "Get Recent Companies",
+					"name": "Get Company Hints",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -1291,7 +1282,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-companies/recent?limit=5",
+							"raw": "{{baseUrl}}/functions/v1/api-companies/hint?q=",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1299,41 +1290,16 @@
 								"functions",
 								"v1",
 								"api-companies",
-								"recent"
+								"hint"
 							],
 							"query": [
 								{
-									"key": "limit",
-									"value": "5"
+									"key": "q",
+									"value": ""
 								}
 							]
 						},
-						"description": "Get recently created companies. Default limit is 5."
-					},
-					"response": []
-				},
-				{
-					"name": "List Companies",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "apikey",
-								"value": "{{apikey}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-companies",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"functions",
-								"v1",
-								"api-companies"
-							]
-						}
+						"description": "Get up to 5 company hints. If query is empty, returns 5 most recent companies. If query is provided, searches and returns matching companies."
 					},
 					"response": []
 				},
@@ -1362,15 +1328,17 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "tax-id-here"
+									"value": "1234567890123",
+									"description": "Company tax ID (used as identifier)"
 								}
 							]
-						}
+						},
+						"description": "Get a single company by ID (tax_id). Note: The ID parameter is the company's tax_id."
 					},
 					"response": []
 				},
 				{
-					"name": "Find or Create Company",
+					"name": "Create or Update Company",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -1390,7 +1358,7 @@
 							"raw": "{\n  \"tax_id\": \"1234567890123\",\n  \"name_th\": \"บริษัท ทดสอบ จำกัด\",\n  \"name_en\": \"Test Company Ltd.\"\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-companies/find-or-create",
+							"raw": "{{baseUrl}}/functions/v1/api-companies/create-or-update",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1398,10 +1366,10 @@
 								"functions",
 								"v1",
 								"api-companies",
-								"find-or-create"
+								"create-or-update"
 							]
 						},
-						"description": "Find an existing company by tax_id or create a new one if not found. Requires level 1+."
+						"description": "Create a new company or update an existing one if found by tax_id. If company exists, it will be updated. If not found, a new company will be created. Main branch site is automatically managed. Requires level 1+."
 					},
 					"response": []
 				},
@@ -1461,7 +1429,7 @@
 							"raw": "{\n  \"name_th\": \"บริษัท ทดสอบ จำกัด (อัพเดท)\",\n  \"name_en\": \"Test Company Ltd. (Updated)\"\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-companies/:taxId",
+							"raw": "{{baseUrl}}/functions/v1/api-companies/:id",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1469,16 +1437,17 @@
 								"functions",
 								"v1",
 								"api-companies",
-								":taxId"
+								":id"
 							],
 							"variable": [
 								{
-									"key": "taxId",
-									"value": "1234567890123"
+									"key": "id",
+									"value": "1234567890123",
+									"description": "Company tax ID (used as identifier)"
 								}
 							]
 						},
-						"description": "Update a company. Uses tax_id as identifier. Requires level 1+."
+						"description": "Update a company. The ID parameter is the company's tax_id. Main branch site is automatically updated. Requires level 1+."
 					},
 					"response": []
 				},
@@ -1494,7 +1463,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-companies/:taxId",
+							"raw": "{{baseUrl}}/functions/v1/api-companies/:id",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1502,16 +1471,17 @@
 								"functions",
 								"v1",
 								"api-companies",
-								":taxId"
+								":id"
 							],
 							"variable": [
 								{
-									"key": "taxId",
-									"value": "1234567890123"
+									"key": "id",
+									"value": "1234567890123",
+									"description": "Company tax ID (used as identifier)"
 								}
 							]
 						},
-						"description": "Delete a company. Uses tax_id as identifier. Requires level 1+."
+						"description": "Delete a company. The ID parameter is the company's tax_id. Requires level 1+."
 					},
 					"response": []
 				}
@@ -1521,7 +1491,7 @@
 			"name": "Sites",
 			"item": [
 				{
-					"name": "Search Sites",
+					"name": "Global Search Sites",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -1532,7 +1502,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-sites/search?q=test",
+							"raw": "{{baseUrl}}/functions/v1/api-sites/global-search?q=test&page=1&limit=20",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1540,21 +1510,34 @@
 								"functions",
 								"v1",
 								"api-sites",
-								"search"
+								"global-search"
 							],
 							"query": [
 								{
 									"key": "q",
 									"value": "test"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "company_id",
+									"value": "",
+									"disabled": true
 								}
 							]
 						},
-						"description": "Search sites by name or address"
+						"description": "Global search sites by name or address with pagination. Returns paginated results with summary fields only (id, name, description, company_id)."
 					},
 					"response": []
 				},
 				{
-					"name": "Get Recent Sites",
+					"name": "Get Site Hints",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -1565,7 +1548,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-sites/recent",
+							"raw": "{{baseUrl}}/functions/v1/api-sites/hint?q=",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1573,35 +1556,21 @@
 								"functions",
 								"v1",
 								"api-sites",
-								"recent"
+								"hint"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": ""
+								},
+								{
+									"key": "company_id",
+									"value": "",
+									"disabled": true
+								}
 							]
 						},
-						"description": "Get recently created sites"
-					},
-					"response": []
-				},
-				{
-					"name": "List Sites",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "apikey",
-								"value": "{{apikey}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-sites",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"functions",
-								"v1",
-								"api-sites"
-							]
-						}
+						"description": "Get up to 5 site hints. If query is empty, returns 5 sites ordered by name. If query is provided, searches and returns matching sites."
 					},
 					"response": []
 				},
@@ -1630,10 +1599,12 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "uuid-here"
+									"value": "123e4567-e89b-12d3-a456-426614174000",
+									"description": "Site ID (UUID)"
 								}
 							]
-						}
+						},
+						"description": "Get a single site by ID. Returns full site details including company information."
 					},
 					"response": []
 				},
@@ -1673,42 +1644,6 @@
 					"response": []
 				},
 				{
-					"name": "Find or Create Site",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "apikey",
-								"value": "{{apikey}}",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"Test Site\",\n  \"company_id\": \"uuid-here\",\n  \"address_detail\": \"123 Test Street\",\n  \"safety_standard\": [\"safety_shoes\", \"safety_vest\"]\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-sites/find-or-create",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"functions",
-								"v1",
-								"api-sites",
-								"find-or-create"
-							]
-						},
-						"description": "Find an existing site or create a new one if not found. Uses name, company_id, and subdistrict_code to match."
-					},
-					"response": []
-				},
-				{
 					"name": "Update Site",
 					"request": {
 						"method": "PUT",
@@ -1742,12 +1677,12 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "uuid-here",
-									"description": "Site ID"
+									"value": "123e4567-e89b-12d3-a456-426614174000",
+									"description": "Site ID (UUID)"
 								}
 							]
 						},
-						"description": "Update an existing site. All fields are optional. To clear safety_standard, send null or empty array []."
+						"description": "Update an existing site. All fields are optional. To clear safety_standard, send null or empty array []. Requires level 1+."
 					},
 					"response": []
 				},
@@ -1776,8 +1711,8 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "uuid-here",
-									"description": "Site ID"
+									"value": "123e4567-e89b-12d3-a456-426614174000",
+									"description": "Site ID (UUID)"
 								}
 							]
 						},
@@ -3795,7 +3730,7 @@
 			"name": "Merchandise",
 			"item": [
 				{
-					"name": "List Merchandise",
+					"name": "Search Merchandise",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -3806,31 +3741,99 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-merchandise?page=1&limit=20",
+							"raw": "{{baseUrl}}/functions/v1/api-merchandise/search?q=",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"functions",
 								"v1",
-								"api-merchandise"
+								"api-merchandise",
+								"search"
 							],
 							"query": [
 								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "limit",
-									"value": "20"
-								},
-								{
-									"key": "search",
+									"key": "q",
 									"value": "",
+									"description": "Search query for serial number (partial match, case-insensitive)"
+								}
+							]
+						},
+						"description": "Search merchandise by serial number. If no query is provided, returns all merchandise (up to 20 items). Results are limited to 20 items, ordered by creation date (newest first)."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Merchandise Hints",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-merchandise/hint?q=&site_id=",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-merchandise",
+								"hint"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "",
+									"description": "Search query string. If empty, returns 5 most recent merchandise ordered by creation date."
+								},
+								{
+									"key": "site_id",
+									"value": "",
+									"description": "Filter by site ID (UUID). If provided, only returns merchandise from the specified site.",
 									"disabled": true
 								}
 							]
-						}
+						},
+						"description": "Get up to 5 merchandise hints. If query is empty, returns 5 most recent merchandise. If query is provided, searches by serial number and returns matching merchandise. If site_id is provided, filters results by site."
+					},
+					"response": []
+				},
+				{
+					"name": "Check Duplicate Serial Number",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-merchandise/check-duplicate?serial_no=SN12345",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-merchandise",
+								"check-duplicate"
+							],
+							"query": [
+								{
+									"key": "serial_no",
+									"value": "SN12345",
+									"description": "Serial number to check for duplicates (required)"
+								}
+							]
+						},
+						"description": "Check if a serial number already exists in the system. Useful for validating before creating new merchandise. Returns `is_duplicate: true` if found, along with the merchandise record. Returns `is_duplicate: false` and `merchandise: null` if not found. Requires level 0+ (all authenticated users)."
 					},
 					"response": []
 				},
@@ -3862,95 +3865,8 @@
 									"value": "uuid-here"
 								}
 							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Merchandise by Site",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "apikey",
-								"value": "{{apikey}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-merchandise/site/:siteId?page=1&limit=20",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"functions",
-								"v1",
-								"api-merchandise",
-								"site",
-								":siteId"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "limit",
-									"value": "20"
-								}
-							],
-							"variable": [
-								{
-									"key": "siteId",
-									"value": "uuid-here"
-								}
-							]
 						},
-						"description": "Get all merchandise for a specific site"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Merchandise by Model",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "apikey",
-								"value": "{{apikey}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-merchandise/model/:modelId?page=1&limit=20",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"functions",
-								"v1",
-								"api-merchandise",
-								"model",
-								":modelId"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "limit",
-									"value": "20"
-								}
-							],
-							"variable": [
-								{
-									"key": "modelId",
-									"value": "uuid-here"
-								}
-							]
-						},
-						"description": "Get all merchandise for a specific model"
+						"description": "Get a single merchandise item by its ID. Returns full merchandise details including model and site information."
 					},
 					"response": []
 				},
@@ -3984,7 +3900,8 @@
 								"v1",
 								"api-merchandise"
 							]
-						}
+						},
+						"description": "Create a new merchandise item. Required fields: serial_no, model_id, site_id. Optional fields: pm_count, distributor_id, dealer_id, replaced_by_id. Requires level 1+."
 					},
 					"response": []
 				},
@@ -4025,7 +3942,8 @@
 									"value": "uuid-here"
 								}
 							]
-						}
+						},
+						"description": "Update an existing merchandise item. All fields are optional. Requires level 2+."
 					},
 					"response": []
 				},
@@ -4057,7 +3975,8 @@
 									"value": "uuid-here"
 								}
 							]
-						}
+						},
+						"description": "Delete a merchandise item. Cannot delete merchandise that has PM logs or is referenced elsewhere. Requires level 2+."
 					},
 					"response": []
 				}
@@ -4067,7 +3986,7 @@
 			"name": "Models",
 			"item": [
 				{
-					"name": "List Models",
+					"name": "Search Models",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -4078,96 +3997,30 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-models?page=1&limit=20",
+							"raw": "{{baseUrl}}/functions/v1/api-models/search?description=&code=",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"functions",
 								"v1",
-								"api-models"
+								"api-models",
+								"search"
 							],
 							"query": [
 								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "limit",
-									"value": "20"
-								},
-								{
-									"key": "search",
+									"key": "description",
 									"value": "",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Model by ID",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "apikey",
-								"value": "{{apikey}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-models/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"functions",
-								"v1",
-								"api-models",
-								":id"
-							],
-							"variable": [
+									"description": "Search in model description/name (partial match, case-insensitive)"
+								},
 								{
-									"key": "id",
-									"value": "uuid-here"
+									"key": "code",
+									"value": "",
+									"description": "Search in model code (partial match, case-insensitive)"
 								}
 							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Model by Code",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "apikey",
-								"value": "{{apikey}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-models/model/:model",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"functions",
-								"v1",
-								"api-models",
-								"model",
-								":model"
-							],
-							"variable": [
-								{
-									"key": "model",
-									"value": "MODEL-001"
-								}
-							]
-						}
+						},
+						"description": "Search models by description and/or code. If no parameters are provided, returns all models (up to 20 items). If both parameters are provided, results will match either condition (OR logic). Results are limited to 20 items, ordered by creation date (newest first)."
 					},
 					"response": []
 				},
@@ -4201,80 +4054,8 @@
 								"v1",
 								"api-models"
 							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Model",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "apikey",
-								"value": "{{apikey}}",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"Updated Model Name\",\n  \"website_url\": \"https://new-website.com\"\n}"
 						},
-						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-models/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"functions",
-								"v1",
-								"api-models",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "uuid-here"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Model",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "apikey",
-								"value": "{{apikey}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-models/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"functions",
-								"v1",
-								"api-models",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "uuid-here"
-								}
-							]
-						}
+						"description": "Create a new model. Required fields: model (unique model code). Optional fields: name, website_url. Requires level 1+."
 					},
 					"response": []
 				}
@@ -4634,4 +4415,3 @@
 		}
 	]
 }
-

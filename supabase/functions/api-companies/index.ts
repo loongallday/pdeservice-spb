@@ -4,17 +4,16 @@
  */
 
 import { handleCORS } from './_shared/cors.ts';
-import { error, success } from './_shared/response.ts';
+import { error } from './_shared/response.ts';
 import { authenticate } from './_shared/auth.ts';
 import { handleError } from './_shared/error.ts';
-import { list } from './handlers/list.ts';
-import { get } from './handlers/get.ts';
-import { search } from './handlers/search.ts';
+import { getById } from './handlers/getById.ts';
+import { globalSearch } from './handlers/globalSearch.ts';
+import { hint } from './handlers/hint.ts';
 import { create } from './handlers/create.ts';
 import { update } from './handlers/update.ts';
 import { deleteCompany } from './handlers/delete.ts';
-import { findOrCreate } from './handlers/findOrCreate.ts';
-import { CompanyService } from './services/companyService.ts';
+import { createOrUpdate } from './handlers/createOrUpdate.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -33,53 +32,64 @@ Deno.serve(async (req) => {
     const relativePath = functionIndex >= 0 ? pathParts.slice(functionIndex + 1) : [];
     const method = req.method;
 
-    // GET /search - Search companies
-    if (method === 'GET' && relativePath.length === 1 && relativePath[0] === 'search') {
-      return await search(req, employee);
-    }
+    switch (method) {
+      case "GET":
+        // GET /global-search - Global search companies (paginated)
+        if (relativePath.length === 1 && relativePath[0] === "global-search") {
+          return await globalSearch(req, employee);
+        }
 
-    // GET /recent - Get recent companies
-    if (method === 'GET' && relativePath.length === 1 && relativePath[0] === 'recent') {
-      const limit = parseInt(url.searchParams.get('limit') || '5');
-      const companies = await CompanyService.getRecent(limit);
-      return success(companies);
-    }
+        // GET /hint - Get company hints (up to 5 companies)
+        if (relativePath.length === 1 && relativePath[0] === "hint") {
+          return await hint(req, employee);
+        }
 
-    // GET / - List companies
-    if (method === 'GET' && relativePath.length === 0) {
-      return await list(req, employee);
-    }
+        // GET /:id - Get single company
+        if (relativePath.length === 1) {
+          const id = relativePath[0];
+          // Validate it's not a special route
+          if (id === 'global-search' || id === 'hint' || id === 'create-or-update') {
+            return error('Not found', 404);
+          }
+          return await getById(req, employee, id);
+        }
+        break;
 
-    // GET /:taxId - Get single company
-    if (method === 'GET' && relativePath.length === 1) {
-      const taxId = relativePath[0];
-      return await get(req, employee, taxId);
-    }
+      case "POST":
+        // POST /create-or-update - Create or update company
+        if (relativePath.length === 1 && relativePath[0] === "create-or-update") {
+          return await createOrUpdate(req, employee);
+        }
 
-    // POST /find-or-create - Find or create company
-    if (method === 'POST' && relativePath.length === 1 && relativePath[0] === 'find-or-create') {
-      return await findOrCreate(req, employee);
-    }
+        // POST / - Create company
+        if (relativePath.length === 0) {
+          return await create(req, employee);
+        }
+        break;
 
-    // POST / - Create company
-    if (method === 'POST' && relativePath.length === 0) {
-      return await create(req, employee);
-    }
+      case "PUT":
+        // PUT /:id - Update company
+        if (relativePath.length === 1) {
+          const id = relativePath[0];
+          // Validate it's not a special route
+          if (id === 'global-search' || id === 'hint' || id === 'create-or-update') {
+            return error('Not found', 404);
+          }
+          return await update(req, employee, id);
+        }
+        break;
 
-    // PUT /:taxId - Update company
-    if (method === 'PUT' && relativePath.length === 1) {
-      const taxId = relativePath[0];
-      // Validate it's not a special route
-      if (taxId === 'search' || taxId === 'recent' || taxId === 'find-or-create') {
-        return error('Not found', 404);
-      }
-      return await update(req, employee, taxId);
-    }
-
-    // DELETE /:taxId - Delete company
-    if (method === 'DELETE' && relativePath.length === 1) {
-      const taxId = relativePath[0];
-      return await deleteCompany(req, employee, taxId);
+      case "DELETE":
+        // DELETE /:id - Delete company
+        if (relativePath.length === 1) {
+          const id = relativePath[0];
+          // Validate it's not a special route
+          if (id === 'global-search' || id === 'hint' || id === 'create-or-update') {
+            return error('Not found', 404);
+          }
+          return await deleteCompany(req, employee, id);
+        }
+        break;
     }
 
     return error('Not found', 404);

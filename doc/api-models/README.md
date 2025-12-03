@@ -1,96 +1,98 @@
-## Base URL
-```
-/api-models
-```
+# Models API
 
-## Authentication
-ทุก endpoint ต้องการ JWT token ใน Authorization header
+## Overview
+
+The Models API provides search functionality for equipment models. It allows searching by model description (name) and code.
+
+**Base URL**: `/functions/v1/api-models`
+
+**Authentication**: All endpoints require Bearer token authentication.
+
+---
 
 ## Endpoints
 
-### 1. List Models
-ดึงรายการ model ทั้งหมดแบบแบ่งหน้า
+### Search Models
 
-**Endpoint:** `GET /`
+Search for models by description and/or code.
 
-**Authorization:** Level 0+
+**Endpoint**: `GET /search`
 
-**Query Parameters:**
+**Required Level**: 0 (all authenticated users)
+
+**Query Parameters**:
+
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| page | number | No | หมายเลขหน้า (default: 1) |
-| limit | number | No | จำนวนรายการต่อหน้า (default: 20) |
-| search | string | No | ค้นหาจาก model code หรือชื่อ |
+| `description` | string | No | Search in model description/name (partial match, case-insensitive) |
+| `code` | string | No | Search in model code (partial match, case-insensitive) |
 
-**Response:**
+**Notes**:
+- If no parameters are provided, returns all models (up to 20 items)
+- If both parameters are provided, results will match either condition (OR logic)
+- Results are limited to 20 items, ordered by creation date (newest first)
+
+**Example Request** (search by description):
+```http
+GET /functions/v1/api-models/search?description=Premium
+Authorization: Bearer <token>
+```
+
+**Example Request** (search by code):
+```http
+GET /functions/v1/api-models/search?code=MODEL-001
+Authorization: Bearer <token>
+```
+
+**Example Request** (search by both):
+```http
+GET /functions/v1/api-models/search?description=Machine&code=MODEL
+Authorization: Bearer <token>
+```
+
+**Example Response**:
 ```json
 {
-  "data": {
-    "data": [
-      {
-        "id": "uuid",
-        "model": "MODEL-001",
-        "name": "Model Name",
-        "website_url": "https://manufacturer.com/model-001",
-        "created_at": "2025-11-17T...",
-        "updated_at": "2025-11-17T..."
-      }
-    ],
-    "pagination": {
-      "page": 1,
-      "limit": 20,
-      "total": 50,
-      "totalPages": 3,
-      "hasNext": true,
-      "hasPrevious": false
+  "data": [
+    {
+      "id": "123e4567-e89b-12d3-a456-426614174000",
+      "model": "MODEL-001",
+      "name": "Premium Machine Model 001",
+      "website_url": "https://manufacturer.com/model-001",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "123e4567-e89b-12d3-a456-426614174001",
+      "model": "MODEL-002",
+      "name": "Standard Machine Model 002",
+      "website_url": "https://manufacturer.com/model-002",
+      "created_at": "2024-01-02T00:00:00Z",
+      "updated_at": "2024-01-02T00:00:00Z"
     }
-  }
+  ]
 }
 ```
 
-### 2. Get Model by ID
-ดึงข้อมูล model รายการเดียว
+**Response Fields**:
+- `id`: Model ID (UUID)
+- `model`: Model code (unique identifier)
+- `name`: Model description/display name
+- `website_url`: URL to model documentation or product page (optional)
+- `created_at`: Creation timestamp
+- `updated_at`: Last update timestamp
 
-**Endpoint:** `GET /:id`
+---
 
-**Authorization:** Level 0+
+### Create Model
 
-**Response:**
-```json
-{
-  "data": {
-    "id": "uuid",
-    "model": "MODEL-001",
-    "name": "Model Name",
-    "website_url": "https://manufacturer.com/model-001",
-    "created_at": "2025-11-17T...",
-    "updated_at": "2025-11-17T..."
-  }
-}
-```
+Create a new model.
 
-### 3. Get Model by Model Code
-ดึงข้อมูล model จาก model code
+**Endpoint**: `POST /`
 
-**Endpoint:** `GET /model/:model`
+**Required Level**: 1 (create operations)
 
-**Authorization:** Level 0+
-
-**Response:** (เหมือน get by ID)
-
-**Example:**
-```
-GET /api-models/model/MODEL-001
-```
-
-### 4. Create Model
-สร้าง model ใหม่
-
-**Endpoint:** `POST /`
-
-**Authorization:** Level 1+
-
-**Request Body:**
+**Request Body**:
 ```json
 {
   "model": "MODEL-001",
@@ -99,85 +101,43 @@ GET /api-models/model/MODEL-001
 }
 ```
 
-**Required Fields:**
+**Required Fields**:
 - `model` - Model code (unique)
 
-**Optional Fields:**
-- `name` - ชื่อแสดงของ model
-- `website_url` - URL ไปยังข้อมูลหรือเอกสารของ model
+**Optional Fields**:
+- `name` - Model description/display name
+- `website_url` - URL to model documentation or product page
 
-**Response:** (201 Created)
+**Example Request**:
+```http
+POST /functions/v1/api-models
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "model": "MODEL-001",
+  "name": "Premium Machine Model 001",
+  "website_url": "https://manufacturer.com/products/model-001"
+}
+```
+
+**Example Response** (201 Created):
 ```json
 {
   "data": {
-    "id": "uuid",
+    "id": "123e4567-e89b-12d3-a456-426614174000",
     "model": "MODEL-001",
-    "name": "Model Display Name",
-    "website_url": "https://manufacturer.com/model-001",
-    "created_at": "2025-11-17T...",
-    "updated_at": "2025-11-17T..."
+    "name": "Premium Machine Model 001",
+    "website_url": "https://manufacturer.com/products/model-001",
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z"
   }
 }
 ```
 
-### 5. Update Model
-แก้ไขข้อมูล model
-
-**Endpoint:** `PUT /:id`
-
-**Authorization:** Level 1+
-
-**Request Body:** (เหมือน create แต่ทุก field เป็น optional)
-```json
-{
-  "name": "Updated Name",
-  "website_url": "https://new-url.com"
-}
-```
-
-**Response:**
-```json
-{
-  "data": { /* updated model object */ }
-}
-```
-
-### 6. Delete Model
-ลบ model
-
-**Endpoint:** `DELETE /:id`
-
-**Authorization:** Level 1+
-
-**Response:**
-```json
-{
-  "data": {
-    "message": "ลบข้อมูลสำเร็จ"
-  }
-}
-```
-
-**Note:** ไม่สามารถลบ model ที่มี merchandise ใช้งานอยู่
+---
 
 ## Error Responses
-
-### 400 Bad Request
-```json
-{
-  "error": "กรุณาระบุ model code"
-}
-```
-```json
-{
-  "error": "model code ซ้ำในระบบ"
-}
-```
-```json
-{
-  "error": "ไม่สามารถลบ model ที่มี merchandise ใช้งานอยู่"
-}
-```
 
 ### 401 Unauthorized
 ```json
@@ -196,15 +156,36 @@ GET /api-models/model/MODEL-001
 ### 404 Not Found
 ```json
 {
-  "error": "ไม่พบข้อมูล"
+  "error": "Not found"
 }
 ```
 
+### 500 Internal Server Error
+```json
+{
+  "error": "เกิดข้อผิดพลาดในการเข้าถึงข้อมูล"
+}
+```
+
+---
+
 ## Examples
 
-### List Models with Search
+### Search by Description
 ```bash
-curl -X GET "https://your-project.supabase.co/functions/v1/api-models?search=MODEL&page=1&limit=20" \
+curl -X GET "https://your-project.supabase.co/functions/v1/api-models/search?description=Premium" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+### Search by Code
+```bash
+curl -X GET "https://your-project.supabase.co/functions/v1/api-models/search?code=MODEL-001" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+### Search by Both
+```bash
+curl -X GET "https://your-project.supabase.co/functions/v1/api-models/search?description=Machine&code=MODEL" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 
@@ -220,33 +201,11 @@ curl -X POST "https://your-project.supabase.co/functions/v1/api-models" \
   }'
 ```
 
-### Get Model by Code
-```bash
-curl -X GET "https://your-project.supabase.co/functions/v1/api-models/model/MODEL-001" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN"
-```
-
-### Update Model
-```bash
-curl -X PUT "https://your-project.supabase.co/functions/v1/api-models/MODEL_UUID" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Updated Model Name",
-    "website_url": "https://new-website.com"
-  }'
-```
-
-### Delete Model
-```bash
-curl -X DELETE "https://your-project.supabase.co/functions/v1/api-models/MODEL_UUID" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN"
-```
+---
 
 ## Notes
-- `model` field ต้องไม่ซ้ำในระบบ (unique constraint)
-- ควรตั้งชื่อ model code ให้สั้นและชัดเจน เช่น "MODEL-001", "MACHINE-A"
-- `website_url` สามารถใช้เก็บ URL ไปยัง manual, datasheet, หรือหน้าผลิตภัณฑ์
-- ไม่สามารถลบ model ที่มี merchandise อ้างอิงอยู่
-- Model code จะถูกใช้ใน merchandise และ PM summary APIs
 
+- The search is case-insensitive and supports partial matching
+- Results are limited to 20 items per request
+- If no search parameters are provided, an empty array is returned
+- Model codes are unique identifiers used in merchandise and PM summary APIs

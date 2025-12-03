@@ -204,21 +204,42 @@ export class ModelService {
   }
 
   /**
-   * Search models by model or name
+   * Search models by description and/or code
+   * If no parameters provided, returns all models (up to 20)
    */
-  static async search(query: string): Promise<Record<string, unknown>[]> {
+  static async search(params: {
+    description?: string;
+    code?: string;
+  }): Promise<Record<string, unknown>[]> {
     const supabase = createServiceClient();
+    const { description, code } = params;
 
-    if (!query || query.length < 1) {
-      return [];
-    }
-
-    const { data, error} = await supabase
+    let query = supabase
       .from('models')
-      .select('*')
-      .or(`model.ilike.%${query}%,name.ilike.%${query}%`)
+      .select('*');
+
+    // Build search conditions if parameters provided
+    if (description || code) {
+      const conditions: string[] = [];
+      
+      if (description) {
+        conditions.push(`name.ilike.%${description}%`);
+      }
+      
+      if (code) {
+        conditions.push(`model.ilike.%${code}%`);
+      }
+
+      // Apply search filter
+      if (conditions.length > 0) {
+        query = query.or(conditions.join(','));
+      }
+    }
+    // If no parameters, return all models (no filter applied)
+
+    const { data, error } = await query
       .limit(20)
-      .order('created_at', { ascending: false});
+      .order('created_at', { ascending: false });
 
     if (error) throw new DatabaseError(error.message);
 
