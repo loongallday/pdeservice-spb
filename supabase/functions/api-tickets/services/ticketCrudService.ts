@@ -172,8 +172,24 @@ export async function create(input: MasterTicketCreateInput, employeeId: string)
 
     // Check for appointment conflicts before assigning
     const appointmentDate = appointmentData.appointment_date as string | null | undefined;
-    const appointmentTimeStart = appointmentData.appointment_time_start as string | null | undefined;
-    const appointmentTimeEnd = appointmentData.appointment_time_end as string | null | undefined;
+    let appointmentTimeStart = appointmentData.appointment_time_start as string | null | undefined;
+    let appointmentTimeEnd = appointmentData.appointment_time_end as string | null | undefined;
+    const appointmentType = appointmentData.appointment_type as string | null | undefined;
+
+    // Derive time ranges from appointment_type if not explicitly set
+    if (appointmentType && (!appointmentTimeStart || !appointmentTimeEnd)) {
+      if (appointmentType === 'half_morning') {
+        appointmentTimeStart = '08:00:00';
+        appointmentTimeEnd = '12:00:00';
+      } else if (appointmentType === 'half_afternoon') {
+        appointmentTimeStart = '13:00:00';
+        appointmentTimeEnd = '17:30:00';
+      } else if (appointmentType === 'full_day') {
+        appointmentTimeStart = '08:00:00';
+        appointmentTimeEnd = '17:30:00';
+      }
+      // call_to_schedule and time_range are handled naturally (no times for call_to_schedule)
+    }
 
     if (appointmentDate) {
       const conflictedEmployees = await checkEmployeeAppointmentConflicts(
@@ -490,17 +506,19 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
     let appointmentDate: string | null | undefined = null;
     let appointmentTimeStart: string | null | undefined = null;
     let appointmentTimeEnd: string | null | undefined = null;
+    let appointmentType: string | null | undefined = null;
 
     if ('appointment' in input && input.appointment !== null && input.appointment) {
       // New appointment data provided
       appointmentDate = input.appointment.appointment_date;
       appointmentTimeStart = input.appointment.appointment_time_start;
       appointmentTimeEnd = input.appointment.appointment_time_end;
+      appointmentType = input.appointment.appointment_type;
     } else if (existingTicket.appointment_id) {
       // Use existing appointment
       const { data: existingAppointment } = await supabase
         .from('appointments')
-        .select('appointment_date, appointment_time_start, appointment_time_end')
+        .select('appointment_date, appointment_time_start, appointment_time_end, appointment_type')
         .eq('id', existingTicket.appointment_id)
         .single();
 
@@ -508,7 +526,23 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
         appointmentDate = existingAppointment.appointment_date as string | null;
         appointmentTimeStart = existingAppointment.appointment_time_start as string | null;
         appointmentTimeEnd = existingAppointment.appointment_time_end as string | null;
+        appointmentType = existingAppointment.appointment_type as string | null;
       }
+    }
+
+    // Derive time ranges from appointment_type if not explicitly set
+    if (appointmentType && (!appointmentTimeStart || !appointmentTimeEnd)) {
+      if (appointmentType === 'half_morning') {
+        appointmentTimeStart = '08:00:00';
+        appointmentTimeEnd = '12:00:00';
+      } else if (appointmentType === 'half_afternoon') {
+        appointmentTimeStart = '13:00:00';
+        appointmentTimeEnd = '17:30:00';
+      } else if (appointmentType === 'full_day') {
+        appointmentTimeStart = '08:00:00';
+        appointmentTimeEnd = '17:30:00';
+      }
+      // call_to_schedule and time_range are handled naturally (no times for call_to_schedule)
     }
 
     // Validate employee conflicts if appointment exists

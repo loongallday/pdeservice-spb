@@ -116,7 +116,28 @@ export class InitializeService {
       throw new DatabaseError('ไม่สามารถดึงข้อมูลพนักงานได้');
     }
 
-    return employeeResult as Employee;
+    // Check if the employee's role can approve appointments
+    const roleId = employeeResult.role_id as string | null | undefined;
+    let canApprove = false;
+    
+    if (roleId) {
+      const { data: approvalRole, error: approvalError } = await supabase
+        .from('appointment_approval_roles')
+        .select('id')
+        .eq('role_id', roleId)
+        .single();
+
+      // If found (no error and data exists), role can approve
+      canApprove = !approvalError && approvalRole !== null;
+    }
+
+    // Add can_approve to role_data
+    const employeeData = employeeResult as Employee;
+    if (employeeData.role_data && typeof employeeData.role_data === 'object') {
+      (employeeData.role_data as Record<string, unknown>).can_approve = canApprove;
+    }
+
+    return employeeData;
   }
 
   /**
@@ -203,8 +224,28 @@ export class InitializeService {
 
     // Extract user's department from employee role data
     const employeeData = employeeResult.data as Employee;
-    const roleData = employeeData.role_data as (Record<string, unknown> & { department?: Record<string, unknown> | null }) | null;
+    const roleData = employeeData.role_data as (Record<string, unknown> & { department?: Record<string, unknown> | null; id?: string }) | null;
     const userDepartment = roleData?.department || null;
+
+    // Check if the employee's role can approve appointments
+    const roleId = roleData?.id as string | null | undefined;
+    let canApprove = false;
+    
+    if (roleId) {
+      const { data: approvalRole, error: approvalError } = await supabase
+        .from('appointment_approval_roles')
+        .select('id')
+        .eq('role_id', roleId)
+        .single();
+
+      // If found (no error and data exists), role can approve
+      canApprove = !approvalError && approvalRole !== null;
+    }
+
+    // Add can_approve to role_data
+    if (roleData) {
+      roleData.can_approve = canApprove;
+    }
 
     return {
       employee: employeeData,

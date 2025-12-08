@@ -3,7 +3,7 @@
  */
 
 import { createServiceClient } from '../_shared/supabase.ts';
-import { NotFoundError, DatabaseError } from '../_shared/error.ts';
+import { NotFoundError, DatabaseError, ValidationError } from '../_shared/error.ts';
 import { calculatePagination } from '../_shared/response.ts';
 import type { PaginationInfo } from '../_shared/response.ts';
 import type { DateType } from './ticketTypes.ts';
@@ -94,6 +94,25 @@ export async function getById(id: string): Promise<Record<string, unknown>> {
       }).filter(Boolean)
     : [];
   
+  // Extract appointment data (try appointment_id first, then ticket_id)
+  const appointmentById = data.appointment as { 
+    id?: string;
+    appointment_date?: string;
+    appointment_time_start?: string;
+    appointment_time_end?: string;
+    appointment_type?: string;
+    is_approved?: boolean;
+  } | null;
+  const appointmentByTicketId = data.appointment_by_ticket as { 
+    id?: string;
+    appointment_date?: string;
+    appointment_time_start?: string;
+    appointment_time_end?: string;
+    appointment_type?: string;
+    is_approved?: boolean;
+  } | null;
+  const appointment = appointmentById || appointmentByTicketId;
+  
   return {
     ...data,
     time: data.created_at, // Map created_at to time for frontend compatibility
@@ -104,6 +123,8 @@ export async function getById(id: string): Promise<Record<string, unknown>> {
     creator_name: creator?.name || null,
     creator_code: creator?.code || null,
     merchandise: merchandise,
+    // Add appointment_is_approved as top-level field for consistency with search
+    appointment_is_approved: appointment?.is_approved ?? null,
   };
 }
 
@@ -128,10 +149,97 @@ export async function search(params: {
   start_date?: string; // Start date for appointment date filtering (YYYY-MM-DD)
   end_date?: string; // End date for appointment date filtering (YYYY-MM-DD)
   exclude_backlog?: boolean; // Exclude tickets with appointment_id = NULL
+  appointment_is_approved?: boolean; // Filter by appointment approval status (true/false)
   department_id?: string | string[]; // Single department_id or array of department_ids
+  employee_id?: string | string[]; // Single employee_id or array of employee_ids (filters tickets assigned to these employees)
+  sort?: string; // Sort field: 'created_at', 'updated_at', 'appointment_date'
+  order?: 'asc' | 'desc'; // Sort order: 'asc' or 'desc'
 }): Promise<{ data: Record<string, unknown>[]; pagination: PaginationInfo }> {
   const supabase = createServiceClient();
-  const { page, limit, ...filters } = params;
+  const { page, limit, sort, order, ...filters } = params;
+
+  // Helper function to transform ticket data
+  const transformTicket = (ticket: Record<string, unknown>) => {
+    const workType = ticket.work_type as { name?: string; code?: string } | null;
+    const assigner = ticket.assigner as { name?: string; code?: string } | null;
+    const creator = ticket.creator as { name?: string; code?: string } | null;
+    const status = ticket.status as { name?: string; code?: string } | null;
+    const site = ticket.site as { 
+      id?: string; 
+      name?: string;
+      province_code?: number | null;
+      district_code?: number | null;
+      subdistrict_code?: number | null;
+      company?: Record<string, unknown> | null;
+    } | null;
+    const contact = ticket.contact as { person_name?: string } | null;
+    // Try appointment via appointment_id first, then via ticket_id (fallback for old tickets)
+    const appointmentById = ticket.appointment as { 
+      id?: string;
+      appointment_date?: string;
+      appointment_time_start?: string;
+      appointment_time_end?: string;
+      appointment_type?: string;
+      is_approved?: boolean;
+    } | null;
+    const appointmentByTicketId = ticket.appointment_by_ticket as { 
+      id?: string;
+      appointment_date?: string;
+      appointment_time_start?: string;
+      appointment_time_end?: string;
+      appointment_type?: string;
+      is_approved?: boolean;
+    } | null;
+    // Use appointment from appointment_id if available, otherwise use from ticket_id
+    const appointment = appointmentById || appointmentByTicketId;
+    const employees = Array.isArray(ticket.employees) 
+      ? ticket.employees.map((te: Record<string, unknown>) => (te as { employee: Record<string, unknown> }).employee).filter(Boolean) as Array<{ name?: string }>
+      : [];
+
+    return {
+      id: ticket.id,
+      details: ticket.details,
+      work_type_name: workType?.name || null,
+      work_type_code: workType?.code || null,
+      assigner_name: assigner?.name || null,
+      assigner_code: assigner?.code || null,
+      creator_name: creator?.name || null,
+      creator_code: creator?.code || null,
+      created_by: ticket.created_by || null,
+      status_name: status?.name || null,
+      status_code: status?.code || null,
+      additional: ticket.additional,
+      created_at: ticket.created_at,
+      updated_at: ticket.updated_at,
+      site_name: site?.name || null,
+      company: site?.company || null,
+      company_name: (site?.company as { name_th?: string; name_en?: string } | undefined)?.name_th || (site?.company as { name_th?: string; name_en?: string } | undefined)?.name_en || null,
+      provinceCode: site?.province_code || null,
+      districtCode: site?.district_code || null,
+      subDistrictCode: site?.subdistrict_code || null,
+      contact_name: contact?.person_name || null,
+      appointment_id: appointment?.id || ticket.appointment_id || null,
+      appointment_date: appointment?.appointment_date || null,
+      appointment_time_start: appointment?.appointment_time_start || null,
+      appointment_time_end: appointment?.appointment_time_end || null,
+      appointment_type: appointment?.appointment_type || null,
+      appointment_is_approved: appointment?.is_approved ?? null,
+      employee_names: employees.map(emp => emp.name).filter(Boolean),
+      employee_count: employees.length,
+      merchandise: Array.isArray(ticket.merchandise)
+        ? ticket.merchandise.map((tm: Record<string, unknown>) => {
+            const merch = (tm as { merchandise: Record<string, unknown> }).merchandise;
+            const model = merch?.model as { model?: string } | null;
+            return {
+              id: merch?.id || null,
+              serial: merch?.serial_no || null,
+              model: model?.model || null,
+            };
+          }).filter(Boolean)
+        : [],
+      merchandise_count: Array.isArray(ticket.merchandise) ? ticket.merchandise.length : 0,
+    };
+  };
 
   // Build count query
   let countQuery = supabase
@@ -184,8 +292,142 @@ export async function search(params: {
     dataQuery = dataQuery.eq('id', filters.id);
   }
   if (filters.details) {
-    countQuery = countQuery.ilike('details', `%${filters.details}%`);
-    dataQuery = dataQuery.ilike('details', `%${filters.details}%`);
+    // Search in ticket details, company names, and site names
+    // Step 1: Find companies matching the search term
+    // Search Thai and English names separately to ensure both work correctly
+    const searchTerm = filters.details;
+    const allCompanyTaxIds = new Set<string>();
+
+    // Search by Thai name
+    const { data: companiesByThai, error: thaiError } = await supabase
+      .from('companies')
+      .select('tax_id')
+      .ilike('name_th', `%${searchTerm}%`);
+
+    if (thaiError) {
+      throw new DatabaseError(`ไม่สามารถค้นหาบริษัทตามชื่อไทยได้: ${thaiError.message}`);
+    }
+
+    if (companiesByThai) {
+      companiesByThai.forEach(c => allCompanyTaxIds.add(c.tax_id as string));
+    }
+
+    // Search by English name
+    const { data: companiesByEnglish, error: englishError } = await supabase
+      .from('companies')
+      .select('tax_id')
+      .ilike('name_en', `%${searchTerm}%`);
+
+    if (englishError) {
+      throw new DatabaseError(`ไม่สามารถค้นหาบริษัทตามชื่ออังกฤษได้: ${englishError.message}`);
+    }
+
+    if (companiesByEnglish) {
+      companiesByEnglish.forEach(c => allCompanyTaxIds.add(c.tax_id as string));
+    }
+
+    const companyTaxIds = Array.from(allCompanyTaxIds);
+    let companySiteIds: string[] = [];
+
+    if (companyTaxIds.length > 0) {
+      // Step 2: Find sites that belong to these companies
+      const { data: sites, error: siteError } = await supabase
+        .from('sites')
+        .select('id')
+        .in('company_id', companyTaxIds);
+
+      if (siteError) {
+        throw new DatabaseError(`ไม่สามารถค้นหาไซต์ตามบริษัทได้: ${siteError.message}`);
+      }
+
+      companySiteIds = (sites || []).map(s => s.id as string);
+    }
+
+    // Step 3: Find sites matching the search term by name
+    const { data: sitesByName, error: siteNameError } = await supabase
+      .from('sites')
+      .select('id')
+      .ilike('name', `%${filters.details}%`);
+
+    if (siteNameError) {
+      throw new DatabaseError(`ไม่สามารถค้นหาไซต์ได้: ${siteNameError.message}`);
+    }
+
+    const siteNameSiteIds = (sitesByName || []).map(s => s.id as string);
+
+    // Step 4: Combine all site IDs (from company match and site name match)
+    const allMatchingSiteIds = [...new Set([...companySiteIds, ...siteNameSiteIds])];
+
+    // Step 5: Get all matching ticket IDs
+    // Tickets match if:
+    // - id field matches (partial match), OR
+    // - details field matches, OR
+    // - site_id is in the matching sites list
+    const matchingTicketIds: string[] = [];
+
+    // Get tickets matching ID field (partial match)
+    // UUID fields don't support ilike directly, so we need to fetch and filter in memory
+    // For UUID partial matching, we'll search in the string representation
+    const { data: allTickets, error: allError } = await supabase
+      .from('tickets')
+      .select('id');
+
+    if (allError) {
+      throw new DatabaseError(`ไม่สามารถค้นหาตั๋วงานตาม ID ได้: ${allError.message}`);
+    }
+
+    if (allTickets) {
+      const searchTermLower = filters.details.toLowerCase();
+      const matchingIds = allTickets
+        .filter(t => (t.id as string).toLowerCase().includes(searchTermLower))
+        .map(t => t.id as string);
+      matchingTicketIds.push(...matchingIds);
+    }
+
+    // Get tickets matching details field
+    const { data: ticketsByDetails, error: detailsError } = await supabase
+      .from('tickets')
+      .select('id')
+      .ilike('details', `%${filters.details}%`);
+
+    if (detailsError) {
+      throw new DatabaseError(`ไม่สามารถค้นหาตั๋วงานตามรายละเอียดได้: ${detailsError.message}`);
+    }
+
+    if (ticketsByDetails) {
+      matchingTicketIds.push(...ticketsByDetails.map(t => t.id as string));
+    }
+
+    // Get tickets matching site IDs
+    if (allMatchingSiteIds.length > 0) {
+      const { data: ticketsBySites, error: sitesError } = await supabase
+        .from('tickets')
+        .select('id')
+        .in('site_id', allMatchingSiteIds);
+
+      if (sitesError) {
+        throw new DatabaseError(`ไม่สามารถค้นหาตั๋วงานตามไซต์ได้: ${sitesError.message}`);
+      }
+
+      if (ticketsBySites) {
+        matchingTicketIds.push(...ticketsBySites.map(t => t.id as string));
+      }
+    }
+
+    // Step 6: Filter by unique ticket IDs
+    const uniqueTicketIds = [...new Set(matchingTicketIds)];
+
+    if (uniqueTicketIds.length === 0) {
+      // No tickets match, return empty result
+      return {
+        data: [],
+        pagination: calculatePagination(params.page, params.limit, 0),
+      };
+    }
+
+    // Filter tickets by these IDs
+    countQuery = countQuery.in('id', uniqueTicketIds);
+    dataQuery = dataQuery.in('id', uniqueTicketIds);
   }
   if (filters.work_type_id) {
     countQuery = countQuery.eq('work_type_id', filters.work_type_id);
@@ -223,39 +465,74 @@ export async function search(params: {
     // Support date range format: "YYYY-MM-DD,YYYY-MM-DD" or single date "YYYY-MM-DD"
     const dateParts = filters.created_at.split(',');
     if (dateParts.length === 2) {
-      countQuery = countQuery.gte('created_at', dateParts[0]).lte('created_at', dateParts[1]);
-      dataQuery = dataQuery.gte('created_at', dateParts[0]).lte('created_at', dateParts[1]);
+      const startDate = dateParts[0].trim();
+      const endDate = dateParts[1].trim();
+      // If start and end are the same, treat as single date (include full day)
+      if (startDate === endDate) {
+        const nextDay = new Date(new Date(startDate).getTime() + 24 * 60 * 60 * 1000).toISOString();
+        countQuery = countQuery.gte('created_at', startDate).lt('created_at', nextDay);
+        dataQuery = dataQuery.gte('created_at', startDate).lt('created_at', nextDay);
+      } else {
+        // Date range - add time to end date to include the full day
+        const endDateTime = `${endDate}T23:59:59.999Z`;
+        countQuery = countQuery.gte('created_at', startDate).lte('created_at', endDateTime);
+        dataQuery = dataQuery.gte('created_at', startDate).lte('created_at', endDateTime);
+      }
     } else {
-      countQuery = countQuery.gte('created_at', filters.created_at).lt('created_at', new Date(new Date(filters.created_at).getTime() + 24 * 60 * 60 * 1000).toISOString());
-      dataQuery = dataQuery.gte('created_at', filters.created_at).lt('created_at', new Date(new Date(filters.created_at).getTime() + 24 * 60 * 60 * 1000).toISOString());
+      // Single date - include full day
+      const nextDay = new Date(new Date(filters.created_at).getTime() + 24 * 60 * 60 * 1000).toISOString();
+      countQuery = countQuery.gte('created_at', filters.created_at).lt('created_at', nextDay);
+      dataQuery = dataQuery.gte('created_at', filters.created_at).lt('created_at', nextDay);
     }
   }
   if (filters.updated_at) {
     // Support date range format: "YYYY-MM-DD,YYYY-MM-DD" or single date "YYYY-MM-DD"
     const dateParts = filters.updated_at.split(',');
     if (dateParts.length === 2) {
-      countQuery = countQuery.gte('updated_at', dateParts[0]).lte('updated_at', dateParts[1]);
-      dataQuery = dataQuery.gte('updated_at', dateParts[0]).lte('updated_at', dateParts[1]);
+      const startDate = dateParts[0].trim();
+      const endDate = dateParts[1].trim();
+      // If start and end are the same, treat as single date (include full day)
+      if (startDate === endDate) {
+        const nextDay = new Date(new Date(startDate).getTime() + 24 * 60 * 60 * 1000).toISOString();
+        countQuery = countQuery.gte('updated_at', startDate).lt('updated_at', nextDay);
+        dataQuery = dataQuery.gte('updated_at', startDate).lt('updated_at', nextDay);
+      } else {
+        // Date range - add time to end date to include the full day
+        const endDateTime = `${endDate}T23:59:59.999Z`;
+        countQuery = countQuery.gte('updated_at', startDate).lte('updated_at', endDateTime);
+        dataQuery = dataQuery.gte('updated_at', startDate).lte('updated_at', endDateTime);
+      }
     } else {
-      countQuery = countQuery.gte('updated_at', filters.updated_at).lt('updated_at', new Date(new Date(filters.updated_at).getTime() + 24 * 60 * 60 * 1000).toISOString());
-      dataQuery = dataQuery.gte('updated_at', filters.updated_at).lt('updated_at', new Date(new Date(filters.updated_at).getTime() + 24 * 60 * 60 * 1000).toISOString());
+      // Single date - include full day
+      const nextDay = new Date(new Date(filters.updated_at).getTime() + 24 * 60 * 60 * 1000).toISOString();
+      countQuery = countQuery.gte('updated_at', filters.updated_at).lt('updated_at', nextDay);
+      dataQuery = dataQuery.gte('updated_at', filters.updated_at).lt('updated_at', nextDay);
     }
   }
 
   // Filter by appointment date (start_date and end_date)
   if (filters.start_date && filters.end_date) {
-    // Get appointment IDs in the date range
-    const { data: appointments, error: appError } = await supabase
+    // Get appointments in the date range
+    // When start_date == end_date, use .eq() for exact match; otherwise use range
+    let appointmentQuery = supabase
       .from('appointments')
-      .select('id')
-      .gte('appointment_date', filters.start_date)
-      .lte('appointment_date', filters.end_date);
+      .select('id, ticket_id');
+    
+    if (filters.start_date === filters.end_date) {
+      // Same date - use exact match
+      appointmentQuery = appointmentQuery.eq('appointment_date', filters.start_date);
+    } else {
+      // Date range - use >= and <=
+      appointmentQuery = appointmentQuery
+        .gte('appointment_date', filters.start_date)
+        .lte('appointment_date', filters.end_date);
+    }
+
+    const { data: appointments, error: appError } = await appointmentQuery;
 
     if (appError) throw new DatabaseError(appError.message);
 
-    const appointmentIds = appointments?.map(a => a.id) || [];
-    
-    if (appointmentIds.length === 0) {
+    if (!appointments || appointments.length === 0) {
       // No appointments in range, return empty result
       return {
         data: [],
@@ -263,9 +540,50 @@ export async function search(params: {
       };
     }
 
-    // Filter tickets by appointment_id - this automatically excludes tickets with null appointment_id
-    countQuery = countQuery.in('appointment_id', appointmentIds);
-    dataQuery = dataQuery.in('appointment_id', appointmentIds);
+    // Get ticket IDs from both relationships:
+    // 1. Tickets linked via ticket.appointment_id = appointment.id
+    // 2. Tickets linked via appointment.ticket_id = ticket.id
+    const appointmentIds = appointments.map(a => a.id as string);
+    const ticketIdsFromAppointments = appointments
+      .map(a => a.ticket_id as string)
+      .filter((id): id is string => id !== null && id !== undefined);
+
+    // Collect all matching ticket IDs to avoid long OR queries in URL
+    const allTicketIds = new Set<string>();
+
+    // Add tickets linked via appointment.ticket_id
+    ticketIdsFromAppointments.forEach(id => allTicketIds.add(id));
+    
+    // Get tickets that have appointment_id in our list
+    if (appointmentIds.length > 0) {
+      const { data: ticketsByAppointmentId, error: ticketsError } = await supabase
+        .from('tickets')
+        .select('id')
+        .in('appointment_id', appointmentIds);
+      
+      if (ticketsError) throw new DatabaseError(ticketsError.message);
+      
+      if (ticketsByAppointmentId) {
+        ticketsByAppointmentId.forEach(t => {
+          const ticketId = t.id as string;
+          if (ticketId) allTicketIds.add(ticketId);
+        });
+      }
+    }
+
+    const finalTicketIds = Array.from(allTicketIds);
+
+    // Filter tickets by their IDs (avoids long OR query in URL)
+    if (finalTicketIds.length > 0) {
+      countQuery = countQuery.in('id', finalTicketIds);
+      dataQuery = dataQuery.in('id', finalTicketIds);
+    } else {
+      // No matching tickets, return empty result
+      return {
+        data: [],
+        pagination: calculatePagination(params.page, params.limit, 0),
+      };
+    }
   }
 
   // Exclude backlog (tickets with null appointment_id)
@@ -273,6 +591,104 @@ export async function search(params: {
     // Filter out tickets where appointment_id is null
     countQuery = countQuery.not('appointment_id', 'is', null);
     dataQuery = dataQuery.not('appointment_id', 'is', null);
+  }
+
+  // Filter by appointment approval status (appointment_is_approved)
+  if (filters.appointment_is_approved !== undefined) {
+    // Get appointments with the specified approval status
+    const appointmentQuery = supabase
+      .from('appointments')
+      .select('id, ticket_id')
+      .eq('is_approved', filters.appointment_is_approved);
+
+    const { data: appointments, error: appError } = await appointmentQuery;
+
+    if (appError) throw new DatabaseError(appError.message);
+
+    if (!appointments || appointments.length === 0) {
+      // No appointments with this approval status, return empty result
+      return {
+        data: [],
+        pagination: calculatePagination(params.page, params.limit, 0),
+      };
+    }
+
+    // Get ticket IDs from both relationships:
+    // 1. Tickets linked via ticket.appointment_id = appointment.id
+    // 2. Tickets linked via appointment.ticket_id = ticket.id
+    const appointmentIds = appointments.map(a => a.id as string);
+    const ticketIdsFromAppointments = appointments
+      .map(a => a.ticket_id as string)
+      .filter((id): id is string => id !== null && id !== undefined);
+
+    // Collect all matching ticket IDs to avoid long OR queries in URL
+    const allTicketIds = new Set<string>();
+    
+    // Add tickets linked via appointment.ticket_id
+    ticketIdsFromAppointments.forEach(id => allTicketIds.add(id));
+    
+    // Get tickets that have appointment_id in our list
+    if (appointmentIds.length > 0) {
+      const { data: ticketsByAppointmentId, error: ticketsError } = await supabase
+        .from('tickets')
+        .select('id')
+        .in('appointment_id', appointmentIds);
+      
+      if (ticketsError) throw new DatabaseError(ticketsError.message);
+      
+      if (ticketsByAppointmentId) {
+        ticketsByAppointmentId.forEach(t => {
+          const ticketId = t.id as string;
+          if (ticketId) allTicketIds.add(ticketId);
+        });
+      }
+    }
+
+    const finalTicketIds = Array.from(allTicketIds);
+
+    // Filter tickets by their IDs (avoids long OR query in URL)
+    if (finalTicketIds.length > 0) {
+      countQuery = countQuery.in('id', finalTicketIds);
+      dataQuery = dataQuery.in('id', finalTicketIds);
+    } else {
+      // No matching tickets, return empty result
+      return {
+        data: [],
+        pagination: calculatePagination(params.page, params.limit, 0),
+      };
+    }
+  }
+
+  // Filter by employee_id (tickets assigned to specific employees via ticket_employees table)
+  if (filters.employee_id) {
+    // Normalize to array for consistent handling
+    const employeeIds = Array.isArray(filters.employee_id) 
+      ? filters.employee_id 
+      : [filters.employee_id];
+
+    // Get ticket IDs that have these employees assigned
+    const { data: ticketEmployees, error: teError } = await supabase
+      .from('ticket_employees')
+      .select('ticket_id')
+      .in('employee_id', employeeIds);
+
+    if (teError) {
+      throw new DatabaseError(`ไม่สามารถค้นหาตั๋วงานตามพนักงานได้: ${teError.message}`);
+    }
+
+    const ticketIds = [...new Set((ticketEmployees || []).map(te => te.ticket_id as string))];
+
+    if (ticketIds.length === 0) {
+      // No tickets with these employees assigned, return empty result
+      return {
+        data: [],
+        pagination: calculatePagination(params.page, params.limit, 0),
+      };
+    }
+
+    // Filter tickets by these IDs
+    countQuery = countQuery.in('id', ticketIds);
+    dataQuery = dataQuery.in('id', ticketIds);
   }
 
   // Filter by department_id (through employees -> roles -> departments)
@@ -352,92 +768,59 @@ export async function search(params: {
   if (countError) throw new DatabaseError(countError.message);
   const total = count || 0;
 
-  // Get paginated data
-  const offset = (page - 1) * limit;
-  const { data, error } = await dataQuery
-    .order('created_at', { ascending: false })
-    .range(offset, offset + limit - 1);
+  // Determine sort field and order
+  const sortField = sort || 'created_at';
+  const sortOrder = order === 'asc' ? true : false; // Default to descending (false)
+  
+  // Validate sort field
+  const validSortFields = ['created_at', 'updated_at', 'appointment_date'];
+  if (!validSortFields.includes(sortField)) {
+    throw new ValidationError(`ไม่สามารถเรียงตาม ${sortField} ได้ ใช้ได้เฉพาะ: ${validSortFields.join(', ')}`);
+  }
 
-  if (error) throw new DatabaseError(error.message);
+  let transformedData: Record<string, unknown>[];
 
-  // Transform data to flatten nested objects into display fields
-  const transformedData = (data || []).map(ticket => {
-    const workType = ticket.work_type as { name?: string; code?: string } | null;
-    const assigner = ticket.assigner as { name?: string; code?: string } | null;
-    const creator = ticket.creator as { name?: string; code?: string } | null;
-    const status = ticket.status as { name?: string; code?: string } | null;
-    const site = ticket.site as { 
-      id?: string; 
-      name?: string;
-      province_code?: number | null;
-      district_code?: number | null;
-      subdistrict_code?: number | null;
-      company?: { name_th?: string; name_en?: string } | null;
-    } | null;
-    const contact = ticket.contact as { person_name?: string } | null;
-    // Try appointment via appointment_id first, then via ticket_id (fallback for old tickets)
-    const appointmentById = ticket.appointment as { 
-      id?: string;
-      appointment_date?: string;
-      appointment_time_start?: string;
-      appointment_time_end?: string;
-      appointment_type?: string;
-    } | null;
-    const appointmentByTicketId = ticket.appointment_by_ticket as { 
-      id?: string;
-      appointment_date?: string;
-      appointment_time_start?: string;
-      appointment_time_end?: string;
-      appointment_type?: string;
-    } | null;
-    // Use appointment from appointment_id if available, otherwise use from ticket_id
-    const appointment = appointmentById || appointmentByTicketId;
-    const employees = Array.isArray(ticket.employees) 
-      ? ticket.employees.map((te: Record<string, unknown>) => (te as { employee: Record<string, unknown> }).employee).filter(Boolean) as Array<{ name?: string }>
-      : [];
+  if (sortField === 'appointment_date') {
+    // For appointment_date, we need to fetch ALL data, sort, then paginate
+    // Fetch all matching records (no pagination yet)
+    const { data: allData, error: allError } = await dataQuery.order('created_at', { ascending: false });
+    
+    if (allError) {
+      throw new DatabaseError(allError.message);
+    }
 
-    return {
-      id: ticket.id,
-      details: ticket.details,
-      work_type_name: workType?.name || null,
-      work_type_code: workType?.code || null,
-      assigner_name: assigner?.name || null,
-      assigner_code: assigner?.code || null,
-      creator_name: creator?.name || null,
-      creator_code: creator?.code || null,
-      created_by: ticket.created_by || null,
-      status_name: status?.name || null,
-      status_code: status?.code || null,
-      additional: ticket.additional,
-      created_at: ticket.created_at,
-      updated_at: ticket.updated_at,
-      site_name: site?.name || null,
-      company_name: site?.company?.name_th || site?.company?.name_en || null,
-      provinceCode: site?.province_code || null,
-      districtCode: site?.district_code || null,
-      subDistrictCode: site?.subdistrict_code || null,
-      contact_name: contact?.person_name || null,
-      appointment_id: appointment?.id || ticket.appointment_id || null,
-      appointment_date: appointment?.appointment_date || null,
-      appointment_time_start: appointment?.appointment_time_start || null,
-      appointment_time_end: appointment?.appointment_time_end || null,
-      appointment_type: appointment?.appointment_type || null,
-      employee_names: employees.map(emp => emp.name).filter(Boolean),
-      employee_count: employees.length,
-      merchandise: Array.isArray(ticket.merchandise)
-        ? ticket.merchandise.map((tm: Record<string, unknown>) => {
-            const merch = (tm as { merchandise: Record<string, unknown> }).merchandise;
-            const model = merch?.model as { model?: string } | null;
-            return {
-              id: merch?.id || null,
-              serial: merch?.serial_no || null,
-              model: model?.model || null,
-            };
-          }).filter(Boolean)
-        : [],
-      merchandise_count: Array.isArray(ticket.merchandise) ? ticket.merchandise.length : 0,
-    };
-  });
+    // Transform all data
+    const allTransformedData = (allData || []).map(transformTicket);
+
+    // Sort entire dataset by appointment_date
+    const sortedData = [...allTransformedData].sort((a, b) => {
+      const dateA = a.appointment_date as string | null;
+      const dateB = b.appointment_date as string | null;
+      
+      // Handle null values - put them at the end
+      if (!dateA && !dateB) return 0;
+      if (!dateA) return 1;
+      if (!dateB) return -1;
+      
+      const comparison = dateA.localeCompare(dateB);
+      return sortOrder ? comparison : -comparison;
+    });
+
+    // Now paginate the sorted data
+    const offset = (page - 1) * limit;
+    transformedData = sortedData.slice(offset, offset + limit);
+  } else {
+    // For created_at and updated_at, sort at database level before pagination
+    const offset = (page - 1) * limit;
+    const { data, error } = await dataQuery
+      .order(sortField, { ascending: sortOrder })
+      .range(offset, offset + limit - 1);
+
+    if (error) throw new DatabaseError(error.message);
+
+    // Transform paginated data
+    transformedData = (data || []).map(transformTicket);
+  }
 
   return {
     data: transformedData,
@@ -454,9 +837,11 @@ export async function searchByDuration(params: {
   startDate: string;
   endDate: string;
   dateType: DateType;
+  sort?: string; // Sort field: 'created_at', 'updated_at', 'appointment_date'
+  order?: 'asc' | 'desc'; // Sort order: 'asc' or 'desc'
 }): Promise<{ data: Record<string, unknown>[]; pagination: PaginationInfo }> {
   const supabase = createServiceClient();
-  const { page, limit, startDate, endDate, dateType } = params;
+  const { page, limit, startDate, endDate, dateType, sort, order } = params;
 
   // Build count query
   let countQuery = supabase
@@ -550,16 +935,8 @@ export async function searchByDuration(params: {
   if (countError) throw new DatabaseError(countError.message);
   const total = count || 0;
 
-  // Get paginated data
-  const offset = (page - 1) * limit;
-  const { data, error } = await dataQuery
-    .order('created_at', { ascending: false })
-    .range(offset, offset + limit - 1);
-
-  if (error) throw new DatabaseError(error.message);
-
-  // Transform data to flatten nested objects into display fields
-  const transformedData = (data || []).map(ticket => {
+  // Helper function to transform ticket data (same as in search function)
+  const transformTicket = (ticket: Record<string, unknown>) => {
     const workType = ticket.work_type as { name?: string; code?: string } | null;
     const assigner = ticket.assigner as { name?: string; code?: string } | null;
     const creator = ticket.creator as { name?: string; code?: string } | null;
@@ -570,7 +947,7 @@ export async function searchByDuration(params: {
       province_code?: number | null;
       district_code?: number | null;
       subdistrict_code?: number | null;
-      company?: { name_th?: string; name_en?: string } | null;
+      company?: Record<string, unknown> | null;
     } | null;
     const contact = ticket.contact as { person_name?: string } | null;
     // Try appointment via appointment_id first, then via ticket_id (fallback for old tickets)
@@ -580,6 +957,7 @@ export async function searchByDuration(params: {
       appointment_time_start?: string;
       appointment_time_end?: string;
       appointment_type?: string;
+      is_approved?: boolean;
     } | null;
     const appointmentByTicketId = ticket.appointment_by_ticket as { 
       id?: string;
@@ -587,6 +965,7 @@ export async function searchByDuration(params: {
       appointment_time_start?: string;
       appointment_time_end?: string;
       appointment_type?: string;
+      is_approved?: boolean;
     } | null;
     // Use appointment from appointment_id if available, otherwise use from ticket_id
     const appointment = appointmentById || appointmentByTicketId;
@@ -610,7 +989,8 @@ export async function searchByDuration(params: {
       created_at: ticket.created_at,
       updated_at: ticket.updated_at,
       site_name: site?.name || null,
-      company_name: site?.company?.name_th || site?.company?.name_en || null,
+      company: site?.company || null,
+      company_name: (site?.company as { name_th?: string; name_en?: string } | undefined)?.name_th || (site?.company as { name_th?: string; name_en?: string } | undefined)?.name_en || null,
       provinceCode: site?.province_code || null,
       districtCode: site?.district_code || null,
       subDistrictCode: site?.subdistrict_code || null,
@@ -620,6 +1000,7 @@ export async function searchByDuration(params: {
       appointment_time_start: appointment?.appointment_time_start || null,
       appointment_time_end: appointment?.appointment_time_end || null,
       appointment_type: appointment?.appointment_type || null,
+      appointment_is_approved: appointment?.is_approved ?? null,
       employee_names: employees.map(emp => emp.name).filter(Boolean),
       employee_count: employees.length,
       merchandise: Array.isArray(ticket.merchandise)
@@ -635,7 +1016,61 @@ export async function searchByDuration(params: {
         : [],
       merchandise_count: Array.isArray(ticket.merchandise) ? ticket.merchandise.length : 0,
     };
-  });
+  };
+
+  // Determine sort field and order
+  const sortField = sort || 'created_at';
+  const sortOrder = order === 'asc' ? true : false; // Default to descending (false)
+  
+  // Validate sort field
+  const validSortFields = ['created_at', 'updated_at', 'appointment_date'];
+  if (!validSortFields.includes(sortField)) {
+    throw new ValidationError(`ไม่สามารถเรียงตาม ${sortField} ได้ ใช้ได้เฉพาะ: ${validSortFields.join(', ')}`);
+  }
+
+  let transformedData: Record<string, unknown>[];
+
+  if (sortField === 'appointment_date') {
+    // For appointment_date, we need to fetch ALL data, sort, then paginate
+    // Fetch all matching records (no pagination yet)
+    const { data: allData, error: allError } = await dataQuery.order('created_at', { ascending: false });
+    
+    if (allError) {
+      throw new DatabaseError(allError.message);
+    }
+
+    // Transform all data
+    const allTransformedData = (allData || []).map(transformTicket);
+
+    // Sort entire dataset by appointment_date
+    const sortedData = [...allTransformedData].sort((a, b) => {
+      const dateA = a.appointment_date as string | null;
+      const dateB = b.appointment_date as string | null;
+      
+      // Handle null values - put them at the end
+      if (!dateA && !dateB) return 0;
+      if (!dateA) return 1;
+      if (!dateB) return -1;
+      
+      const comparison = dateA.localeCompare(dateB);
+      return sortOrder ? comparison : -comparison;
+    });
+
+    // Now paginate the sorted data
+    const offset = (page - 1) * limit;
+    transformedData = sortedData.slice(offset, offset + limit);
+  } else {
+    // For created_at and updated_at, sort at database level before pagination
+    const offset = (page - 1) * limit;
+    const { data, error } = await dataQuery
+      .order(sortField, { ascending: sortOrder })
+      .range(offset, offset + limit - 1);
+
+    if (error) throw new DatabaseError(error.message);
+
+    // Transform paginated data
+    transformedData = (data || []).map(transformTicket);
+  }
 
   return {
     data: transformedData,

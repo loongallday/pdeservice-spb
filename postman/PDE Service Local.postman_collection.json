@@ -600,7 +600,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-employees/technicians/availability?date=2025-01-15&time_start=09:00:00&time_end=17:00:00",
+							"raw": "{{baseUrl}}/functions/v1/api-employees/technicians/availability?date=2025-01-15&appointment_type=half_morning",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -618,18 +618,25 @@
 									"description": "Appointment date (YYYY-MM-DD format, required)"
 								},
 								{
+									"key": "appointment_type",
+									"value": "half_morning",
+									"description": "Appointment type: half_morning (08:00-12:00), half_afternoon (13:00-17:30), full_day (08:00-17:30), time_range (requires time_start & time_end), call_to_schedule (all available)"
+								},
+								{
 									"key": "time_start",
 									"value": "09:00:00",
-									"description": "Start time (HH:MM:SS format, optional, must be provided with time_end)"
+									"description": "Start time (HH:MM:SS format, required if appointment_type=time_range)",
+									"disabled": true
 								},
 								{
 									"key": "time_end",
 									"value": "17:00:00",
-									"description": "End time (HH:MM:SS format, optional, must be provided with time_start)"
+									"description": "End time (HH:MM:SS format, required if appointment_type=time_range)",
+									"disabled": true
 								}
 							]
 						},
-						"description": "Get technicians from 'technical' department with availability status for a given date/time. Returns minimal fields (id, name, availability). If only date is provided, any appointment on that date = unavailable. If time is provided, checks for time range overlap. Requires level 1+."
+						"description": "Get technicians from 'technical' department with availability status for a given date/time. Use appointment_type for predefined time ranges (half_morning, half_afternoon, full_day) or time_range with specific times. call_to_schedule returns all as available. Requires level 1+."
 					},
 					"response": []
 				},
@@ -928,7 +935,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-tickets/search?page=1&limit=20&start_date=2025-11-23&end_date=2025-11-23&exclude_backlog=true&status_id=uuid-here&site_id=uuid-here&department_id=uuid-here",
+							"raw": "{{baseUrl}}/functions/v1/api-tickets/search?page=1&limit=20&sort=created_at&order=desc&start_date=2025-11-23&end_date=2025-11-23&exclude_backlog=true&status_id=uuid-here&site_id=uuid-here&department_id=uuid-here",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -946,6 +953,18 @@
 								{
 									"key": "limit",
 									"value": "20"
+								},
+								{
+									"key": "sort",
+									"value": "created_at",
+									"description": "Sort field: 'created_at' (default), 'updated_at', or 'appointment_date'",
+									"disabled": true
+								},
+								{
+									"key": "order",
+									"value": "desc",
+									"description": "Sort order: 'desc' (default, newest first) or 'asc' (oldest first)",
+									"disabled": true
 								},
 								{
 									"key": "start_date",
@@ -983,7 +1002,7 @@
 								}
 							]
 						},
-						"description": "Search tickets with filters on all ticket fields. Supports pagination. All query parameters are optional.\n\n**New Parameters:**\n- `start_date` & `end_date`: Filter by appointment date range (YYYY-MM-DD). When used together, automatically excludes tickets with null appointment dates.\n- `exclude_backlog`: Set to `true` to exclude tickets with null appointment_id (backlog tickets)\n- `department_id`: Filter by department ID(s). Supports single value or percent-separated multiple values (e.g., 'uuid1%uuid2%uuid3'). Filters tickets that have employees assigned from the specified department(s). Filters through: departments → roles → employees → ticket_employees → tickets.\n\n**Response includes:**\n- `appointment_id`: Appointment ID (UUID)\n- `appointment_date`: Appointment date (YYYY-MM-DD)\n- `appointment_time_start`: Appointment start time (HH:MM:SS)\n- `appointment_time_end`: Appointment end time (HH:MM:SS)\n- `appointment_type`: Appointment type (e.g., \"time_range\", \"all_day\", etc.)\n- `created_by`: Creator employee ID (UUID, automatically set by backend)\n- `creator_name`: Creator display name\n- `creator_code`: Creator employee code"
+						"description": "Search tickets with filters on all ticket fields. Supports pagination and sorting. All query parameters are optional.\n\n**Sorting Parameters:**\n- `sort`: Sort field. Options: `created_at` (default), `updated_at`, or `appointment_date`\n- `order`: Sort order. Options: `desc` (default, newest first) or `asc` (oldest first)\n\n**Filter Parameters:**\n- `start_date` & `end_date`: Filter by appointment date range (YYYY-MM-DD). When used together, automatically excludes tickets with null appointment dates.\n- `exclude_backlog`: Set to `true` to exclude tickets with null appointment_id (backlog tickets)\n- `department_id`: Filter by department ID(s). Supports single value or percent-separated multiple values (e.g., 'uuid1%uuid2%uuid3'). Filters tickets that have employees assigned from the specified department(s). Filters through: departments → roles → employees → ticket_employees → tickets.\n\n**Response includes:**\n- `appointment_id`: Appointment ID (UUID)\n- `appointment_date`: Appointment date (YYYY-MM-DD)\n- `appointment_time_start`: Appointment start time (HH:MM:SS)\n- `appointment_time_end`: Appointment end time (HH:MM:SS)\n- `appointment_type`: Appointment type (e.g., \"time_range\", \"all_day\", etc.)\n- `created_by`: Creator employee ID (UUID, automatically set by backend)\n- `creator_name`: Creator display name\n- `creator_code`: Creator employee code"
 					},
 					"response": []
 				},
@@ -999,7 +1018,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-tickets/search-duration?startDate=2024-01-01&endDate=2024-01-31&date_type=create&page=1&limit=20",
+							"raw": "{{baseUrl}}/functions/v1/api-tickets/search-duration?startDate=2024-01-01&endDate=2024-01-31&date_type=create&page=1&limit=20&sort=created_at&order=desc",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1029,10 +1048,22 @@
 								{
 									"key": "limit",
 									"value": "20"
+								},
+								{
+									"key": "sort",
+									"value": "created_at",
+									"description": "Sort field: 'created_at' (default), 'updated_at', or 'appointment_date'",
+									"disabled": true
+								},
+								{
+									"key": "order",
+									"value": "desc",
+									"description": "Sort order: 'desc' (default, newest first) or 'asc' (oldest first)",
+									"disabled": true
 								}
 							]
 						},
-						"description": "Search tickets by date range with selectable date type (create, update, or appointed). Requires startDate and endDate.\n\n**Response includes:**\n- `appointment_id`: Appointment ID (UUID)\n- `appointment_date`: Appointment date (YYYY-MM-DD)\n- `appointment_time_start`: Appointment start time (HH:MM:SS)\n- `appointment_time_end`: Appointment end time (HH:MM:SS)\n- `appointment_type`: Appointment type (e.g., \"time_range\", \"all_day\", etc.)"
+						"description": "Search tickets by date range with selectable date type (create, update, or appointed). Requires startDate and endDate. Supports sorting.\n\n**Sorting Parameters:**\n- `sort`: Sort field. Options: `created_at` (default), `updated_at`, or `appointment_date`\n- `order`: Sort order. Options: `desc` (default, newest first) or `asc` (oldest first)\n\n**Response includes:**\n- `appointment_id`: Appointment ID (UUID)\n- `appointment_date`: Appointment date (YYYY-MM-DD)\n- `appointment_time_start`: Appointment start time (HH:MM:SS)\n- `appointment_time_end`: Appointment end time (HH:MM:SS)\n- `appointment_type`: Appointment type (e.g., \"time_range\", \"all_day\", etc.)"
 					},
 					"response": []
 				},
@@ -1717,6 +1748,171 @@
 							]
 						},
 						"description": "Delete a site. Requires level 1+."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employee-Site Trainings",
+			"item": [
+				{
+					"name": "List Trainings",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-employee-site-trainings?employee_id=&site_id=&page=1&limit=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-employee-site-trainings"
+							],
+							"query": [
+								{
+									"key": "employee_id",
+									"value": "",
+									"disabled": true,
+									"description": "Filter by employee UUID"
+								},
+								{
+									"key": "site_id",
+									"value": "",
+									"disabled": true,
+									"description": "Filter by site UUID"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								}
+							]
+						},
+						"description": "List training records with optional employee/site filters. Requires level 0+."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Training by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-employee-site-trainings/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-employee-site-trainings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here",
+									"description": "Training record ID"
+								}
+							]
+						},
+						"description": "Get training record by ID. Requires level 0+."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Training",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"employee_id\": \"uuid-employee\",\n  \"site_id\": \"uuid-site\",\n  \"trained_at\": \"2025-12-08\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-employee-site-trainings",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-employee-site-trainings"
+							]
+						},
+						"description": "Create employee-site training record. Requires level 1+."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Training",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"trained_at\": \"2025-12-10\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-employee-site-trainings/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-employee-site-trainings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here",
+									"description": "Training record ID"
+								}
+							]
+						},
+						"description": "Update training record. Requires level 1+."
 					},
 					"response": []
 				}
@@ -4408,6 +4604,37 @@
 								}
 							]
 						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Announcements",
+			"item": [
+				{
+					"name": "List Announcements",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-announcements",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-announcements"
+							]
+						},
+						"description": "Get all announcements with photos and files. Create/Update/Delete managed via Supabase dashboard."
 					},
 					"response": []
 				}

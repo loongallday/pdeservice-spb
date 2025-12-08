@@ -23,6 +23,11 @@ export async function searchDuration(req: Request, employee: Employee) {
   const endDate = url.searchParams.get('endDate');
   const dateType = url.searchParams.get('date_type') || 'create';
 
+  // Parse sorting parameters
+  const sort = url.searchParams.get('sort') || undefined;
+  const orderParam = url.searchParams.get('order');
+  const order = (orderParam === 'asc' || orderParam === 'desc') ? orderParam : undefined;
+
   // Validate required parameters
   if (!startDate) {
     throw new ValidationError('กรุณาระบุ startDate');
@@ -43,6 +48,8 @@ export async function searchDuration(req: Request, employee: Employee) {
     startDate,
     endDate,
     dateType: dateType as 'create' | 'update' | 'appointed',
+    sort,
+    order: order as 'asc' | 'desc' | undefined,
   });
 
   return successWithPagination(result.data, result.pagination);

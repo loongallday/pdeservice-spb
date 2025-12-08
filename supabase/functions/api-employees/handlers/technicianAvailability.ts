@@ -15,34 +15,88 @@ export async function getTechnicianAvailability(req: Request, employee: Employee
 
   // Parse query parameters
   const url = new URL(req.url);
-  const date = url.searchParams.get('date');
-  const timeStart = url.searchParams.get('time_start') || undefined;
-  const timeEnd = url.searchParams.get('time_end') || undefined;
+  const date = url.searchParams.get('date') || undefined;
+  const appointmentType = url.searchParams.get('appointment_type') || undefined;
+  let timeStart = url.searchParams.get('time_start') || undefined;
+  let timeEnd = url.searchParams.get('time_end') || undefined;
 
-  // Validate required date parameter
+  // If no date, duration, or type is sent, all employees must be unavailable
+  if (!date && !appointmentType && !timeStart && !timeEnd) {
+    // Get all technicians without date/time filtering
+    const technicians = await EmployeeService.getTechniciansWithAvailability();
+    // Mark all as unavailable
+    const allUnavailable = technicians.map(tech => ({ ...tech, availability: false }));
+    return success(allUnavailable);
+  }
+
+  // Validate required date parameter (if any time-related params are provided)
+  if (!date && (appointmentType || timeStart || timeEnd)) {
+    throw new ValidationError('กรุณาระบุวันที่ (date) เมื่อระบุ appointment_type, time_start หรือ time_end');
+  }
+
+  // At this point, date must be defined (we've validated it above)
   if (!date) {
     throw new ValidationError('กรุณาระบุวันที่ (date)');
   }
 
-  // Validate date format (YYYY-MM-DD)
-  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-  if (!dateRegex.test(date)) {
-    throw new ValidationError('รูปแบบวันที่ไม่ถูกต้อง ต้องเป็น YYYY-MM-DD');
+  // Validate date format (YYYY-MM-DD) if date is provided
+  if (date) {
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!dateRegex.test(date)) {
+      throw new ValidationError('รูปแบบวันที่ไม่ถูกต้อง ต้องเป็น YYYY-MM-DD');
+    }
+
+    // Validate date is a valid date
+    const dateObj = new Date(date);
+    if (isNaN(dateObj.getTime())) {
+      throw new ValidationError('วันที่ไม่ถูกต้อง');
+    }
   }
 
-  // Validate date is a valid date
-  const dateObj = new Date(date);
-  if (isNaN(dateObj.getTime())) {
-    throw new ValidationError('วันที่ไม่ถูกต้อง');
+  // If appointment_type is provided, derive times from it
+  if (appointmentType) {
+    const validTypes = ['half_morning', 'half_afternoon', 'full_day', 'time_range', 'call_to_schedule'];
+    if (!validTypes.includes(appointmentType)) {
+      throw new ValidationError('appointment_type ไม่ถูกต้อง ต้องเป็น: ' + validTypes.join(', '));
+    }
+
+    // For time_range, times must be provided
+    if (appointmentType === 'time_range') {
+      if (!timeStart || !timeEnd) {
+        throw new ValidationError('กรุณาระบุ time_start และ time_end สำหรับ appointment_type=time_range');
+      }
+    } else if (appointmentType === 'call_to_schedule') {
+      // call_to_schedule doesn't check availability (to be scheduled later)
+      // Return all technicians as available
+      const technicians = await EmployeeService.getTechniciansWithAvailability(date);
+      // Mark all as available
+      const allAvailable = technicians.map(tech => ({ ...tech, availability: true }));
+      return success(allAvailable);
+    } else {
+      // Derive times from appointment_type
+      if (appointmentType === 'half_morning') {
+        timeStart = '08:00:00';
+        timeEnd = '12:00:00';
+      } else if (appointmentType === 'half_afternoon') {
+        timeStart = '13:00:00';
+        timeEnd = '17:30:00';
+      } else if (appointmentType === 'full_day') {
+        timeStart = '08:00:00';
+        timeEnd = '17:30:00';
+      }
+    }
+  } else {
+    // If no appointment_type, times must be provided
+    if (timeStart || timeEnd) {
+      // Both must be provided together
+      if (!timeStart || !timeEnd) {
+        throw new ValidationError('กรุณาระบุทั้ง time_start และ time_end');
+      }
+    }
   }
 
   // Validate time format if provided
-  if (timeStart || timeEnd) {
-    // Both must be provided together
-    if (!timeStart || !timeEnd) {
-      throw new ValidationError('กรุณาระบุทั้ง time_start และ time_end');
-    }
-
+  if (timeStart && timeEnd) {
     // Validate time format (HH:MM:SS)
     const timeRegex = /^\d{2}:\d{2}:\d{2}$/;
     if (!timeRegex.test(timeStart)) {

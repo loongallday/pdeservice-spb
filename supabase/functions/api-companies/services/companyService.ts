@@ -131,6 +131,8 @@ export class CompanyService {
 
   /**
    * Global search companies by name or tax ID with pagination
+   * Optimized with database indexes (B-tree and GIN trigram indexes)
+   * for efficient ILIKE pattern matching
    */
   static async globalSearch(params: {
     q?: string;
@@ -140,15 +142,21 @@ export class CompanyService {
     const supabase = createServiceClient();
     const { q, page, limit } = params;
 
+    // Require minimum 2 characters for search to prevent expensive full-table scans
+    // Shorter queries can be handled but may be slower without proper filtering
+    const searchQuery = q && q.trim().length >= 2 ? q.trim() : undefined;
+
     // Build count query
     let countQuery = supabase
       .from('companies')
       .select('*', { count: 'exact', head: true });
 
     // Apply search filter if query is provided
-    if (q && q.length >= 1) {
+    // PostgreSQL will automatically use GIN trigram indexes (idx_companies_*_trgm)
+    // for efficient ILIKE pattern matching with leading wildcards
+    if (searchQuery) {
       countQuery = countQuery.or(
-        `name_th.ilike.%${q}%,name_en.ilike.%${q}%,tax_id.ilike.%${q}%`
+        `name_th.ilike.%${searchQuery}%,name_en.ilike.%${searchQuery}%,tax_id.ilike.%${searchQuery}%`
       );
     }
 
@@ -158,15 +166,17 @@ export class CompanyService {
     const total = count || 0;
 
     // Get paginated data - only return summary fields
+    // Using specific field selection reduces data transfer and improves performance
     const offset = (page - 1) * limit;
     let dataQuery = supabase
       .from('companies')
       .select('tax_id, name_th, name_en, address_detail');
 
     // Apply search filter if query is provided
-    if (q && q.length >= 1) {
+    // Trigram indexes will be used automatically by PostgreSQL query planner
+    if (searchQuery) {
       dataQuery = dataQuery.or(
-        `name_th.ilike.%${q}%,name_en.ilike.%${q}%,tax_id.ilike.%${q}%`
+        `name_th.ilike.%${searchQuery}%,name_en.ilike.%${searchQuery}%,tax_id.ilike.%${searchQuery}%`
       );
     }
 

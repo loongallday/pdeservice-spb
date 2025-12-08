@@ -47,6 +47,8 @@ The environment includes:
 After signing in, you can test any endpoint:
 - **Initialize** - Get all initial app data (employee, roles, departments, features) in one request
 - **Employees** - Manage employee records
+- **Employee-Site Trainings** - Track which employees are trained for which sites
+- **Announcements** - Publish announcement messages
 - **Tickets** - Create and manage tickets
 - **Companies** - Company management
 - **Sites** - Site/location management
@@ -74,6 +76,8 @@ PDE Service - Local Development
 ├── Initialize (1 request)
 │   └── Initialize App (get all bootstrap data)
 ├── Employees (5 requests)
+├── Employee-Site Trainings (4 requests)
+├── Announcements (1 request)
 ├── Tickets (5 requests)
 ├── Companies (4 requests)
 ├── Sites (4 requests)

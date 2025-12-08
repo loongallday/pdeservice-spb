@@ -91,6 +91,8 @@ export class TicketService {
     end_date?: string;
     exclude_backlog?: boolean;
     department_id?: string | string[];
+    sort?: string;
+    order?: 'asc' | 'desc';
   }) {
     return await searchTickets(params);
   }
@@ -101,6 +103,8 @@ export class TicketService {
     startDate: string;
     endDate: string;
     dateType: DateType;
+    sort?: string;
+    order?: 'asc' | 'desc';
   }) {
     return await searchTicketsByDuration(params);
   }

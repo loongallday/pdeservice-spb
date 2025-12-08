@@ -840,6 +840,7 @@ export class EmployeeService {
         name,
         email,
         auth_user_id,
+        profile_image_url,
         role:roles!role_id(
           name_th
         )
@@ -856,15 +857,17 @@ export class EmployeeService {
       email: emp.email || null,
       role_name: (emp.role as Record<string, unknown> | null)?.name_th || null,
       is_link_auth: emp.auth_user_id !== null && emp.auth_user_id !== undefined,
+      profile_image_url: emp.profile_image_url || null,
     }));
   }
 
   /**
    * Get technicians with availability status for a given date/time
    * Returns all active employees from 'technical' department with availability boolean
+   * If date is not provided, returns all technicians without checking availability
    */
   static async getTechniciansWithAvailability(
-    date: string,
+    date?: string,
     timeStart?: string,
     timeEnd?: string
   ): Promise<Array<{ id: string; name: string; availability: boolean }>> {
@@ -915,6 +918,15 @@ export class EmployeeService {
 
     const technicianIds = technicalEmployees.map(t => t.id as string);
 
+    // If no date provided, return all technicians as available (no conflict checking)
+    if (!date) {
+      return technicalEmployees.map(tech => ({
+        id: tech.id as string,
+        name: tech.name as string,
+        availability: true,
+      }));
+    }
+
     // Step 3: Query for conflicting appointments
     // Build the query with proper joins
     const conflictQuery = supabase
@@ -953,19 +965,48 @@ export class EmployeeService {
         const empId = te.employee_id as string;
         if (!empId) return;
 
+        // Get appointment time range (actual or predefined based on type)
+        let apptTimeStart = appointment.appointment_time_start as string | null;
+        let apptTimeEnd = appointment.appointment_time_end as string | null;
+        const appointmentType = appointment.appointment_type as string | null;
+
+        // Handle predefined time slots for appointments without explicit times
+        if (appointmentType === 'call_to_schedule') {
+          // call_to_schedule has no time - never overlaps (to be scheduled later)
+          return;
+        }
+        
+        if (!apptTimeStart || !apptTimeEnd) {
+          if (appointmentType === 'half_morning') {
+            apptTimeStart = '08:00:00';
+            apptTimeEnd = '12:00:00';
+          } else if (appointmentType === 'half_afternoon') {
+            apptTimeStart = '13:00:00';
+            apptTimeEnd = '17:30:00';
+          } else if (appointmentType === 'full_day') {
+            apptTimeStart = '08:00:00';
+            apptTimeEnd = '17:30:00';
+          }
+        }
+
+        // If still no times after handling special types, skip
+        if (!apptTimeStart || !apptTimeEnd) {
+          return;
+        }
+
+        // Skip zero-duration appointments (start == end)
+        if (apptTimeStart === apptTimeEnd) {
+          return;
+        }
+
         // If time is provided, check for time overlap
         if (timeStart && timeEnd) {
-          const apptTimeStart = appointment.appointment_time_start as string | null;
-          const apptTimeEnd = appointment.appointment_time_end as string | null;
-
-          if (apptTimeStart && apptTimeEnd) {
-            // Check if time ranges overlap: start1 < end2 AND start2 < end1
-            if (apptTimeStart < timeEnd && apptTimeEnd > timeStart) {
-              conflictedEmployeeIds.add(empId);
-            }
+          // Check if time ranges overlap: start1 < end2 AND start2 < end1
+          if (apptTimeStart < timeEnd && apptTimeEnd > timeStart) {
+            conflictedEmployeeIds.add(empId);
           }
         } else {
-          // If only date provided, any appointment on that date = conflict
+          // If only date provided, any appointment with valid duration = conflict
           conflictedEmployeeIds.add(empId);
         }
       });

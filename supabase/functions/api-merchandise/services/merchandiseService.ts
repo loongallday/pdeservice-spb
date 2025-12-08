@@ -321,13 +321,23 @@ export class MerchandiseService {
   }
 
   /**
-   * Search merchandise by serial number
-   * If no query provided, returns all merchandise (up to 20)
+   * Search merchandise by serial number with pagination
+   * If no query provided, returns all merchandise
    */
-  static async search(query: string): Promise<Record<string, unknown>[]> {
+  static async search(
+    query: string,
+    pagination: { page: number; limit: number }
+  ): Promise<{ data: Record<string, unknown>[]; pagination: PaginationInfo }> {
     const supabase = createServiceClient();
+    const { page, limit } = pagination;
 
-    let queryBuilder = supabase
+    // Build count query
+    let countQuery = supabase
+      .from('merchandise')
+      .select('*', { count: 'exact', head: true });
+
+    // Build data query
+    let dataQuery = supabase
       .from('merchandise')
       .select(`
         id,
@@ -363,13 +373,20 @@ export class MerchandiseService {
 
     // Apply search filter if query is provided
     if (query && query.length > 0) {
-      queryBuilder = queryBuilder.ilike('serial_no', `%${query}%`);
+      countQuery = countQuery.ilike('serial_no', `%${query}%`);
+      dataQuery = dataQuery.ilike('serial_no', `%${query}%`);
     }
-    // If no query, return all merchandise (no filter applied)
 
-    const { data, error } = await queryBuilder
-      .limit(20)
-      .order('created_at', { ascending: false });
+    // Get total count
+    const { count, error: countError } = await countQuery;
+    if (countError) throw new DatabaseError(countError.message);
+    const total = count || 0;
+
+    // Get paginated data
+    const offset = (page - 1) * limit;
+    const { data, error } = await dataQuery
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1);
 
     if (error) throw new DatabaseError(error.message);
 
@@ -417,7 +434,10 @@ export class MerchandiseService {
       };
     });
 
-    return transformedData;
+    return {
+      data: transformedData,
+      pagination: calculatePagination(page, limit, total),
+    };
   }
 
   /**
@@ -470,7 +490,8 @@ export class MerchandiseService {
       serial_no: merchandise.serial_no,
       model_id: merchandise.model_id || null,
       site_id: merchandise.site_id || null,
-      model_name: merchandise.model ? (merchandise.model.name || merchandise.model.model || null) : null,
+      model_code: merchandise.model ? merchandise.model.model || null : null,
+      model_name: merchandise.model ? merchandise.model.name || null : null,
       site_name: merchandise.site ? merchandise.site.name || null : null,
     }));
 

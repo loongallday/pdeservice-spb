@@ -14,7 +14,7 @@ The Merchandise API handles equipment/merchandise management operations includin
 
 ### Search Merchandise
 
-Search for merchandise by serial number.
+Search for merchandise by serial number with pagination support.
 
 **Endpoint**: `GET /search`
 
@@ -25,15 +25,18 @@ Search for merchandise by serial number.
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `q` | string | No | Search query for serial number (partial match, case-insensitive) |
+| `page` | number | No | Page number (default: 1, minimum: 1) |
+| `limit` | number | No | Items per page (default: 50, minimum: 1, maximum: 100) |
 
 **Notes**:
-- If no query is provided, returns all merchandise (up to 20 items)
-- Results are limited to 20 items, ordered by creation date (newest first)
+- If no query is provided, returns all merchandise
+- Results are ordered by creation date (newest first)
 - Search is case-insensitive and supports partial matching
+- Pagination is supported via `page` and `limit` query parameters
 
 **Example Request**:
 ```http
-GET /functions/v1/api-merchandise/search?q=SN123
+GET /functions/v1/api-merchandise/search?q=SN123&page=1&limit=20
 Authorization: Bearer <token>
 ```
 
@@ -65,20 +68,36 @@ Authorization: Bearer <token>
       "created_at": "2024-01-01T00:00:00Z",
       "updated_at": "2024-01-01T00:00:00Z"
     }
-  ]
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 1,
+    "totalPages": 1,
+    "hasNext": false,
+    "hasPrevious": false
+  }
 }
 ```
 
 **Response Fields**:
-- `id`: Merchandise ID (UUID)
-- `serial_no`: Serial number
-- `model`: Nested model object with `id`, `model`, and `name` (nullable)
-- `site`: Nested site object with `id` and `name` (nullable)
-- `distributor`: Nested distributor company object with `id` (tax_id) and `name` (nullable)
-- `dealer`: Nested dealer company object with `id` (tax_id) and `name` (nullable)
-- `replaced_by`: Serial number of the merchandise that replaced this one (string, nullable)
-- `created_at`: Creation timestamp
-- `updated_at`: Last update timestamp
+- `data`: Array of merchandise objects
+  - `id`: Merchandise ID (UUID)
+  - `serial_no`: Serial number
+  - `model`: Nested model object with `id`, `model`, and `name` (nullable)
+  - `site`: Nested site object with `id` and `name` (nullable)
+  - `distributor`: Nested distributor company object with `id` (tax_id) and `name` (nullable)
+  - `dealer`: Nested dealer company object with `id` (tax_id) and `name` (nullable)
+  - `replaced_by`: Serial number of the merchandise that replaced this one (string, nullable)
+  - `created_at`: Creation timestamp
+  - `updated_at`: Last update timestamp
+- `pagination`: Pagination information object
+  - `page`: Current page number
+  - `limit`: Items per page
+  - `total`: Total number of items matching the search
+  - `totalPages`: Total number of pages
+  - `hasNext`: Whether there is a next page
+  - `hasPrevious`: Whether there is a previous page
 
 ---
 
@@ -127,6 +146,7 @@ Authorization: Bearer <token>
       "serial_no": "SN12345",
       "model_id": "uuid",
       "site_id": "uuid",
+      "model_code": "MODEL-001",
       "model_name": "Model Name",
       "site_name": "Site Name"
     },
@@ -135,6 +155,7 @@ Authorization: Bearer <token>
       "serial_no": "SN12346",
       "model_id": "uuid",
       "site_id": "uuid",
+      "model_code": "MODEL-002",
       "model_name": "Another Model",
       "site_name": "Another Site"
     }
@@ -147,6 +168,7 @@ Authorization: Bearer <token>
 - `serial_no`: Serial number
 - `model_id`: Model ID (UUID, nullable)
 - `site_id`: Site ID (UUID, nullable)
+- `model_code`: Model code (from related model, nullable)
 - `model_name`: Model name (from related model, nullable)
 - `site_name`: Site name (from related site, nullable)
 
@@ -348,7 +370,7 @@ Update an existing merchandise item.
 
 **Endpoint**: `PUT /:id`
 
-**Required Level**: 2 (update operations)
+**Required Level**: 1 (update operations)
 
 **Path Parameters**:
 - `id` (required): Merchandise ID (UUID)
