@@ -3,7 +3,7 @@
  * Handles all appointment CRUD operations
  */
 
-import { handleCORS } from './_shared/cors.ts';
+import { handleCORS, corsHeaders } from './_shared/cors.ts';
 import { error } from './_shared/response.ts';
 import { authenticate } from './_shared/auth.ts';
 import { handleError } from './_shared/error.ts';
@@ -14,9 +14,11 @@ import { create } from './handlers/create.ts';
 import { update } from './handlers/update.ts';
 import { deleteAppointment } from './handlers/delete.ts';
 import { search } from './handlers/search.ts';
+import { approve } from './handlers/approve.ts';
 
 Deno.serve(async (req) => {
-  // Handle CORS preflight
+  // Handle CORS preflight - MUST be ABSOLUTE FIRST, before ANY other code
+  // This ensures OPTIONS requests always succeed, even if there's an error later
   const corsResponse = handleCORS(req);
   if (corsResponse) return corsResponse;
 
@@ -54,6 +56,12 @@ Deno.serve(async (req) => {
       return await get(req, employee, id);
     }
 
+    // POST /approve - Approve appointment (and optionally edit)
+    // Check specific routes before generic routes
+    if (method === 'POST' && relativePath.length === 1 && relativePath[0] === 'approve') {
+      return await approve(req, employee);
+    }
+
     // POST / - Create appointment
     if (method === 'POST' && relativePath.length === 0) {
       return await create(req, employee);
@@ -73,6 +81,13 @@ Deno.serve(async (req) => {
 
     return error('Not found', 404);
   } catch (err) {
+    // If OPTIONS request fails, still return 200 with CORS headers
+    if (req.method === 'OPTIONS') {
+      return new Response('ok', { 
+        status: 200,
+        headers: corsHeaders
+      });
+    }
     const { message, statusCode } = handleError(err);
     return error(message, statusCode);
   }

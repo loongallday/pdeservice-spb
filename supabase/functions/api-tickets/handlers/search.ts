@@ -26,6 +26,29 @@ export async function search(req: Request, employee: Employee) {
     department_id = departmentIds.length === 1 ? departmentIds[0] : departmentIds;
   }
 
+  // Handle employee_id - support both single value and array (percent-separated)
+  const employeeIdParam = url.searchParams.get('employee_id');
+  let employee_id: string | string[] | undefined = undefined;
+  if (employeeIdParam) {
+    // Check if it's percent-separated (array) or single value
+    const employeeIds = employeeIdParam.split('%').map(id => id.trim()).filter(Boolean);
+    employee_id = employeeIds.length === 1 ? employeeIds[0] : employeeIds;
+  }
+
+  // Parse sorting parameters
+  const sort = url.searchParams.get('sort') || undefined;
+  const orderParam = url.searchParams.get('order');
+  const order = (orderParam === 'asc' || orderParam === 'desc') ? orderParam : undefined;
+
+  // Parse appointment_is_approved (boolean parameter)
+  const appointmentIsApprovedParam = url.searchParams.get('appointment_is_approved');
+  let appointment_is_approved: boolean | undefined = undefined;
+  if (appointmentIsApprovedParam === 'true') {
+    appointment_is_approved = true;
+  } else if (appointmentIsApprovedParam === 'false') {
+    appointment_is_approved = false;
+  }
+
   const filters: Record<string, string | string[] | boolean | undefined> = {
     id: url.searchParams.get('id') || undefined,
     details: url.searchParams.get('details') || undefined,
@@ -42,7 +65,9 @@ export async function search(req: Request, employee: Employee) {
     start_date: url.searchParams.get('start_date') || undefined,
     end_date: url.searchParams.get('end_date') || undefined,
     exclude_backlog: url.searchParams.get('exclude_backlog') === 'true',
+    appointment_is_approved,
     department_id,
+    employee_id,
   };
 
   // Remove undefined values
@@ -50,11 +75,13 @@ export async function search(req: Request, employee: Employee) {
     Object.entries(filters).filter(([_, v]) => v !== undefined)
   ) as Record<string, string | string[] | boolean>;
 
-  // Search tickets with filters and pagination
+  // Search tickets with filters, pagination, and sorting
   const result = await TicketService.search({
     page,
     limit,
     ...cleanFilters,
+    sort,
+    order: order as 'asc' | 'desc' | undefined,
   });
 
   return successWithPagination(result.data, result.pagination);

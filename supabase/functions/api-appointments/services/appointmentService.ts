@@ -123,6 +123,33 @@ export class AppointmentService {
     return data;
   }
 
+  /**
+   * Approve or un-approve appointment and optionally update appointment details
+   * Sets is_approved based on appointmentData.is_approved (defaults to true if not provided)
+   * Updates provided fields
+   */
+  static async approve(id: string, appointmentData: Record<string, unknown>): Promise<Record<string, unknown>> {
+    const supabase = createServiceClient();
+    
+    // Set is_approved - use provided value or default to true
+    const updateData = {
+      ...appointmentData,
+      is_approved: appointmentData.is_approved !== undefined ? appointmentData.is_approved : true,
+    };
+
+    const { data, error } = await supabase
+      .from('appointments')
+      .update(updateData)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw new DatabaseError(error.message);
+    if (!data) throw new NotFoundError('ไม่พบข้อมูลการนัดหมาย');
+
+    return data;
+  }
+
   static async delete(id: string): Promise<void> {
     const supabase = createServiceClient();
     

@@ -25,7 +25,13 @@ Deno.serve(async (req) => {
     const { employee } = await authenticate(req);
 
     // Route to appropriate handler
-    const url = new URL(req.url);
+    let url: URL;
+    try {
+      url = new URL(req.url);
+    } catch (err) {
+      return error('Invalid URL', 400);
+    }
+    
     const pathParts = url.pathname.split('/').filter(Boolean);
     // Find the function name in the path and slice after it
     const functionIndex = pathParts.indexOf('api-tickets');

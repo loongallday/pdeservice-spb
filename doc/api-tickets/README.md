@@ -24,6 +24,8 @@ The Tickets API handles comprehensive ticket management operations for work orde
 
 Search for tickets with filters on all ticket fields. Supports pagination. **Use this endpoint instead of the old list endpoint.**
 
+**Important**: This endpoint returns only ticket data (table rows). Filter options (work types, statuses, departments, etc.) should be loaded separately from `/api-reference-data` endpoints and should not be reloaded when filters change. Only the table data should reload when filters are adjusted.
+
 **Endpoint**: `GET /search`
 
 **Required Level**: 0 (all authenticated users)
@@ -33,6 +35,15 @@ Search for tickets with filters on all ticket fields. Supports pagination. **Use
 **Pagination**:
 - `page` (optional): Page number (default: 1)
 - `limit` (optional): Items per page (default: 20)
+
+**Sorting** (optional):
+- `sort` (optional): Sort field. Options:
+  - `created_at` (default): Sort by creation date
+  - `updated_at`: Sort by last update date
+  - `appointment_date`: Sort by appointment date
+- `order` (optional): Sort order. Options:
+  - `desc` (default): Descending order (newest first)
+  - `asc`: Ascending order (oldest first)
 
 **Filters** (all optional, can be combined):
 - `id`: Ticket ID (UUID)
@@ -54,6 +65,11 @@ Search for tickets with filters on all ticket fields. Supports pagination. **Use
 - `start_date`: Start date for filtering by appointment date (YYYY-MM-DD). Must be used with `end_date`. Automatically excludes tickets with null appointment dates.
 - `end_date`: End date for filtering by appointment date (YYYY-MM-DD). Must be used with `start_date`. Automatically excludes tickets with null appointment dates.
 - `exclude_backlog`: Set to `true` to exclude tickets with null appointment_id (backlog tickets)
+- `employee_id`: Filter by employee ID(s) assigned to tickets. Supports:
+  - Single value: `employee_id=abc-123` (filters tickets assigned to that employee)
+  - Multiple values: `employee_id=abc-123%def-456%ghi-789` (percent-separated, filters tickets assigned to any of those employees)
+  - Filters through the `ticket_employees` table (employees assigned to work on tickets)
+  - **Note**: This is different from `assigner_id` which filters by the employee who assigned the ticket
 - `department_id`: Filter by department ID(s). Supports:
   - Single value: `department_id=abc-123` (filters tickets with employees from that department)
   - Multiple values: `department_id=abc-123%def-456%ghi-789` (percent-separated, filters tickets with employees from any of those departments)
@@ -71,6 +87,18 @@ GET /functions/v1/api-tickets/search?start_date=2025-11-23&end_date=2025-11-23&e
 Authorization: Bearer <token>
 ```
 
+**Example Request** (filter by employee):
+```http
+GET /functions/v1/api-tickets/search?employee_id=abc-123&page=1&limit=20
+Authorization: Bearer <token>
+```
+
+**Example Request** (filter by multiple employees):
+```http
+GET /functions/v1/api-tickets/search?employee_id=abc-123%def-456%ghi-789&page=1&limit=20
+Authorization: Bearer <token>
+```
+
 **Example Request** (filter by department):
 ```http
 GET /functions/v1/api-tickets/search?department_id=abc-123&page=1&limit=20
@@ -80,6 +108,18 @@ Authorization: Bearer <token>
 **Example Request** (filter by multiple departments):
 ```http
 GET /functions/v1/api-tickets/search?department_id=abc-123%def-456%ghi-789&page=1&limit=20
+Authorization: Bearer <token>
+```
+
+**Example Request** (with sorting):
+```http
+GET /functions/v1/api-tickets/search?status_id=xxx&sort=updated_at&order=desc&page=1&limit=20
+Authorization: Bearer <token>
+```
+
+**Example Request** (sort by appointment date):
+```http
+GET /functions/v1/api-tickets/search?sort=appointment_date&order=asc&page=1&limit=20
 Authorization: Bearer <token>
 ```
 
@@ -178,10 +218,11 @@ Authorization: Bearer <token>
 - Date filters support single date or date range
 - When using `start_date` and `end_date` together, filters by appointment date and automatically excludes tickets with null appointment dates
 - `exclude_backlog=true` excludes tickets where `appointment_id` is null (backlog tickets)
-- Results are sorted by creation date (newest first)
+- **Sorting**: Results can be sorted by `created_at`, `updated_at`, or `appointment_date`. Default is `created_at` in descending order (newest first). When sorting by `appointment_date`, tickets without appointments are placed at the end.
 - Returns paginated results with pagination metadata
 - Response contains flattened display fields (no nested objects)
 - `created_by` is automatically set by the backend when creating tickets (cannot be manually set)
+- **Filter Options**: Filter options (work types, statuses, departments, etc.) should be loaded separately from the `/api-reference-data` endpoints. When filters are adjusted, only the table data should reload via this `/search` endpoint. Filter options should not be reloaded when filters change.
 
 ---
 
@@ -207,6 +248,15 @@ Search tickets by date range with selectable date type (create, update, or appoi
 - `page` (optional): Page number (default: 1)
 - `limit` (optional): Items per page (default: 20)
 
+**Sorting** (optional):
+- `sort` (optional): Sort field. Options:
+  - `created_at` (default): Sort by creation date
+  - `updated_at`: Sort by last update date
+  - `appointment_date`: Sort by appointment date
+- `order` (optional): Sort order. Options:
+  - `desc` (default): Descending order (newest first)
+  - `asc`: Ascending order (oldest first)
+
 **Example Request** (filter by creation date):
 ```http
 GET /functions/v1/api-tickets/search-duration?startDate=2024-01-01&endDate=2024-01-31&date_type=create&page=1&limit=20
@@ -216,6 +266,12 @@ Authorization: Bearer <token>
 **Example Request** (filter by appointment date):
 ```http
 GET /functions/v1/api-tickets/search-duration?startDate=2024-01-15&endDate=2024-01-20&date_type=appointed&page=1&limit=20
+Authorization: Bearer <token>
+```
+
+**Example Request** (with sorting):
+```http
+GET /functions/v1/api-tickets/search-duration?startDate=2024-01-01&endDate=2024-01-31&date_type=create&sort=appointment_date&order=asc&page=1&limit=20
 Authorization: Bearer <token>
 ```
 
@@ -269,9 +325,10 @@ Authorization: Bearer <token>
 **Notes**:
 - Date range is inclusive (includes both start and end dates)
 - For `date_type=appointed`, only tickets with appointments in the date range are returned
-- Results are sorted by creation date (newest first)
+- **Sorting**: Results can be sorted by `created_at`, `updated_at`, or `appointment_date`. Default is `created_at` in descending order (newest first). When sorting by `appointment_date`, tickets without appointments are placed at the end.
 - Returns paginated results with pagination metadata
 - Response contains flattened display fields (no nested objects)
+- **Filter Options**: Filter options (work types, statuses, departments, etc.) should be loaded separately from the `/api-reference-data` endpoints. When filters are adjusted, only the table data should reload via this endpoint. Filter options should not be reloaded when filters change.
 
 ---
 
@@ -442,6 +499,9 @@ Create a new ticket with all related data (company, site, contact, appointment, 
 
 **Required Level**: 1 (non-technician_l1 and above)
 
+**Request Headers** (optional):
+- `Idempotency-Key` (optional): A unique identifier (UUID recommended) to prevent duplicate ticket creation. If provided, duplicate requests with the same key and payload will return the cached response instead of creating a new ticket. See [Idempotency Guide](../IDEMPOTENCY.md) for details.
+
 **Request Body**:
 ```json
 {
@@ -482,8 +542,11 @@ Create a new ticket with all related data (company, site, contact, appointment, 
     "appointment_time_end": "12:00:00",
     "appointment_type": "scheduled"
   },
-  "employee_ids": ["123e4567-e89b-12d3-a456-426614174004"],
-  "merchandise_ids": ["123e4567-e89b-12d3-a456-426614174005"]
+  "employee_ids": [
+    "123e4567-e89b-12d3-a456-426614174004",
+    "123e4567-e89b-12d3-a456-426614174005"
+  ],
+  "merchandise_ids": ["123e4567-e89b-12d3-a456-426614174006"]
 }
 ```
 
@@ -507,10 +570,45 @@ Create a new ticket with all related data (company, site, contact, appointment, 
   - If `id` provided: Use existing contact (validates it exists)
   - If `id` not provided: Create new contact
 - `appointment`: Appointment data (optional - if not provided, an empty appointment record will be created automatically)
-- `employee_ids`: Array of employee IDs to assign
+- `employee_ids`: Array of employee IDs to assign (supports multiple technicians)
 - `merchandise_ids`: Array of merchandise IDs to link
 
+**Example Request** (with idempotency):
+```http
+POST /functions/v1/api-tickets
+Authorization: Bearer <token>
+Content-Type: application/json
+Idempotency-Key: 550e8400-e29b-41d4-a716-446655440000
+
+{
+  "ticket": {
+    "work_type_id": "123e4567-e89b-12d3-a456-426614174001",
+    "assigner_id": "123e4567-e89b-12d3-a456-426614174002",
+    "status_id": "123e4567-e89b-12d3-a456-426614174003",
+    "details": "Ticket description"
+  },
+  // ... rest of data
+}
+```
+
+**Example Response** (201 Created):
+```json
+{
+  "data": {
+    "id": "123e4567-e89b-12d3-a456-426614174000",
+    "details": "Ticket description",
+    "work_type_id": "123e4567-e89b-12d3-a456-426614174001",
+    "assigner_id": "123e4567-e89b-12d3-a456-426614174002",
+    "status_id": "123e4567-e89b-12d3-a456-426614174003",
+    "created_at": "2024-01-01T00:00:00Z",
+    "created_by": "123e4567-e89b-12d3-a456-426614174008",
+    // ... full ticket data with related entities
+  }
+}
+```
+
 **Notes**:
+- **Idempotency**: This endpoint supports idempotency to prevent duplicate ticket creation. Include an `Idempotency-Key` header with a unique UUID. If the same key and payload are used again, the original response is returned without creating a duplicate ticket. See [Idempotency Guide](../IDEMPOTENCY.md) for complete documentation and examples.
 - **Created By**: Automatically set by the backend system using the authenticated employee's ID. Users should not provide `created_by` in the request.
 - **Appointment**: An appointment record is **always created** for every ticket, even if no appointment data is provided. If `appointment` is not provided in the request, an empty appointment record will be created automatically.
 - **Company**: If `tax_id` exists, it will be used. Otherwise, a new company is created. No updates to existing companies.
@@ -561,7 +659,11 @@ Update an existing ticket with all related data (company, site, contact, appoint
     "appointment_time_start": "10:00:00",
     "appointment_time_end": "13:00:00"
   },
-  "employee_ids": ["employee-uuid-1", "employee-uuid-2"],
+  "employee_ids": [
+    "employee-uuid-1",
+    "employee-uuid-2",
+    "employee-uuid-3"
+  ],
   "merchandise_ids": ["merchandise-uuid-1", "merchandise-uuid-2"]
 }
 ```
@@ -586,7 +688,7 @@ Update an existing ticket with all related data (company, site, contact, appoint
   - If appointment exists: Update it
   - If appointment doesn't exist: Create new one
   - If `null`: Unlink appointment from ticket
-- `employee_ids`: Array of employee IDs to replace all employee assignments
+- `employee_ids`: Array of employee IDs to replace all employee assignments (supports multiple technicians)
 - `merchandise_ids`: Array of merchandise IDs to replace all merchandise associations
 
 **Notes**:
@@ -728,6 +830,39 @@ This error occurs when:
 - Employees being assigned already have appointments on the same date
 - If time ranges are provided, the error occurs when time ranges overlap
 - The error message lists all employees with conflicts
+
+### 400 Bad Request - Idempotency Errors
+
+When using idempotency keys, the following errors may occur:
+
+**Concurrent Request (Operation in Progress)**:
+```json
+{
+  "error": "คำขอกำลังดำเนินการอยู่ กรุณารอสักครู่"
+}
+```
+- Occurs when two requests with the same idempotency key arrive simultaneously
+- Solution: Wait 1-2 seconds and retry with the same key
+
+**Mismatched Payload**:
+```json
+{
+  "error": "Idempotency key นี้ถูกใช้กับข้อมูลที่แตกต่างกันแล้ว"
+}
+```
+- Occurs when the same idempotency key is used with different request data
+- Solution: Generate a new unique key for each distinct request
+
+**Key Used by Different Employee**:
+```json
+{
+  "error": "Idempotency key นี้ถูกใช้โดยพนักงานคนอื่นแล้ว"
+}
+```
+- Occurs when an idempotency key is reused by a different employee
+- Solution: Each employee should use their own unique keys
+
+For complete idempotency documentation, see [Idempotency Guide](../IDEMPOTENCY.md).
 
 ---
 

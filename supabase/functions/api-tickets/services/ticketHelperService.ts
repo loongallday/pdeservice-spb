@@ -72,23 +72,48 @@ export async function checkEmployeeAppointmentConflicts(
     const empId = te.employee_id as string;
     if (!empId || conflictedEmployeeIds.includes(empId)) continue;
 
+    // Get appointment time range (actual or predefined based on type)
+    let apptTimeStart = appointment.appointment_time_start as string | null;
+    let apptTimeEnd = appointment.appointment_time_end as string | null;
+    const appointmentType = appointment.appointment_type as string | null;
+
+    // Handle predefined time slots for appointments without explicit times
+    if (appointmentType === 'call_to_schedule') {
+      // call_to_schedule has no time - never overlaps (to be scheduled later)
+      continue;
+    }
+    
+    if (!apptTimeStart || !apptTimeEnd) {
+      if (appointmentType === 'half_morning') {
+        apptTimeStart = '08:00:00';
+        apptTimeEnd = '12:00:00';
+      } else if (appointmentType === 'half_afternoon') {
+        apptTimeStart = '13:00:00';
+        apptTimeEnd = '17:30:00';
+      } else if (appointmentType === 'full_day') {
+        apptTimeStart = '08:00:00';
+        apptTimeEnd = '17:30:00';
+      }
+    }
+
+    // If still no times after handling special types, skip
+    if (!apptTimeStart || !apptTimeEnd) {
+      continue;
+    }
+
+    // Skip zero-duration appointments (start == end)
+    if (apptTimeStart === apptTimeEnd) {
+      continue;
+    }
+
     // If time is provided, check for time overlap
     if (appointmentTimeStart && appointmentTimeEnd) {
-      const apptTimeStart = appointment.appointment_time_start as string | null;
-      const apptTimeEnd = appointment.appointment_time_end as string | null;
-
-      if (apptTimeStart && apptTimeEnd) {
-        // Check if time ranges overlap: start1 < end2 AND start2 < end1
-        if (apptTimeStart < appointmentTimeEnd && apptTimeEnd > appointmentTimeStart) {
-          conflictedEmployeeIds.push(empId);
-        }
-      } else {
-        // Appointment has date but no time, and we're checking with time
-        // If the existing appointment has no time, it's considered a full-day conflict
+      // Check if time ranges overlap: start1 < end2 AND start2 < end1
+      if (apptTimeStart < appointmentTimeEnd && apptTimeEnd > appointmentTimeStart) {
         conflictedEmployeeIds.push(empId);
       }
     } else {
-      // If only date provided, any appointment on that date = conflict
+      // If only date provided, any appointment with valid duration = conflict
       conflictedEmployeeIds.push(empId);
     }
   }

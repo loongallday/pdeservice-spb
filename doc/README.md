@@ -34,6 +34,7 @@ PDE Service is a Supabase-based edge function API service for managing enterpris
 - **[Companies API](./api-companies/README.md)** - Company records management
 - **[Sites API](./api-sites/README.md)** - Site/location management (includes safety standards)
 - **[Contacts API](./api-contacts/README.md)** - Contact information management
+- **[Employee-Site Trainings API](./api-employee-site-trainings/README.md)** - Track employee training readiness per site
 
 ### Equipment & Maintenance
 
@@ -46,6 +47,7 @@ PDE Service is a Supabase-based edge function API service for managing enterpris
 
 - **[Polls API](./api-polls/README.md)** - Poll creation and voting
 - **[Reference Data API](./api-reference-data/README.md)** - Static reference data (work types, statuses, leave types, provinces)
+- **[Announcements API](./api-announcements/README.md)** - Publish announcement messages
 
 ---
 

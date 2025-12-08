@@ -10,6 +10,7 @@ import { update } from '../../supabase/functions/api-merchandise/handlers/update
 import { deleteMerchandise } from '../../supabase/functions/api-merchandise/handlers/delete.ts';
 import { getBySite } from '../../supabase/functions/api-merchandise/handlers/getBySite.ts';
 import { getByModel } from '../../supabase/functions/api-merchandise/handlers/getByModel.ts';
+import { search } from '../../supabase/functions/api-merchandise/handlers/search.ts';
 import { createMockRequest, createMockJsonRequest, createMockEmployeeWithLevel, assertSuccessResponse, assertErrorResponse } from '../_shared/mocks.ts';
 
 const mockMerchandise = {
@@ -140,8 +141,8 @@ Deno.test('create merchandise - success', async () => {
   }
 });
 
-Deno.test('update merchandise - requires level 2', async () => {
-  const employee = createMockEmployeeWithLevel(1);
+Deno.test('update merchandise - requires level 1', async () => {
+  const employee = createMockEmployeeWithLevel(0);
   const request = createMockJsonRequest('PUT', 'http://localhost/api-merchandise/123e4567-e89b-12d3-a456-426614174000', {
     pm_count: 15,
   });
@@ -149,12 +150,12 @@ Deno.test('update merchandise - requires level 2', async () => {
   await assertRejects(
     async () => await update(request, employee, '123e4567-e89b-12d3-a456-426614174000'),
     Error,
-    'ต้องมีสิทธิ์ระดับ 2'
+    'ต้องมีสิทธิ์ระดับ 1'
   );
 });
 
 Deno.test('update merchandise - success', async () => {
-  const employee = createMockEmployeeWithLevel(2);
+  const employee = createMockEmployeeWithLevel(1);
   const request = createMockJsonRequest('PUT', 'http://localhost/api-merchandise/123e4567-e89b-12d3-a456-426614174000', {
     pm_count: 15,
   });
@@ -198,6 +199,73 @@ Deno.test('delete merchandise - success', async () => {
     assertEquals(data.message, 'ลบข้อมูลสำเร็จ');
   } finally {
     (await import('../../supabase/functions/api-merchandise/services/merchandiseService.ts')).MerchandiseService.delete = originalDelete;
+  }
+});
+
+Deno.test('search merchandise - success with query', async () => {
+  const employee = createMockEmployeeWithLevel(0);
+  const request = createMockRequest('GET', 'http://localhost/api-merchandise/search?q=SN123&page=1&limit=20');
+
+  // Mock MerchandiseService.search
+  const originalSearch = (await import('../../supabase/functions/api-merchandise/services/merchandiseService.ts')).MerchandiseService.search;
+  (await import('../../supabase/functions/api-merchandise/services/merchandiseService.ts')).MerchandiseService.search = async () => ({
+    data: [mockMerchandise],
+    pagination: { page: 1, limit: 20, total: 1, totalPages: 1, hasNext: false, hasPrevious: false },
+  });
+
+  try {
+    const response = await search(request, employee);
+    const data = await assertSuccessResponse<{ data: unknown[]; pagination: unknown }>(response);
+    assertEquals(Array.isArray(data.data), true);
+    assertEquals(data.pagination !== undefined, true);
+  } finally {
+    (await import('../../supabase/functions/api-merchandise/services/merchandiseService.ts')).MerchandiseService.search = originalSearch;
+  }
+});
+
+Deno.test('search merchandise - success without query', async () => {
+  const employee = createMockEmployeeWithLevel(0);
+  const request = createMockRequest('GET', 'http://localhost/api-merchandise/search?page=1&limit=20');
+
+  // Mock MerchandiseService.search
+  const originalSearch = (await import('../../supabase/functions/api-merchandise/services/merchandiseService.ts')).MerchandiseService.search;
+  (await import('../../supabase/functions/api-merchandise/services/merchandiseService.ts')).MerchandiseService.search = async () => ({
+    data: [mockMerchandise],
+    pagination: { page: 1, limit: 20, total: 1, totalPages: 1, hasNext: false, hasPrevious: false },
+  });
+
+  try {
+    const response = await search(request, employee);
+    const data = await assertSuccessResponse<{ data: unknown[]; pagination: unknown }>(response);
+    assertEquals(Array.isArray(data.data), true);
+    assertEquals(data.pagination !== undefined, true);
+  } finally {
+    (await import('../../supabase/functions/api-merchandise/services/merchandiseService.ts')).MerchandiseService.search = originalSearch;
+  }
+});
+
+Deno.test('search merchandise - pagination with multiple pages', async () => {
+  const employee = createMockEmployeeWithLevel(0);
+  const request = createMockRequest('GET', 'http://localhost/api-merchandise/search?q=SN&page=2&limit=10');
+
+  // Mock MerchandiseService.search
+  const originalSearch = (await import('../../supabase/functions/api-merchandise/services/merchandiseService.ts')).MerchandiseService.search;
+  (await import('../../supabase/functions/api-merchandise/services/merchandiseService.ts')).MerchandiseService.search = async () => ({
+    data: [mockMerchandise],
+    pagination: { page: 2, limit: 10, total: 25, totalPages: 3, hasNext: true, hasPrevious: true },
+  });
+
+  try {
+    const response = await search(request, employee);
+    const data = await assertSuccessResponse<{ data: unknown[]; pagination: unknown }>(response);
+    assertEquals(Array.isArray(data.data), true);
+    const pagination = data.pagination as { page: number; total: number; hasNext: boolean; hasPrevious: boolean };
+    assertEquals(pagination.page, 2);
+    assertEquals(pagination.total, 25);
+    assertEquals(pagination.hasNext, true);
+    assertEquals(pagination.hasPrevious, true);
+  } finally {
+    (await import('../../supabase/functions/api-merchandise/services/merchandiseService.ts')).MerchandiseService.search = originalSearch;
   }
 });
 

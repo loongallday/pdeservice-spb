@@ -139,6 +139,7 @@ VALUES
   ('menu_today_tickets', '/admin/today-tickets', 'งานวันนี้', 1, 'Calendar', 'งาน', 0, true, NULL, 2, true),
   ('menu_users', '/admin/users', 'จัดการผู้ใช้งาน', 2, 'Users', 'ผู้ใช้', 2, true, ARRAY['admin', 'superadmin'], 4, true),
   ('menu_week_tickets', '/admin/week-tickets', 'งานอาทิตย์นี้', 0, 'CalendarDays', 'งาน', 3, true, NULL, 2, true),
+  ('menu_announcements', '/admin/announcements', 'ประกาศ', 0, 'Megaphone', 'อื่นๆ', 3, true, NULL, 6, true),
   ('work_results', NULL, 'ผลงาน', 3, NULL, NULL, 0, false, ARRAY['superadmin'], 0, true)
 ON CONFLICT (id) DO UPDATE SET
   path = EXCLUDED.path,
