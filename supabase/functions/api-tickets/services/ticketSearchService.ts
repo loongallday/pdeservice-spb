@@ -9,6 +9,78 @@ import type { PaginationInfo } from '../_shared/response.ts';
 import type { DateType } from './ticketTypes.ts';
 
 /**
+ * Maximum number of IDs to send in a single .in() query to avoid URL length issues
+ * HTTP/2 has limits on URL length, and UUIDs are 36 characters each
+ * 100 IDs = ~4,000 characters (safe limit)
+ */
+const MAX_IDS_PER_BATCH = 100;
+
+/**
+ * Helper function to split an array into chunks of specified size
+ */
+function chunkArray<T>(array: T[], chunkSize: number): T[][] {
+  const chunks: T[][] = [];
+  for (let i = 0; i < array.length; i += chunkSize) {
+    chunks.push(array.slice(i, i + chunkSize));
+  }
+  return chunks;
+}
+
+/**
+ * Helper function to fetch ticket IDs using batched .in() queries
+ * This avoids URL length issues when filtering by large arrays of IDs
+ *
+ * @param column - The column to filter by (e.g., 'appointment_id', 'id')
+ * @param ids - Array of IDs to filter by
+ * @returns Set of unique ticket IDs that match the filter
+ */
+async function fetchTicketIdsBatched(
+  column: string,
+  ids: string[]
+): Promise<Set<string>> {
+  const supabase = createServiceClient();
+  const allTicketIds = new Set<string>();
+
+  if (ids.length === 0) {
+    return allTicketIds;
+  }
+
+  // If IDs fit in a single query, use it directly
+  if (ids.length <= MAX_IDS_PER_BATCH) {
+    const { data, error } = await supabase
+      .from('tickets')
+      .select('id')
+      .in(column, ids);
+
+    if (error) throw new DatabaseError(error.message);
+
+    if (data) {
+      data.forEach((row: { id: string }) => allTicketIds.add(row.id));
+    }
+
+    return allTicketIds;
+  }
+
+  // Split into batches and execute multiple queries
+  const batches = chunkArray(ids, MAX_IDS_PER_BATCH);
+
+  for (const batch of batches) {
+    const { data, error } = await supabase
+      .from('tickets')
+      .select('id')
+      .in(column, batch);
+
+    if (error) throw new DatabaseError(error.message);
+
+    if (data) {
+      data.forEach((row: { id: string }) => allTicketIds.add(row.id));
+    }
+  }
+
+  return allTicketIds;
+}
+
+/**
  * Get single ticket by ID with full details (site, appointment, work result)
  */
 export async function getById(id: string): Promise<Record<string, unknown>> {
@@ -398,20 +470,10 @@ export async function search(params: {
       matchingTicketIds.push(...ticketsByDetails.map(t => t.id as string));
     }
 
-    // Get tickets matching site IDs
+    // Get tickets matching site IDs (using batched queries to avoid URL length issues)
     if (allMatchingSiteIds.length > 0) {
-      const { data: ticketsBySites, error: sitesError } = await supabase
-        .from('tickets')
-        .select('id')
-        .in('site_id', allMatchingSiteIds);
-
-      if (sitesError) {
-        throw new DatabaseError(`ไม่สามารถค้นหาตั๋วงานตามไซต์ได้: ${sitesError.message}`);
-      }
-
-      if (ticketsBySites) {
-        matchingTicketIds.push(...ticketsBySites.map(t => t.id as string));
-      }
+      const ticketIdsBySites = await fetchTicketIdsBatched('site_id', allMatchingSiteIds);
+      matchingTicketIds.push(...Array.from(ticketIdsBySites));
     }
 
     // Step 6: Filter by unique ticket IDs
@@ -425,9 +487,20 @@ export async function search(params: {
       };
     }
 
-    // Filter tickets by these IDs
-    countQuery = countQuery.in('id', uniqueTicketIds);
-    dataQuery = dataQuery.in('id', uniqueTicketIds);
+    // Filter tickets by these IDs (using batched queries to avoid URL length issues)
+    if (uniqueTicketIds.length <= MAX_IDS_PER_BATCH) {
+      // Small enough to use directly
+      countQuery = countQuery.in('id', uniqueTicketIds);
+      dataQuery = dataQuery.in('id', uniqueTicketIds);
+    } else {
+      // Too many IDs - need to use batching
+      const actualTicketIds = await fetchTicketIdsBatched('id', uniqueTicketIds);
+      const actualTicketIdArray = Array.from(actualTicketIds);
+
+      // Apply filter using the reduced set of IDs
+      countQuery = countQuery.in('id', actualTicketIdArray);
+      dataQuery = dataQuery.in('id', actualTicketIdArray);
+    }
   }
   if (filters.work_type_id) {
     countQuery = countQuery.eq('work_type_id', filters.work_type_id);
@@ -517,7 +590,7 @@ export async function search(params: {
     let appointmentQuery = supabase
       .from('appointments')
       .select('id, ticket_id');
-    
+
     if (filters.start_date === filters.end_date) {
       // Same date - use exact match
       appointmentQuery = appointmentQuery.eq('appointment_date', filters.start_date);
@@ -553,30 +626,31 @@ export async function search(params: {
 
     // Add tickets linked via appointment.ticket_id
     ticketIdsFromAppointments.forEach(id => allTicketIds.add(id));
-    
-    // Get tickets that have appointment_id in our list
+
+    // Get tickets that have appointment_id in our list (using batched queries)
     if (appointmentIds.length > 0) {
-      const { data: ticketsByAppointmentId, error: ticketsError } = await supabase
-        .from('tickets')
-        .select('id')
-        .in('appointment_id', appointmentIds);
-      
-      if (ticketsError) throw new DatabaseError(ticketsError.message);
-      
-      if (ticketsByAppointmentId) {
-        ticketsByAppointmentId.forEach(t => {
-          const ticketId = t.id as string;
-          if (ticketId) allTicketIds.add(ticketId);
-        });
-      }
+      const ticketIdsFromAppointmentIds = await fetchTicketIdsBatched('appointment_id', appointmentIds);
+      ticketIdsFromAppointmentIds.forEach(id => allTicketIds.add(id));
     }
 
     const finalTicketIds = Array.from(allTicketIds);
 
-    // Filter tickets by their IDs (avoids long OR query in URL)
+    // Filter tickets by their IDs (using batched queries to avoid URL length issues)
     if (finalTicketIds.length > 0) {
-      countQuery = countQuery.in('id', finalTicketIds);
-      dataQuery = dataQuery.in('id', finalTicketIds);
+      if (finalTicketIds.length <= MAX_IDS_PER_BATCH) {
+        // Small enough to use directly
+        countQuery = countQuery.in('id', finalTicketIds);
+        dataQuery = dataQuery.in('id', finalTicketIds);
+      } else {
+        // Too many IDs - need to use batching
+        // For count query, we'll fetch all IDs and count in memory
+        const actualTicketIds = await fetchTicketIdsBatched('id', finalTicketIds);
+        const actualTicketIdArray = Array.from(actualTicketIds);
+
+        // Apply filter using the reduced set of IDs
+        countQuery = countQuery.in('id', actualTicketIdArray);
+        dataQuery = dataQuery.in('id', actualTicketIdArray);
+      }
     } else {
       // No matching tickets, return empty result
       return {
@@ -623,33 +697,33 @@ export async function search(params: {
 
     // Collect all matching ticket IDs to avoid long OR queries in URL
     const allTicketIds = new Set<string>();
-    
+
     // Add tickets linked via appointment.ticket_id
     ticketIdsFromAppointments.forEach(id => allTicketIds.add(id));
-    
-    // Get tickets that have appointment_id in our list
+
+    // Get tickets that have appointment_id in our list (using batched queries)
     if (appointmentIds.length > 0) {
-      const { data: ticketsByAppointmentId, error: ticketsError } = await supabase
-        .from('tickets')
-        .select('id')
-        .in('appointment_id', appointmentIds);
-      
-      if (ticketsError) throw new DatabaseError(ticketsError.message);
-      
-      if (ticketsByAppointmentId) {
-        ticketsByAppointmentId.forEach(t => {
-          const ticketId = t.id as string;
-          if (ticketId) allTicketIds.add(ticketId);
-        });
-      }
+      const ticketIdsFromAppointmentIds = await fetchTicketIdsBatched('appointment_id', appointmentIds);
+      ticketIdsFromAppointmentIds.forEach(id => allTicketIds.add(id));
     }
 
     const finalTicketIds = Array.from(allTicketIds);
 
-    // Filter tickets by their IDs (avoids long OR query in URL)
+    // Filter tickets by their IDs (using batched queries to avoid URL length issues)
     if (finalTicketIds.length > 0) {
-      countQuery = countQuery.in('id', finalTicketIds);
-      dataQuery = dataQuery.in('id', finalTicketIds);
+      if (finalTicketIds.length <= MAX_IDS_PER_BATCH) {
+        // Small enough to use directly
+        countQuery = countQuery.in('id', finalTicketIds);
+        dataQuery = dataQuery.in('id', finalTicketIds);
+      } else {
+        // Too many IDs - need to use batching
+        const actualTicketIds = await fetchTicketIdsBatched('id', finalTicketIds);
+        const actualTicketIdArray = Array.from(actualTicketIds);
+
+        // Apply filter using the reduced set of IDs
+        countQuery = countQuery.in('id', actualTicketIdArray);
+        dataQuery = dataQuery.in('id', actualTicketIdArray);
+      }
     } else {
       // No matching tickets, return empty result
       return {
@@ -662,8 +736,8 @@ export async function search(params: {
   // Filter by employee_id (tickets assigned to specific employees via ticket_employees table)
   if (filters.employee_id) {
     // Normalize to array for consistent handling
-    const employeeIds = Array.isArray(filters.employee_id) 
-      ? filters.employee_id 
+    const employeeIds = Array.isArray(filters.employee_id)
+      ? filters.employee_id
       : [filters.employee_id];
 
     // Get ticket IDs that have these employees assigned
@@ -686,16 +760,27 @@ export async function search(params: {
       };
     }
 
-    // Filter tickets by these IDs
-    countQuery = countQuery.in('id', ticketIds);
-    dataQuery = dataQuery.in('id', ticketIds);
+    // Filter tickets by these IDs (using batched queries to avoid URL length issues)
+    if (ticketIds.length <= MAX_IDS_PER_BATCH) {
+      // Small enough to use directly
+      countQuery = countQuery.in('id', ticketIds);
+      dataQuery = dataQuery.in('id', ticketIds);
+    } else {
+      // Too many IDs - need to use batching
+      const actualTicketIds = await fetchTicketIdsBatched('id', ticketIds);
+      const actualTicketIdArray = Array.from(actualTicketIds);
+
+      // Apply filter using the reduced set of IDs
+      countQuery = countQuery.in('id', actualTicketIdArray);
+      dataQuery = dataQuery.in('id', actualTicketIdArray);
+    }
   }
 
   // Filter by department_id (through employees -> roles -> departments)
   if (filters.department_id) {
     // Normalize to array for consistent handling
-    const departmentIds = Array.isArray(filters.department_id) 
-      ? filters.department_id 
+    const departmentIds = Array.isArray(filters.department_id)
+      ? filters.department_id
       : [filters.department_id];
 
     // Step 1: Get role IDs that belong to these departments
@@ -758,9 +843,20 @@ export async function search(params: {
       };
     }
 
-    // Step 4: Filter tickets by these IDs
-    countQuery = countQuery.in('id', ticketIds);
-    dataQuery = dataQuery.in('id', ticketIds);
+    // Step 4: Filter tickets by these IDs (using batched queries to avoid URL length issues)
+    if (ticketIds.length <= MAX_IDS_PER_BATCH) {
+      // Small enough to use directly
+      countQuery = countQuery.in('id', ticketIds);
+      dataQuery = dataQuery.in('id', ticketIds);
+    } else {
+      // Too many IDs - need to use batching
+      const actualTicketIds = await fetchTicketIdsBatched('id', ticketIds);
+      const actualTicketIdArray = Array.from(actualTicketIds);
+
+      // Apply filter using the reduced set of IDs
+      countQuery = countQuery.in('id', actualTicketIdArray);
+      dataQuery = dataQuery.in('id', actualTicketIdArray);
+    }
   }
 
   // Get total count
