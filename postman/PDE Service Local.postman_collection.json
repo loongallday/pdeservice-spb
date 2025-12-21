@@ -4179,6 +4179,404 @@
 			]
 		},
 		{
+			"name": "Package Items",
+			"item": [
+				{
+					"name": "List Package Items",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-package-items?page=1&limit=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-package-items"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "category",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "is_active",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "q",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "List all package items with pagination. Optional filters: category, is_active, q (search). Requires level 0+."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Package Item by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-package-items/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-package-items",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Get a single package item by ID. Requires level 0+."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Package Item",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"code\": \"BAT-12V-7AH\",\n  \"name_th\": \"แบตเตอรี่ 12V 7Ah\",\n  \"name_en\": \"Battery 12V 7Ah\",\n  \"description\": \"Sealed Lead-Acid Battery\",\n  \"category\": \"battery\",\n  \"unit\": \"piece\",\n  \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-package-items",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-package-items"
+							]
+						},
+						"description": "Create a new package item. Required: code, name_th. Optional: name_en, description, category, unit, is_active. Requires level 1+."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Package Item",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name_th\": \"แบตเตอรี่ 12V 7Ah (ปรับปรุง)\",\n  \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-package-items/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-package-items",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Update a package item. Requires level 1+."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Package Item",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-package-items/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-package-items",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Delete a package item. Cannot delete if used in a model package. Requires level 2+."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Package Services",
+			"item": [
+				{
+					"name": "List Package Services",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-package-services?page=1&limit=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-package-services"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "category",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "is_active",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "q",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "List all package services with pagination. Optional filters: category, is_active, q (search). Requires level 0+."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Package Service by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-package-services/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-package-services",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Get a single package service by ID. Requires level 0+."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Package Service",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"code\": \"SVC-WARRANTY-1Y\",\n  \"name_th\": \"รับประกัน 1 ปี\",\n  \"name_en\": \"1 Year Warranty\",\n  \"description\": \"Standard warranty coverage for 1 year\",\n  \"category\": \"warranty\",\n  \"duration_months\": 12,\n  \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-package-services",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-package-services"
+							]
+						},
+						"description": "Create a new package service. Required: code, name_th. Optional: name_en, description, category, duration_months, is_active. Requires level 1+."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Package Service",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name_th\": \"รับประกัน 1 ปี (ปรับปรุง)\",\n  \"duration_months\": 12\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-package-services/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-package-services",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Update a package service. Requires level 1+."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Package Service",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-package-services/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-package-services",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Delete a package service. Cannot delete if used in a model package. Requires level 2+."
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Models",
 			"item": [
 				{
@@ -4221,6 +4619,39 @@
 					"response": []
 				},
 				{
+					"name": "Get Model by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-models/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-models",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Get a single model by ID. Requires level 0+."
+					},
+					"response": []
+				},
+				{
 					"name": "Create Model",
 					"request": {
 						"method": "POST",
@@ -4252,6 +4683,285 @@
 							]
 						},
 						"description": "Create a new model. Required fields: model (unique model code). Optional fields: name, website_url. Requires level 1+."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Model Package",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-models/:modelId/package",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-models",
+								":modelId",
+								"package"
+							],
+							"variable": [
+								{
+									"key": "modelId",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Get the full starter package for a model, including items and services. Requires level 0+."
+					},
+					"response": []
+				},
+				{
+					"name": "Add Item to Package",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"item_id\": \"uuid-of-package-item\",\n  \"quantity\": 2,\n  \"note\": \"Standard battery pack\",\n  \"display_order\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-models/:modelId/package/items",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-models",
+								":modelId",
+								"package",
+								"items"
+							],
+							"variable": [
+								{
+									"key": "modelId",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Add an item to the model's starter package. Required: item_id. Optional: quantity (default 1), note, display_order. Requires level 1+."
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Item from Package",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-models/:modelId/package/items/:itemId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-models",
+								":modelId",
+								"package",
+								"items",
+								":itemId"
+							],
+							"variable": [
+								{
+									"key": "modelId",
+									"value": "uuid-here"
+								},
+								{
+									"key": "itemId",
+									"value": "uuid-of-package-item"
+								}
+							]
+						},
+						"description": "Remove an item from the model's starter package. Requires level 1+."
+					},
+					"response": []
+				},
+				{
+					"name": "Add Service to Package",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"service_id\": \"uuid-of-package-service\",\n  \"terms\": \"Standard warranty terms apply\",\n  \"note\": \"Included with purchase\",\n  \"display_order\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-models/:modelId/package/services",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-models",
+								":modelId",
+								"package",
+								"services"
+							],
+							"variable": [
+								{
+									"key": "modelId",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Add a service to the model's starter package. Required: service_id. Optional: terms, note, display_order. Requires level 1+."
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Service from Package",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-models/:modelId/package/services/:serviceId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-models",
+								":modelId",
+								"package",
+								"services",
+								":serviceId"
+							],
+							"variable": [
+								{
+									"key": "modelId",
+									"value": "uuid-here"
+								},
+								{
+									"key": "serviceId",
+									"value": "uuid-of-package-service"
+								}
+							]
+						},
+						"description": "Remove a service from the model's starter package. Requires level 1+."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Model Specification",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-models/:modelId/specification",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-models",
+								":modelId",
+								"specification"
+							],
+							"variable": [
+								{
+									"key": "modelId",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Get the UPS technical specification for a model. Returns null if no specification exists. Requires level 0+."
+					},
+					"response": []
+				},
+				{
+					"name": "Create/Update Model Specification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"capacity_va\": 3000,\n  \"capacity_watts\": 2700,\n  \"power_factor\": 0.9,\n  \"input_voltage_nominal\": 220,\n  \"input_voltage_range\": \"160-290V\",\n  \"input_frequency\": \"50/60 Hz\",\n  \"input_phase\": \"single\",\n  \"input_port_types\": [\"IEC C14\", \"Hardwired\"],\n  \"output_voltage_nominal\": 220,\n  \"output_voltage_regulation\": \"+/-2%\",\n  \"output_frequency\": \"50/60 Hz +/-1%\",\n  \"output_waveform\": \"Pure Sine Wave\",\n  \"output_port_types\": [\"IEC C13\", \"IEC C19\"],\n  \"battery_type\": \"Sealed Lead-Acid\",\n  \"battery_voltage\": 12,\n  \"battery_quantity\": 6,\n  \"battery_ah\": 9.0,\n  \"typical_recharge_time\": \"4-6 hours to 90%\",\n  \"runtime_half_load_minutes\": 30,\n  \"runtime_full_load_minutes\": 10,\n  \"transfer_time_ms\": 0,\n  \"efficiency_percent\": 95.5,\n  \"dimensions_wxdxh\": \"190x410x320 mm\",\n  \"weight_kg\": 28.5,\n  \"operating_temperature\": \"0-40C\",\n  \"operating_humidity\": \"0-95% RH non-condensing\",\n  \"noise_level_db\": 45.0,\n  \"communication_ports\": [\"USB\", \"RS-232\", \"SNMP\"],\n  \"outlets_iec\": 6,\n  \"outlets_nema\": 0,\n  \"has_lcd_display\": true,\n  \"has_avr\": true,\n  \"has_surge_protection\": true,\n  \"certifications\": [\"CE\", \"UL\", \"TIS\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-models/:modelId/specification",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-models",
+								":modelId",
+								"specification"
+							],
+							"variable": [
+								{
+									"key": "modelId",
+									"value": "uuid-here"
+								}
+							]
+						},
+						"description": "Create or update UPS technical specification for a model. Creates new if not exists, updates if exists (upsert). Requires level 1+."
 					},
 					"response": []
 				}

@@ -511,6 +511,9 @@ export async function search(params: {
   }
 
   // Filter by appointment date (start_date and end_date)
+  // Store for post-query filtering if needed
+  let dateRangeFilterTicketIds: Set<string> | undefined = undefined;
+  
   if (filters.start_date && filters.end_date) {
     // Get appointments in the date range
     // When start_date == end_date, use .eq() for exact match; otherwise use range
@@ -555,28 +558,43 @@ export async function search(params: {
     ticketIdsFromAppointments.forEach(id => allTicketIds.add(id));
     
     // Get tickets that have appointment_id in our list
+    // Batch the queries to avoid URL length limits (max ~100 IDs per batch)
     if (appointmentIds.length > 0) {
-      const { data: ticketsByAppointmentId, error: ticketsError } = await supabase
-        .from('tickets')
-        .select('id')
-        .in('appointment_id', appointmentIds);
-      
-      if (ticketsError) throw new DatabaseError(ticketsError.message);
-      
-      if (ticketsByAppointmentId) {
-        ticketsByAppointmentId.forEach(t => {
-          const ticketId = t.id as string;
-          if (ticketId) allTicketIds.add(ticketId);
-        });
+      const BATCH_SIZE = 100;
+      for (let i = 0; i < appointmentIds.length; i += BATCH_SIZE) {
+        const batchIds = appointmentIds.slice(i, i + BATCH_SIZE);
+        const { data: ticketsByAppointmentId, error: ticketsError } = await supabase
+          .from('tickets')
+          .select('id')
+          .in('appointment_id', batchIds);
+        
+        if (ticketsError) throw new DatabaseError(ticketsError.message);
+        
+        if (ticketsByAppointmentId) {
+          ticketsByAppointmentId.forEach(t => {
+            const ticketId = t.id as string;
+            if (ticketId) allTicketIds.add(ticketId);
+          });
+        }
       }
     }
 
     const finalTicketIds = Array.from(allTicketIds);
 
-    // Filter tickets by their IDs (avoids long OR query in URL)
+    // Filter tickets by their IDs
+    // If the list is small enough, use .in() directly
+    // Otherwise, we'll filter after fetching (with post-query filtering)
     if (finalTicketIds.length > 0) {
-      countQuery = countQuery.in('id', finalTicketIds);
-      dataQuery = dataQuery.in('id', finalTicketIds);
+      if (finalTicketIds.length <= 300) {
+        // Small enough to use .in() directly
+        countQuery = countQuery.in('id', finalTicketIds);
+        dataQuery = dataQuery.in('id', finalTicketIds);
+      } else {
+        // Too many IDs - use post-query filtering
+        countQuery = countQuery.not('appointment_id', 'is', null);
+        dataQuery = dataQuery.not('appointment_id', 'is', null);
+        dateRangeFilterTicketIds = allTicketIds;
+      }
     } else {
       // No matching tickets, return empty result
       return {
@@ -594,6 +612,10 @@ export async function search(params: {
   }
 
   // Filter by appointment approval status (appointment_is_approved)
+  // Store the approval status for post-query filtering if needed
+  let filterByApprovalStatus: boolean | undefined = undefined;
+  let approvalFilterTicketIds: Set<string> | undefined = undefined;
+  
   if (filters.appointment_is_approved !== undefined) {
     // Get appointments with the specified approval status
     const appointmentQuery = supabase
@@ -628,28 +650,46 @@ export async function search(params: {
     ticketIdsFromAppointments.forEach(id => allTicketIds.add(id));
     
     // Get tickets that have appointment_id in our list
+    // Batch the queries to avoid URL length limits (max ~100 IDs per batch)
     if (appointmentIds.length > 0) {
-      const { data: ticketsByAppointmentId, error: ticketsError } = await supabase
-        .from('tickets')
-        .select('id')
-        .in('appointment_id', appointmentIds);
-      
-      if (ticketsError) throw new DatabaseError(ticketsError.message);
-      
-      if (ticketsByAppointmentId) {
-        ticketsByAppointmentId.forEach(t => {
-          const ticketId = t.id as string;
-          if (ticketId) allTicketIds.add(ticketId);
-        });
+      const BATCH_SIZE = 100;
+      for (let i = 0; i < appointmentIds.length; i += BATCH_SIZE) {
+        const batchIds = appointmentIds.slice(i, i + BATCH_SIZE);
+        const { data: ticketsByAppointmentId, error: ticketsError } = await supabase
+          .from('tickets')
+          .select('id')
+          .in('appointment_id', batchIds);
+        
+        if (ticketsError) throw new DatabaseError(ticketsError.message);
+        
+        if (ticketsByAppointmentId) {
+          ticketsByAppointmentId.forEach(t => {
+            const ticketId = t.id as string;
+            if (ticketId) allTicketIds.add(ticketId);
+          });
+        }
       }
     }
 
     const finalTicketIds = Array.from(allTicketIds);
 
-    // Filter tickets by their IDs (avoids long OR query in URL)
+    // Filter tickets by their IDs
+    // If the list is small enough, use .in() directly
+    // Otherwise, we'll filter after fetching (with post-query filtering)
     if (finalTicketIds.length > 0) {
-      countQuery = countQuery.in('id', finalTicketIds);
-      dataQuery = dataQuery.in('id', finalTicketIds);
+      if (finalTicketIds.length <= 300) {
+        // Small enough to use .in() directly
+        countQuery = countQuery.in('id', finalTicketIds);
+        dataQuery = dataQuery.in('id', finalTicketIds);
+      } else {
+        // Too many IDs - use post-query filtering
+        // Just filter out tickets without appointments for now
+        // and store the valid ticket IDs for filtering after fetch
+        countQuery = countQuery.not('appointment_id', 'is', null);
+        dataQuery = dataQuery.not('appointment_id', 'is', null);
+        filterByApprovalStatus = filters.appointment_is_approved;
+        approvalFilterTicketIds = allTicketIds;
+      }
     } else {
       // No matching tickets, return empty result
       return {
@@ -763,11 +803,6 @@ export async function search(params: {
     dataQuery = dataQuery.in('id', ticketIds);
   }
 
-  // Get total count
-  const { count, error: countError } = await countQuery;
-  if (countError) throw new DatabaseError(countError.message);
-  const total = count || 0;
-
   // Determine sort field and order
   const sortField = sort || 'created_at';
   const sortOrder = order === 'asc' ? true : false; // Default to descending (false)
@@ -779,10 +814,15 @@ export async function search(params: {
   }
 
   let transformedData: Record<string, unknown>[];
+  let total: number;
 
-  if (sortField === 'appointment_date') {
-    // For appointment_date, we need to fetch ALL data, sort, then paginate
-    // Fetch all matching records (no pagination yet)
+  // Check if we need to filter in memory (due to too many IDs for URL)
+  const needsApprovalFiltering = filterByApprovalStatus !== undefined && approvalFilterTicketIds !== undefined;
+  const needsDateRangeFiltering = dateRangeFilterTicketIds !== undefined;
+  const needsPostQueryFiltering = needsApprovalFiltering || needsDateRangeFiltering;
+
+  if (needsPostQueryFiltering || sortField === 'appointment_date') {
+    // Fetch ALL matching records (no pagination yet)
     const { data: allData, error: allError } = await dataQuery.order('created_at', { ascending: false });
     
     if (allError) {
@@ -790,26 +830,65 @@ export async function search(params: {
     }
 
     // Transform all data
-    const allTransformedData = (allData || []).map(transformTicket);
+    let allTransformedData = (allData || []).map(transformTicket);
 
-    // Sort entire dataset by appointment_date
-    const sortedData = [...allTransformedData].sort((a, b) => {
-      const dateA = a.appointment_date as string | null;
-      const dateB = b.appointment_date as string | null;
-      
-      // Handle null values - put them at the end
-      if (!dateA && !dateB) return 0;
-      if (!dateA) return 1;
-      if (!dateB) return -1;
-      
-      const comparison = dateA.localeCompare(dateB);
-      return sortOrder ? comparison : -comparison;
-    });
+    // Apply post-query filtering for date range if needed
+    if (needsDateRangeFiltering && dateRangeFilterTicketIds) {
+      allTransformedData = allTransformedData.filter(ticket => {
+        const ticketId = ticket.id as string;
+        return dateRangeFilterTicketIds!.has(ticketId);
+      });
+    }
 
-    // Now paginate the sorted data
+    // Apply post-query filtering for approval status if needed
+    if (needsApprovalFiltering && approvalFilterTicketIds) {
+      allTransformedData = allTransformedData.filter(ticket => {
+        const ticketId = ticket.id as string;
+        return approvalFilterTicketIds!.has(ticketId);
+      });
+    }
+
+    // Update total count based on filtered results
+    total = allTransformedData.length;
+
+    // Sort if needed
+    if (sortField === 'appointment_date') {
+      allTransformedData = [...allTransformedData].sort((a, b) => {
+        const dateA = a.appointment_date as string | null;
+        const dateB = b.appointment_date as string | null;
+        
+        // Handle null values - put them at the end
+        if (!dateA && !dateB) return 0;
+        if (!dateA) return 1;
+        if (!dateB) return -1;
+        
+        const comparison = dateA.localeCompare(dateB);
+        return sortOrder ? comparison : -comparison;
+      });
+    } else if (sortField === 'created_at' || sortField === 'updated_at') {
+      // Sort by the specified field
+      allTransformedData = [...allTransformedData].sort((a, b) => {
+        const dateA = a[sortField] as string | null;
+        const dateB = b[sortField] as string | null;
+        
+        if (!dateA && !dateB) return 0;
+        if (!dateA) return 1;
+        if (!dateB) return -1;
+        
+        const comparison = dateA.localeCompare(dateB);
+        return sortOrder ? comparison : -comparison;
+      });
+    }
+
+    // Now paginate the filtered/sorted data
     const offset = (page - 1) * limit;
-    transformedData = sortedData.slice(offset, offset + limit);
+    transformedData = allTransformedData.slice(offset, offset + limit);
   } else {
+    // Get total count from database
+    const { count, error: countError } = await countQuery;
+    if (countError) throw new DatabaseError(countError.message);
+    total = count || 0;
+
     // For created_at and updated_at, sort at database level before pagination
     const offset = (page - 1) * limit;
     const { data, error } = await dataQuery
@@ -888,6 +967,9 @@ export async function searchByDuration(params: {
       )
     `);
 
+  // Store appointment IDs for post-query filtering if too many
+  let appointedDateFilterIds: Set<string> | undefined = undefined;
+
   // Apply date filter based on date_type
   if (dateType === 'create') {
     // Filter by tickets.created_at
@@ -910,15 +992,13 @@ export async function searchByDuration(params: {
     // First, get appointment IDs in the date range
     const { data: appointments, error: appError } = await supabase
       .from('appointments')
-      .select('id')
+      .select('id, ticket_id')
       .gte('appointment_date', startDate)
       .lte('appointment_date', endDate);
 
     if (appError) throw new DatabaseError(appError.message);
 
-    const appointmentIds = appointments?.map(a => a.id) || [];
-    
-    if (appointmentIds.length === 0) {
+    if (!appointments || appointments.length === 0) {
       // No appointments in range, return empty result
       return {
         data: [],
@@ -926,14 +1006,57 @@ export async function searchByDuration(params: {
       };
     }
 
-    countQuery = countQuery.in('appointment_id', appointmentIds);
-    dataQuery = dataQuery.in('appointment_id', appointmentIds);
-  }
+    // Get ticket IDs from both relationships
+    const appointmentIds = appointments.map(a => a.id as string);
+    const ticketIdsFromAppointments = appointments
+      .map(a => a.ticket_id as string)
+      .filter((id): id is string => id !== null && id !== undefined);
 
-  // Get total count
-  const { count, error: countError } = await countQuery;
-  if (countError) throw new DatabaseError(countError.message);
-  const total = count || 0;
+    // Collect all matching ticket IDs
+    const allTicketIds = new Set<string>();
+    ticketIdsFromAppointments.forEach(id => allTicketIds.add(id));
+
+    // Get tickets that have appointment_id in our list (batched to avoid URL length issues)
+    if (appointmentIds.length > 0) {
+      const BATCH_SIZE = 100;
+      for (let i = 0; i < appointmentIds.length; i += BATCH_SIZE) {
+        const batchIds = appointmentIds.slice(i, i + BATCH_SIZE);
+        const { data: ticketsByAppointmentId, error: ticketsError } = await supabase
+          .from('tickets')
+          .select('id')
+          .in('appointment_id', batchIds);
+        
+        if (ticketsError) throw new DatabaseError(ticketsError.message);
+        
+        if (ticketsByAppointmentId) {
+          ticketsByAppointmentId.forEach(t => {
+            const ticketId = t.id as string;
+            if (ticketId) allTicketIds.add(ticketId);
+          });
+        }
+      }
+    }
+
+    const finalTicketIds = Array.from(allTicketIds);
+
+    if (finalTicketIds.length === 0) {
+      return {
+        data: [],
+        pagination: calculatePagination(page, limit, 0),
+      };
+    }
+
+    // Use direct filter if small enough, otherwise use post-query filtering
+    if (finalTicketIds.length <= 300) {
+      countQuery = countQuery.in('id', finalTicketIds);
+      dataQuery = dataQuery.in('id', finalTicketIds);
+    } else {
+      // Too many IDs - use post-query filtering
+      countQuery = countQuery.not('appointment_id', 'is', null);
+      dataQuery = dataQuery.not('appointment_id', 'is', null);
+      appointedDateFilterIds = allTicketIds;
+    }
+  }
 
   // Helper function to transform ticket data (same as in search function)
   const transformTicket = (ticket: Record<string, unknown>) => {
@@ -1029,10 +1152,13 @@ export async function searchByDuration(params: {
   }
 
   let transformedData: Record<string, unknown>[];
+  let total: number;
 
-  if (sortField === 'appointment_date') {
-    // For appointment_date, we need to fetch ALL data, sort, then paginate
-    // Fetch all matching records (no pagination yet)
+  // Check if we need post-query filtering (for appointed date type with many IDs)
+  const needsPostQueryFiltering = appointedDateFilterIds !== undefined;
+
+  if (needsPostQueryFiltering || sortField === 'appointment_date') {
+    // Fetch ALL matching records (no pagination yet)
     const { data: allData, error: allError } = await dataQuery.order('created_at', { ascending: false });
     
     if (allError) {
@@ -1040,26 +1166,57 @@ export async function searchByDuration(params: {
     }
 
     // Transform all data
-    const allTransformedData = (allData || []).map(transformTicket);
+    let allTransformedData = (allData || []).map(transformTicket);
 
-    // Sort entire dataset by appointment_date
-    const sortedData = [...allTransformedData].sort((a, b) => {
-      const dateA = a.appointment_date as string | null;
-      const dateB = b.appointment_date as string | null;
-      
-      // Handle null values - put them at the end
-      if (!dateA && !dateB) return 0;
-      if (!dateA) return 1;
-      if (!dateB) return -1;
-      
-      const comparison = dateA.localeCompare(dateB);
-      return sortOrder ? comparison : -comparison;
-    });
+    // Apply post-query filtering for appointed date if needed
+    if (needsPostQueryFiltering && appointedDateFilterIds) {
+      allTransformedData = allTransformedData.filter(ticket => {
+        const ticketId = ticket.id as string;
+        return appointedDateFilterIds!.has(ticketId);
+      });
+    }
 
-    // Now paginate the sorted data
+    // Update total count based on filtered results
+    total = allTransformedData.length;
+
+    // Sort if needed
+    if (sortField === 'appointment_date') {
+      allTransformedData = [...allTransformedData].sort((a, b) => {
+        const dateA = a.appointment_date as string | null;
+        const dateB = b.appointment_date as string | null;
+        
+        // Handle null values - put them at the end
+        if (!dateA && !dateB) return 0;
+        if (!dateA) return 1;
+        if (!dateB) return -1;
+        
+        const comparison = dateA.localeCompare(dateB);
+        return sortOrder ? comparison : -comparison;
+      });
+    } else if (sortField === 'created_at' || sortField === 'updated_at') {
+      // Sort by the specified field
+      allTransformedData = [...allTransformedData].sort((a, b) => {
+        const dateA = a[sortField] as string | null;
+        const dateB = b[sortField] as string | null;
+        
+        if (!dateA && !dateB) return 0;
+        if (!dateA) return 1;
+        if (!dateB) return -1;
+        
+        const comparison = dateA.localeCompare(dateB);
+        return sortOrder ? comparison : -comparison;
+      });
+    }
+
+    // Now paginate the filtered/sorted data
     const offset = (page - 1) * limit;
-    transformedData = sortedData.slice(offset, offset + limit);
+    transformedData = allTransformedData.slice(offset, offset + limit);
   } else {
+    // Get total count from database
+    const { count, error: countError } = await countQuery;
+    if (countError) throw new DatabaseError(countError.message);
+    total = count || 0;
+
     // For created_at and updated_at, sort at database level before pagination
     const offset = (page - 1) * limit;
     const { data, error } = await dataQuery
