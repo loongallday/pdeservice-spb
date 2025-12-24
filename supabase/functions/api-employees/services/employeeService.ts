@@ -816,6 +816,7 @@ export class EmployeeService {
         department_name: roleData?.department?.name_th || roleData?.department?.name_en || null,
         created_at: employee.created_at,
         updated_at: employee.updated_at,
+        auth_user_id: employee.auth_user_id || null,
       };
     });
 
