@@ -68,7 +68,10 @@ export interface MasterTicketCreateInput {
   };
 
   // Employee IDs to assign to ticket (technicians)
-  employee_ids?: string[];
+  // Supports both formats for backward compatibility:
+  // - Old format: string[] (e.g., ["uuid1", "uuid2"])
+  // - New format: Array<{id: string, is_key?: boolean}> (e.g., [{id: "uuid1", is_key: true}, {id: "uuid2"}])
+  employee_ids?: string[] | Array<{ id: string; is_key?: boolean }>;
 
   // Merchandise IDs to link to ticket
   merchandise_ids?: string[];
@@ -126,7 +129,10 @@ export interface MasterTicketUpdateInput {
   } | null;
 
   // Employee IDs to assign (replaces all existing)
-  employee_ids?: string[];
+  // Supports both formats for backward compatibility:
+  // - Old format: string[] (e.g., ["uuid1", "uuid2"])
+  // - New format: Array<{id: string, is_key?: boolean}> (e.g., [{id: "uuid1", is_key: true}, {id: "uuid2"}])
+  employee_ids?: string[] | Array<{ id: string; is_key?: boolean }>;
 
   // Merchandise IDs to link (replaces all existing)
   merchandise_ids?: string[];

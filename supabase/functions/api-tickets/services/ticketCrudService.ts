@@ -9,6 +9,29 @@ import { linkMerchandiseToTicket, logTicketAudit } from './ticketHelperService.t
 import { getById } from './ticketSearchService.ts';
 
 /**
+ * Normalize employee_ids to array of objects with id and is_key
+ * Supports both old format (string[]) and new format (Array<{id: string, is_key?: boolean}>)
+ */
+function normalizeEmployeeIds(
+  employeeIds: string[] | Array<{ id: string; is_key?: boolean }> | undefined
+): Array<{ id: string; is_key: boolean }> {
+  if (!employeeIds || employeeIds.length === 0) {
+    return [];
+  }
+
+  // Check if it's the old format (string array)
+  if (typeof employeeIds[0] === 'string') {
+    return (employeeIds as string[]).map(id => ({ id, is_key: false }));
+  }
+
+  // New format (array of objects)
+  return (employeeIds as Array<{ id: string; is_key?: boolean }>).map(emp => ({
+    id: emp.id,
+    is_key: emp.is_key ?? false,
+  }));
+}
+
+/**
  * Create a comprehensive ticket with all related data
  */
 export async function create(input: MasterTicketCreateInput, employeeId: string): Promise<Record<string, unknown>> {
@@ -168,7 +191,13 @@ export async function create(input: MasterTicketCreateInput, employeeId: string)
 
   // Step 6: Link Employees (technicians)
   if (input.employee_ids && input.employee_ids.length > 0) {
-    const uniqueEmployeeIds = [...new Set(input.employee_ids)];
+    // Normalize employee_ids to support both old and new formats
+    const normalizedEmployees = normalizeEmployeeIds(input.employee_ids);
+    
+    // Remove duplicates by employee ID (keep first occurrence)
+    const uniqueEmployees = normalizedEmployees.filter((emp, index, self) =>
+      index === self.findIndex(e => e.id === emp.id)
+    );
 
     // Determine the date for assignment (use appointment_date if available, otherwise current date)
     const appointmentDate = appointmentData.appointment_date as string | null | undefined;
@@ -177,10 +206,11 @@ export async function create(input: MasterTicketCreateInput, employeeId: string)
     const { error: employeeError } = await supabase
       .from('ticket_employees')
       .insert(
-        uniqueEmployeeIds.map(employeeId => ({
+        uniqueEmployees.map(emp => ({
           ticket_id: ticket.id,
-          employee_id: employeeId,
+          employee_id: emp.id,
           date: assignmentDate,
+          is_key_employee: emp.is_key,
         }))
       );
 
@@ -491,17 +521,25 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
 
     // Insert new assignments
     if (input.employee_ids.length > 0) {
-      const uniqueEmployeeIds = [...new Set(input.employee_ids)];
+      // Normalize employee_ids to support both old and new formats
+      const normalizedEmployees = normalizeEmployeeIds(input.employee_ids);
+      
+      // Remove duplicates by employee ID (keep first occurrence)
+      const uniqueEmployees = normalizedEmployees.filter((emp, index, self) =>
+        index === self.findIndex(e => e.id === emp.id)
+      );
+      
       // Determine the date for assignment (use appointment_date if available, otherwise current date)
       const assignmentDate = appointmentDate || new Date().toISOString().split('T')[0];
       
       const { error: employeeError } = await supabase
         .from('ticket_employees')
         .insert(
-          uniqueEmployeeIds.map(employeeId => ({
+          uniqueEmployees.map(emp => ({
             ticket_id: ticketId,
-            employee_id: employeeId,
+            employee_id: emp.id,
             date: assignmentDate,
+            is_key_employee: emp.is_key,
           }))
         );
 

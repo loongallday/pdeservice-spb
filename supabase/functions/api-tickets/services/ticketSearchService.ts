@@ -42,6 +42,9 @@ export async function getById(id: string): Promise<Record<string, unknown>> {
       appointment:appointments!tickets_appointment_id_fkey(*),
       appointment_by_ticket:appointments!appointments_ticket_id_fkey(*),
       employees:ticket_employees(
+        id,
+        date,
+        is_key_employee,
         employee:employees(*)
       ),
       merchandise:ticket_merchandise(
@@ -97,7 +100,16 @@ export async function getById(id: string): Promise<Record<string, unknown>> {
     ...data,
     time: data.created_at, // Map created_at to time for frontend compatibility
     employees: Array.isArray(data.employees)
-      ? data.employees.map((te: Record<string, unknown>) => (te as { employee: Record<string, unknown> }).employee).filter(Boolean)
+      ? data.employees.map((te: Record<string, unknown>) => {
+          const ticketEmployee = te as { employee: Record<string, unknown>; is_key_employee?: boolean; date?: string };
+          const employee = ticketEmployee.employee;
+          if (!employee) return null;
+          return {
+            ...employee,
+            is_key_employee: ticketEmployee.is_key_employee ?? false,
+            assignment_date: ticketEmployee.date || null,
+          };
+        }).filter(Boolean)
       : [],
     creator_name: creator?.name || null,
     creator_code: creator?.code || null,
@@ -171,7 +183,16 @@ export async function search(params: {
     // Use appointment from appointment_id if available, otherwise use from ticket_id
     const appointment = appointmentById || appointmentByTicketId;
     const employees = Array.isArray(ticket.employees) 
-      ? ticket.employees.map((te: Record<string, unknown>) => (te as { employee: Record<string, unknown> }).employee).filter(Boolean) as Array<{ name?: string }>
+      ? ticket.employees.map((te: Record<string, unknown>) => {
+          const ticketEmployee = te as { employee: Record<string, unknown>; is_key_employee?: boolean; date?: string };
+          const employee = ticketEmployee.employee;
+          if (!employee) return null;
+          return {
+            ...employee,
+            is_key_employee: ticketEmployee.is_key_employee ?? false,
+            assignment_date: ticketEmployee.date || null,
+          };
+        }).filter(Boolean) as Array<{ name?: string; is_key_employee?: boolean; assignment_date?: string | null }>
       : [];
 
     return {
@@ -252,6 +273,9 @@ export async function search(params: {
       appointment:appointments!tickets_appointment_id_fkey(*),
       appointment_by_ticket:appointments!appointments_ticket_id_fkey(*),
       employees:ticket_employees(
+        id,
+        date,
+        is_key_employee,
         employee:employees(*)
       ),
       merchandise:ticket_merchandise(
@@ -928,6 +952,9 @@ export async function searchByDuration(params: {
       appointment:appointments!tickets_appointment_id_fkey(*),
       appointment_by_ticket:appointments!appointments_ticket_id_fkey(*),
       employees:ticket_employees(
+        id,
+        date,
+        is_key_employee,
         employee:employees(*)
       ),
       merchandise:ticket_merchandise(
@@ -1065,7 +1092,16 @@ export async function searchByDuration(params: {
     // Use appointment from appointment_id if available, otherwise use from ticket_id
     const appointment = appointmentById || appointmentByTicketId;
     const employees = Array.isArray(ticket.employees) 
-      ? ticket.employees.map((te: Record<string, unknown>) => (te as { employee: Record<string, unknown> }).employee).filter(Boolean) as Array<{ name?: string }>
+      ? ticket.employees.map((te: Record<string, unknown>) => {
+          const ticketEmployee = te as { employee: Record<string, unknown>; is_key_employee?: boolean; date?: string };
+          const employee = ticketEmployee.employee;
+          if (!employee) return null;
+          return {
+            ...employee,
+            is_key_employee: ticketEmployee.is_key_employee ?? false,
+            assignment_date: ticketEmployee.date || null,
+          };
+        }).filter(Boolean) as Array<{ name?: string; is_key_employee?: boolean; assignment_date?: string | null }>
       : [];
 
     return {
