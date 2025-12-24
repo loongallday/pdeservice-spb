@@ -125,29 +125,29 @@ export function isSuperAdmin(employee: Employee): boolean {
 }
 
 /**
- * Check if employee's role can approve appointments
- * Checks if the employee's role_id exists in appointment_approval_roles table
+ * Check if employee can approve appointments
+ * Checks if the employee's id exists in appointment_approval_users table
  */
 export async function canApproveAppointments(employee: Employee): Promise<boolean> {
-  const roleId = employee.role_id;
+  const employeeId = employee.id;
   
-  if (!roleId) {
+  if (!employeeId) {
     return false;
   }
 
   const supabase = createServiceClient();
   const { data, error } = await supabase
-    .from('appointment_approval_roles')
+    .from('appointment_approval_users')
     .select('id')
-    .eq('role_id', roleId)
+    .eq('employee_id', employeeId)
     .single();
 
-  // If found (no error and data exists), role can approve
+  // If found (no error and data exists), employee can approve
   return !error && data !== null;
 }
 
 /**
- * Require that employee's role can approve appointments
+ * Require that employee can approve appointments
  * Throws AuthorizationError if employee cannot approve
  */
 export async function requireCanApproveAppointments(employee: Employee): Promise<void> {

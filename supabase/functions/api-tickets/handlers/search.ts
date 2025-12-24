@@ -58,7 +58,6 @@ export async function search(req: Request, employee: Employee) {
     additional: url.searchParams.get('additional') || undefined,
     site_id: url.searchParams.get('site_id') || undefined,
     contact_id: url.searchParams.get('contact_id') || undefined,
-    work_result_id: url.searchParams.get('work_result_id') || undefined,
     appointment_id: url.searchParams.get('appointment_id') || undefined,
     created_at: url.searchParams.get('created_at') || undefined,
     updated_at: url.searchParams.get('updated_at') || undefined,

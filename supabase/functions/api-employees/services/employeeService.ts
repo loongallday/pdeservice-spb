@@ -862,15 +862,14 @@ export class EmployeeService {
   }
 
   /**
-   * Get technicians with availability status for a given date/time
-   * Returns all active employees from 'technical' department with availability boolean
-   * If date is not provided, returns all technicians without checking availability
+   * Get technicians with workload status for a given date
+   * Returns all active employees from 'technical' department with workload level
+   * Workload is based on appointment count: 0=no_work, 1-2=light, 3-4=medium, 5+=heavy
+   * If no date is provided, returns all technicians with "no_work" status
    */
-  static async getTechniciansWithAvailability(
-    date?: string,
-    timeStart?: string,
-    timeEnd?: string
-  ): Promise<Array<{ id: string; name: string; availability: boolean }>> {
+  static async getTechniciansWithWorkload(
+    date?: string
+  ): Promise<Array<{ id: string; name: string; workload: 'no_work' | 'light' | 'medium' | 'heavy' }>> {
     const supabase = createServiceClient();
 
     // Step 1: Get department ID for 'technical' department
@@ -916,41 +915,36 @@ export class EmployeeService {
       return [];
     }
 
-    const technicianIds = technicalEmployees.map(t => t.id as string);
-
-    // If no date provided, return all technicians as available (no conflict checking)
+    // If no date provided, return all technicians with "no_work" status
     if (!date) {
       return technicalEmployees.map(tech => ({
         id: tech.id as string,
         name: tech.name as string,
-        availability: true,
+        workload: 'no_work' as const,
       }));
     }
 
-    // Step 3: Query for conflicting appointments
-    // Build the query with proper joins
-    const conflictQuery = supabase
+    const technicianIds = technicalEmployees.map(t => t.id as string);
+
+    // Step 3: Query for appointments on the given date
+    const { data: ticketEmployees, error: queryError } = await supabase
       .from('ticket_employees')
       .select(`
         employee_id,
         ticket:tickets!ticket_employees_ticket_id_fkey(
           appointment:appointments!tickets_appointment_id_fkey(
-            appointment_date,
-            appointment_time_start,
-            appointment_time_end
+            appointment_date
           )
         )
       `)
       .in('employee_id', technicianIds);
 
-    const { data: ticketEmployees, error: conflictError } = await conflictQuery;
-
-    if (conflictError) {
-      throw new DatabaseError(`ไม่สามารถตรวจสอบความพร้อมได้: ${conflictError.message}`);
+    if (queryError) {
+      throw new DatabaseError(`ไม่สามารถดึงข้อมูลนัดหมายได้: ${queryError.message}`);
     }
 
-    // Step 4: Build set of employee IDs with conflicts
-    const conflictedEmployeeIds = new Set<string>();
+    // Step 4: Count appointments per technician on the given date
+    const appointmentCounts = new Map<string, number>();
 
     if (ticketEmployees) {
       ticketEmployees.forEach(te => {
@@ -965,59 +959,35 @@ export class EmployeeService {
         const empId = te.employee_id as string;
         if (!empId) return;
 
-        // Get appointment time range (actual or predefined based on type)
-        let apptTimeStart = appointment.appointment_time_start as string | null;
-        let apptTimeEnd = appointment.appointment_time_end as string | null;
-        const appointmentType = appointment.appointment_type as string | null;
-
-        // Handle predefined time slots for appointments without explicit times
-        if (appointmentType === 'call_to_schedule') {
-          // call_to_schedule has no time - never overlaps (to be scheduled later)
-          return;
-        }
-        
-        if (!apptTimeStart || !apptTimeEnd) {
-          if (appointmentType === 'half_morning') {
-            apptTimeStart = '08:00:00';
-            apptTimeEnd = '12:00:00';
-          } else if (appointmentType === 'half_afternoon') {
-            apptTimeStart = '13:00:00';
-            apptTimeEnd = '17:30:00';
-          } else if (appointmentType === 'full_day') {
-            apptTimeStart = '08:00:00';
-            apptTimeEnd = '17:30:00';
-          }
-        }
-
-        // If still no times after handling special types, skip
-        if (!apptTimeStart || !apptTimeEnd) {
-          return;
-        }
-
-        // Skip zero-duration appointments (start == end)
-        if (apptTimeStart === apptTimeEnd) {
-          return;
-        }
-
-        // If time is provided, check for time overlap
-        if (timeStart && timeEnd) {
-          // Check if time ranges overlap: start1 < end2 AND start2 < end1
-          if (apptTimeStart < timeEnd && apptTimeEnd > timeStart) {
-            conflictedEmployeeIds.add(empId);
-          }
-        } else {
-          // If only date provided, any appointment with valid duration = conflict
-          conflictedEmployeeIds.add(empId);
-        }
+        // Count ALL appointments including call_to_schedule
+        const currentCount = appointmentCounts.get(empId) || 0;
+        appointmentCounts.set(empId, currentCount + 1);
       });
     }
 
-    // Step 5: Map technicians with availability status
-    return technicalEmployees.map(tech => ({
-      id: tech.id as string,
-      name: tech.name as string,
-      availability: !conflictedEmployeeIds.has(tech.id as string),
-    }));
+    // Step 5: Map technicians with workload status
+    return technicalEmployees.map(tech => {
+      const techId = tech.id as string;
+      const appointmentCount = appointmentCounts.get(techId) || 0;
+
+      // Determine workload level based on appointment count
+      let workload: 'no_work' | 'light' | 'medium' | 'heavy';
+      if (appointmentCount === 0) {
+        workload = 'no_work';
+      } else if (appointmentCount <= 2) {
+        workload = 'light';
+      } else if (appointmentCount <= 4) {
+        workload = 'medium';
+      } else {
+        workload = 'heavy';
+      }
+
+      return {
+        id: techId,
+        name: tech.name as string,
+        workload,
+      };
+    });
   }
 
 }

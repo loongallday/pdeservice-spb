@@ -589,7 +589,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Technician Availability",
+					"name": "Get Technician Workload",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -600,7 +600,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/functions/v1/api-employees/technicians/availability?date=2025-01-15&appointment_type=half_morning",
+							"raw": "{{baseUrl}}/functions/v1/api-employees/technicians/availability?date=2025-01-15",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -616,27 +616,10 @@
 									"key": "date",
 									"value": "2025-01-15",
 									"description": "Appointment date (YYYY-MM-DD format, required)"
-								},
-								{
-									"key": "appointment_type",
-									"value": "half_morning",
-									"description": "Appointment type: half_morning (08:00-12:00), half_afternoon (13:00-17:30), full_day (08:00-17:30), time_range (requires time_start & time_end), call_to_schedule (all available)"
-								},
-								{
-									"key": "time_start",
-									"value": "09:00:00",
-									"description": "Start time (HH:MM:SS format, required if appointment_type=time_range)",
-									"disabled": true
-								},
-								{
-									"key": "time_end",
-									"value": "17:00:00",
-									"description": "End time (HH:MM:SS format, required if appointment_type=time_range)",
-									"disabled": true
 								}
 							]
 						},
-						"description": "Get technicians from 'technical' department with availability status for a given date/time. Use appointment_type for predefined time ranges (half_morning, half_afternoon, full_day) or time_range with specific times. call_to_schedule returns all as available. Requires level 1+."
+						"description": "Get technicians from 'technical' department with workload status for a given date. Returns workload levels: no_work (0 appointments), light (1-2), medium (3-4), heavy (5+). All appointment types count toward workload. Requires level 1+."
 					},
 					"response": []
 				},

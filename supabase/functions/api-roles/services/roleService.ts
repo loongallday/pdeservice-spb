@@ -197,22 +197,6 @@ export class RoleService {
       departmentMap.set(dept.id as string, dept);
     });
 
-    // Get all roles that can approve appointments
-    const { data: approvalRoles, error: approvalError } = await supabase
-      .from('appointment_approval_roles')
-      .select('role_id');
-
-    if (approvalError) throw new DatabaseError(approvalError.message);
-
-    // Create a set of role IDs that can approve for quick lookup
-    const canApproveRoleIds = new Set<string>();
-    approvalRoles?.forEach(ar => {
-      const roleId = ar.role_id as string;
-      if (roleId) {
-        canApproveRoleIds.add(roleId);
-      }
-    });
-
     // Group employees by role and count
     const roleCounts = new Map<string, {
       role_id: string;
@@ -227,7 +211,6 @@ export class RoleService {
       total_employees: number;
       active_employees: number;
       inactive_employees: number;
-      can_approve: boolean;
     }>();
 
     // Initialize all active roles with zero counts
@@ -248,7 +231,6 @@ export class RoleService {
         total_employees: 0,
         active_employees: 0,
         inactive_employees: 0,
-        can_approve: canApproveRoleIds.has(role.id),
       });
     });
 

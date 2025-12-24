@@ -5,7 +5,7 @@
 import { createServiceClient } from '../_shared/supabase.ts';
 import { NotFoundError, DatabaseError, ValidationError } from '../_shared/error.ts';
 import type { MasterTicketCreateInput, MasterTicketUpdateInput } from './ticketTypes.ts';
-import { linkMerchandiseToTicket, checkEmployeeAppointmentConflicts, logTicketAudit } from './ticketHelperService.ts';
+import { linkMerchandiseToTicket, logTicketAudit } from './ticketHelperService.ts';
 import { getById } from './ticketSearchService.ts';
 
 /**
@@ -166,54 +166,12 @@ export async function create(input: MasterTicketCreateInput, employeeId: string)
     }
   }
 
-  // Step 6: Validate and Link Employees (technicians)
+  // Step 6: Link Employees (technicians)
   if (input.employee_ids && input.employee_ids.length > 0) {
     const uniqueEmployeeIds = [...new Set(input.employee_ids)];
 
-    // Check for appointment conflicts before assigning
-    const appointmentDate = appointmentData.appointment_date as string | null | undefined;
-    let appointmentTimeStart = appointmentData.appointment_time_start as string | null | undefined;
-    let appointmentTimeEnd = appointmentData.appointment_time_end as string | null | undefined;
-    const appointmentType = appointmentData.appointment_type as string | null | undefined;
-
-    // Derive time ranges from appointment_type if not explicitly set
-    if (appointmentType && (!appointmentTimeStart || !appointmentTimeEnd)) {
-      if (appointmentType === 'half_morning') {
-        appointmentTimeStart = '08:00:00';
-        appointmentTimeEnd = '12:00:00';
-      } else if (appointmentType === 'half_afternoon') {
-        appointmentTimeStart = '13:00:00';
-        appointmentTimeEnd = '17:30:00';
-      } else if (appointmentType === 'full_day') {
-        appointmentTimeStart = '08:00:00';
-        appointmentTimeEnd = '17:30:00';
-      }
-      // call_to_schedule and time_range are handled naturally (no times for call_to_schedule)
-    }
-
-    if (appointmentDate) {
-      const conflictedEmployees = await checkEmployeeAppointmentConflicts(
-        uniqueEmployeeIds,
-        appointmentDate,
-        appointmentTimeStart,
-        appointmentTimeEnd
-      );
-
-      if (conflictedEmployees.length > 0) {
-        // Get employee names for error message
-        const { data: employees } = await supabase
-          .from('employees')
-          .select('id, name')
-          .in('id', conflictedEmployees);
-
-        const employeeNames = employees?.map(e => e.name as string).join(', ') || 'พนักงาน';
-        throw new ValidationError(
-          `พนักงานต่อไปนี้มีนัดหมายซ้อนทับในวันที่ ${appointmentDate}: ${employeeNames}`
-        );
-      }
-    }
-
     // Determine the date for assignment (use appointment_date if available, otherwise current date)
+    const appointmentDate = appointmentData.appointment_date as string | null | undefined;
     const assignmentDate = appointmentDate || new Date().toISOString().split('T')[0];
 
     const { error: employeeError } = await supabase
@@ -502,72 +460,22 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
     
     oldEmployeeIds = (currentEmployees || []).map(e => e.employee_id as string);
 
-    // Get current appointment data (either existing or new)
+    // Get appointment date for assignment (either from input or existing)
     let appointmentDate: string | null | undefined = null;
-    let appointmentTimeStart: string | null | undefined = null;
-    let appointmentTimeEnd: string | null | undefined = null;
-    let appointmentType: string | null | undefined = null;
 
     if ('appointment' in input && input.appointment !== null && input.appointment) {
       // New appointment data provided
       appointmentDate = input.appointment.appointment_date;
-      appointmentTimeStart = input.appointment.appointment_time_start;
-      appointmentTimeEnd = input.appointment.appointment_time_end;
-      appointmentType = input.appointment.appointment_type;
     } else if (existingTicket.appointment_id) {
       // Use existing appointment
       const { data: existingAppointment } = await supabase
         .from('appointments')
-        .select('appointment_date, appointment_time_start, appointment_time_end, appointment_type')
+        .select('appointment_date')
         .eq('id', existingTicket.appointment_id)
         .single();
 
       if (existingAppointment) {
         appointmentDate = existingAppointment.appointment_date as string | null;
-        appointmentTimeStart = existingAppointment.appointment_time_start as string | null;
-        appointmentTimeEnd = existingAppointment.appointment_time_end as string | null;
-        appointmentType = existingAppointment.appointment_type as string | null;
-      }
-    }
-
-    // Derive time ranges from appointment_type if not explicitly set
-    if (appointmentType && (!appointmentTimeStart || !appointmentTimeEnd)) {
-      if (appointmentType === 'half_morning') {
-        appointmentTimeStart = '08:00:00';
-        appointmentTimeEnd = '12:00:00';
-      } else if (appointmentType === 'half_afternoon') {
-        appointmentTimeStart = '13:00:00';
-        appointmentTimeEnd = '17:30:00';
-      } else if (appointmentType === 'full_day') {
-        appointmentTimeStart = '08:00:00';
-        appointmentTimeEnd = '17:30:00';
-      }
-      // call_to_schedule and time_range are handled naturally (no times for call_to_schedule)
-    }
-
-    // Validate employee conflicts if appointment exists
-    if (input.employee_ids.length > 0 && appointmentDate) {
-      const uniqueEmployeeIds = [...new Set(input.employee_ids)];
-
-      const conflictedEmployees = await checkEmployeeAppointmentConflicts(
-        uniqueEmployeeIds,
-        appointmentDate,
-        appointmentTimeStart,
-        appointmentTimeEnd,
-        ticketId // Exclude current ticket from conflict check
-      );
-
-      if (conflictedEmployees.length > 0) {
-        // Get employee names for error message
-        const { data: employees } = await supabase
-          .from('employees')
-          .select('id, name')
-          .in('id', conflictedEmployees);
-
-        const employeeNames = employees?.map(e => e.name as string).join(', ') || 'พนักงาน';
-        throw new ValidationError(
-          `พนักงานต่อไปนี้มีนัดหมายซ้อนทับในวันที่ ${appointmentDate}: ${employeeNames}`
-        );
       }
     }
 

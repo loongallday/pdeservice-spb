@@ -116,19 +116,19 @@ export class InitializeService {
       throw new DatabaseError('ไม่สามารถดึงข้อมูลพนักงานได้');
     }
 
-    // Check if the employee's role can approve appointments
-    const roleId = employeeResult.role_id as string | null | undefined;
+    // Check if the employee can approve appointments (user-based)
+    const employeeId = employeeResult.id as string;
     let canApprove = false;
     
-    if (roleId) {
-      const { data: approvalRole, error: approvalError } = await supabase
-        .from('appointment_approval_roles')
+    if (employeeId) {
+      const { data: approvalUser, error: approvalError } = await supabase
+        .from('appointment_approval_users')
         .select('id')
-        .eq('role_id', roleId)
+        .eq('employee_id', employeeId)
         .single();
 
-      // If found (no error and data exists), role can approve
-      canApprove = !approvalError && approvalRole !== null;
+      // If found (no error and data exists), employee can approve
+      canApprove = !approvalError && approvalUser !== null;
     }
 
     // Add can_approve to role_data
@@ -227,19 +227,19 @@ export class InitializeService {
     const roleData = employeeData.role_data as (Record<string, unknown> & { department?: Record<string, unknown> | null; id?: string }) | null;
     const userDepartment = roleData?.department || null;
 
-    // Check if the employee's role can approve appointments
-    const roleId = roleData?.id as string | null | undefined;
+    // Check if the employee can approve appointments (user-based)
+    const employeeId = employeeData.id as string;
     let canApprove = false;
     
-    if (roleId) {
-      const { data: approvalRole, error: approvalError } = await supabase
-        .from('appointment_approval_roles')
+    if (employeeId) {
+      const { data: approvalUser, error: approvalError } = await supabase
+        .from('appointment_approval_users')
         .select('id')
-        .eq('role_id', roleId)
+        .eq('employee_id', employeeId)
         .single();
 
-      // If found (no error and data exists), role can approve
-      canApprove = !approvalError && approvalRole !== null;
+      // If found (no error and data exists), employee can approve
+      canApprove = !approvalError && approvalUser !== null;
     }
 
     // Add can_approve to role_data

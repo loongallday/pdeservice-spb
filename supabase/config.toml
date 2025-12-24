@@ -54,9 +54,6 @@ verify_jwt = false
 [functions.api-contacts]
 verify_jwt = false
 
-[functions.api-work-results]
-verify_jwt = false
-
 [functions.api-leave-requests]
 verify_jwt = false
 
@@ -64,9 +61,6 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.api-roles]
-verify_jwt = false
-
-[functions.api-polls]
 verify_jwt = false
 
 [functions.api-reference-data]

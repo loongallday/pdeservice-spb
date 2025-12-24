@@ -156,40 +156,26 @@ Authorization: Bearer <token>
 
 ---
 
-### Get Technician Availability
+### Get Technician Workload
 
-Get technicians from the 'technical' department with their availability status for a given date/time.
+Get technicians from the 'technical' department with their workload status for a given date.
 
 **Endpoint**: `GET /technicians/availability`
 
 **Required Level**: 1 (non-technician_l1 and above)
 
 **Query Parameters**:
-- `date` (required): Appointment date in YYYY-MM-DD format
-- `appointment_type` (optional): Type of appointment - automatically derives time range
-  - `half_morning`: 08:00-12:00
-  - `half_afternoon`: 13:00-17:30
-  - `full_day`: 08:00-17:30
-  - `time_range`: Requires `time_start` and `time_end`
-  - `call_to_schedule`: Returns all technicians as available (no time conflict check)
-- `time_start` (optional): Start time in HH:MM:SS format (required if `appointment_type=time_range`)
-- `time_end` (optional): End time in HH:MM:SS format (required if `appointment_type=time_range`)
+- `date` (optional): Appointment date in YYYY-MM-DD format. If not provided, all technicians return with `no_work` status.
 
-**Example Request (Date Only)**:
+**Example Request (With Date)**:
 ```http
 GET /functions/v1/api-employees/technicians/availability?date=2025-01-15
 Authorization: Bearer <token>
 ```
 
-**Example Request (With Appointment Type)**:
+**Example Request (No Date - All Technicians with no_work)**:
 ```http
-GET /functions/v1/api-employees/technicians/availability?date=2025-01-15&appointment_type=half_morning
-Authorization: Bearer <token>
-```
-
-**Example Request (With Time Range)**:
-```http
-GET /functions/v1/api-employees/technicians/availability?date=2025-01-15&appointment_type=time_range&time_start=09:00:00&time_end=17:00:00
+GET /functions/v1/api-employees/technicians/availability
 Authorization: Bearer <token>
 ```
 
@@ -200,12 +186,12 @@ Authorization: Bearer <token>
     {
       "id": "123e4567-e89b-12d3-a456-426614174000",
       "name": "John Technician",
-      "availability": true
+      "workload": "light"
     },
     {
       "id": "223e4567-e89b-12d3-a456-426614174001",
       "name": "Jane Technician",
-      "availability": false
+      "workload": "heavy"
     }
   ]
 }
@@ -214,38 +200,26 @@ Authorization: Bearer <token>
 **Response Fields**:
 - `id`: Employee ID (UUID)
 - `name`: Employee name
-- `availability`: Boolean indicating if technician is available
-  - `true`: No conflicting appointments
-  - `false`: Has conflicting appointment
+- `workload`: Workload level indicating how busy the technician is on the given date
+  - `no_work`: 0 appointments (or no date provided)
+  - `light`: 1-2 appointments
+  - `medium`: 3-4 appointments
+  - `heavy`: 5+ appointments
 
-**Availability Logic**:
-- **With `appointment_type`**: Uses predefined time ranges based on type
-  - `half_morning`: Checks for conflicts with 08:00-12:00
-  - `half_afternoon`: Checks for conflicts with 13:00-17:30
-  - `full_day`: Checks for conflicts with 08:00-17:30
-  - `time_range`: Checks for conflicts with specified `time_start` and `time_end`
-  - `call_to_schedule`: No conflict check, all technicians marked as available
-- **Without `appointment_type`**:
-  - If only `date` provided: Any appointment on that date = unavailable
-  - If `date`, `time_start`, and `time_end` provided: Checks for time range overlap
-- **Overlap Detection**: Two time ranges overlap if `start1 < end2 AND start2 < end1`
-- **Appointment Type Handling**: 
-  - Existing appointments with `half_morning`, `half_afternoon`, or `full_day` types use predefined time ranges
-  - Existing appointments with `call_to_schedule` are never counted as conflicts
-  - Zero-duration appointments (start == end) are ignored
+**Workload Calculation**:
+- If no `date` provided: All technicians return with `no_work` status
+- If `date` provided: Counts ALL appointments assigned to the technician on the given date
+- All appointment types are included in the count (including `call_to_schedule`)
+- Technicians are always available for assignment regardless of workload
 
 **Validation**:
-- `date` must be in YYYY-MM-DD format
-- `appointment_type` must be one of: `half_morning`, `half_afternoon`, `full_day`, `time_range`, `call_to_schedule`
-- If `appointment_type=time_range`, both `time_start` and `time_end` are required
-- `time_start` and `time_end` must be in HH:MM:SS format
-- `time_start` must be less than `time_end`
+- If `date` is provided, it must be in YYYY-MM-DD format
 
 **Notes**:
 - Only returns active employees from the 'technical' department
-- Availability is based on ticket appointments, not leave requests
-- Returns minimal fields for performance (id, name, availability only)
-- **Recommended**: Use `appointment_type` parameter for cleaner API calls and consistent time ranges
+- Workload is based on ticket appointment count
+- Returns minimal fields for performance (id, name, workload only)
+- Technicians can be assigned to multiple appointments on the same date
 
 ---
 

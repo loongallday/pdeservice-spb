@@ -614,11 +614,7 @@ Idempotency-Key: 550e8400-e29b-41d4-a716-446655440000
 - **Company**: If `tax_id` exists, it will be used. Otherwise, a new company is created. No updates to existing companies.
 - **Site**: If `id` is provided, it must exist and will be used. Otherwise, a new site is created. No updates to existing sites.
 - **Contact**: If `id` is provided, it must exist and will be used. Otherwise, a new contact is created. No updates to existing contacts.
-- **Employee Assignment Validation**: When assigning employees (`employee_ids`), the system automatically validates that employees don't have overlapping appointments:
-  - If only `appointment_date` is provided: Any existing appointment on that date will cause a validation error
-  - If `appointment_date`, `appointment_time_start`, and `appointment_time_end` are provided: The system checks for time range overlap. Two time ranges overlap if: `start1 < end2 AND start2 < end1`
-  - If a conflict is detected, the request will fail with a `400 Bad Request` error listing the employees with conflicts
-  - Example error: `"พนักงานต่อไปนี้มีนัดหมายซ้อนทับในวันที่ 2025-01-15: John Technician, Jane Technician"`
+- **Employee Assignment**: Employees can be assigned to multiple appointments on the same date. No overlap validation is performed.
 - All merchandise must be in the same site as the ticket (enforced at database level)
 
 ---
@@ -706,13 +702,7 @@ Update an existing ticket with all related data (company, site, contact, appoint
 - All merchandise in `merchandise_ids` must exist
 - All merchandise must be in the same site as the ticket (if ticket has a site)
 - Duplicate IDs in the array are automatically deduplicated
-- **Employee Assignment Validation**: When updating employee assignments (`employee_ids`), the system automatically validates that employees don't have overlapping appointments:
-  - Uses the appointment from the update request if provided, otherwise uses the existing appointment
-  - If only `appointment_date` is provided: Any existing appointment on that date will cause a validation error
-  - If `appointment_date`, `appointment_time_start`, and `appointment_time_end` are provided: The system checks for time range overlap. Two time ranges overlap if: `start1 < end2 AND start2 < end1`
-  - The current ticket is excluded from conflict checks (employees can be reassigned to the same ticket)
-  - If a conflict is detected, the request will fail with a `400 Bad Request` error listing the employees with conflicts
-  - Example error: `"พนักงานต่อไปนี้มีนัดหมายซ้อนทับในวันที่ 2025-01-15: John Technician, Jane Technician"`
+- **Employee Assignment**: Employees can be assigned to multiple appointments on the same date. No overlap validation is performed.
 
 ---
 

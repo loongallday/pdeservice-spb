@@ -83,7 +83,6 @@ export class TicketService {
     additional?: string;
     site_id?: string;
     contact_id?: string;
-    work_result_id?: string;
     appointment_id?: string;
     created_at?: string;
     updated_at?: string;

@@ -9,7 +9,7 @@ import type { PaginationInfo } from '../_shared/response.ts';
 import type { DateType } from './ticketTypes.ts';
 
 /**
- * Get single ticket by ID with full details (site, appointment, work result)
+ * Get single ticket by ID with full details (site, appointment)
  */
 export async function getById(id: string): Promise<Record<string, unknown>> {
   const supabase = createServiceClient();
@@ -29,7 +29,6 @@ export async function getById(id: string): Promise<Record<string, unknown>> {
       created_by,
       site_id,
       contact_id,
-      work_result_id,
       appointment_id,
       work_type:work_types(*),
       assigner:employees!tickets_assigner_id_fkey(*),
@@ -66,26 +65,7 @@ export async function getById(id: string): Promise<Record<string, unknown>> {
     throw new NotFoundError('ไม่พบตั๋วงาน');
   }
 
-  // Get work result details if work_result_id exists
-  let workResult = null;
-  if (data.work_result_id) {
-    const { data: wrData, error: wrError } = await supabase
-      .from('work_results')
-      .select(`
-        *,
-        photos:work_result_photos(*),
-        documents:work_result_documents(*,pages:work_result_document_pages(*))
-      `)
-      .eq('id', data.work_result_id)
-      .single();
-
-    if (wrError && wrError.code !== 'PGRST116') {
-      throw new DatabaseError(wrError.message);
-    }
-    workResult = wrData || null;
-  }
-
-  // Transform data to flatten employees array and add work result
+  // Transform data to flatten employees array
   const creator = data.creator as { name?: string; code?: string } | null;
   const merchandise = Array.isArray(data.merchandise)
     ? data.merchandise.map((tm: Record<string, unknown>) => {
@@ -119,7 +99,6 @@ export async function getById(id: string): Promise<Record<string, unknown>> {
     employees: Array.isArray(data.employees)
       ? data.employees.map((te: Record<string, unknown>) => (te as { employee: Record<string, unknown> }).employee).filter(Boolean)
       : [],
-    work_result: workResult,
     creator_name: creator?.name || null,
     creator_code: creator?.code || null,
     merchandise: merchandise,
@@ -142,7 +121,6 @@ export async function search(params: {
   additional?: string;
   site_id?: string;
   contact_id?: string;
-  work_result_id?: string;
   appointment_id?: string;
   created_at?: string; // Date string (YYYY-MM-DD) or range
   updated_at?: string; // Date string (YYYY-MM-DD) or range
@@ -261,7 +239,6 @@ export async function search(params: {
       created_by,
       site_id,
       contact_id,
-      work_result_id,
       appointment_id,
       work_type:work_types(*),
       assigner:employees!tickets_assigner_id_fkey(*),
@@ -452,10 +429,6 @@ export async function search(params: {
   if (filters.contact_id) {
     countQuery = countQuery.eq('contact_id', filters.contact_id);
     dataQuery = dataQuery.eq('contact_id', filters.contact_id);
-  }
-  if (filters.work_result_id) {
-    countQuery = countQuery.eq('work_result_id', filters.work_result_id);
-    dataQuery = dataQuery.eq('work_result_id', filters.work_result_id);
   }
   if (filters.appointment_id) {
     countQuery = countQuery.eq('appointment_id', filters.appointment_id);
@@ -942,7 +915,6 @@ export async function searchByDuration(params: {
       created_by,
       site_id,
       contact_id,
-      work_result_id,
       appointment_id,
       work_type:work_types(*),
       assigner:employees!tickets_assigner_id_fkey(*),
