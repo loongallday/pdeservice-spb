@@ -8,6 +8,7 @@ import { DatabaseError, ValidationError } from '../_shared/error.ts';
 /**
  * Check if employees have conflicting appointments
  * Returns array of employee IDs that have conflicts
+ * Uses a database function for efficient conflict checking
  */
 export async function checkEmployeeAppointmentConflicts(
   employeeIds: string[],
@@ -26,99 +27,30 @@ export async function checkEmployeeAppointmentConflicts(
   }
 
   const supabase = createServiceClient();
-  const conflictedEmployeeIds: string[] = [];
 
-  // Query for existing appointments for these employees
-  let conflictQuery = supabase
-    .from('ticket_employees')
-    .select(`
-      employee_id,
-      ticket:tickets!ticket_employees_ticket_id_fkey(
-        id,
-        appointment:appointments!tickets_appointment_id_fkey(
-          appointment_date,
-          appointment_time_start,
-          appointment_time_end
-        )
-      )
-    `)
-    .in('employee_id', employeeIds);
-
-  // Exclude current ticket if updating
-  if (excludeTicketId) {
-    conflictQuery = conflictQuery.neq('ticket_id', excludeTicketId);
-  }
-
-  const { data: ticketEmployees, error } = await conflictQuery;
+  // Use database function for efficient conflict checking
+  // This replaces complex in-memory logic with a single database call
+  const { data: conflicts, error } = await supabase.rpc(
+    'check_employee_appointment_conflicts',
+    {
+      p_employee_ids: employeeIds,
+      p_date: appointmentDate,
+      p_time_start: appointmentTimeStart || null,
+      p_time_end: appointmentTimeEnd || null,
+      p_exclude_ticket_id: excludeTicketId || null,
+    }
+  );
 
   if (error) {
     throw new ValidationError(`ไม่สามารถตรวจสอบความพร้อมของพนักงานได้: ${error.message}`);
   }
 
-  if (!ticketEmployees) {
+  if (!conflicts || conflicts.length === 0) {
     return [];
   }
 
-  // Check each employee for conflicts
-  for (const te of ticketEmployees) {
-    const ticket = te.ticket as Record<string, unknown> | null;
-    const appointment = ticket?.appointment as Record<string, unknown> | null;
-
-    if (!appointment) continue;
-
-    const apptDate = appointment.appointment_date as string | null;
-    if (apptDate !== appointmentDate) continue;
-
-    const empId = te.employee_id as string;
-    if (!empId || conflictedEmployeeIds.includes(empId)) continue;
-
-    // Get appointment time range (actual or predefined based on type)
-    let apptTimeStart = appointment.appointment_time_start as string | null;
-    let apptTimeEnd = appointment.appointment_time_end as string | null;
-    const appointmentType = appointment.appointment_type as string | null;
-
-    // Handle predefined time slots for appointments without explicit times
-    if (appointmentType === 'call_to_schedule') {
-      // call_to_schedule has no time - never overlaps (to be scheduled later)
-      continue;
-    }
-    
-    if (!apptTimeStart || !apptTimeEnd) {
-      if (appointmentType === 'half_morning') {
-        apptTimeStart = '08:00:00';
-        apptTimeEnd = '12:00:00';
-      } else if (appointmentType === 'half_afternoon') {
-        apptTimeStart = '13:00:00';
-        apptTimeEnd = '17:30:00';
-      } else if (appointmentType === 'full_day') {
-        apptTimeStart = '08:00:00';
-        apptTimeEnd = '17:30:00';
-      }
-    }
-
-    // If still no times after handling special types, skip
-    if (!apptTimeStart || !apptTimeEnd) {
-      continue;
-    }
-
-    // Skip zero-duration appointments (start == end)
-    if (apptTimeStart === apptTimeEnd) {
-      continue;
-    }
-
-    // If time is provided, check for time overlap
-    if (appointmentTimeStart && appointmentTimeEnd) {
-      // Check if time ranges overlap: start1 < end2 AND start2 < end1
-      if (apptTimeStart < appointmentTimeEnd && apptTimeEnd > appointmentTimeStart) {
-        conflictedEmployeeIds.push(empId);
-      }
-    } else {
-      // If only date provided, any appointment with valid duration = conflict
-      conflictedEmployeeIds.push(empId);
-    }
-  }
-
-  return conflictedEmployeeIds;
+  // Extract employee IDs from the result
+  return conflicts.map((c: { conflicted_employee_id: string }) => c.conflicted_employee_id);
 }
 
 /**
@@ -158,29 +90,41 @@ export async function logTicketAudit(params: {
 
 /**
  * Link merchandise to ticket
+ * Uses batch validation to avoid N+1 queries
  */
 export async function linkMerchandiseToTicket(ticketId: string, merchandiseIds: string[], siteId: string | null): Promise<void> {
   const supabase = createServiceClient();
   const uniqueMerchandiseIds = [...new Set(merchandiseIds)];
 
-  // Validate all merchandise exist and are in the same site
-  for (const merchandiseId of uniqueMerchandiseIds) {
-    const { data: merchandise, error: merchError } = await supabase
-      .from('merchandise')
-      .select('id, site_id')
-      .eq('id', merchandiseId)
-      .single();
+  if (uniqueMerchandiseIds.length === 0) {
+    return;
+  }
 
-    if (merchError) {
-      throw new DatabaseError(`ไม่สามารถดึงข้อมูลอุปกรณ์ ${merchandiseId} ได้`);
-    }
-    if (!merchandise) {
-      throw new ValidationError(`ไม่พบอุปกรณ์ ${merchandiseId}`);
-    }
+  // Batch query: Validate all merchandise exist at once
+  const { data: merchandiseList, error: merchError } = await supabase
+    .from('merchandise')
+    .select('id, site_id')
+    .in('id', uniqueMerchandiseIds);
 
-    // Validate site match
-    if (siteId && merchandise.site_id && siteId !== merchandise.site_id) {
-      throw new ValidationError(`อุปกรณ์ ${merchandiseId} ต้องอยู่ในสถานที่เดียวกับตั๋วงาน`);
+  if (merchError) {
+    throw new DatabaseError(`ไม่สามารถดึงข้อมูลอุปกรณ์ได้: ${merchError.message}`);
+  }
+
+  // Check for missing merchandise IDs
+  const foundIds = new Set((merchandiseList || []).map(m => m.id as string));
+  const invalidIds = uniqueMerchandiseIds.filter(id => !foundIds.has(id));
+  if (invalidIds.length > 0) {
+    throw new ValidationError(`ไม่พบอุปกรณ์: ${invalidIds.join(', ')}`);
+  }
+
+  // Batch validate site match
+  if (siteId) {
+    const mismatchedMerchandise = (merchandiseList || []).filter(m => 
+      m.site_id && m.site_id !== siteId
+    );
+    if (mismatchedMerchandise.length > 0) {
+      const mismatchedIds = mismatchedMerchandise.map(m => m.id).join(', ');
+      throw new ValidationError(`อุปกรณ์ต่อไปนี้ต้องอยู่ในสถานที่เดียวกับตั๋วงาน: ${mismatchedIds}`);
     }
   }
 

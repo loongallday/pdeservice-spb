@@ -7,6 +7,46 @@ import { NotFoundError, DatabaseError } from '../_shared/error.ts';
 import { calculatePagination } from '../_shared/response.ts';
 import type { PaginationInfo } from '../_shared/response.ts';
 
+// In-memory cache for roles data with TTL
+interface CachedRolesEntry {
+  data: Array<{ id: string; name_th: string; code: string; department_id: string }>;
+  expires: number;
+}
+let rolesCache: CachedRolesEntry | null = null;
+const ROLES_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+/**
+ * Get roles with in-memory caching for department lookups
+ */
+async function getCachedRoles(): Promise<Array<{ id: string; name_th: string; code: string; department_id: string }>> {
+  // Return cached data if not expired
+  if (rolesCache && rolesCache.expires > Date.now()) {
+    return rolesCache.data;
+  }
+
+  // Fetch from database
+  const supabase = createServiceClient();
+  const { data, error } = await supabase
+    .from('roles')
+    .select('id, name_th, code, department_id');
+
+  if (error) {
+    // Return stale cache if available
+    if (rolesCache) {
+      return rolesCache.data;
+    }
+    throw error;
+  }
+
+  // Update cache
+  rolesCache = {
+    data: (data || []) as Array<{ id: string; name_th: string; code: string; department_id: string }>,
+    expires: Date.now() + ROLES_CACHE_TTL,
+  };
+
+  return rolesCache.data;
+}
+
 export class EmployeeService {
 
   /**
@@ -96,6 +136,7 @@ export class EmployeeService {
   /**
    * Create initial leave balances for a new employee
    * Note: Uses hardcoded values, not days_per_year from leave_types table
+   * Optimized to use batch query for leave type lookup
    */
   private static async createInitialLeaveBalances(employeeId: string): Promise<void> {
     const supabase = createServiceClient();
@@ -108,25 +149,23 @@ export class EmployeeService {
       { code: 'personal_leave', totalDays: 3 },
     ];
 
-    // Look up leave type IDs by code
+    // Batch query: Look up all leave type IDs at once instead of individual queries
+    const leaveTypeCodes = leaveBalances.map(lb => lb.code);
+    const { data: leaveTypes, error: leaveTypeError } = await supabase
+      .from('leave_types')
+      .select('id, code')
+      .in('code', leaveTypeCodes);
+
+    if (leaveTypeError) {
+      throw new DatabaseError(`Failed to lookup leave types: ${leaveTypeError.message}`);
+    }
+
+    // Build lookup map from code to id
     const leaveTypeIds: Record<string, string> = {};
-    for (const leaveBalance of leaveBalances) {
-      const { data: leaveType, error: leaveTypeError } = await supabase
-        .from('leave_types')
-        .select('id')
-        .eq('code', leaveBalance.code)
-        .maybeSingle();
-
-      if (leaveTypeError) {
-        throw new DatabaseError(`Failed to lookup leave type ${leaveBalance.code}: ${leaveTypeError.message}`);
+    if (leaveTypes) {
+      for (const lt of leaveTypes) {
+        leaveTypeIds[lt.code as string] = lt.id as string;
       }
-
-      if (!leaveType) {
-        // Skip if leave type doesn't exist (might not be seeded yet)
-        continue;
-      }
-
-      leaveTypeIds[leaveBalance.code] = leaveType.id;
     }
 
     // Create leave balance records
@@ -536,22 +575,38 @@ export class EmployeeService {
     }
 
     // If department_id filter is provided, get all role_ids for that department
+    // Use cached roles for better performance (reduces database round trips)
     let roleIdsForDepartment: string[] | undefined = undefined;
     if (department_id) {
-      const { data: rolesData, error: rolesError } = await supabase
-        .from('roles')
-        .select('id')
-        .eq('department_id', department_id);
+      try {
+        const cachedRoles = await getCachedRoles();
+        roleIdsForDepartment = cachedRoles
+          .filter(r => r.department_id === department_id)
+          .map(r => r.id);
+        
+        if (roleIdsForDepartment.length === 0) {
+          // No roles in this department, return empty result
+          return {
+            data: [],
+            pagination: calculatePagination(page, limit, 0),
+          };
+        }
+      } catch {
+        // Fallback to direct query if cache fails
+        const { data: rolesData, error: rolesError } = await supabase
+          .from('roles')
+          .select('id')
+          .eq('department_id', department_id);
 
-      if (rolesError) throw new DatabaseError(`Failed to lookup roles by department: ${rolesError.message}`);
-      if (!rolesData || rolesData.length === 0) {
-        // No roles in this department, return empty result
-        return {
-          data: [],
-          pagination: calculatePagination(page, limit, 0),
-        };
+        if (rolesError) throw new DatabaseError(`Failed to lookup roles by department: ${rolesError.message}`);
+        if (!rolesData || rolesData.length === 0) {
+          return {
+            data: [],
+            pagination: calculatePagination(page, limit, 0),
+          };
+        }
+        roleIdsForDepartment = rolesData.map(r => r.id as string);
       }
-      roleIdsForDepartment = rolesData.map(r => r.id as string);
     }
 
     // Build count query
@@ -700,6 +755,7 @@ export class EmployeeService {
     }
 
     // If department_id filter is provided, get all role_ids for those department(s)
+    // Use cached roles for better performance
     let roleIdsForDepartment: string[] | undefined = undefined;
     if (department_id) {
       // Normalize to array for consistent handling
@@ -707,21 +763,35 @@ export class EmployeeService {
         ? department_id 
         : [department_id];
 
-      // Get role IDs that belong to these departments
-      const { data: rolesData, error: rolesError } = await supabase
-        .from('roles')
-        .select('id')
-        .in('department_id', departmentIds);
+      try {
+        const cachedRoles = await getCachedRoles();
+        roleIdsForDepartment = cachedRoles
+          .filter(r => departmentIds.includes(r.department_id))
+          .map(r => r.id);
+        
+        if (roleIdsForDepartment.length === 0) {
+          // No roles in these departments, return empty result
+          return {
+            data: [],
+            pagination: calculatePagination(page, limit, 0),
+          };
+        }
+      } catch {
+        // Fallback to direct query if cache fails
+        const { data: rolesData, error: rolesError } = await supabase
+          .from('roles')
+          .select('id')
+          .in('department_id', departmentIds);
 
-      if (rolesError) throw new DatabaseError(`Failed to lookup roles by department: ${rolesError.message}`);
-      if (!rolesData || rolesData.length === 0) {
-        // No roles in these departments, return empty result
-        return {
-          data: [],
-          pagination: calculatePagination(page, limit, 0),
-        };
+        if (rolesError) throw new DatabaseError(`Failed to lookup roles by department: ${rolesError.message}`);
+        if (!rolesData || rolesData.length === 0) {
+          return {
+            data: [],
+            pagination: calculatePagination(page, limit, 0),
+          };
+        }
+        roleIdsForDepartment = rolesData.map(r => r.id as string);
       }
-      roleIdsForDepartment = rolesData.map(r => r.id as string);
     }
 
     // Build count query
@@ -865,6 +935,7 @@ export class EmployeeService {
    * Get technicians with availability status for a given date/time
    * Returns all active employees from 'technical' department with availability boolean
    * If date is not provided, returns all technicians without checking availability
+   * Optimized to use database function for conflict checking
    */
   static async getTechniciansWithAvailability(
     date?: string,
@@ -927,92 +998,29 @@ export class EmployeeService {
       }));
     }
 
-    // Step 3: Query for conflicting appointments
-    // Build the query with proper joins
-    const conflictQuery = supabase
-      .from('ticket_employees')
-      .select(`
-        employee_id,
-        ticket:tickets!ticket_employees_ticket_id_fkey(
-          appointment:appointments!tickets_appointment_id_fkey(
-            appointment_date,
-            appointment_time_start,
-            appointment_time_end
-          )
-        )
-      `)
-      .in('employee_id', technicianIds);
-
-    const { data: ticketEmployees, error: conflictError } = await conflictQuery;
+    // Step 3: Use database function for efficient conflict checking
+    // This replaces complex in-memory conflict logic with a single database call
+    const { data: conflicts, error: conflictError } = await supabase.rpc(
+      'check_employee_appointment_conflicts',
+      {
+        p_employee_ids: technicianIds,
+        p_date: date,
+        p_time_start: timeStart || null,
+        p_time_end: timeEnd || null,
+        p_exclude_ticket_id: null,
+      }
+    );
 
     if (conflictError) {
       throw new DatabaseError(`ไม่สามารถตรวจสอบความพร้อมได้: ${conflictError.message}`);
     }
 
-    // Step 4: Build set of employee IDs with conflicts
-    const conflictedEmployeeIds = new Set<string>();
+    // Build set of conflicted employee IDs
+    const conflictedEmployeeIds = new Set<string>(
+      (conflicts || []).map((c: { conflicted_employee_id: string }) => c.conflicted_employee_id)
+    );
 
-    if (ticketEmployees) {
-      ticketEmployees.forEach(te => {
-        const ticket = te.ticket as Record<string, unknown> | null;
-        const appointment = ticket?.appointment as Record<string, unknown> | null;
-
-        if (!appointment) return;
-
-        const appointmentDate = appointment.appointment_date as string | null;
-        if (appointmentDate !== date) return;
-
-        const empId = te.employee_id as string;
-        if (!empId) return;
-
-        // Get appointment time range (actual or predefined based on type)
-        let apptTimeStart = appointment.appointment_time_start as string | null;
-        let apptTimeEnd = appointment.appointment_time_end as string | null;
-        const appointmentType = appointment.appointment_type as string | null;
-
-        // Handle predefined time slots for appointments without explicit times
-        if (appointmentType === 'call_to_schedule') {
-          // call_to_schedule has no time - never overlaps (to be scheduled later)
-          return;
-        }
-        
-        if (!apptTimeStart || !apptTimeEnd) {
-          if (appointmentType === 'half_morning') {
-            apptTimeStart = '08:00:00';
-            apptTimeEnd = '12:00:00';
-          } else if (appointmentType === 'half_afternoon') {
-            apptTimeStart = '13:00:00';
-            apptTimeEnd = '17:30:00';
-          } else if (appointmentType === 'full_day') {
-            apptTimeStart = '08:00:00';
-            apptTimeEnd = '17:30:00';
-          }
-        }
-
-        // If still no times after handling special types, skip
-        if (!apptTimeStart || !apptTimeEnd) {
-          return;
-        }
-
-        // Skip zero-duration appointments (start == end)
-        if (apptTimeStart === apptTimeEnd) {
-          return;
-        }
-
-        // If time is provided, check for time overlap
-        if (timeStart && timeEnd) {
-          // Check if time ranges overlap: start1 < end2 AND start2 < end1
-          if (apptTimeStart < timeEnd && apptTimeEnd > timeStart) {
-            conflictedEmployeeIds.add(empId);
-          }
-        } else {
-          // If only date provided, any appointment with valid duration = conflict
-          conflictedEmployeeIds.add(empId);
-        }
-      });
-    }
-
-    // Step 5: Map technicians with availability status
+    // Step 4: Map technicians with availability status
     return technicalEmployees.map(tech => ({
       id: tech.id as string,
       name: tech.name as string,

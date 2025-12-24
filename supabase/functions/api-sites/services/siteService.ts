@@ -102,84 +102,89 @@ export class SiteService {
 
   /**
    * Get single site by ID with tickets, merchandise, and contacts
+   * Optimized to use parallel queries for related data
    */
   static async getById(id: string): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
 
-    // Get site data
-    const { data, error } = await supabase
-      .from('sites')
-      .select('*, company:companies(tax_id, name_th, name_en)')
-      .eq('id', id)
-      .single();
+    // Execute all queries in parallel for better performance
+    // This reduces latency from 4 sequential round trips to 1 parallel batch
+    const [siteResult, ticketsResult, merchandiseResult, contactsResult] = await Promise.all([
+      // Get site data
+      supabase
+        .from('sites')
+        .select('*, company:companies(tax_id, name_th, name_en)')
+        .eq('id', id)
+        .single(),
+      
+      // Get tickets for this site (id, details, worktype)
+      supabase
+        .from('tickets')
+        .select('id, details, work_type:work_types(name)')
+        .eq('site_id', id)
+        .order('created_at', { ascending: false }),
+      
+      // Get merchandise for this site (id, model, serial)
+      supabase
+        .from('merchandise')
+        .select('id, serial_no, model:models(model)')
+        .eq('site_id', id)
+        .order('created_at', { ascending: false }),
+      
+      // Get contacts for this site (id, contact name)
+      supabase
+        .from('contacts')
+        .select('id, person_name')
+        .eq('site_id', id)
+        .order('person_name'),
+    ]);
 
-    if (error) {
-      if (error.code === 'PGRST116') {
+    // Handle site query result
+    if (siteResult.error) {
+      if (siteResult.error.code === 'PGRST116') {
         throw new NotFoundError('ไม่พบสถานที่');
       }
-      throw new DatabaseError(error.message);
+      throw new DatabaseError(siteResult.error.message);
     }
 
-    if (!data) {
+    if (!siteResult.data) {
       throw new NotFoundError('ไม่พบสถานที่');
     }
 
-    // Get tickets for this site (id, details, worktype)
-    const { data: tickets, error: ticketsError } = await supabase
-      .from('tickets')
-      .select('id, details, work_type:work_types(name)')
-      .eq('site_id', id)
-      .order('created_at', { ascending: false });
-
-    if (ticketsError) {
-      throw new DatabaseError(ticketsError.message);
+    // Handle other query errors
+    if (ticketsResult.error) {
+      throw new DatabaseError(ticketsResult.error.message);
+    }
+    if (merchandiseResult.error) {
+      throw new DatabaseError(merchandiseResult.error.message);
+    }
+    if (contactsResult.error) {
+      throw new DatabaseError(contactsResult.error.message);
     }
 
     // Format tickets
-    const ticketsFormatted = (tickets || []).map((ticket: Record<string, unknown>) => ({
+    const ticketsFormatted = (ticketsResult.data || []).map((ticket: Record<string, unknown>) => ({
       id: ticket.id,
       description: ticket.details || null,
       worktype: ticket.work_type ? (ticket.work_type as Record<string, unknown>).name || null : null,
     }));
 
-    // Get merchandise for this site (id, model, serial)
-    const { data: merchandise, error: merchandiseError } = await supabase
-      .from('merchandise')
-      .select('id, serial_no, model:models(model)')
-      .eq('site_id', id)
-      .order('created_at', { ascending: false });
-
-    if (merchandiseError) {
-      throw new DatabaseError(merchandiseError.message);
-    }
-
     // Format merchandise
-    const merchandiseFormatted = (merchandise || []).map((merch: Record<string, unknown>) => ({
+    const merchandiseFormatted = (merchandiseResult.data || []).map((merch: Record<string, unknown>) => ({
       id: merch.id,
       model: merch.model ? (merch.model as Record<string, unknown>).model || null : null,
       serial: merch.serial_no || null,
     }));
 
-    // Get contacts for this site (id, contact name)
-    const { data: contacts, error: contactsError } = await supabase
-      .from('contacts')
-      .select('id, person_name')
-      .eq('site_id', id)
-      .order('person_name');
-
-    if (contactsError) {
-      throw new DatabaseError(contactsError.message);
-    }
-
     // Format contacts
-    const contactsFormatted = (contacts || []).map((contact: Record<string, unknown>) => ({
+    const contactsFormatted = (contactsResult.data || []).map((contact: Record<string, unknown>) => ({
       id: contact.id,
       contact_name: contact.person_name || null,
     }));
 
     // Add lists to site data
     return {
-      ...data,
+      ...siteResult.data,
       tickets: ticketsFormatted,
       merchandise: merchandiseFormatted,
       contacts: contactsFormatted,
