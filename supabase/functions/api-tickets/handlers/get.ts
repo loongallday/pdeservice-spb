@@ -2,11 +2,11 @@
  * Get single ticket handler
  */
 
-import { success } from '../_shared/response.ts';
-import { requireMinLevel } from '../_shared/auth.ts';
-import { validateUUID } from '../_shared/validation.ts';
+import { success } from '../../_shared/response.ts';
+import { requireMinLevel } from '../../_shared/auth.ts';
+import { validateUUID } from '../../_shared/validation.ts';
 import { TicketService } from '../services/ticketService.ts';
-import type { Employee } from '../_shared/auth.ts';
+import type { Employee } from '../../_shared/auth.ts';
 
 export async function get(req: Request, employee: Employee, id: string) {
   

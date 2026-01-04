@@ -2,12 +2,12 @@
  * Add service to model package handler
  */
 
-import { success } from '../_shared/response.ts';
-import { requireMinLevel } from '../_shared/auth.ts';
-import { parseRequestBody, validateUUID, validateRequired } from '../_shared/validation.ts';
+import { success } from '../../_shared/response.ts';
+import { requireMinLevel } from '../../_shared/auth.ts';
+import { parseRequestBody, validateUUID, validateRequired } from '../../_shared/validation.ts';
 import { ModelService } from '../services/modelService.ts';
-import { HTTP_STATUS } from '../_shared/constants.ts';
-import type { Employee } from '../_shared/auth.ts';
+import { HTTP_STATUS } from '../../_shared/constants.ts';
+import type { Employee } from '../../_shared/auth.ts';
 
 export async function addPackageService(req: Request, employee: Employee, modelId: string) {
   // Check permissions - Level 1 and above can add services to packages

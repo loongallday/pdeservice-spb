@@ -2,10 +2,10 @@
  * Appointment service - Business logic for appointment operations
  */
 
-import { createServiceClient } from '../_shared/supabase.ts';
-import { NotFoundError, DatabaseError } from '../_shared/error.ts';
-import { calculatePagination } from '../_shared/response.ts';
-import type { PaginationInfo } from '../_shared/response.ts';
+import { createServiceClient } from '../../_shared/supabase.ts';
+import { NotFoundError, DatabaseError } from '../../_shared/error.ts';
+import { calculatePagination } from '../../_shared/response.ts';
+import type { PaginationInfo } from '../../_shared/response.ts';
 
 export interface AppointmentQueryParams {
   page?: number;
@@ -19,7 +19,7 @@ export class AppointmentService {
     const { page = 1, limit = 50, ticket_id } = params;
 
     // Count query
-    let countQuery = supabase.from('appointments').select('*', { count: 'exact', head: true });
+    let countQuery = supabase.from('main_appointments').select('*', { count: 'exact', head: true });
     if (ticket_id) countQuery = countQuery.eq('ticket_id', ticket_id);
 
     const { count, error: countError } = await countQuery;
@@ -31,7 +31,7 @@ export class AppointmentService {
 
     // Data query
     let dataQuery = supabase
-      .from('appointments')
+      .from('main_appointments')
       .select('*')
       .order('appointment_date', { ascending: false })
       .order('created_at', { ascending: false })
@@ -53,7 +53,7 @@ export class AppointmentService {
   static async getById(id: string): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
     const { data, error } = await supabase
-      .from('appointments')
+      .from('main_appointments')
       .select('*')
       .eq('id', id)
       .single();
@@ -70,7 +70,7 @@ export class AppointmentService {
   static async getByTicketId(ticketId: string): Promise<Record<string, unknown> | null> {
     const supabase = createServiceClient();
     const { data, error } = await supabase
-      .from('appointments')
+      .from('main_appointments')
       .select('*')
       .eq('ticket_id', ticketId)
       .maybeSingle();
@@ -84,7 +84,7 @@ export class AppointmentService {
     
     // Update ticket's appointment_id after creating appointment
     const { data: appointment, error: appointmentError } = await supabase
-      .from('appointments')
+      .from('main_appointments')
       .insert([appointmentData])
       .select()
       .single();
@@ -95,7 +95,7 @@ export class AppointmentService {
     // Update ticket's appointment_id if ticket_id is provided
     if (appointment.ticket_id) {
       const { error: ticketError } = await supabase
-        .from('tickets')
+        .from('main_tickets')
         .update({ appointment_id: appointment.id })
         .eq('id', appointment.ticket_id);
 
@@ -111,7 +111,7 @@ export class AppointmentService {
   static async update(id: string, appointmentData: Record<string, unknown>): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
     const { data, error } = await supabase
-      .from('appointments')
+      .from('main_appointments')
       .update(appointmentData)
       .eq('id', id)
       .select()
@@ -138,7 +138,7 @@ export class AppointmentService {
     };
 
     const { data, error } = await supabase
-      .from('appointments')
+      .from('main_appointments')
       .update(updateData)
       .eq('id', id)
       .select()
@@ -155,14 +155,14 @@ export class AppointmentService {
     
     // Get appointment to find associated ticket
     const { data: appointment } = await supabase
-      .from('appointments')
+      .from('main_appointments')
       .select('ticket_id')
       .eq('id', id)
       .single();
 
     // Delete appointment
     const { error: deleteError } = await supabase
-      .from('appointments')
+      .from('main_appointments')
       .delete()
       .eq('id', id);
 
@@ -171,7 +171,7 @@ export class AppointmentService {
     // Clear ticket's appointment_id if it was set
     if (appointment?.ticket_id) {
       const { error: ticketError } = await supabase
-        .from('tickets')
+        .from('main_tickets')
         .update({ appointment_id: null })
         .eq('id', appointment.ticket_id)
         .eq('appointment_id', id);
@@ -194,7 +194,7 @@ export class AppointmentService {
     }
 
     const { data, error } = await supabase
-      .from('appointments')
+      .from('main_appointments')
       .select('*')
       .or(`notes.ilike.%${query}%,appointment_type.ilike.%${query}%`)
       .limit(20)

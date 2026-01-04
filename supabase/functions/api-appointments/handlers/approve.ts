@@ -5,7 +5,7 @@
  */
 
 import { success } from '../../_shared/response.ts';
-import { requireCanApproveAppointments } from '../_shared/auth.ts';
+import { requireCanApproveAppointments } from '../../_shared/auth.ts';
 import { parseRequestBody, validateUUID, validateRequired } from '../../_shared/validation.ts';
 import { AppointmentService } from '../services/appointmentService.ts';
 import type { Employee } from '../../_shared/auth.ts';

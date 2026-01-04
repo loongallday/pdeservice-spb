@@ -2,12 +2,12 @@
  * Create company handler
  */
 
-import { success } from '../_shared/response.ts';
-import { requireMinLevel } from '../_shared/auth.ts';
-import { parseRequestBody, validateRequired } from '../_shared/validation.ts';
+import { success } from '../../_shared/response.ts';
+import { requireMinLevel } from '../../_shared/auth.ts';
+import { parseRequestBody, validateRequired } from '../../_shared/validation.ts';
 import { CompanyService } from '../services/companyService.ts';
-import { HTTP_STATUS } from '../_shared/constants.ts';
-import type { Employee } from '../_shared/auth.ts';
+import { HTTP_STATUS } from '../../_shared/constants.ts';
+import type { Employee } from '../../_shared/auth.ts';
 
 export async function create(req: Request, employee: Employee) {
   // Check permissions - Level 1 and above can create companies

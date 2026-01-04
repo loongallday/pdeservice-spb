@@ -2,8 +2,8 @@
  * Ticket CRUD service - Business logic for creating, updating, and deleting tickets
  */
 
-import { createServiceClient } from '../_shared/supabase.ts';
-import { NotFoundError, DatabaseError, ValidationError } from '../_shared/error.ts';
+import { createServiceClient } from '../../_shared/supabase.ts';
+import { NotFoundError, DatabaseError, ValidationError } from '../../_shared/error.ts';
 import type { MasterTicketCreateInput, MasterTicketUpdateInput } from './ticketTypes.ts';
 import { linkMerchandiseToTicket, logTicketAudit } from './ticketHelperService.ts';
 import { getById } from './ticketSearchService.ts';
@@ -48,7 +48,7 @@ export async function create(input: MasterTicketCreateInput, employeeId: string)
 
     // Check if company exists
     const { data: existingCompany } = await supabase
-      .from('companies')
+      .from('main_companies')
       .select('tax_id')
       .eq('tax_id', taxId)
       .single();
@@ -59,7 +59,7 @@ export async function create(input: MasterTicketCreateInput, employeeId: string)
     } else {
       // Create new company
       const { error: companyError } = await supabase
-        .from('companies')
+        .from('main_companies')
         .insert([input.company]);
 
       if (companyError) {
@@ -76,7 +76,7 @@ export async function create(input: MasterTicketCreateInput, employeeId: string)
     if (input.site.id) {
       // Use existing site - validate it exists
       const { data: existingSite } = await supabase
-        .from('sites')
+        .from('main_sites')
         .select('id')
         .eq('id', input.site.id)
         .single();
@@ -92,7 +92,7 @@ export async function create(input: MasterTicketCreateInput, employeeId: string)
         company_id: input.site.company_id || companyId,
       };
       const { data: newSite, error: siteError } = await supabase
-        .from('sites')
+        .from('main_sites')
         .insert([siteData])
         .select('id')
         .single();
@@ -110,7 +110,7 @@ export async function create(input: MasterTicketCreateInput, employeeId: string)
     if (input.contact.id) {
       // Use existing contact - validate it exists
       const { data: existingContact } = await supabase
-        .from('contacts')
+        .from('child_site_contacts')
         .select('id')
         .eq('id', input.contact.id)
         .single();
@@ -126,7 +126,7 @@ export async function create(input: MasterTicketCreateInput, employeeId: string)
         site_id: siteId,
       };
       const { data: newContact, error: contactError } = await supabase
-        .from('contacts')
+        .from('child_site_contacts')
         .insert([contactData])
         .select('id')
         .single();
@@ -147,7 +147,7 @@ export async function create(input: MasterTicketCreateInput, employeeId: string)
   };
 
   const { data: ticket, error: ticketError } = await supabase
-    .from('tickets')
+    .from('main_tickets')
     .insert([ticketData])
     .select()
     .single();
@@ -163,12 +163,11 @@ export async function create(input: MasterTicketCreateInput, employeeId: string)
   let appointmentId: string | null = null;
   const appointmentData = input.appointment || {};
   
+  // Note: appointments table no longer has ticket_id column
+  // The relationship is now only via tickets.appointment_id
   const { data: appointment, error: appointmentError } = await supabase
-    .from('appointments')
-    .insert([{
-      ...appointmentData,
-      ticket_id: ticket.id,
-    }])
+    .from('main_appointments')
+    .insert([appointmentData])
     .select()
     .single();
 
@@ -180,7 +179,7 @@ export async function create(input: MasterTicketCreateInput, employeeId: string)
 
     // Update ticket with appointment_id
     const { error: updateError } = await supabase
-      .from('tickets')
+      .from('main_tickets')
       .update({ appointment_id: appointmentId })
       .eq('id', ticket.id);
 
@@ -204,7 +203,7 @@ export async function create(input: MasterTicketCreateInput, employeeId: string)
     const assignmentDate = appointmentDate || new Date().toISOString().split('T')[0];
 
     const { error: employeeError } = await supabase
-      .from('ticket_employees')
+      .from('jct_ticket_employees')
       .insert(
         uniqueEmployees.map(emp => ({
           ticket_id: ticket.id,
@@ -258,7 +257,7 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
 
   // Verify ticket exists
   const { data: existingTicket, error: checkError } = await supabase
-    .from('tickets')
+    .from('main_tickets')
     .select('*')
     .eq('id', ticketId)
     .single();
@@ -277,7 +276,7 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
 
     // Check if company exists
     const { data: existingCompany } = await supabase
-      .from('companies')
+      .from('main_companies')
       .select('tax_id')
       .eq('tax_id', taxId)
       .single();
@@ -288,7 +287,7 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
     } else {
       // Create new company
       const { error: companyError } = await supabase
-        .from('companies')
+        .from('main_companies')
         .insert([input.company]);
 
       if (companyError) {
@@ -313,7 +312,7 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
       if (input.site.id) {
         // Use existing site - validate it exists
         const { data: existingSite } = await supabase
-          .from('sites')
+          .from('main_sites')
           .select('id')
           .eq('id', input.site.id)
           .single();
@@ -331,7 +330,7 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
           company_id: input.site.company_id || companyId,
         };
         const { data: newSite, error: siteError } = await supabase
-          .from('sites')
+          .from('main_sites')
           .insert([siteData])
           .select('id')
           .single();
@@ -360,7 +359,7 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
         if (input.contact.id) {
           // Use existing contact - validate it exists
           const { data: existingContact } = await supabase
-            .from('contacts')
+            .from('child_site_contacts')
             .select('id')
             .eq('id', input.contact.id)
             .single();
@@ -378,7 +377,7 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
             site_id: siteId,
           };
           const { data: newContact, error: contactError } = await supabase
-            .from('contacts')
+            .from('child_site_contacts')
             .insert([contactData])
             .select('id')
             .single();
@@ -395,7 +394,7 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
   // Step 4: Update Ticket
   if (input.ticket || siteChanged || contactChanged) {
     // Remove created_by if somehow included (should not be updatable)
-    const { created_by, ...ticketData } = input.ticket || {};
+    const { created_by: _created_by, ...ticketData } = (input.ticket || {}) as Record<string, unknown>;
     const ticketUpdate = {
       ...ticketData,
       site_id: siteId,
@@ -403,7 +402,7 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
     };
 
     const { error: ticketError } = await supabase
-      .from('tickets')
+      .from('main_tickets')
       .update(ticketUpdate)
       .eq('id', ticketId);
 
@@ -418,7 +417,7 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
     // Get old appointment data before updating (for audit log)
     if (existingTicket.appointment_id) {
       const { data: oldAppointment } = await supabase
-        .from('appointments')
+        .from('main_appointments')
         .select('*')
         .eq('id', existingTicket.appointment_id)
         .single();
@@ -433,7 +432,7 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
       // Explicit null - clear the appointment (unlink it from ticket)
       if (existingTicket.appointment_id) {
         const { error: unlinkError } = await supabase
-          .from('tickets')
+          .from('main_tickets')
           .update({ appointment_id: null })
           .eq('id', ticketId);
         
@@ -446,7 +445,7 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
       if (existingTicket.appointment_id) {
         // Update existing appointment
         const { error: appointmentError } = await supabase
-          .from('appointments')
+          .from('main_appointments')
           .update(input.appointment)
           .eq('id', existingTicket.appointment_id);
 
@@ -455,12 +454,10 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
         }
       } else {
         // Create new appointment
+        // Note: appointments table no longer has ticket_id column
         const { data: appointment, error: appointmentError } = await supabase
-          .from('appointments')
-          .insert([{
-            ...input.appointment,
-            ticket_id: ticketId,
-          }])
+          .from('main_appointments')
+          .insert([input.appointment])
           .select()
           .single();
 
@@ -470,8 +467,9 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
 
         if (appointment) {
           // Update ticket with new appointment_id
+          // This will trigger sync_ticket_denorm_on_change to populate appointment_* fields
           await supabase
-            .from('tickets')
+            .from('main_tickets')
             .update({ appointment_id: appointment.id })
             .eq('id', ticketId);
         }
@@ -484,7 +482,7 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
   if (input.employee_ids !== undefined) {
     // Get current employee IDs before deletion (for audit log)
     const { data: currentEmployees } = await supabase
-      .from('ticket_employees')
+      .from('jct_ticket_employees')
       .select('employee_id')
       .eq('ticket_id', ticketId);
     
@@ -499,7 +497,7 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
     } else if (existingTicket.appointment_id) {
       // Use existing appointment
       const { data: existingAppointment } = await supabase
-        .from('appointments')
+        .from('main_appointments')
         .select('appointment_date')
         .eq('id', existingTicket.appointment_id)
         .single();
@@ -511,7 +509,7 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
 
     // Delete existing assignments
     const { error: deleteError } = await supabase
-      .from('ticket_employees')
+      .from('jct_ticket_employees')
       .delete()
       .eq('ticket_id', ticketId);
 
@@ -533,7 +531,7 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
       const assignmentDate = appointmentDate || new Date().toISOString().split('T')[0];
       
       const { error: employeeError } = await supabase
-        .from('ticket_employees')
+        .from('jct_ticket_employees')
         .insert(
           uniqueEmployees.map(emp => ({
             ticket_id: ticketId,
@@ -558,7 +556,7 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
   if (input.merchandise_ids !== undefined) {
     // Get current merchandise IDs
     const { data: currentMerchandise } = await supabase
-      .from('ticket_merchandise')
+      .from('jct_ticket_merchandise')
       .select('merchandise_id')
       .eq('ticket_id', ticketId);
     
@@ -567,7 +565,7 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
 
     // Delete existing associations
     const { error: deleteError } = await supabase
-      .from('ticket_merchandise')
+      .from('jct_ticket_merchandise')
       .delete()
       .eq('ticket_id', ticketId);
 
@@ -648,18 +646,16 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
           }
         }
       } else {
-        // New appointment created
-        const { data: newAppointment } = await supabase
-          .from('appointments')
-          .select('id')
-          .eq('ticket_id', ticketId)
-          .order('created_at', { ascending: false })
-          .limit(1)
+        // New appointment created - get the updated ticket to find the new appointment_id
+        const { data: refreshedTicket } = await supabase
+          .from('main_tickets')
+          .select('appointment_id')
+          .eq('id', ticketId)
           .single();
         
-        if (newAppointment) {
+        if (refreshedTicket?.appointment_id) {
           oldValues.appointment_id = null;
-          newValues.appointment_id = newAppointment.id;
+          newValues.appointment_id = refreshedTicket.appointment_id;
           changedFields.push('appointment_id');
         }
       }
@@ -698,7 +694,7 @@ export async function removeTicketEmployee(
   ticketId: string,
   employeeId: string,
   date: string,
-  changedByEmployeeId: string
+  _changedByEmployeeId: string
 ): Promise<void> {
   const supabase = createServiceClient();
 
@@ -714,7 +710,7 @@ export async function removeTicketEmployee(
 
   // Check if assignment exists
   const { data: existing, error: checkError } = await supabase
-    .from('ticket_employees')
+    .from('jct_ticket_employees')
     .select('id')
     .eq('ticket_id', ticketId)
     .eq('employee_id', employeeId)
@@ -734,7 +730,7 @@ export async function removeTicketEmployee(
 
   // Delete the assignment
   const { error: deleteError } = await supabase
-    .from('ticket_employees')
+    .from('jct_ticket_employees')
     .delete()
     .eq('ticket_id', ticketId)
     .eq('employee_id', employeeId)
@@ -753,7 +749,7 @@ export async function deleteTicket(ticketId: string, employeeId: string, options
 
   // Get full ticket data before deletion for audit log
   const { data: fullTicket, error: checkError } = await supabase
-    .from('tickets')
+    .from('main_tickets')
     .select('*')
     .eq('id', ticketId)
     .single();
@@ -764,12 +760,12 @@ export async function deleteTicket(ticketId: string, employeeId: string, options
 
   // Get related data for audit log
   const { data: ticketEmployees } = await supabase
-    .from('ticket_employees')
+    .from('jct_ticket_employees')
     .select('employee_id')
     .eq('ticket_id', ticketId);
   
   const { data: ticketMerchandise } = await supabase
-    .from('ticket_merchandise')
+    .from('jct_ticket_merchandise')
     .select('merchandise_id')
     .eq('ticket_id', ticketId);
 
@@ -786,7 +782,7 @@ export async function deleteTicket(ticketId: string, employeeId: string, options
   // Delete appointment if requested
   if (options?.deleteAppointment && fullTicket.appointment_id) {
     const { error: appointmentError } = await supabase
-      .from('appointments')
+      .from('main_appointments')
       .delete()
       .eq('id', fullTicket.appointment_id);
 
@@ -798,7 +794,7 @@ export async function deleteTicket(ticketId: string, employeeId: string, options
 
   // Delete ticket (cascade will handle ticket_employees and ticket_merchandise)
   const { error: deleteError } = await supabase
-    .from('tickets')
+    .from('main_tickets')
     .delete()
     .eq('id', ticketId);
 
@@ -821,14 +817,14 @@ export async function deleteTicket(ticketId: string, employeeId: string, options
   // Delete contact if requested and no other tickets use it
   if (options?.deleteContact && fullTicket.contact_id) {
     const { data: otherTickets } = await supabase
-      .from('tickets')
+      .from('main_tickets')
       .select('id')
       .eq('contact_id', fullTicket.contact_id)
       .limit(1);
 
     if (!otherTickets || otherTickets.length === 0) {
       await supabase
-        .from('contacts')
+        .from('child_site_contacts')
         .delete()
         .eq('id', fullTicket.contact_id);
     }

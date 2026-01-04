@@ -13,7 +13,7 @@ export class ReferenceService {
     const supabase = createServiceClient();
     
     const { data, error } = await supabase
-      .from('work_types')
+      .from('ref_ticket_work_types')
       .select('*')
       .order('name');
     
@@ -29,7 +29,7 @@ export class ReferenceService {
     const supabase = createServiceClient();
     
     const { data, error } = await supabase
-      .from('ticket_statuses')
+      .from('ref_ticket_statuses')
       .select('*')
       .order('name');
     
@@ -47,7 +47,7 @@ export class ReferenceService {
     // Log query details
     
     const { data, error } = await supabase
-      .from('leave_types')
+      .from('ref_leave_types')
       .select('*')
       .eq('is_active', true)
       .order('name');
@@ -75,7 +75,7 @@ export class ReferenceService {
     const supabase = createServiceClient();
     
     const { data, error } = await supabase
-      .from('roles')
+      .from('main_org_roles')
       .select('*')
       .eq('is_active', true)
       .order('name_th');
@@ -92,7 +92,7 @@ export class ReferenceService {
     const supabase = createServiceClient();
     
     const { data, error } = await supabase
-      .from('departments')
+      .from('main_org_departments')
       .select('*')
       .eq('is_active', true)
       .order('name_th');

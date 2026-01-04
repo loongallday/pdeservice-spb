@@ -16,7 +16,7 @@ export class RoleService {
     const supabase = createServiceClient();
     
     const { data, error } = await supabase
-      .from('roles')
+      .from('main_org_roles')
       .select('*')
       .eq('id', id)
       .single();
@@ -38,7 +38,7 @@ export class RoleService {
     const supabase = createServiceClient();
     
     const { data: role, error } = await supabase
-      .from('roles')
+      .from('main_org_roles')
       .insert([data])
       .select()
       .single();
@@ -56,7 +56,7 @@ export class RoleService {
     
     // Check if role exists first
     const { data: _existingRole, error: checkError } = await supabase
-      .from('roles')
+      .from('main_org_roles')
       .select('id')
       .eq('id', id)
       .single();
@@ -74,7 +74,7 @@ export class RoleService {
     }
     
     const { data: role, error } = await supabase
-      .from('roles')
+      .from('main_org_roles')
       .update(data)
       .eq('id', id)
       .select()
@@ -106,7 +106,7 @@ export class RoleService {
 
     // Build count query
     let countQuery = supabase
-      .from('roles')
+      .from('main_org_roles')
       .select('*', { count: 'exact', head: true });
 
     // Apply search filter if query is provided
@@ -124,7 +124,7 @@ export class RoleService {
     // Get paginated data
     const offset = (page - 1) * limit;
     let dataQuery = supabase
-      .from('roles')
+      .from('main_org_roles')
       .select('*');
 
     // Apply search filter if query is provided
@@ -153,7 +153,7 @@ export class RoleService {
     const supabase = createServiceClient();
     
     const { error } = await supabase
-      .from('roles')
+      .from('main_org_roles')
       .delete()
       .eq('id', id);
     
@@ -169,7 +169,7 @@ export class RoleService {
 
     // Get all active roles
     const { data: roles, error: rolesError } = await supabase
-      .from('roles')
+      .from('main_org_roles')
       .select('id, code, name_th, name_en, department_id, level')
       .eq('is_active', true)
       .order('level');
@@ -178,7 +178,7 @@ export class RoleService {
 
     // Get all employees
     const { data: employees, error: empError } = await supabase
-      .from('employees')
+      .from('main_employees')
       .select('id, is_active, role_id');
 
     if (empError) {
@@ -187,7 +187,7 @@ export class RoleService {
 
     // Get all departments for role department references
     const { data: allDepartments, error: allDeptError } = await supabase
-      .from('departments')
+      .from('main_org_departments')
       .select('id, code, name_th, name_en');
 
     if (allDeptError) throw new DatabaseError(allDeptError.message);

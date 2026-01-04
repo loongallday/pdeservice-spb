@@ -2,11 +2,11 @@
  * Company service - Business logic for company operations
  */
 
-import { createServiceClient } from '../_shared/supabase.ts';
-import { NotFoundError, DatabaseError } from '../_shared/error.ts';
-import { calculatePagination } from '../_shared/response.ts';
-import { sanitizeData } from '../_shared/sanitize.ts';
-import type { PaginationInfo } from '../_shared/response.ts';
+import { createServiceClient } from '../../_shared/supabase.ts';
+import { NotFoundError, DatabaseError } from '../../_shared/error.ts';
+import { calculatePagination } from '../../_shared/response.ts';
+import { sanitizeData } from '../../_shared/sanitize.ts';
+import type { PaginationInfo } from '../../_shared/response.ts';
 
 export interface CompanyQueryParams {
   page: number;
@@ -45,7 +45,7 @@ export class CompanyService {
 
     // Get total count
     const { count, error: countError } = await supabase
-      .from('companies')
+      .from('main_companies')
       .select('*', { count: 'exact', head: true });
 
     if (countError) throw new DatabaseError(countError.message);
@@ -56,7 +56,7 @@ export class CompanyService {
 
     // Get paginated data
     const { data, error } = await supabase
-      .from('companies')
+      .from('main_companies')
       .select('*')
       .order('name_th')
       .range(from, to);
@@ -70,16 +70,21 @@ export class CompanyService {
   }
 
   /**
-   * Get single company by ID (tax_id) with sites list
+   * Get single company by ID (UUID) or tax_id with sites list
+   * Supports both UUID format and tax_id format for backwards compatibility
    */
   static async getById(id: string): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
 
-    // Get company data
+    // Check if input is UUID format
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    const isUuid = uuidRegex.test(id);
+
+    // Get company data - lookup by id (UUID) or tax_id based on input format
     const { data, error } = await supabase
-      .from('companies')
+      .from('main_companies')
       .select('*')
-      .eq('tax_id', id)
+      .eq(isUuid ? 'id' : 'tax_id', id)
       .single();
 
     if (error) {
@@ -94,10 +99,11 @@ export class CompanyService {
     }
 
     // Get sites for this company (only id, name, and is_main_branch)
+    // Note: company_id in main_sites is UUID, so use data.id (not tax_id)
     const { data: sites, error: sitesError } = await supabase
-      .from('sites')
+      .from('main_sites')
       .select('id, name, is_main_branch')
-      .eq('company_id', id)
+      .eq('company_id', data.id)
       .order('name');
 
     if (sitesError) {
@@ -148,7 +154,7 @@ export class CompanyService {
 
     // Build count query
     let countQuery = supabase
-      .from('companies')
+      .from('main_companies')
       .select('*', { count: 'exact', head: true });
 
     // Apply search filter if query is provided
@@ -169,7 +175,7 @@ export class CompanyService {
     // Using specific field selection reduces data transfer and improves performance
     const offset = (page - 1) * limit;
     let dataQuery = supabase
-      .from('companies')
+      .from('main_companies')
       .select('tax_id, name_th, name_en, address_detail');
 
     // Apply search filter if query is provided
@@ -212,7 +218,7 @@ export class CompanyService {
     }
 
     const { data, error } = await supabase
-      .from('companies')
+      .from('main_companies')
       .select('*')
       .or(`name_th.ilike.%${query}%,name_en.ilike.%${query}%,tax_id.ilike.%${query}%`)
       .limit(10)
@@ -232,7 +238,7 @@ export class CompanyService {
     const supabase = createServiceClient();
 
     let queryBuilder = supabase
-      .from('companies')
+      .from('main_companies')
       .select('*');
 
     if (query && query.length > 0) {
@@ -264,7 +270,7 @@ export class CompanyService {
     // Use upsert to insert or update based on tax_id (primary key)
     // This will replace the entire record if tax_id already exists
     const { data, error } = await supabase
-      .from('companies')
+      .from('main_companies')
       .upsert([sanitizedData], {
         onConflict: 'tax_id',
         ignoreDuplicates: false,
@@ -276,10 +282,11 @@ export class CompanyService {
     if (!data) throw new DatabaseError('Failed to create or update company');
 
     // Check if main branch site exists for this company
+    // Note: company_id in main_sites is UUID, so use data.id (not tax_id)
     const { data: mainBranchSite } = await supabase
-      .from('sites')
+      .from('main_sites')
       .select('id')
-      .eq('company_id', sanitizedData.tax_id as string)
+      .eq('company_id', data.id)
       .eq('is_main_branch', true)
       .maybeSingle();
 
@@ -303,9 +310,10 @@ export class CompanyService {
     const { SiteService } = await import('../../api-sites/services/siteService.ts');
 
     // Prepare site data from company address info
+    // Note: company_id in main_sites is UUID, so use company.id (not tax_id)
     const siteData: Record<string, unknown> = {
       name: `สำนักงานใหญ่ (${company.name_th})`,
-      company_id: company.tax_id,
+      company_id: company.id,
       address_detail: company.address_detail || company.address_full || null,
       is_main_branch: true,
     };
@@ -350,10 +358,11 @@ export class CompanyService {
     const supabase = createServiceClient();
 
     // Find all main branch sites for this company (should only be one, but handle multiple)
+    // Note: company_id in main_sites is UUID, so use company.id (not tax_id)
     const { data: mainBranchSites, error: findError } = await supabase
-      .from('sites')
+      .from('main_sites')
       .select('id')
-      .eq('company_id', company.tax_id as string)
+      .eq('company_id', company.id as string)
       .eq('is_main_branch', true);
 
     if (findError) throw new DatabaseError(`Failed to find main branch site: ${findError.message}`);
@@ -372,7 +381,7 @@ export class CompanyService {
     if (mainBranchSites.length > 1) {
       const otherSiteIds = mainBranchSites.slice(1).map(s => s.id);
       const { error: unsetError } = await supabase
-        .from('sites')
+        .from('main_sites')
         .update({ is_main_branch: false })
         .in('id', otherSiteIds);
       
@@ -429,7 +438,7 @@ export class CompanyService {
 
     // Update the main branch site
     const { error: updateError } = await supabase
-      .from('sites')
+      .from('main_sites')
       .update(updateData)
       .eq('id', mainBranchSite.id);
 
@@ -438,6 +447,7 @@ export class CompanyService {
 
   /**
    * Update existing company
+   * Supports both UUID (id) and tax_id for lookup
    */
   static async update(id: string, companyData: Record<string, unknown>): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
@@ -445,10 +455,14 @@ export class CompanyService {
     // Sanitize data to remove invalid fields
     const sanitizedData = this.sanitizeCompanyData(companyData);
 
+    // Check if input is UUID format
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    const isUuid = uuidRegex.test(id);
+
     const { data, error } = await supabase
-      .from('companies')
+      .from('main_companies')
       .update(sanitizedData)
-      .eq('tax_id', id)
+      .eq(isUuid ? 'id' : 'tax_id', id)
       .select('*')
       .single();
 
@@ -456,10 +470,11 @@ export class CompanyService {
     if (!data) throw new NotFoundError('ไม่พบข้อมูลบริษัท');
 
     // Update main branch site if address info changed
+    // Note: company_id in main_sites is UUID, so use data.id (not tax_id)
     const { data: mainBranchSite } = await supabase
-      .from('sites')
+      .from('main_sites')
       .select('id')
-      .eq('company_id', id)
+      .eq('company_id', data.id)
       .eq('is_main_branch', true)
       .maybeSingle();
 
@@ -474,15 +489,21 @@ export class CompanyService {
 
   /**
    * Delete company
+   * Supports both UUID (id) and tax_id for lookup
    */
   static async delete(id: string): Promise<void> {
     const supabase = createServiceClient();
 
+    // Check if input is UUID format
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    const isUuid = uuidRegex.test(id);
+    const lookupField = isUuid ? 'id' : 'tax_id';
+
     // First check if company exists
     const { data: existingCompany, error: selectError } = await supabase
-      .from('companies')
-      .select('tax_id')
-      .eq('tax_id', id)
+      .from('main_companies')
+      .select('id, tax_id')
+      .eq(lookupField, id)
       .maybeSingle();
 
     if (selectError) throw new DatabaseError(selectError.message);
@@ -490,9 +511,9 @@ export class CompanyService {
 
     // Delete the company
     const { error } = await supabase
-      .from('companies')
+      .from('main_companies')
       .delete()
-      .eq('tax_id', id);
+      .eq(lookupField, id);
 
     if (error) throw new DatabaseError(error.message);
   }
@@ -508,7 +529,7 @@ export class CompanyService {
 
     // Try to find existing company by tax_id
     const { data: existingCompany, error: searchError } = await supabase
-      .from('companies')
+      .from('main_companies')
       .select('*')
       .eq('tax_id', sanitizedData.tax_id)
       .maybeSingle();
@@ -518,7 +539,7 @@ export class CompanyService {
     if (existingCompany) {
       // Update existing company
       const { data: updatedCompany, error: updateError } = await supabase
-        .from('companies')
+        .from('main_companies')
         .update(sanitizedData)
         .eq('tax_id', sanitizedData.tax_id as string)
         .select('*')
@@ -528,10 +549,11 @@ export class CompanyService {
       if (!updatedCompany) throw new DatabaseError('Failed to update company');
 
       // Update main branch site if it exists
+      // Note: company_id in main_sites is UUID, so use updatedCompany.id (not tax_id)
       const { data: mainBranchSite } = await supabase
-        .from('sites')
+        .from('main_sites')
         .select('id')
-        .eq('company_id', sanitizedData.tax_id as string)
+        .eq('company_id', updatedCompany.id)
         .eq('is_main_branch', true)
         .maybeSingle();
 
@@ -546,7 +568,7 @@ export class CompanyService {
 
     // Create new company
     const { data: newCompany, error: createError } = await supabase
-      .from('companies')
+      .from('main_companies')
       .insert([sanitizedData])
       .select('*')
       .single();
@@ -555,10 +577,11 @@ export class CompanyService {
     if (!newCompany) throw new DatabaseError('Failed to create company');
 
     // Check if main branch site exists for this company
+    // Note: company_id in main_sites is UUID, so use newCompany.id (not tax_id)
     const { data: mainBranchSite } = await supabase
-      .from('sites')
+      .from('main_sites')
       .select('id')
-      .eq('company_id', sanitizedData.tax_id as string)
+      .eq('company_id', newCompany.id)
       .eq('is_main_branch', true)
       .maybeSingle();
 

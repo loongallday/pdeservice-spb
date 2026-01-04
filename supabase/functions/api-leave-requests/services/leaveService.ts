@@ -2,21 +2,21 @@
  * Leave Request service - Business logic for leave request operations
  */
 
-import { createServiceClient } from '../_shared/supabase.ts';
-import { NotFoundError, DatabaseError } from '../_shared/error.ts';
-import { calculatePagination } from '../_shared/response.ts';
-import type { PaginationInfo } from '../_shared/response.ts';
+import { createServiceClient } from '../../_shared/supabase.ts';
+import { NotFoundError, DatabaseError } from '../../_shared/error.ts';
+import { calculatePagination } from '../../_shared/response.ts';
+import type { PaginationInfo } from '../../_shared/response.ts';
 
 export class LeaveService {
   static async getAll(params: { page: number; limit: number; status?: string; leave_type_id?: string; employee_id?: string; start_date?: string; end_date?: string }): Promise<{ data: Record<string, unknown>[]; pagination: PaginationInfo }> {
     const supabase = createServiceClient();
     const { page, limit, status, leave_type_id, employee_id, start_date, end_date } = params;
 
-    let query = supabase.from('leave_requests').select(`
+    let query = supabase.from('child_employee_leave_requests').select(`
       *,
-      employee:employees!leave_requests_employee_id_fkey(*),
-      leave_type:leave_types!leave_requests_leave_type_id_fkey(*),
-      approved_by_employee:employees!leave_requests_approved_by_fkey(*)
+      employee:main_employees!child_employee_leave_requests_employee_id_fkey(*),
+      leave_type:ref_leave_types!child_employee_leave_requests_type_id_fkey(*),
+      approved_by_employee:main_employees!child_employee_leave_requests_approved_by_fkey(*)
     `, { count: 'exact' }).order('created_at', { ascending: false });
 
     if (status && status !== 'all') query = query.eq('status', status);
@@ -77,11 +77,11 @@ export class LeaveService {
   static async getById(id: string): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
     
-    const { data, error } = await supabase.from('leave_requests').select(`
+    const { data, error } = await supabase.from('child_employee_leave_requests').select(`
       *,
-      employee:employees!leave_requests_employee_id_fkey(*),
-      leave_type:leave_types!leave_requests_leave_type_id_fkey(*),
-      approved_by_employee:employees!leave_requests_approved_by_fkey(*)
+      employee:main_employees!child_employee_leave_requests_employee_id_fkey(*),
+      leave_type:ref_leave_types!child_employee_leave_requests_type_id_fkey(*),
+      approved_by_employee:main_employees!child_employee_leave_requests_approved_by_fkey(*)
     `).eq('id', id).single();
 
     if (error) {
@@ -119,7 +119,7 @@ export class LeaveService {
 
     // Insert without half_day_type
     const { data: insertedData, error: insertError } = await supabase
-      .from('leave_requests')
+      .from('child_employee_leave_requests')
       .insert(insertData)
       .select('id')
       .single();
@@ -146,7 +146,7 @@ export class LeaveService {
       try {
         // Try direct update first
         const { error: updateError } = await supabase
-          .from('leave_requests')
+          .from('child_employee_leave_requests')
           .update({ half_day_type: halfDayType })
           .eq('id', insertedId);
 
@@ -172,10 +172,10 @@ export class LeaveService {
     }
 
     // Fetch full data with relations
-    const { data, error } = await supabase.from('leave_requests').select(`
+    const { data, error } = await supabase.from('child_employee_leave_requests').select(`
       *,
-      employee:employees!leave_requests_employee_id_fkey(*),
-      leave_type:leave_types!leave_requests_leave_type_id_fkey(*)
+      employee:main_employees!child_employee_leave_requests_employee_id_fkey(*),
+      leave_type:ref_leave_types!child_employee_leave_requests_type_id_fkey(*)
     `).eq('id', insertedId).single();
 
     if (error) {
@@ -206,11 +206,11 @@ export class LeaveService {
       delete cleanedData.half_day_type;
     }
     
-    const { data, error } = await supabase.from('leave_requests').update(cleanedData).eq('id', id).select(`
+    const { data, error } = await supabase.from('child_employee_leave_requests').update(cleanedData).eq('id', id).select(`
       *,
-      employee:employees!leave_requests_employee_id_fkey(*),
-      leave_type:leave_types!leave_requests_leave_type_id_fkey(*),
-      approved_by_employee:employees!leave_requests_approved_by_fkey(*)
+      employee:main_employees!child_employee_leave_requests_employee_id_fkey(*),
+      leave_type:ref_leave_types!child_employee_leave_requests_type_id_fkey(*),
+      approved_by_employee:main_employees!child_employee_leave_requests_approved_by_fkey(*)
     `).single();
 
     if (error) throw new DatabaseError(error.message);
@@ -221,7 +221,7 @@ export class LeaveService {
 
   static async delete(id: string): Promise<void> {
     const supabase = createServiceClient();
-    const { error } = await supabase.from('leave_requests').delete().eq('id', id);
+    const { error } = await supabase.from('child_employee_leave_requests').delete().eq('id', id);
 
     if (error) throw new DatabaseError(error.message);
   }
@@ -258,10 +258,10 @@ export class LeaveService {
     }
 
     const { data, error } = await supabase
-      .from('leave_requests')
+      .from('child_employee_leave_requests')
       .select(`
         *,
-        employee:employees!leave_requests_employee_id_fkey(id, code, name, nickname)
+        employee:main_employees!child_employee_leave_requests_employee_id_fkey(id, code, name, nickname)
       `)
       .or(`reason.ilike.%${query}%`)
       .limit(20)

@@ -14,6 +14,17 @@ import type {
   DateType,
 } from './ticketTypes.ts';
 
+import type {
+  TicketDisplayItem,
+  TicketLocation,
+  TicketAppointment,
+  TicketEmployee,
+  TicketMerchandiseSummary,
+  TicketIds,
+  IncludeMode,
+  AppointmentType,
+} from './ticketDisplayTypes.ts';
+
 import {
   search as searchTickets,
   searchByDuration as searchTicketsByDuration,
@@ -31,12 +42,24 @@ import {
   linkMerchandiseToTicket,
 } from './ticketHelperService.ts';
 
-// Re-export types
+// Re-export types from ticketTypes
 export type {
   TicketQueryParams,
   MasterTicketCreateInput,
   MasterTicketUpdateInput,
   DateType,
+};
+
+// Re-export display types
+export type {
+  TicketDisplayItem,
+  TicketLocation,
+  TicketAppointment,
+  TicketEmployee,
+  TicketMerchandiseSummary,
+  TicketIds,
+  IncludeMode,
+  AppointmentType,
 };
 
 // Re-export search methods
@@ -89,9 +112,12 @@ export class TicketService {
     start_date?: string;
     end_date?: string;
     exclude_backlog?: boolean;
+    appointment_is_approved?: boolean;
     department_id?: string | string[];
+    employee_id?: string | string[];
     sort?: string;
     order?: 'asc' | 'desc';
+    include?: IncludeMode;
   }) {
     return await searchTickets(params);
   }
@@ -104,6 +130,7 @@ export class TicketService {
     dateType: DateType;
     sort?: string;
     order?: 'asc' | 'desc';
+    include?: IncludeMode;
   }) {
     return await searchTicketsByDuration(params);
   }

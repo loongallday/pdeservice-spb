@@ -3,10 +3,10 @@
  * Returns current user information
  */
 
-import { handleCORS } from './_shared/cors.ts';
-import { error } from './_shared/response.ts';
-import { authenticate } from './_shared/auth.ts';
-import { handleError } from './_shared/error.ts';
+import { handleCORS } from '../_shared/cors.ts';
+import { error } from '../_shared/response.ts';
+import { authenticate } from '../_shared/auth.ts';
+import { handleError } from '../_shared/error.ts';
 import { me } from './handlers/me.ts';
 import { features } from './handlers/features.ts';
 

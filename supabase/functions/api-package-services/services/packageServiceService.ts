@@ -2,10 +2,10 @@
  * Package Service Service - Database operations for package services catalog
  */
 
-import { createServiceClient } from '../_shared/supabase.ts';
-import { DatabaseError, NotFoundError } from '../_shared/error.ts';
-import { calculatePagination } from '../_shared/response.ts';
-import type { PaginationInfo } from '../_shared/response.ts';
+import { createServiceClient } from '../../_shared/supabase.ts';
+import { DatabaseError, NotFoundError } from '../../_shared/error.ts';
+import { calculatePagination } from '../../_shared/response.ts';
+import type { PaginationInfo } from '../../_shared/response.ts';
 
 export class PackageServiceService {
   /**
@@ -49,7 +49,7 @@ export class PackageServiceService {
 
     // Build count query
     let countQuery = supabase
-      .from('package_services')
+      .from('ref_package_services')
       .select('*', { count: 'exact', head: true });
 
     if (category) {
@@ -71,7 +71,7 @@ export class PackageServiceService {
     // Build data query
     const offset = (page - 1) * limit;
     let dataQuery = supabase
-      .from('package_services')
+      .from('ref_package_services')
       .select('*');
 
     if (category) {
@@ -106,7 +106,7 @@ export class PackageServiceService {
     const supabase = createServiceClient();
 
     const { data, error } = await supabase
-      .from('package_services')
+      .from('ref_package_services')
       .select('*')
       .eq('id', id)
       .single();
@@ -129,7 +129,7 @@ export class PackageServiceService {
     const sanitized = this.sanitize(data);
 
     const { data: service, error } = await supabase
-      .from('package_services')
+      .from('ref_package_services')
       .insert([sanitized])
       .select()
       .single();
@@ -159,7 +159,7 @@ export class PackageServiceService {
     }
 
     const { data: service, error } = await supabase
-      .from('package_services')
+      .from('ref_package_services')
       .update(sanitized)
       .eq('id', id)
       .select()
@@ -185,7 +185,7 @@ export class PackageServiceService {
     await this.getById(id);
 
     const { error } = await supabase
-      .from('package_services')
+      .from('ref_package_services')
       .delete()
       .eq('id', id);
 

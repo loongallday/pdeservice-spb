@@ -2,11 +2,11 @@
  * Model service - Business logic for model operations
  */
 
-import { createServiceClient } from '../_shared/supabase.ts';
-import { NotFoundError, DatabaseError, ValidationError } from '../_shared/error.ts';
-import { calculatePagination } from '../_shared/response.ts';
-import { sanitizeData } from '../_shared/sanitize.ts';
-import type { PaginationInfo } from '../_shared/response.ts';
+import { createServiceClient } from '../../_shared/supabase.ts';
+import { NotFoundError, DatabaseError, ValidationError } from '../../_shared/error.ts';
+import { calculatePagination } from '../../_shared/response.ts';
+import { sanitizeData } from '../../_shared/sanitize.ts';
+import type { PaginationInfo } from '../../_shared/response.ts';
 
 export interface ModelQueryParams {
   page: number;
@@ -39,11 +39,11 @@ export class ModelService {
 
     // Build query
     let countQuery = supabase
-      .from('models')
+      .from('main_models')
       .select('*', { count: 'exact', head: true });
 
     let dataQuery = supabase
-      .from('models')
+      .from('main_models')
       .select('*');
 
     // Apply search filter
@@ -83,7 +83,7 @@ export class ModelService {
     const supabase = createServiceClient();
 
     const { data, error } = await supabase
-      .from('models')
+      .from('main_models')
       .select('*')
       .eq('id', id)
       .single();
@@ -106,7 +106,7 @@ export class ModelService {
     const supabase = createServiceClient();
 
     const { data, error } = await supabase
-      .from('models')
+      .from('main_models')
       .select('*')
       .eq('model', model)
       .single();
@@ -135,7 +135,7 @@ export class ModelService {
     }
 
     const { data, error } = await supabase
-      .from('models')
+      .from('main_models')
       .insert(sanitized)
       .select()
       .single();
@@ -161,7 +161,7 @@ export class ModelService {
     await this.getById(id);
 
     const { data, error } = await supabase
-      .from('models')
+      .from('main_models')
       .update(sanitized)
       .eq('id', id)
       .select()
@@ -191,7 +191,7 @@ export class ModelService {
     await this.getById(id);
 
     const { error } = await supabase
-      .from('models')
+      .from('main_models')
       .delete()
       .eq('id', id);
 
@@ -215,7 +215,7 @@ export class ModelService {
     const { description, code } = params;
 
     let query = supabase
-      .from('models')
+      .from('main_models')
       .select('*');
 
     // Build search conditions if parameters provided
@@ -265,7 +265,7 @@ export class ModelService {
 
     // Get package items with item details
     const { data: items, error: itemsError } = await supabase
-      .from('model_package_items')
+      .from('jct_model_package_items')
       .select(`
         id,
         quantity,
@@ -290,7 +290,7 @@ export class ModelService {
 
     // Get package services with service details
     const { data: services, error: servicesError } = await supabase
-      .from('model_package_services')
+      .from('jct_model_package_services')
       .select(`
         id,
         terms,
@@ -330,7 +330,7 @@ export class ModelService {
     await this.getById(data.model_id as string);
 
     const { data: result, error } = await supabase
-      .from('model_package_items')
+      .from('jct_model_package_items')
       .insert([data])
       .select(`
         id,
@@ -370,7 +370,7 @@ export class ModelService {
     const supabase = createServiceClient();
 
     const { error } = await supabase
-      .from('model_package_items')
+      .from('jct_model_package_items')
       .delete()
       .eq('model_id', modelId)
       .eq('item_id', itemId);
@@ -388,7 +388,7 @@ export class ModelService {
     await this.getById(data.model_id as string);
 
     const { data: result, error } = await supabase
-      .from('model_package_services')
+      .from('jct_model_package_services')
       .insert([data])
       .select(`
         id,
@@ -428,7 +428,7 @@ export class ModelService {
     const supabase = createServiceClient();
 
     const { error } = await supabase
-      .from('model_package_services')
+      .from('jct_model_package_services')
       .delete()
       .eq('model_id', modelId)
       .eq('service_id', serviceId);
@@ -504,7 +504,7 @@ export class ModelService {
     await this.getById(modelId);
 
     const { data, error } = await supabase
-      .from('model_specifications')
+      .from('ext_model_specifications')
       .select('*')
       .eq('model_id', modelId)
       .single();
@@ -540,7 +540,7 @@ export class ModelService {
     if (existing) {
       // Update existing
       const { data, error } = await supabase
-        .from('model_specifications')
+        .from('ext_model_specifications')
         .update(sanitized)
         .eq('model_id', modelId)
         .select()
@@ -552,7 +552,7 @@ export class ModelService {
     } else {
       // Create new
       const { data, error } = await supabase
-        .from('model_specifications')
+        .from('ext_model_specifications')
         .insert([{ model_id: modelId, ...sanitized }])
         .select()
         .single();

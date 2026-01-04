@@ -2,11 +2,11 @@
  * Merchandise service - Business logic for merchandise operations
  */
 
-import { createServiceClient } from '../_shared/supabase.ts';
-import { NotFoundError, DatabaseError, ValidationError } from '../_shared/error.ts';
-import { calculatePagination } from '../_shared/response.ts';
-import { sanitizeData } from '../_shared/sanitize.ts';
-import type { PaginationInfo } from '../_shared/response.ts';
+import { createServiceClient } from '../../_shared/supabase.ts';
+import { NotFoundError, DatabaseError, ValidationError } from '../../_shared/error.ts';
+import { calculatePagination } from '../../_shared/response.ts';
+import { sanitizeData } from '../../_shared/sanitize.ts';
+import type { PaginationInfo } from '../../_shared/response.ts';
 
 export interface MerchandiseQueryParams {
   page: number;
@@ -45,20 +45,20 @@ export class MerchandiseService {
 
     // Build query
     let countQuery = supabase
-      .from('merchandise')
+      .from('main_merchandise')
       .select('*', { count: 'exact', head: true });
 
     let dataQuery = supabase
-      .from('merchandise')
+      .from('main_merchandise')
       .select(`
         *,
-        model:models!merchandise_model_id_fkey (
+        model:main_models!main_merchandise_model_id_fkey (
           id,
           model,
           name,
           website_url
         ),
-        site:sites!merchandise_site_id_fkey (
+        site:main_sites!main_merchandise_site_id_fkey (
           id,
           name
         )
@@ -113,16 +113,16 @@ export class MerchandiseService {
     const supabase = createServiceClient();
 
     const { data, error } = await supabase
-      .from('merchandise')
+      .from('main_merchandise')
       .select(`
         *,
-        model:models!merchandise_model_id_fkey (
+        model:main_models!main_merchandise_model_id_fkey (
           id,
           model,
           name,
           website_url
         ),
-        site:sites!merchandise_site_id_fkey (
+        site:main_sites!main_merchandise_site_id_fkey (
           id,
           name
         )
@@ -184,7 +184,7 @@ export class MerchandiseService {
 
     // Check if model exists
     const { data: model, error: modelError } = await supabase
-      .from('models')
+      .from('main_models')
       .select('id')
       .eq('id', sanitized.model_id)
       .single();
@@ -195,7 +195,7 @@ export class MerchandiseService {
 
     // Check if site exists
     const { data: site, error: siteError } = await supabase
-      .from('sites')
+      .from('main_sites')
       .select('id')
       .eq('id', sanitized.site_id)
       .single();
@@ -205,17 +205,17 @@ export class MerchandiseService {
     }
 
     const { data, error } = await supabase
-      .from('merchandise')
+      .from('main_merchandise')
       .insert(sanitized)
       .select(`
         *,
-        model:models!merchandise_model_id_fkey (
+        model:main_models!main_merchandise_model_id_fkey (
           id,
           model,
           name,
           website_url
         ),
-        site:sites!merchandise_site_id_fkey (
+        site:main_sites!main_merchandise_site_id_fkey (
           id,
           name
         )
@@ -245,7 +245,7 @@ export class MerchandiseService {
     // If updating model_id, check if model exists
     if (sanitized.model_id) {
       const { data: model, error: modelError } = await supabase
-        .from('models')
+        .from('main_models')
         .select('id')
         .eq('id', sanitized.model_id)
         .single();
@@ -258,7 +258,7 @@ export class MerchandiseService {
     // If updating site_id, check if site exists
     if (sanitized.site_id) {
       const { data: site, error: siteError } = await supabase
-        .from('sites')
+        .from('main_sites')
         .select('id')
         .eq('id', sanitized.site_id)
         .single();
@@ -269,18 +269,18 @@ export class MerchandiseService {
     }
 
     const { data, error } = await supabase
-      .from('merchandise')
+      .from('main_merchandise')
       .update(sanitized)
       .eq('id', id)
       .select(`
         *,
-        model:models!merchandise_model_id_fkey (
+        model:main_models!main_merchandise_model_id_fkey (
           id,
           model,
           name,
           website_url
         ),
-        site:sites!merchandise_site_id_fkey (
+        site:main_sites!main_merchandise_site_id_fkey (
           id,
           name
         )
@@ -308,7 +308,7 @@ export class MerchandiseService {
     await this.getById(id);
 
     const { error } = await supabase
-      .from('merchandise')
+      .from('main_merchandise')
       .delete()
       .eq('id', id);
 
@@ -333,35 +333,35 @@ export class MerchandiseService {
 
     // Build count query
     let countQuery = supabase
-      .from('merchandise')
+      .from('main_merchandise')
       .select('*', { count: 'exact', head: true });
 
     // Build data query
     let dataQuery = supabase
-      .from('merchandise')
+      .from('main_merchandise')
       .select(`
         id,
         serial_no,
         model_id,
         site_id,
         pm_count,
-        site:sites!merchandise_site_id_fkey (
+        site:main_sites!main_merchandise_site_id_fkey (
           id,
           name
         ),
-        model:models!merchandise_model_id_fkey (
+        model:main_models!main_merchandise_model_id_fkey (
           id,
           model,
           name
         ),
         distributor_id,
         dealer_id,
-        distributor:companies!merchandise_distributor_id_fkey (
+        distributor:main_companies!main_merchandise_distributor_id_fkey (
           tax_id,
           name_th,
           name_en
         ),
-        dealer:companies!merchandise_dealer_id_fkey (
+        dealer:main_companies!main_merchandise_dealer_id_fkey (
           tax_id,
           name_th,
           name_en
@@ -399,7 +399,7 @@ export class MerchandiseService {
     let replacedByMap: Record<string, string> = {};
     if (replacedByIds.length > 0) {
       const { data: replacedByData, error: replacedByError } = await supabase
-        .from('merchandise')
+        .from('main_merchandise')
         .select('id, serial_no')
         .in('id', replacedByIds);
 
@@ -450,18 +450,18 @@ export class MerchandiseService {
     const supabase = createServiceClient();
 
     let queryBuilder = supabase
-      .from('merchandise')
+      .from('main_merchandise')
       .select(`
         id,
         serial_no,
         model_id,
         site_id,
-        model:models!merchandise_model_id_fkey (
+        model:main_models!main_merchandise_model_id_fkey (
           id,
           model,
           name
         ),
-        site:sites!merchandise_site_id_fkey (
+        site:main_sites!main_merchandise_site_id_fkey (
           id,
           name
         )
@@ -510,7 +510,7 @@ export class MerchandiseService {
     }
 
     const { data, error } = await supabase
-      .from('merchandise')
+      .from('main_merchandise')
       .select('id, serial_no, model_id, site_id, created_at')
       .eq('serial_no', serialNo.trim())
       .single();

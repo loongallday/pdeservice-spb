@@ -2,10 +2,10 @@
  * Initialize Service - Aggregates initial app data
  */
 
-import { createServiceClient } from '../_shared/supabase.ts';
-import { DatabaseError } from '../_shared/error.ts';
-import { getEmployeeLevel } from '../_shared/auth.ts';
-import type { Employee } from '../_shared/auth.ts';
+import { createServiceClient } from '../../_shared/supabase.ts';
+import { DatabaseError } from '../../_shared/error.ts';
+import { getEmployeeLevel } from '../../_shared/auth.ts';
+import type { Employee } from '../../_shared/auth.ts';
 
 export interface InitializeData {
   employee: Employee;
@@ -27,7 +27,7 @@ export class InitializeService {
 
     // Get enabled features for this employee (only active features)
     const { data: featuresResult, error: featuresError } = await supabase
-      .from('feature')
+      .from('main_features')
       .select('*')
       .eq('is_active', true)
       .lte('min_level', employeeLevel)
@@ -86,10 +86,10 @@ export class InitializeService {
 
     // Get full employee details with role data
     const { data: employeeResult, error: employeeError } = await supabase
-      .from('employees')
+      .from('main_employees')
       .select(`
         *,
-        role_data:roles!role_id(
+        role_data:main_org_roles!role_id(
           id,
           code,
           name_th,
@@ -99,7 +99,7 @@ export class InitializeService {
           department_id,
           is_active,
           requires_auth,
-          department:departments!roles_department_id_fkey(
+          department:main_org_departments!main_org_roles_department_id_fkey(
             id,
             code,
             name_th,
@@ -122,7 +122,7 @@ export class InitializeService {
     
     if (employeeId) {
       const { data: approvalUser, error: approvalError } = await supabase
-        .from('appointment_approval_users')
+        .from('jct_appointment_approvers')
         .select('id')
         .eq('employee_id', employeeId)
         .single();
@@ -154,7 +154,7 @@ export class InitializeService {
     const [featuresResult, employeeResult] = await Promise.all([
       // Get enabled features for this employee (only active features)
       supabase
-        .from('feature')
+        .from('main_features')
         .select('*')
         .eq('is_active', true)
         .lte('min_level', employeeLevel)
@@ -162,10 +162,10 @@ export class InitializeService {
 
       // Get full employee details with role data
       supabase
-        .from('employees')
+        .from('main_employees')
         .select(`
           *,
-          role_data:roles!role_id(
+          role_data:main_org_roles!role_id(
             id,
             code,
             name_th,
@@ -175,7 +175,7 @@ export class InitializeService {
             department_id,
             is_active,
             requires_auth,
-            department:departments!roles_department_id_fkey(
+            department:main_org_departments!main_org_roles_department_id_fkey(
               id,
               code,
               name_th,
@@ -233,7 +233,7 @@ export class InitializeService {
     
     if (employeeId) {
       const { data: approvalUser, error: approvalError } = await supabase
-        .from('appointment_approval_users')
+        .from('jct_appointment_approvers')
         .select('id')
         .eq('employee_id', employeeId)
         .single();

@@ -1,11 +1,78 @@
 /**
  * Employee service - Business logic for employee operations
+ * OPTIMIZED: Combined count+data queries, cached static lookups
  */
 
-import { createServiceClient } from '../_shared/supabase.ts';
-import { NotFoundError, DatabaseError } from '../_shared/error.ts';
-import { calculatePagination } from '../_shared/response.ts';
-import type { PaginationInfo } from '../_shared/response.ts';
+import { createServiceClient } from '../../_shared/supabase.ts';
+import { NotFoundError, DatabaseError } from '../../_shared/error.ts';
+import { calculatePagination } from '../../_shared/response.ts';
+import type { PaginationInfo } from '../../_shared/response.ts';
+
+// Static cache for frequently looked up values that rarely change
+const staticCache = {
+  roleIdByCode: new Map<string, string>(),
+  departmentIdByCode: new Map<string, string>(),
+  lastCacheTime: 0,
+  cacheTTL: 5 * 60 * 1000, // 5 minutes TTL
+};
+
+/**
+ * Get role ID by code with caching
+ */
+async function getRoleIdByCode(code: string): Promise<string | null> {
+  // Check cache first
+  const now = Date.now();
+  if (now - staticCache.lastCacheTime < staticCache.cacheTTL) {
+    const cached = staticCache.roleIdByCode.get(code);
+    if (cached) return cached;
+  }
+
+  // Look up from database
+  const supabase = createServiceClient();
+  const { data, error } = await supabase
+    .from('main_org_roles')
+    .select('id')
+    .eq('code', code)
+    .maybeSingle();
+
+  if (error) throw new DatabaseError(`Failed to lookup role: ${error.message}`);
+  if (!data) return null;
+
+  // Update cache
+  staticCache.roleIdByCode.set(code, data.id);
+  staticCache.lastCacheTime = now;
+  
+  return data.id;
+}
+
+/**
+ * Get department ID by code with caching
+ */
+async function getDepartmentIdByCode(code: string): Promise<string | null> {
+  // Check cache first
+  const now = Date.now();
+  if (now - staticCache.lastCacheTime < staticCache.cacheTTL) {
+    const cached = staticCache.departmentIdByCode.get(code);
+    if (cached) return cached;
+  }
+
+  // Look up from database
+  const supabase = createServiceClient();
+  const { data, error } = await supabase
+    .from('main_org_departments')
+    .select('id')
+    .eq('code', code)
+    .maybeSingle();
+
+  if (error) throw new DatabaseError(`Failed to lookup department: ${error.message}`);
+  if (!data) return null;
+
+  // Update cache
+  staticCache.departmentIdByCode.set(code, data.id);
+  staticCache.lastCacheTime = now;
+  
+  return data.id;
+}
 
 export class EmployeeService {
 
@@ -16,12 +83,12 @@ export class EmployeeService {
     const supabase = createServiceClient();
 
     const { data, error } = await supabase
-      .from('employees')
+      .from('main_employees')
       .select(`
         *,
-        role_data:roles!role_id(
+        role_data:main_org_roles!role_id(
           *,
-          department:departments!department_id(id, code, name_th, name_en)
+          department:main_org_departments!main_org_roles_department_id_fkey(id, code, name_th, name_en)
         )
       `)
       .eq('id', id)
@@ -54,7 +121,7 @@ export class EmployeeService {
     if (insertData.role_id === undefined && insertData.role !== undefined && typeof insertData.role === 'string') {
       // Look up role_id from role code
       const { data: roleData, error: roleError } = await supabase
-        .from('roles')
+        .from('main_org_roles')
         .select('id')
         .eq('code', insertData.role)
         .maybeSingle();
@@ -73,13 +140,13 @@ export class EmployeeService {
     }
 
     const { data, error} = await supabase
-      .from('employees')
+      .from('main_employees')
       .insert([insertData])
       .select(`
         *,
-        role_data:roles!role_id(
+        role_data:main_org_roles!role_id(
           *,
-          department:departments!department_id(id, code, name_th, name_en)
+          department:main_org_departments!main_org_roles_department_id_fkey(id, code, name_th, name_en)
         )
       `)
       .single();
@@ -112,7 +179,7 @@ export class EmployeeService {
     const leaveTypeIds: Record<string, string> = {};
     for (const leaveBalance of leaveBalances) {
       const { data: leaveType, error: leaveTypeError } = await supabase
-        .from('leave_types')
+        .from('ref_leave_types')
         .select('id')
         .eq('code', leaveBalance.code)
         .maybeSingle();
@@ -142,7 +209,7 @@ export class EmployeeService {
 
     if (balanceRecords.length > 0) {
       const { error: balanceError } = await supabase
-        .from('leave_balances')
+        .from('child_employee_leave_balances')
         .insert(balanceRecords);
 
       if (balanceError) {
@@ -196,12 +263,12 @@ export class EmployeeService {
 
       // Fetch full employee record with relations
       const { data: fullData, error: fetchError } = await supabase
-        .from('employees')
+        .from('main_employees')
         .select(`
           *,
-          role_data:roles!role_id(
+          role_data:main_org_roles!role_id(
             *,
-            department:departments!department_id(id, code, name_th, name_en)
+            department:main_org_departments!main_org_roles_department_id_fkey(id, code, name_th, name_en)
           )
         `)
         .eq('id', id)
@@ -221,7 +288,7 @@ export class EmployeeService {
     if (updateData.role_id === undefined && updateData.role !== undefined && typeof updateData.role === 'string') {
       // Look up role_id from role code
       const { data: roleData, error: roleError } = await supabase
-        .from('roles')
+        .from('main_org_roles')
         .select('id')
         .eq('code', updateData.role)
         .maybeSingle();
@@ -241,14 +308,14 @@ export class EmployeeService {
 
     // For other updates, use standard update
     const { data, error } = await supabase
-      .from('employees')
+      .from('main_employees')
       .update(updateData)
       .eq('id', id)
       .select(`
         *,
-        role_data:roles!role_id(
+        role_data:main_org_roles!role_id(
           *,
-          department:departments!department_id(id, code, name_th, name_en)
+          department:main_org_departments!main_org_roles_department_id_fkey(id, code, name_th, name_en)
         )
       `)
       .single();
@@ -266,7 +333,7 @@ export class EmployeeService {
     const supabase = createServiceClient();
 
     const { error } = await supabase
-      .from('employees')
+      .from('main_employees')
       .update({ is_active: false })
       .eq('id', id);
 
@@ -291,7 +358,7 @@ export class EmployeeService {
 
     // Then link the auth user to the employee
     const { data, error } = await supabase
-      .from('employees')
+      .from('main_employees')
       .update({ 
         auth_user_id: authData.user.id,
         email: authData.user.email || email
@@ -318,7 +385,7 @@ export class EmployeeService {
 
     // Check if auth user is already linked to another employee
     const { data: existingEmployee, error: checkError } = await supabase
-      .from('employees')
+      .from('main_employees')
       .select('id, name, code')
       .eq('auth_user_id', authUserId)
       .neq('id', employeeId)
@@ -331,7 +398,7 @@ export class EmployeeService {
 
     // Link the auth user to the employee
     const { data, error } = await supabase
-      .from('employees')
+      .from('main_employees')
       .update({ 
         auth_user_id: authUserId,
         email: email || authUser.user.email || ''
@@ -353,7 +420,7 @@ export class EmployeeService {
 
     // Unlink the auth user from the employee (set auth_user_id to null, keep email)
     const { data, error } = await supabase
-      .from('employees')
+      .from('main_employees')
       .update({ 
         auth_user_id: null
       })
@@ -369,73 +436,27 @@ export class EmployeeService {
   /**
    * Get employee counts grouped by department
    * Returns consolidated data about employee counts for each department
+   * SIMPLIFIED: Now uses denormalized department_id column on employees
    */
   static async getEmployeeCountsByDepartment(): Promise<Record<string, unknown>[]> {
     const supabase = createServiceClient();
 
-    // Get all departments with employee counts
+    // Get all active departments
     const { data: departments, error: deptError } = await supabase
-      .from('departments')
-      .select(`
-        id,
-        code,
-        name_th,
-        name_en,
-        is_active,
-        head_id
-      `)
+      .from('main_org_departments')
+      .select('id, code, name_th, name_en')
       .eq('is_active', true)
       .order('name_th');
 
     if (deptError) throw new DatabaseError(deptError.message);
 
-    // Get all employees with their roles
-    // Query roles separately to avoid issues with invalid department_id references
+    // Get all employees with department_id from v_employees view
     const { data: employees, error: empError } = await supabase
-      .from('employees')
-      .select(`
-        id,
-        is_active,
-        role_id,
-        role:roles!role_id(
-          id,
-          department_id
-        )
-      `);
+      .from('v_employees')
+      .select('id, is_active, department_id');
 
     if (empError) {
       throw new DatabaseError(empError.message);
-    }
-
-    // Get all role department_ids and fetch department info separately
-    const roleDepartmentIds = new Set<string>();
-    employees?.forEach(emp => {
-      const role = emp.role as Record<string, unknown> | null;
-      const deptId = role?.department_id as string | null | undefined;
-      if (deptId) {
-        roleDepartmentIds.add(deptId);
-      }
-    });
-
-    // Fetch department information for all referenced departments
-    const departmentIds = Array.from(roleDepartmentIds);
-    const departmentMap = new Map<string, Record<string, unknown>>();
-    
-    if (departmentIds.length > 0) {
-      const { data: deptData, error: deptDataError } = await supabase
-        .from('departments')
-        .select('id, code, name_th, name_en')
-        .in('id', departmentIds);
-
-      if (deptDataError) {
-        // If department lookup fails, continue without department info
-        // This handles cases where department_id references don't exist
-        // Invalid department references will be skipped in the counting logic below
-      } else {
-        deptData?.forEach(dept => {
-          departmentMap.set(dept.id as string, dept);
-        });
-      }
     }
 
     // Group employees by department and count
@@ -462,36 +483,21 @@ export class EmployeeService {
       });
     });
 
-    // Count employees by department
+    // Count employees by department using department_id from view
     employees?.forEach(emp => {
-      const role = emp.role as Record<string, unknown> | null;
-      const deptId = role?.department_id as string | null | undefined;
+      const deptId = emp.department_id as string | null | undefined;
       
       if (deptId) {
-        const department = departmentMap.get(deptId);
         const count = departmentCounts.get(deptId);
         
         if (count) {
-          // Department is in active list
           count.total_employees++;
           if (emp.is_active) {
             count.active_employees++;
           } else {
             count.inactive_employees++;
           }
-        } else if (department) {
-          // Department exists but not in active list, add it
-          departmentCounts.set(deptId, {
-            department_id: deptId,
-            department_code: (department.code as string) || '',
-            department_name_th: (department.name_th as string) || '',
-            department_name_en: (department.name_en as string) || null,
-            total_employees: 1,
-            active_employees: emp.is_active ? 1 : 0,
-            inactive_employees: emp.is_active ? 0 : 1,
-          });
         }
-        // If department doesn't exist in database, skip it (invalid reference)
       }
     });
 
@@ -502,6 +508,7 @@ export class EmployeeService {
 
   /**
    * Master search employees with text search and filters
+   * OPTIMIZED: Combined count+data query, cached role lookup
    */
   static async search(params: {
     q?: string;
@@ -515,145 +522,74 @@ export class EmployeeService {
     const supabase = createServiceClient();
     const { q, page, limit, role, department_id, code, is_active } = params;
 
-    // If role filter is provided (role code), look up the role_id
+    // If role filter is provided (role code), look up the role_id using cache
     let roleId: string | undefined = undefined;
     if (role) {
-      const { data: roleData, error: roleError } = await supabase
-        .from('roles')
-        .select('id')
-        .eq('code', role)
-        .maybeSingle();
-
-      if (roleError) throw new DatabaseError(`Failed to lookup role: ${roleError.message}`);
-      if (!roleData) {
+      const cachedRoleId = await getRoleIdByCode(role);
+      if (!cachedRoleId) {
         // Role code not found, return empty result
         return {
           data: [],
           pagination: calculatePagination(page, limit, 0),
         };
       }
-      roleId = roleData.id;
+      roleId = cachedRoleId;
     }
 
-    // If department_id filter is provided, get all role_ids for that department
-    let roleIdsForDepartment: string[] | undefined = undefined;
-    if (department_id) {
-      const { data: rolesData, error: rolesError } = await supabase
-        .from('roles')
-        .select('id')
-        .eq('department_id', department_id);
-
-      if (rolesError) throw new DatabaseError(`Failed to lookup roles by department: ${rolesError.message}`);
-      if (!rolesData || rolesData.length === 0) {
-        // No roles in this department, return empty result
-        return {
-          data: [],
-          pagination: calculatePagination(page, limit, 0),
-        };
-      }
-      roleIdsForDepartment = rolesData.map(r => r.id as string);
-    }
-
-    // Build count query
-    let countQuery = supabase
-      .from('employees')
-      .select('*', { count: 'exact', head: true });
-
-    // Apply text search if provided
-    if (q && q.length >= 1) {
-      countQuery = countQuery.or(
-        `name.ilike.%${q}%,code.ilike.%${q}%,email.ilike.%${q}%,nickname.ilike.%${q}%`
-      );
-    }
-
-    // Apply filters
-    if (roleId) {
-      countQuery = countQuery.eq('role_id', roleId);
-    } else if (roleIdsForDepartment) {
-      countQuery = countQuery.in('role_id', roleIdsForDepartment);
-    }
-    if (code) {
-      countQuery = countQuery.eq('code', code);
-    }
-    if (is_active !== undefined) {
-      countQuery = countQuery.eq('is_active', is_active);
-    }
-
-    // Get total count
-    const { count, error: countError } = await countQuery;
-    if (countError) throw new DatabaseError(countError.message);
-    const total = count || 0;
-
-    // Build data query
+    // Build single query with count + data (combined for performance)
     const offset = (page - 1) * limit;
-    let dataQuery = supabase
-      .from('employees')
-      .select(`
-        *,
-        role_data:roles!role_id(
-          *,
-          department:departments!department_id(id, code, name_th, name_en)
-        )
-      `);
+    // Use v_employees view which has department_id via role relationship
+    let query = supabase
+      .from('v_employees')
+      .select('*', { count: 'exact' });
 
     // Apply text search if provided
     if (q && q.length >= 1) {
-      dataQuery = dataQuery.or(
+      query = query.or(
         `name.ilike.%${q}%,code.ilike.%${q}%,email.ilike.%${q}%,nickname.ilike.%${q}%`
       );
     }
 
     // Apply filters
     if (roleId) {
-      dataQuery = dataQuery.eq('role_id', roleId);
-    } else if (roleIdsForDepartment) {
-      dataQuery = dataQuery.in('role_id', roleIdsForDepartment);
+      query = query.eq('role_id', roleId);
+    }
+    if (department_id) {
+      query = query.eq('department_id', department_id);
     }
     if (code) {
-      dataQuery = dataQuery.eq('code', code);
+      query = query.eq('code', code);
     }
     if (is_active !== undefined) {
-      dataQuery = dataQuery.eq('is_active', is_active);
+      query = query.eq('is_active', is_active);
     }
 
-    const { data, error } = await dataQuery
+    // Execute single query with count and pagination
+    const { data, count, error } = await query
       .order('name')
       .range(offset, offset + limit - 1);
 
     if (error) throw new DatabaseError(error.message);
 
-    // Transform data to flatten nested objects into display fields
-    const transformedData = (data || []).map(employee => {
-      const roleData = employee.role_data as {
-        id?: string;
-        code?: string;
-        name_th?: string;
-        name_en?: string;
-        department?: {
-          id?: string;
-          code?: string;
-          name_th?: string;
-          name_en?: string;
-        } | null;
-      } | null;
+    const total = count || 0;
 
-      return {
-        id: employee.id,
-        code: employee.code,
-        name: employee.name,
-        email: employee.email,
-        nickname: employee.nickname,
-        is_active: employee.is_active,
-        role_id: employee.role_id,
-        role_code: roleData?.code || null,
-        role_name: roleData?.name_th || roleData?.name_en || null,
-        department_id: roleData?.department?.id || null,
-        department_code: roleData?.department?.code || null,
-        department_name: roleData?.department?.name_th || roleData?.department?.name_en || null,
-        created_at: employee.created_at,
-        updated_at: employee.updated_at,
-      };
-    });
+    // Transform data - v_employees has flat fields from role and department
+    const transformedData = (data || []).map(employee => ({
+      id: employee.id,
+      code: employee.code,
+      name: employee.name,
+      email: employee.email,
+      nickname: employee.nickname,
+      is_active: employee.is_active,
+      role_id: employee.role_id,
+      role_code: employee.role_code || null,
+      role_name: employee.role_name_th || employee.role_name_en || null,
+      department_id: employee.department_id || null,
+      department_code: employee.department_code || null,
+      department_name: employee.department_name_th || employee.department_name_en || null,
+      created_at: employee.created_at,
+      updated_at: employee.updated_at,
+    }));
 
     return {
       data: transformedData,
@@ -664,6 +600,7 @@ export class EmployeeService {
   /**
    * Network search employees - Optimized for network user search API
    * Focuses on name/email search and network-relevant filters (department, role, active status)
+   * OPTIMIZED: Combined count+data query, cached role lookup
    */
   static async networkSearch(params: {
     q?: string;
@@ -680,145 +617,75 @@ export class EmployeeService {
     // Determine which role filter to use (role_id takes precedence over role code)
     let roleId: string | undefined = role_id;
     
-    // If role_id is not provided but role (code) is, look up the role_id
+    // If role_id is not provided but role (code) is, look up the role_id using cache
     if (!roleId && role) {
-      const { data: roleData, error: roleError } = await supabase
-        .from('roles')
-        .select('id')
-        .eq('code', role)
-        .maybeSingle();
-
-      if (roleError) throw new DatabaseError(`Failed to lookup role: ${roleError.message}`);
-      if (!roleData) {
+      const cachedRoleId = await getRoleIdByCode(role);
+      if (!cachedRoleId) {
         // Role code not found, return empty result
         return {
           data: [],
           pagination: calculatePagination(page, limit, 0),
         };
       }
-      roleId = roleData.id;
+      roleId = cachedRoleId;
     }
 
-    // If department_id filter is provided, get all role_ids for those department(s)
-    let roleIdsForDepartment: string[] | undefined = undefined;
-    if (department_id) {
-      // Normalize to array for consistent handling
-      const departmentIds = Array.isArray(department_id) 
-        ? department_id 
-        : [department_id];
+    // Normalize department_id to array for consistent handling
+    const departmentIds = department_id
+      ? (Array.isArray(department_id) ? department_id : [department_id])
+      : undefined;
 
-      // Get role IDs that belong to these departments
-      const { data: rolesData, error: rolesError } = await supabase
-        .from('roles')
-        .select('id')
-        .in('department_id', departmentIds);
-
-      if (rolesError) throw new DatabaseError(`Failed to lookup roles by department: ${rolesError.message}`);
-      if (!rolesData || rolesData.length === 0) {
-        // No roles in these departments, return empty result
-        return {
-          data: [],
-          pagination: calculatePagination(page, limit, 0),
-        };
-      }
-      roleIdsForDepartment = rolesData.map(r => r.id as string);
-    }
-
-    // Build count query
-    let countQuery = supabase
-      .from('employees')
-      .select('*', { count: 'exact', head: true });
-
-    // Apply text search if provided (name and email only for network search)
-    if (q && q.length >= 1) {
-      countQuery = countQuery.or(
-        `name.ilike.%${q}%,email.ilike.%${q}%`
-      );
-    }
-
-    // Apply filters
-    if (roleId) {
-      countQuery = countQuery.eq('role_id', roleId);
-    } else if (roleIdsForDepartment) {
-      countQuery = countQuery.in('role_id', roleIdsForDepartment);
-    }
-    if (is_active !== undefined) {
-      countQuery = countQuery.eq('is_active', is_active);
-    }
-
-    // Get total count
-    const { count, error: countError } = await countQuery;
-    if (countError) throw new DatabaseError(countError.message);
-    const total = count || 0;
-
-    // Build data query
+    // Build single query with count + data (using v_employees view)
     const offset = (page - 1) * limit;
-    let dataQuery = supabase
-      .from('employees')
-      .select(`
-        *,
-        role_data:roles!role_id(
-          *,
-          department:departments!department_id(id, code, name_th, name_en)
-        )
-      `);
+    let query = supabase
+      .from('v_employees')
+      .select('*', { count: 'exact' });
 
     // Apply text search if provided (name and email only for network search)
     if (q && q.length >= 1) {
-      dataQuery = dataQuery.or(
+      query = query.or(
         `name.ilike.%${q}%,email.ilike.%${q}%`
       );
     }
 
     // Apply filters
     if (roleId) {
-      dataQuery = dataQuery.eq('role_id', roleId);
-    } else if (roleIdsForDepartment) {
-      dataQuery = dataQuery.in('role_id', roleIdsForDepartment);
+      query = query.eq('role_id', roleId);
+    }
+    if (departmentIds) {
+      query = query.in('department_id', departmentIds);
     }
     if (is_active !== undefined) {
-      dataQuery = dataQuery.eq('is_active', is_active);
+      query = query.eq('is_active', is_active);
     }
 
-    const { data, error } = await dataQuery
+    // Execute single query with count and pagination
+    const { data, count, error } = await query
       .order('name')
       .range(offset, offset + limit - 1);
 
     if (error) throw new DatabaseError(error.message);
 
-    // Transform data to flatten nested objects into display fields
-    const transformedData = (data || []).map(employee => {
-      const roleData = employee.role_data as {
-        id?: string;
-        code?: string;
-        name_th?: string;
-        name_en?: string;
-        department?: {
-          id?: string;
-          code?: string;
-          name_th?: string;
-          name_en?: string;
-        } | null;
-      } | null;
+    const total = count || 0;
 
-      return {
-        id: employee.id,
-        code: employee.code,
-        name: employee.name,
-        email: employee.email,
-        nickname: employee.nickname,
-        is_active: employee.is_active,
-        role_id: employee.role_id,
-        role_code: roleData?.code || null,
-        role_name: roleData?.name_th || roleData?.name_en || null,
-        department_id: roleData?.department?.id || null,
-        department_code: roleData?.department?.code || null,
-        department_name: roleData?.department?.name_th || roleData?.department?.name_en || null,
-        created_at: employee.created_at,
-        updated_at: employee.updated_at,
-        auth_user_id: employee.auth_user_id || null,
-      };
-    });
+    // Transform data - v_employees has flat fields
+    const transformedData = (data || []).map(employee => ({
+      id: employee.id,
+      code: employee.code,
+      name: employee.name,
+      email: employee.email,
+      nickname: employee.nickname,
+      is_active: employee.is_active,
+      role_id: employee.role_id,
+      role_code: employee.role_code || null,
+      role_name: employee.role_name_th || employee.role_name_en || null,
+      department_id: employee.department_id || null,
+      department_code: employee.department_code || null,
+      department_name: employee.department_name_th || employee.department_name_en || null,
+      created_at: employee.created_at,
+      updated_at: employee.updated_at,
+      auth_user_id: employee.auth_user_id || null,
+    }));
 
     return {
       data: transformedData,
@@ -835,14 +702,14 @@ export class EmployeeService {
 
     // Get all active employees with role information
     const { data: employees, error: empError } = await supabase
-      .from('employees')
+      .from('main_employees')
       .select(`
         id,
         name,
         email,
         auth_user_id,
         profile_image_url,
-        role:roles!role_id(
+        role:main_org_roles!role_id(
           name_th
         )
       `)
@@ -867,36 +734,27 @@ export class EmployeeService {
    * Returns all active employees from 'technical' department with workload level
    * Workload is based on appointment count: 0=no_work, 1-2=light, 3-4=medium, 5+=heavy
    * If no date is provided, returns all technicians with "no_work" status
+   * OPTIMIZED: Uses cached department lookup
    */
   static async getTechniciansWithWorkload(
     date?: string
   ): Promise<Array<{ id: string; name: string; workload: 'no_work' | 'light' | 'medium' | 'heavy' }>> {
     const supabase = createServiceClient();
 
-    // Step 1: Get department ID for 'technical' department
-    const { data: department, error: deptError } = await supabase
-      .from('departments')
-      .select('id')
-      .eq('code', 'technical')
-      .single();
+    // Step 1: Get department ID for 'technical' department using cache
+    const departmentId = await getDepartmentIdByCode('technical');
 
-    if (deptError || !department) {
+    if (!departmentId) {
       throw new DatabaseError('ไม่พบข้อมูลฝ่ายช่างเทคนิค');
     }
 
-    const departmentId = department.id as string;
-
     // Step 2: Get all active technicians from technical department
+    // Use v_employees view which has department_id via role relationship
     const { data: technicians, error: techError } = await supabase
-      .from('employees')
-      .select(`
-        id,
-        name,
-        role:roles!role_id(
-          department_id
-        )
-      `)
-      .eq('is_active', true);
+      .from('v_employees')
+      .select('id, name')
+      .eq('is_active', true)
+      .eq('department_id', departmentId);
 
     if (techError) {
       throw new DatabaseError(`ไม่สามารถดึงข้อมูลพนักงานได้: ${techError.message}`);
@@ -906,15 +764,7 @@ export class EmployeeService {
       return [];
     }
 
-    // Filter technicians by department
-    const technicalEmployees = technicians.filter(tech => {
-      const role = tech.role as Record<string, unknown> | null;
-      return role && (role.department_id as string) === departmentId;
-    });
-
-    if (technicalEmployees.length === 0) {
-      return [];
-    }
+    const technicalEmployees = technicians;
 
     // If no date provided, return all technicians with "no_work" status
     if (!date) {
@@ -929,11 +779,11 @@ export class EmployeeService {
 
     // Step 3: Query for appointments on the given date
     const { data: ticketEmployees, error: queryError } = await supabase
-      .from('ticket_employees')
+      .from('jct_ticket_employees')
       .select(`
         employee_id,
-        ticket:tickets!ticket_employees_ticket_id_fkey(
-          appointment:appointments!tickets_appointment_id_fkey(
+        ticket:main_tickets!jct_ticket_employees_ticket_id_fkey(
+          appointment:main_appointments!main_tickets_appointment_id_fkey(
             appointment_date
           )
         )

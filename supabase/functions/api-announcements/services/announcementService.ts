@@ -2,8 +2,8 @@
  * Announcement service - Business logic for announcement operations
  */
 
-import { createServiceClient } from '../_shared/supabase.ts';
-import { DatabaseError } from '../_shared/error.ts';
+import { createServiceClient } from '../../_shared/supabase.ts';
+import { DatabaseError } from '../../_shared/error.ts';
 
 export class AnnouncementService {
   /**
@@ -14,16 +14,16 @@ export class AnnouncementService {
 
     // Fetch announcements with photos and files
     const { data, error } = await supabase
-      .from('announcements')
+      .from('main_announcements')
       .select(`
         *,
-        photos:announcement_photos(
+        photos:child_announcement_photos(
           id,
           image_url,
           display_order,
           created_at
         ),
-        files:announcement_files(
+        files:child_announcement_files(
           id,
           file_url,
           file_name,

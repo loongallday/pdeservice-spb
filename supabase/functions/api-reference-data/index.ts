@@ -3,10 +3,10 @@
  * Handles read-only reference data (work_types, ticket_statuses, leave_types, provinces)
  */
 
-import { handleCORS } from './_shared/cors.ts';
-import { error } from './_shared/response.ts';
-import { authenticate } from './_shared/auth.ts';
-import { handleError } from './_shared/error.ts';
+import { handleCORS } from '../_shared/cors.ts';
+import { error } from '../_shared/response.ts';
+import { authenticate } from '../_shared/auth.ts';
+import { handleError } from '../_shared/error.ts';
 import { getWorkTypes } from './handlers/workTypes.ts';
 import { getStatuses } from './handlers/statuses.ts';
 import { getLeaveTypes } from './handlers/leaveTypes.ts';

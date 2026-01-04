@@ -1,14 +1,18 @@
 /**
  * Search tickets by duration handler
  * Filters tickets by date range with selectable date type (create, update, appointed)
+ * 
+ * Enhanced to return display-ready data with pre-resolved location names,
+ * employee details, and pre-formatted appointment strings.
  */
 
-import { successWithPagination } from '../_shared/response.ts';
-import { requireMinLevel } from '../_shared/auth.ts';
-import { parsePaginationParams } from '../_shared/validation.ts';
-import { ValidationError } from '../_shared/error.ts';
+import { successWithPagination } from '../../_shared/response.ts';
+import { requireMinLevel } from '../../_shared/auth.ts';
+import { parsePaginationParams } from '../../_shared/validation.ts';
+import { ValidationError } from '../../_shared/error.ts';
 import { TicketService } from '../services/ticketService.ts';
-import type { Employee } from '../_shared/auth.ts';
+import type { Employee } from '../../_shared/auth.ts';
+import type { IncludeMode } from '../services/ticketDisplayTypes.ts';
 
 export async function searchDuration(req: Request, employee: Employee) {
   // Check permissions - Level 0 and above can search tickets
@@ -17,6 +21,10 @@ export async function searchDuration(req: Request, employee: Employee) {
   // Parse query parameters
   const url = new URL(req.url);
   const { page, limit } = parsePaginationParams(url);
+
+  // Parse include parameter (minimal or full)
+  const includeParam = url.searchParams.get('include');
+  const include: IncludeMode = (includeParam === 'minimal') ? 'minimal' : 'full';
 
   // Get required parameters
   const startDate = url.searchParams.get('startDate');
@@ -50,8 +58,8 @@ export async function searchDuration(req: Request, employee: Employee) {
     dateType: dateType as 'create' | 'update' | 'appointed',
     sort,
     order: order as 'asc' | 'desc' | undefined,
+    include,
   });
 
   return successWithPagination(result.data, result.pagination);
 }
-

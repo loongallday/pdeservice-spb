@@ -3,10 +3,10 @@
  * Handles all contact CRUD operations
  */
 
-import { handleCORS } from './_shared/cors.ts';
-import { error } from './_shared/response.ts';
-import { authenticate } from './_shared/auth.ts';
-import { handleError } from './_shared/error.ts';
+import { handleCORS } from '../_shared/cors.ts';
+import { error } from '../_shared/response.ts';
+import { authenticate } from '../_shared/auth.ts';
+import { handleError } from '../_shared/error.ts';
 import { list } from './handlers/list.ts';
 import { get } from './handlers/get.ts';
 import { getBySite } from './handlers/getBySite.ts';

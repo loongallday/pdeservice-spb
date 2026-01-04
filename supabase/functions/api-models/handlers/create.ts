@@ -2,10 +2,10 @@
  * Create model handler
  */
 
-import { success } from '../_shared/response.ts';
-import { requireMinLevel } from '../_shared/auth.ts';
+import { success } from '../../_shared/response.ts';
+import { requireMinLevel } from '../../_shared/auth.ts';
 import { ModelService } from '../services/modelService.ts';
-import type { Employee } from '../_shared/auth.ts';
+import type { Employee } from '../../_shared/auth.ts';
 
 export async function create(req: Request, employee: Employee) {
   // Check permissions - Level 1 and above can create models

@@ -17,7 +17,7 @@ export class FeatureService {
     const supabase = createServiceClient();
     
     const { data, error } = await supabase
-      .from('feature')
+      .from('main_features')
       .select('*')
       .eq('is_active', true)
       .lte('min_level', employeeLevel)
@@ -72,7 +72,7 @@ export class FeatureService {
     // Step 1: Query menu items filtered by is_active, is_menu_item, and min_level
     // This filters at database level for performance
     const { data, error } = await supabase
-      .from('feature')
+      .from('main_features')
       .select('*')
       .eq('is_active', true)
       .eq('is_menu_item', true)
@@ -126,7 +126,7 @@ export class FeatureService {
     const supabase = createServiceClient();
     
     const { data, error } = await supabase
-      .from('feature')
+      .from('main_features')
       .select('*')
       .order('id');
     

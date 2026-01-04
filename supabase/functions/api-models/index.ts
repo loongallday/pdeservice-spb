@@ -3,10 +3,10 @@
  * Handles model operations including packages and specifications
  */
 
-import { handleCORS } from './_shared/cors.ts';
-import { error } from './_shared/response.ts';
-import { authenticate } from './_shared/auth.ts';
-import { handleError } from './_shared/error.ts';
+import { handleCORS } from '../_shared/cors.ts';
+import { error } from '../_shared/response.ts';
+import { authenticate } from '../_shared/auth.ts';
+import { handleError } from '../_shared/error.ts';
 import { search } from './handlers/search.ts';
 import { getById } from './handlers/getById.ts';
 import { create } from './handlers/create.ts';

@@ -12,3 +12,4 @@ CREATE INDEX IF NOT EXISTS idx_ticket_employees_is_key_employee
 -- Add comment
 COMMENT ON COLUMN public.ticket_employees.is_key_employee IS 'Whether this employee is a key employee for this ticket assignment';
 
+

@@ -2,10 +2,10 @@
  * Search appointments handler
  */
 
-import { success } from '../_shared/response.ts';
-import { requireMinLevel } from '../_shared/auth.ts';
+import { success } from '../../_shared/response.ts';
+import { requireMinLevel } from '../../_shared/auth.ts';
 import { AppointmentService } from '../services/appointmentService.ts';
-import type { Employee } from '../_shared/auth.ts';
+import type { Employee } from '../../_shared/auth.ts';
 
 export async function search(req: Request, employee: Employee) {
   // Check permissions - Level 0 and above can search appointments

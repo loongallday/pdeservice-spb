@@ -3,10 +3,10 @@
  * Handles all appointment CRUD operations
  */
 
-import { handleCORS, corsHeaders } from './_shared/cors.ts';
-import { error } from './_shared/response.ts';
-import { authenticate } from './_shared/auth.ts';
-import { handleError } from './_shared/error.ts';
+import { handleCORS, corsHeaders } from '../_shared/cors.ts';
+import { error } from '../_shared/response.ts';
+import { authenticate } from '../_shared/auth.ts';
+import { handleError } from '../_shared/error.ts';
 import { list } from './handlers/list.ts';
 import { get } from './handlers/get.ts';
 import { getByTicket } from './handlers/getByTicket.ts';

@@ -2,10 +2,10 @@
  * Package Item Service - Database operations for package items catalog
  */
 
-import { createServiceClient } from '../_shared/supabase.ts';
-import { DatabaseError, NotFoundError } from '../_shared/error.ts';
-import { calculatePagination } from '../_shared/response.ts';
-import type { PaginationInfo } from '../_shared/response.ts';
+import { createServiceClient } from '../../_shared/supabase.ts';
+import { DatabaseError, NotFoundError } from '../../_shared/error.ts';
+import { calculatePagination } from '../../_shared/response.ts';
+import type { PaginationInfo } from '../../_shared/response.ts';
 
 export class PackageItemService {
   /**
@@ -49,7 +49,7 @@ export class PackageItemService {
 
     // Build count query
     let countQuery = supabase
-      .from('package_items')
+      .from('ref_package_items')
       .select('*', { count: 'exact', head: true });
 
     if (category) {
@@ -71,7 +71,7 @@ export class PackageItemService {
     // Build data query
     const offset = (page - 1) * limit;
     let dataQuery = supabase
-      .from('package_items')
+      .from('ref_package_items')
       .select('*');
 
     if (category) {
@@ -106,7 +106,7 @@ export class PackageItemService {
     const supabase = createServiceClient();
 
     const { data, error } = await supabase
-      .from('package_items')
+      .from('ref_package_items')
       .select('*')
       .eq('id', id)
       .single();
@@ -129,7 +129,7 @@ export class PackageItemService {
     const sanitized = this.sanitize(data);
 
     const { data: item, error } = await supabase
-      .from('package_items')
+      .from('ref_package_items')
       .insert([sanitized])
       .select()
       .single();
@@ -159,7 +159,7 @@ export class PackageItemService {
     }
 
     const { data: item, error } = await supabase
-      .from('package_items')
+      .from('ref_package_items')
       .update(sanitized)
       .eq('id', id)
       .select()
@@ -185,7 +185,7 @@ export class PackageItemService {
     await this.getById(id);
 
     const { error } = await supabase
-      .from('package_items')
+      .from('ref_package_items')
       .delete()
       .eq('id', id);
 

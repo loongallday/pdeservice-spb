@@ -3,10 +3,10 @@
  * Handles CRUD operations for package items catalog
  */
 
-import { handleCORS } from './_shared/cors.ts';
-import { error } from './_shared/response.ts';
-import { authenticate } from './_shared/auth.ts';
-import { handleError } from './_shared/error.ts';
+import { handleCORS } from '../_shared/cors.ts';
+import { error } from '../_shared/response.ts';
+import { authenticate } from '../_shared/auth.ts';
+import { handleError } from '../_shared/error.ts';
 import { list } from './handlers/list.ts';
 import { getById } from './handlers/getById.ts';
 import { create } from './handlers/create.ts';

@@ -3,10 +3,10 @@
  * Handles CRUD for training assignments between employees and sites
  */
 
-import { handleCORS } from './_shared/cors.ts';
-import { error } from './_shared/response.ts';
-import { authenticate } from './_shared/auth.ts';
-import { handleError } from './_shared/error.ts';
+import { handleCORS } from '../_shared/cors.ts';
+import { error } from '../_shared/response.ts';
+import { authenticate } from '../_shared/auth.ts';
+import { handleError } from '../_shared/error.ts';
 import { list } from './handlers/list.ts';
 import { get } from './handlers/get.ts';
 import { create } from './handlers/create.ts';

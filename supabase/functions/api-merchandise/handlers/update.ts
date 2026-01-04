@@ -2,10 +2,10 @@
  * Update merchandise handler
  */
 
-import { success, error } from '../_shared/response.ts';
-import { requireMinLevel } from '../_shared/auth.ts';
+import { success, error } from '../../_shared/response.ts';
+import { requireMinLevel } from '../../_shared/auth.ts';
 import { MerchandiseService } from '../services/merchandiseService.ts';
-import type { Employee } from '../_shared/auth.ts';
+import type { Employee } from '../../_shared/auth.ts';
 
 export async function update(req: Request, employee: Employee, id: string) {
   // Check permissions - Level 1 and above can update merchandise

@@ -2,11 +2,11 @@
  * Link auth account to employee handler
  */
 
-import { success } from '../_shared/response.ts';
-import { requireMinLevel } from '../_shared/auth.ts';
-import { parseRequestBody, validateUUID, validateRequired, validateEmail } from '../_shared/validation.ts';
+import { success } from '../../_shared/response.ts';
+import { requireMinLevel } from '../../_shared/auth.ts';
+import { parseRequestBody, validateUUID, validateRequired, validateEmail } from '../../_shared/validation.ts';
 import { EmployeeService } from '../services/employeeService.ts';
-import type { Employee } from '../_shared/auth.ts';
+import type { Employee } from '../../_shared/auth.ts';
 
 export async function linkAuth(req: Request, employee: Employee, id: string) {
   // Check permissions - Level 2 (admin) and above can link auth accounts

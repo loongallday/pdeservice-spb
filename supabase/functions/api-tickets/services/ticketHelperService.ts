@@ -2,8 +2,8 @@
  * Ticket helper service - Helper methods for ticket operations
  */
 
-import { createServiceClient } from '../_shared/supabase.ts';
-import { DatabaseError, ValidationError } from '../_shared/error.ts';
+import { createServiceClient } from '../../_shared/supabase.ts';
+import { DatabaseError, ValidationError } from '../../_shared/error.ts';
 
 /**
  * Log ticket audit entry
@@ -31,7 +31,7 @@ export async function logTicketAudit(params: {
   };
 
   const { error } = await supabase
-    .from('ticket_audit')
+    .from('child_ticket_audit')
     .insert([auditData]);
 
   if (error) {
@@ -50,7 +50,7 @@ export async function linkMerchandiseToTicket(ticketId: string, merchandiseIds: 
   // Validate all merchandise exist and are in the same site
   for (const merchandiseId of uniqueMerchandiseIds) {
     const { data: merchandise, error: merchError } = await supabase
-      .from('merchandise')
+      .from('main_merchandise')
       .select('id, site_id')
       .eq('id', merchandiseId)
       .single();
@@ -70,7 +70,7 @@ export async function linkMerchandiseToTicket(ticketId: string, merchandiseIds: 
 
   // Insert all associations
   const { error: insertError } = await supabase
-    .from('ticket_merchandise')
+    .from('jct_ticket_merchandise')
     .insert(
       uniqueMerchandiseIds.map(merchandiseId => ({
         ticket_id: ticketId,

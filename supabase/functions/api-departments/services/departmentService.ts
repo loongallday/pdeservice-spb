@@ -36,7 +36,7 @@ export class DepartmentService {
 
     // Build count query
     let countQuery = supabase
-      .from('departments')
+      .from('main_org_departments')
       .select('*', { count: 'exact', head: true });
 
     // Apply search filter if query is provided
@@ -54,7 +54,7 @@ export class DepartmentService {
     // Get paginated data
     const offset = (page - 1) * limit;
     let dataQuery = supabase
-      .from('departments')
+      .from('main_org_departments')
       .select('*');
 
     // Apply search filter if query is provided
@@ -84,7 +84,7 @@ export class DepartmentService {
     const supabase = createServiceClient();
     
     const { data, error } = await supabase
-      .from('departments')
+      .from('main_org_departments')
       .select('*')
       .eq('id', id)
       .single();
@@ -107,7 +107,7 @@ export class DepartmentService {
     const sanitized = this.sanitizeDepartmentData(data);
     
     const { data: department, error } = await supabase
-      .from('departments')
+      .from('main_org_departments')
       .insert([sanitized])
       .select()
       .single();
@@ -125,7 +125,7 @@ export class DepartmentService {
     const sanitized = this.sanitizeDepartmentData(data);
     
     const { data: department, error } = await supabase
-      .from('departments')
+      .from('main_org_departments')
       .update(sanitized)
       .eq('id', id)
       .select()
@@ -143,7 +143,7 @@ export class DepartmentService {
     const supabase = createServiceClient();
     
     const { error } = await supabase
-      .from('departments')
+      .from('main_org_departments')
       .delete()
       .eq('id', id);
     
@@ -159,7 +159,7 @@ export class DepartmentService {
 
     // Get all departments
     const { data: departments, error: deptError } = await supabase
-      .from('departments')
+      .from('main_org_departments')
       .select('id, code, name_th, name_en')
       .eq('is_active', true)
       .order('name_th');
@@ -168,7 +168,7 @@ export class DepartmentService {
 
     // Get all roles grouped by department
     const { data: roles, error: rolesError } = await supabase
-      .from('roles')
+      .from('main_org_roles')
       .select('id, department_id, is_active');
 
     if (rolesError) throw new DatabaseError(rolesError.message);
@@ -176,12 +176,12 @@ export class DepartmentService {
     // Get all employees with their roles
     // Query roles separately to avoid issues with invalid department_id references
     const { data: employees, error: empError } = await supabase
-      .from('employees')
+      .from('main_employees')
       .select(`
         id,
         is_active,
         role_id,
-        role:roles!role_id(
+        role:main_org_roles!role_id(
           id,
           department_id
         )
@@ -203,7 +203,7 @@ export class DepartmentService {
 
     // Fetch all departments to build a complete map (for roles that might reference inactive departments)
     const { data: allDepartments, error: allDeptError } = await supabase
-      .from('departments')
+      .from('main_org_departments')
       .select('id, code, name_th, name_en');
 
     if (allDeptError) throw new DatabaseError(allDeptError.message);

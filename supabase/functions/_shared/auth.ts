@@ -50,16 +50,23 @@ export async function authenticate(req: Request): Promise<AuthContext> {
     throw new AuthenticationError('Session หมดอายุกรุณาเข้าใช้งานใหม่');
   }
   
-  // Get employee info with role data
+  // Get employee info with role data (using v_employees view)
   const { data: employee, error: employeeError } = await supabase
-    .from('employees')
-    .select(`
-      *,
-      role_data:roles!role_id(id, code, name_th, level)
-    `)
+    .from('v_employees')
+    .select('*')
     .eq('auth_user_id', user.id)
     .eq('is_active', true)
     .single();
+  
+  // Map view fields to role_data structure for compatibility
+  if (employee) {
+    employee.role_data = {
+      id: employee.role_id,
+      code: employee.role_code,
+      name_th: employee.role_name_th,
+      level: employee.role_level,
+    };
+  }
   
   if (employeeError || !employee) {
     throw new AuthenticationError('ไม่พบข้อมูลพนักงาน');

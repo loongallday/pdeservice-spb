@@ -2,12 +2,12 @@
  * Update package item handler
  */
 
-import { success } from '../_shared/response.ts';
-import { requireMinLevel } from '../_shared/auth.ts';
-import { parseRequestBody, validateUUID } from '../_shared/validation.ts';
-import { ValidationError } from '../_shared/error.ts';
+import { success } from '../../_shared/response.ts';
+import { requireMinLevel } from '../../_shared/auth.ts';
+import { parseRequestBody, validateUUID } from '../../_shared/validation.ts';
+import { ValidationError } from '../../_shared/error.ts';
 import { PackageItemService } from '../services/packageItemService.ts';
-import type { Employee } from '../_shared/auth.ts';
+import type { Employee } from '../../_shared/auth.ts';
 
 export async function update(req: Request, employee: Employee, id: string) {
   // Check permissions - Level 1 and above can update package items

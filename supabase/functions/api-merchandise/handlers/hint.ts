@@ -3,10 +3,10 @@
  * Returns up to 5 merchandise hints based on query string
  */
 
-import { success } from '../_shared/response.ts';
-import { requireMinLevel } from '../_shared/auth.ts';
+import { success } from '../../_shared/response.ts';
+import { requireMinLevel } from '../../_shared/auth.ts';
 import { MerchandiseService } from '../services/merchandiseService.ts';
-import type { Employee } from '../_shared/auth.ts';
+import type { Employee } from '../../_shared/auth.ts';
 
 export async function hint(req: Request, employee: Employee) {
   // Check permissions - Level 0 and above can get merchandise hints

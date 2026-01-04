@@ -2,11 +2,11 @@
  * Update employee handler
  */
 
-import { success } from '../_shared/response.ts';
-import { requireMinLevel } from '../_shared/auth.ts';
-import { parseRequestBody, validateUUID } from '../_shared/validation.ts';
+import { success } from '../../_shared/response.ts';
+import { requireMinLevel } from '../../_shared/auth.ts';
+import { parseRequestBody, validateUUID } from '../../_shared/validation.ts';
 import { EmployeeService } from '../services/employeeService.ts';
-import type { Employee } from '../_shared/auth.ts';
+import type { Employee } from '../../_shared/auth.ts';
 
 // Fields that employees can update on their own profile
 const ALLOWED_SELF_UPDATE_FIELDS = ['name', 'nickname', 'email', 'profile_image_url'];

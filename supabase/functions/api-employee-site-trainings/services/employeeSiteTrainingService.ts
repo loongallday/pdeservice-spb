@@ -2,11 +2,11 @@
  * Employee-site training service - Business logic for training assignments
  */
 
-import { createServiceClient } from '../_shared/supabase.ts';
-import { NotFoundError, DatabaseError, ValidationError } from '../_shared/error.ts';
-import { calculatePagination } from '../_shared/response.ts';
-import { sanitizeData } from '../_shared/sanitize.ts';
-import type { PaginationInfo } from '../_shared/response.ts';
+import { createServiceClient } from '../../_shared/supabase.ts';
+import { NotFoundError, DatabaseError, ValidationError } from '../../_shared/error.ts';
+import { calculatePagination } from '../../_shared/response.ts';
+import { sanitizeData } from '../../_shared/sanitize.ts';
+import type { PaginationInfo } from '../../_shared/response.ts';
 
 export interface EmployeeSiteTrainingQueryParams {
   page: number;
@@ -37,7 +37,7 @@ export class EmployeeSiteTrainingService {
     const offset = (page - 1) * limit;
 
     let query = supabase
-      .from('employee_site_trainings')
+      .from('jct_site_employee_trainings')
       .select('*', { count: 'exact' })
       .order('created_at', { ascending: false });
 
@@ -68,7 +68,7 @@ export class EmployeeSiteTrainingService {
     const supabase = createServiceClient();
 
     const { data, error } = await supabase
-      .from('employee_site_trainings')
+      .from('jct_site_employee_trainings')
       .select('*')
       .eq('id', id)
       .single();
@@ -92,7 +92,7 @@ export class EmployeeSiteTrainingService {
     const sanitized = this.sanitizeTrainingData(trainingData);
 
     const { data, error } = await supabase
-      .from('employee_site_trainings')
+      .from('jct_site_employee_trainings')
       .insert(sanitized)
       .select()
       .single();
@@ -119,7 +119,7 @@ export class EmployeeSiteTrainingService {
     }
 
     const { data, error } = await supabase
-      .from('employee_site_trainings')
+      .from('jct_site_employee_trainings')
       .update(sanitized)
       .eq('id', id)
       .select()

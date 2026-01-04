@@ -2,11 +2,11 @@
  * Remove ticket-employee assignment handler
  */
 
-import { success } from '../_shared/response.ts';
-import { requireMinLevel } from '../_shared/auth.ts';
-import { ValidationError } from '../_shared/error.ts';
+import { success } from '../../_shared/response.ts';
+import { requireMinLevel } from '../../_shared/auth.ts';
+import { ValidationError } from '../../_shared/error.ts';
 import { TicketService } from '../services/ticketService.ts';
-import type { Employee } from '../_shared/auth.ts';
+import type { Employee } from '../../_shared/auth.ts';
 
 export async function removeTicketEmployee(req: Request, employee: Employee) {
   // Check permissions - Level 2 and above can remove ticket-employee assignments

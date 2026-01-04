@@ -2,11 +2,11 @@
  * Create employee-site training handler
  */
 
-import { success } from '../_shared/response.ts';
-import { requireMinLevel } from '../_shared/auth.ts';
-import { ValidationError } from '../_shared/error.ts';
+import { success } from '../../_shared/response.ts';
+import { requireMinLevel } from '../../_shared/auth.ts';
+import { ValidationError } from '../../_shared/error.ts';
 import { EmployeeSiteTrainingService } from '../services/employeeSiteTrainingService.ts';
-import type { Employee } from '../_shared/auth.ts';
+import type { Employee } from '../../_shared/auth.ts';
 
 export async function create(req: Request, employee: Employee) {
   // Level 1+: create training records

@@ -3,11 +3,11 @@
  * Returns technicians with their workload status for a given date
  */
 
-import { success } from '../_shared/response.ts';
-import { requireMinLevel } from '../_shared/auth.ts';
-import { ValidationError } from '../_shared/error.ts';
+import { success } from '../../_shared/response.ts';
+import { requireMinLevel } from '../../_shared/auth.ts';
+import { ValidationError } from '../../_shared/error.ts';
 import { EmployeeService } from '../services/employeeService.ts';
-import type { Employee } from '../_shared/auth.ts';
+import type { Employee } from '../../_shared/auth.ts';
 
 export async function getTechnicianAvailability(req: Request, employee: Employee) {
   // Check permissions - Level 1 and above can view technician workload
