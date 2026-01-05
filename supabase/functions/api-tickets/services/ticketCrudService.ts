@@ -139,8 +139,10 @@ export async function create(input: MasterTicketCreateInput, employeeId: string)
   }
 
   // Step 4: Create Ticket
+  // Extract work_giver_id from ticket data (stored in separate child table)
+  const { work_giver_id, ...ticketFieldsWithoutWorkGiver } = input.ticket;
   const ticketData = {
-    ...input.ticket,
+    ...ticketFieldsWithoutWorkGiver,
     site_id: siteId,
     contact_id: contactId,
     created_by: employeeId,
@@ -226,6 +228,36 @@ export async function create(input: MasterTicketCreateInput, employeeId: string)
     await linkMerchandiseToTicket(ticket.id, input.merchandise_ids, siteId);
   }
 
+  // Step 7.5: Link Work Giver (if provided)
+  if (work_giver_id) {
+    // Validate work_giver exists and is active
+    const { data: workGiver, error: workGiverCheckError } = await supabase
+      .from('ref_work_givers')
+      .select('id, is_active')
+      .eq('id', work_giver_id)
+      .single();
+
+    if (workGiverCheckError || !workGiver) {
+      throw new ValidationError('ไม่พบผู้ว่าจ้าง (Work Giver) ที่ระบุ');
+    }
+
+    if (!workGiver.is_active) {
+      throw new ValidationError('ผู้ว่าจ้าง (Work Giver) ที่ระบุไม่ได้เปิดใช้งาน');
+    }
+
+    // Insert into child_ticket_work_givers
+    const { error: workGiverError } = await supabase
+      .from('child_ticket_work_givers')
+      .insert([{
+        ticket_id: ticket.id,
+        work_giver_id: work_giver_id,
+      }]);
+
+    if (workGiverError) {
+      throw new DatabaseError(`ไม่สามารถเชื่อมโยงผู้ว่าจ้างได้: ${workGiverError.message}`);
+    }
+  }
+
   // Step 8: Log audit entry for ticket creation
   await logTicketAudit({
     ticketId: ticket.id,
@@ -236,12 +268,14 @@ export async function create(input: MasterTicketCreateInput, employeeId: string)
       appointment_id: appointmentId,
       employee_ids: input.employee_ids || [],
       merchandise_ids: input.merchandise_ids || [],
+      work_giver_id: work_giver_id || null,
     },
     metadata: {
       company_created: companyCreated,
       site_created: input.site && !input.site.id ? true : false,
       contact_created: input.contact && !input.contact.id ? true : false,
       appointment_created: !!appointmentId,
+      work_giver_linked: !!work_giver_id,
     },
   });
 
@@ -393,10 +427,20 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
 
   // Step 4: Update Ticket
   if (input.ticket || siteChanged || contactChanged) {
-    // Remove created_by if somehow included (should not be updatable)
-    const { created_by: _created_by, ...ticketData } = (input.ticket || {}) as Record<string, unknown>;
+    // Remove created_by and work_giver_id if included (work_giver stored in child table)
+    const ticketInputData = input.ticket || {};
+    const { 
+      created_by: _created_by, 
+      work_giver_id: _work_giver_id, 
+      ...ticketDataWithoutWorkGiver 
+    } = ticketInputData as Record<string, unknown> & { created_by?: string; work_giver_id?: string | null };
+    
+    // Suppress unused variable warnings (these are intentionally extracted to exclude from update)
+    void _created_by;
+    void _work_giver_id;
+    
     const ticketUpdate = {
-      ...ticketData,
+      ...ticketDataWithoutWorkGiver,
       site_id: siteId,
       contact_id: contactId,
     };
@@ -408,6 +452,85 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
 
     if (ticketError) {
       throw new DatabaseError(`ไม่สามารถอัพเดทตั๋วงานได้: ${ticketError.message}`);
+    }
+  }
+
+  // Step 4.5: Update Work Giver
+  let oldWorkGiverId: string | null = null;
+  let workGiverChanged = false;
+
+  // Get current work_giver for the ticket
+  const { data: currentWorkGiver } = await supabase
+    .from('child_ticket_work_givers')
+    .select('id, work_giver_id')
+    .eq('ticket_id', ticketId)
+    .single();
+  
+  if (currentWorkGiver) {
+    oldWorkGiverId = currentWorkGiver.work_giver_id as string;
+  }
+
+  // Check if work_giver_id is explicitly set in the input.ticket
+  if (input.ticket && 'work_giver_id' in input.ticket) {
+    if (input.ticket.work_giver_id === null) {
+      // Explicit null - remove work_giver link
+      if (currentWorkGiver) {
+        const { error: deleteWorkGiverError } = await supabase
+          .from('child_ticket_work_givers')
+          .delete()
+          .eq('ticket_id', ticketId);
+        
+        if (deleteWorkGiverError) {
+          throw new DatabaseError(`ไม่สามารถลบผู้ว่าจ้างได้: ${deleteWorkGiverError.message}`);
+        }
+        workGiverChanged = true;
+      }
+    } else if (input.ticket.work_giver_id) {
+      // Validate work_giver exists and is active
+      const { data: workGiver, error: workGiverCheckError } = await supabase
+        .from('ref_work_givers')
+        .select('id, is_active')
+        .eq('id', input.ticket.work_giver_id)
+        .single();
+
+      if (workGiverCheckError || !workGiver) {
+        throw new ValidationError('ไม่พบผู้ว่าจ้าง (Work Giver) ที่ระบุ');
+      }
+
+      if (!workGiver.is_active) {
+        throw new ValidationError('ผู้ว่าจ้าง (Work Giver) ที่ระบุไม่ได้เปิดใช้งาน');
+      }
+
+      if (currentWorkGiver) {
+        // Update existing work_giver link
+        if (currentWorkGiver.work_giver_id !== input.ticket.work_giver_id) {
+          const { error: updateWorkGiverError } = await supabase
+            .from('child_ticket_work_givers')
+            .update({ 
+              work_giver_id: input.ticket.work_giver_id,
+              updated_at: new Date().toISOString(),
+            })
+            .eq('ticket_id', ticketId);
+          
+          if (updateWorkGiverError) {
+            throw new DatabaseError(`ไม่สามารถอัพเดทผู้ว่าจ้างได้: ${updateWorkGiverError.message}`);
+          }
+          workGiverChanged = true;
+        }
+      } else {
+        // Create new work_giver link
+        const { error: insertWorkGiverError } = await supabase
+          .from('child_ticket_work_givers')
+          .insert([{
+            ticket_id: ticketId,
+            work_giver_id: input.ticket.work_giver_id,
+          }]);
+        
+        if (insertWorkGiverError) {
+          throw new DatabaseError(`ไม่สามารถเชื่อมโยงผู้ว่าจ้างได้: ${insertWorkGiverError.message}`);
+        }
+        workGiverChanged = true;
+      }
     }
   }
 
@@ -662,6 +785,14 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
     }
   }
 
+  // Track work_giver changes
+  if (workGiverChanged) {
+    const newWorkGiverId = input.ticket?.work_giver_id ?? null;
+    oldValues.work_giver_id = oldWorkGiverId;
+    newValues.work_giver_id = newWorkGiverId;
+    changedFields.push('work_giver_id');
+  }
+
   // Log audit entry if there were any changes
   if (changedFields.length > 0) {
     await logTicketAudit({
@@ -675,6 +806,7 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
         company_changed: input.company ? true : false,
         site_changed: siteChanged,
         contact_changed: contactChanged,
+        work_giver_changed: workGiverChanged,
       },
     });
   }

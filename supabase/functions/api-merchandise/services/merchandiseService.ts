@@ -323,13 +323,14 @@ export class MerchandiseService {
   /**
    * Search merchandise by serial number with pagination
    * If no query provided, returns all merchandise
+   * If siteId provided, filters by site
    */
   static async search(
     query: string,
-    pagination: { page: number; limit: number }
+    pagination: { page: number; limit: number; siteId?: string }
   ): Promise<{ data: Record<string, unknown>[]; pagination: PaginationInfo }> {
     const supabase = createServiceClient();
-    const { page, limit } = pagination;
+    const { page, limit, siteId } = pagination;
 
     // Build count query
     let countQuery = supabase
@@ -370,6 +371,12 @@ export class MerchandiseService {
         created_at,
         updated_at
       `);
+
+    // Apply site filter if provided
+    if (siteId) {
+      countQuery = countQuery.eq('site_id', siteId);
+      dataQuery = dataQuery.eq('site_id', siteId);
+    }
 
     // Apply search filter if query is provided
     if (query && query.length > 0) {

@@ -16,9 +16,10 @@ export async function search(req: Request, employee: Employee) {
   const url = new URL(req.url);
   const { page, limit } = parsePaginationParams(url);
   const query = url.searchParams.get('q') || '';
+  const siteId = url.searchParams.get('site_id') || undefined;
 
   // Search merchandise with pagination
-  const result = await MerchandiseService.search(query, { page, limit });
+  const result = await MerchandiseService.search(query, { page, limit, siteId });
 
   return successWithPagination(result.data, result.pagination);
 }

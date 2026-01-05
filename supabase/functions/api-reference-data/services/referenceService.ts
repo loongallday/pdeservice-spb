@@ -103,15 +103,33 @@ export class ReferenceService {
   }
 
   /**
-   * Get all constants (roles, departments, work_types, ticket_statuses, leave_types)
+   * Get all active work givers
+   */
+  static async getWorkGivers(): Promise<Record<string, unknown>[]> {
+    const supabase = createServiceClient();
+    
+    const { data, error } = await supabase
+      .from('ref_work_givers')
+      .select('*')
+      .eq('is_active', true)
+      .order('name');
+    
+    if (error) throw new DatabaseError(error.message);
+    
+    return data || [];
+  }
+
+  /**
+   * Get all constants (roles, departments, work_types, ticket_statuses, leave_types, work_givers)
    */
   static async getAllConstants(): Promise<Record<string, unknown>> {
-    const [roles, departments, workTypes, ticketStatuses, leaveTypes] = await Promise.all([
+    const [roles, departments, workTypes, ticketStatuses, leaveTypes, workGivers] = await Promise.all([
       this.getRoles(),
       this.getDepartments(),
       this.getWorkTypes(),
       this.getTicketStatuses(),
       this.getLeaveTypes(),
+      this.getWorkGivers(),
     ]);
 
     return {
@@ -120,6 +138,7 @@ export class ReferenceService {
       work_types: workTypes,
       ticket_statuses: ticketStatuses,
       leave_types: leaveTypes,
+      work_givers: workGivers,
     };
   }
 }

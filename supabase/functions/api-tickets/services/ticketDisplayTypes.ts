@@ -67,6 +67,15 @@ export interface TicketMerchandiseSummary {
 }
 
 /**
+ * Work giver information for display
+ */
+export interface TicketWorkGiver {
+  id: string;
+  code: string;
+  name: string;
+}
+
+/**
  * IDs for updates (optional, only included when needed)
  */
 export interface TicketIds {
@@ -107,6 +116,10 @@ export interface TicketDisplayItem {
   // === Employees (Full data, no lookup needed) ===
   employees: TicketEmployee[];
   employee_count: number;
+  
+  // === Confirmed Employees (Full data, no lookup needed) ===
+  cf_employees: TicketEmployee[];
+  cf_employee_count: number;
 
   // === Content ===
   details: string | null;
@@ -115,6 +128,9 @@ export interface TicketDisplayItem {
   // === Merchandise Summary ===
   merchandise: TicketMerchandiseSummary[];
   merchandise_count: number;
+
+  // === Work Giver ===
+  work_giver: TicketWorkGiver | null;
 
   // === Timestamps ===
   created_at: string;

@@ -23,6 +23,7 @@ export interface MasterTicketCreateInput {
     assigner_id: string;
     status_id: string;
     additional?: string;
+    work_giver_id?: string; // Optional: FK → ref_work_givers
   };
 
   // Company data (optional - find or create)
@@ -85,6 +86,7 @@ export interface MasterTicketUpdateInput {
     assigner_id?: string;
     status_id?: string;
     additional?: string;
+    work_giver_id?: string | null; // Optional: FK → ref_work_givers, null to remove
   };
 
   // Company data (optional - update or create)

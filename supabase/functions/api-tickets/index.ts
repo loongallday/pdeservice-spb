@@ -14,6 +14,9 @@ import { deleteTicket } from './handlers/delete.ts';
 import { search } from './handlers/search.ts';
 import { searchDuration } from './handlers/searchDuration.ts';
 import { removeTicketEmployee } from './handlers/removeTicketEmployee.ts';
+import { confirmTechnicians } from './handlers/confirmTechnicians.ts';
+import { getSummaries } from './handlers/getSummaries.ts';
+import { getConfirmedTechnicians } from './handlers/getConfirmedTechnicians.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -40,6 +43,11 @@ Deno.serve(async (req) => {
 
     switch (method) {
       case 'GET':
+        // GET /summaries - Get summaries grouped by technicians
+        if (relativePath.length === 1 && relativePath[0] === 'summaries') {
+          return await getSummaries(req, employee);
+        }
+
         // GET /search - Search tickets
         if (relativePath.length === 1 && relativePath[0] === 'search') {
           return await search(req, employee);
@@ -50,11 +58,17 @@ Deno.serve(async (req) => {
           return await searchDuration(req, employee);
         }
 
+        // GET /:id/confirmed-technicians - Get confirmed technicians for a ticket
+        if (relativePath.length === 2 && relativePath[1] === 'confirmed-technicians') {
+          const id = relativePath[0];
+          return await getConfirmedTechnicians(req, employee, id);
+        }
+
         // GET /:id - Get single ticket
         if (relativePath.length === 1) {
           const id = relativePath[0];
           // Validate it's not a special route
-          if (id === 'search' || id === 'search-duration') {
+          if (id === 'search' || id === 'search-duration' || id === 'summaries') {
             return error('Not found', 404);
           }
           return await get(req, employee, id);
@@ -62,6 +76,12 @@ Deno.serve(async (req) => {
         break;
 
       case 'POST':
+        // POST /:id/confirm-technicians - Confirm technicians for a ticket
+        if (relativePath.length === 2 && relativePath[1] === 'confirm-technicians') {
+          const id = relativePath[0];
+          return await confirmTechnicians(req, employee, id);
+        }
+
         // POST / - Create ticket
         if (relativePath.length === 0) {
           return await create(req, employee);

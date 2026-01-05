@@ -14,6 +14,7 @@ import type {
   TicketAppointment, 
   TicketEmployee,
   TicketMerchandiseSummary,
+  TicketIds,
   IncludeMode,
 } from './ticketDisplayTypes.ts';
 import { 
@@ -61,11 +62,25 @@ export async function getById(id: string): Promise<Record<string, unknown>> {
         is_key_employee,
         employee:main_employees(*)
       ),
+      confirmed_technicians:jct_ticket_employees_cf(
+        id,
+        date,
+        confirmed_by,
+        confirmed_at,
+        notes,
+        employee:main_employees!jct_ticket_employees_cf_employee_id_fkey(*),
+        confirmed_by_employee:main_employees!jct_ticket_employees_cf_confirmed_by_fkey(*)
+      ),
       merchandise:jct_ticket_merchandise(
         merchandise:main_merchandise(
           *,
           model:main_models(*)
         )
+      ),
+      work_giver:child_ticket_work_givers!child_ticket_work_givers_ticket_id_fkey(
+        id,
+        work_giver_id,
+        work_giver:ref_work_givers!child_ticket_work_givers_work_giver_id_fkey(*)
       )
     `)
     .eq('id', id)
@@ -91,10 +106,8 @@ export async function getById(id: string): Promise<Record<string, unknown>> {
       }).filter(Boolean)
     : [];
   
-  return {
-    ...data,
-    time: data.created_at, // Map created_at to time for frontend compatibility
-    employees: Array.isArray(data.employees)
+  // Transform employees
+  const employees = Array.isArray(data.employees)
       ? data.employees.map((te: Record<string, unknown>) => {
           const ticketEmployee = te as { employee: Record<string, unknown>; is_key_employee?: boolean; date?: string };
           const employee = ticketEmployee.employee;
@@ -103,12 +116,98 @@ export async function getById(id: string): Promise<Record<string, unknown>> {
             ...employee,
             is_key_employee: ticketEmployee.is_key_employee ?? false,
             assignment_date: ticketEmployee.date || null,
+        };
+      }).filter(Boolean)
+    : [];
+
+  // Transform confirmed technicians to cf_employees
+  const cf_employees = Array.isArray(data.confirmed_technicians)
+    ? data.confirmed_technicians.map((cf: Record<string, unknown>) => {
+        const confirmation = cf as {
+          employee: Record<string, unknown>;
+          confirmed_by_employee: Record<string, unknown>;
+          date?: string;
+          confirmed_at?: string;
+          notes?: string;
+        };
+        const employee = confirmation.employee;
+        if (!employee) return null;
+        return {
+          ...employee,
+          is_key: false, // Confirmed technicians don't have is_key flag
+        };
+      }).filter(Boolean)
+    : [];
+
+  // Transform work_giver (1:1 relationship via child table)
+  // First try from joined data
+  let work_giver: { id: string; code: string; name: string } | null = null;
+  if (Array.isArray(data.work_giver) && data.work_giver.length > 0) {
+    const workGiverLink = data.work_giver[0] as { work_giver: { id: string; code: string; name: string } | null };
+    if (workGiverLink.work_giver) {
+      work_giver = {
+        id: workGiverLink.work_giver.id,
+        code: workGiverLink.work_giver.code,
+        name: workGiverLink.work_giver.name,
+      };
+    }
+  }
+  
+  // Fallback: Query work_giver separately if join didn't return data
+  if (!work_giver) {
+    const { data: workGiverData } = await supabase
+      .from('child_ticket_work_givers')
+      .select(`
+        id,
+        work_giver_id,
+        ref_work_givers:work_giver_id (
+          id,
+          code,
+          name
+        )
+      `)
+      .eq('ticket_id', id)
+      .maybeSingle();
+    
+    if (workGiverData?.ref_work_givers) {
+      const wg = workGiverData.ref_work_givers as { id: string; code: string; name: string };
+      work_giver = {
+        id: wg.id,
+        code: wg.code,
+        name: wg.name,
+      };
+    }
+  }
+
+  return {
+    ...data,
+    time: data.created_at, // Map created_at to time for frontend compatibility
+    employees: employees,
+    cf_employees: cf_employees,
+    confirmed_technicians: Array.isArray(data.confirmed_technicians)
+      ? data.confirmed_technicians.map((cf: Record<string, unknown>) => {
+          const confirmation = cf as {
+            employee: Record<string, unknown>;
+            confirmed_by_employee: Record<string, unknown>;
+            date?: string;
+            confirmed_at?: string;
+            notes?: string;
+          };
+          const employee = confirmation.employee;
+          if (!employee) return null;
+          return {
+            ...employee,
+            confirmation_date: confirmation.date || null,
+            confirmed_at: confirmation.confirmed_at || null,
+            confirmed_by: confirmation.confirmed_by_employee || null,
+            notes: confirmation.notes || null,
           };
         }).filter(Boolean)
       : [],
     creator_name: creator?.name || null,
     creator_code: creator?.code || null,
     merchandise: merchandise,
+    work_giver: work_giver,
   };
 }
 
@@ -171,6 +270,33 @@ function createTicketDisplayItem(
     }
   }
 
+  // Transform confirmed technicians to display format (cf_employees)
+  const cf_employees: TicketEmployee[] = [];
+  if (Array.isArray(ticket.confirmed_technicians)) {
+    for (const cf of ticket.confirmed_technicians) {
+      const confirmation = cf as {
+        employee: Record<string, unknown>;
+        date?: string;
+      };
+      const emp = confirmation.employee as {
+        id?: string;
+        name?: string;
+        code?: string;
+        profile_image_url?: string;
+      } | null;
+      
+      if (emp && emp.id) {
+        cf_employees.push({
+          id: emp.id,
+          name: emp.name || '',
+          code: emp.code || null,
+          is_key: false, // Confirmed technicians don't have is_key flag
+          profile_image_url: emp.profile_image_url || null,
+        });
+      }
+    }
+  }
+
   // Transform merchandise to display format
   const merchandise: TicketMerchandiseSummary[] = [];
   if (Array.isArray(ticket.merchandise)) {
@@ -188,6 +314,21 @@ function createTicketDisplayItem(
           model_name: merch.model?.model || null,
         });
       }
+    }
+  }
+
+  // Transform work_giver to display format (1:1 relationship via child table)
+  let workGiverDisplay: { id: string; code: string; name: string } | null = null;
+  if (Array.isArray(ticket.work_giver) && ticket.work_giver.length > 0) {
+    const workGiverLink = ticket.work_giver[0] as { 
+      work_giver: { id: string; code: string; name: string } | null 
+    };
+    if (workGiverLink.work_giver) {
+      workGiverDisplay = {
+        id: workGiverLink.work_giver.id,
+        code: workGiverLink.work_giver.code,
+        name: workGiverLink.work_giver.name,
+      };
     }
   }
 
@@ -235,6 +376,10 @@ function createTicketDisplayItem(
     employees: employees,
     employee_count: employees.length,
     
+    // Confirmed Employees
+    cf_employees: cf_employees,
+    cf_employee_count: cf_employees.length,
+    
     // Content
     details: ticket.details as string | null,
     additional: ticket.additional as string | null,
@@ -243,6 +388,9 @@ function createTicketDisplayItem(
     merchandise: merchandise,
     merchandise_count: merchandise.length,
     
+    // Work Giver
+    work_giver: workGiverDisplay,
+    
     // Timestamps
     created_at: ticket.created_at as string,
     updated_at: ticket.updated_at as string,
@@ -250,7 +398,7 @@ function createTicketDisplayItem(
 
   // Add IDs for updates (only in full mode)
   if (includeMode === 'full') {
-    displayItem._ids = {
+    const ids: TicketIds = {
       site_id: site?.id || ticket.site_id as string || null,
       status_id: ticket.status_id as string,
       work_type_id: ticket.work_type_id as string,
@@ -258,6 +406,7 @@ function createTicketDisplayItem(
       creator_id: creator?.id || ticket.created_by as string || null,
       contact_id: contact?.id || ticket.contact_id as string || null,
     };
+    displayItem._ids = ids;
   }
 
   return displayItem;
@@ -378,12 +527,22 @@ export async function search(params: {
         is_key_employee,
         employee:main_employees(id, name, code, profile_image_url)
       ),
+      confirmed_technicians:jct_ticket_employees_cf(
+        id,
+        date,
+        employee:main_employees!jct_ticket_employees_cf_employee_id_fkey(id, name, code, profile_image_url)
+      ),
       merchandise:jct_ticket_merchandise(
         merchandise:main_merchandise(
           id,
           serial_no,
           model:main_models(model)
         )
+      ),
+      work_giver:child_ticket_work_givers!child_ticket_work_givers_ticket_id_fkey(
+        id,
+        work_giver_id,
+        work_giver:ref_work_givers!child_ticket_work_givers_work_giver_id_fkey(id, code, name)
       )
     `)
     .in('id', ticketIds);
@@ -416,10 +575,44 @@ export async function search(params: {
   // Batch resolve all locations (single database call for districts/subdistricts)
   const resolvedLocations = await batchResolveLocations(locationInputs);
 
+  // Batch fetch work_givers for all tickets (fallback if join doesn't return data)
+  const workGiverMap = new Map<string, { id: string; code: string; name: string }>();
+  if (ticketIds.length > 0) {
+    const { data: workGiverData } = await supabase
+      .from('child_ticket_work_givers')
+      .select(`
+        ticket_id,
+        ref_work_givers:work_giver_id (
+          id,
+          code,
+          name
+        )
+      `)
+      .in('ticket_id', ticketIds);
+    
+    if (workGiverData) {
+      for (const wg of workGiverData) {
+        if (wg.ref_work_givers && wg.ticket_id) {
+          const refWg = wg.ref_work_givers as { id: string; code: string; name: string };
+          workGiverMap.set(wg.ticket_id as string, {
+            id: refWg.id,
+            code: refWg.code,
+            name: refWg.name,
+          });
+        }
+      }
+    }
+  }
+
   // Transform tickets to display format
-  const displayItems: TicketDisplayItem[] = orderedTickets.map((ticket, index) => 
-    createTicketDisplayItem(ticket, resolvedLocations[index], include)
-  );
+  const displayItems: TicketDisplayItem[] = orderedTickets.map((ticket, index) => {
+    const item = createTicketDisplayItem(ticket, resolvedLocations[index], include);
+    // Apply work_giver from fallback if join didn't return it
+    if (!item.work_giver && workGiverMap.has(ticket.id as string)) {
+      item.work_giver = workGiverMap.get(ticket.id as string) || null;
+    }
+    return item;
+  });
 
   return {
     data: displayItems,
@@ -530,12 +723,22 @@ export async function searchByDuration(params: {
         is_key_employee,
         employee:main_employees(id, name, code, profile_image_url)
       ),
+      confirmed_technicians:jct_ticket_employees_cf(
+        id,
+        date,
+        employee:main_employees!jct_ticket_employees_cf_employee_id_fkey(id, name, code, profile_image_url)
+      ),
       merchandise:jct_ticket_merchandise(
         merchandise:main_merchandise(
           id,
           serial_no,
           model:main_models(model)
         )
+      ),
+      work_giver:child_ticket_work_givers!child_ticket_work_givers_ticket_id_fkey(
+        id,
+        work_giver_id,
+        work_giver:ref_work_givers!child_ticket_work_givers_work_giver_id_fkey(id, code, name)
       )
     `)
     .in('id', ticketIds);
@@ -568,10 +771,44 @@ export async function searchByDuration(params: {
   // Batch resolve all locations
   const resolvedLocations = await batchResolveLocations(locationInputs);
 
+  // Batch fetch work_givers for all tickets (fallback if join doesn't return data)
+  const workGiverMap = new Map<string, { id: string; code: string; name: string }>();
+  if (ticketIds.length > 0) {
+    const { data: workGiverData } = await supabase
+      .from('child_ticket_work_givers')
+      .select(`
+        ticket_id,
+        ref_work_givers:work_giver_id (
+          id,
+          code,
+          name
+        )
+      `)
+      .in('ticket_id', ticketIds);
+    
+    if (workGiverData) {
+      for (const wg of workGiverData) {
+        if (wg.ref_work_givers && wg.ticket_id) {
+          const refWg = wg.ref_work_givers as { id: string; code: string; name: string };
+          workGiverMap.set(wg.ticket_id as string, {
+            id: refWg.id,
+            code: refWg.code,
+            name: refWg.name,
+          });
+        }
+      }
+    }
+  }
+
   // Transform tickets to display format
-  const displayItems: TicketDisplayItem[] = orderedTickets.map((ticket, index) => 
-    createTicketDisplayItem(ticket, resolvedLocations[index], include)
-  );
+  const displayItems: TicketDisplayItem[] = orderedTickets.map((ticket, index) => {
+    const item = createTicketDisplayItem(ticket, resolvedLocations[index], include);
+    // Apply work_giver from fallback if join didn't return it
+    if (!item.work_giver && workGiverMap.has(ticket.id as string)) {
+      item.work_giver = workGiverMap.get(ticket.id as string) || null;
+    }
+    return item;
+  });
 
   return {
     data: displayItems,

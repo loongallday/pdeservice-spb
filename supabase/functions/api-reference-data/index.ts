@@ -11,6 +11,7 @@ import { getWorkTypes } from './handlers/workTypes.ts';
 import { getStatuses } from './handlers/statuses.ts';
 import { getLeaveTypes } from './handlers/leaveTypes.ts';
 import { getProvinces } from './handlers/provinces.ts';
+import { getWorkGivers } from './handlers/workGivers.ts';
 import { getAllConstants } from './handlers/constants.ts';
 
 Deno.serve(async (req) => {
@@ -56,6 +57,10 @@ Deno.serve(async (req) => {
 
     if (endpoint === 'provinces') {
       return await getProvinces(req, employee);
+    }
+
+    if (endpoint === 'work-givers') {
+      return await getWorkGivers(req, employee);
     }
 
     return error('Not found', 404);

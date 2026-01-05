@@ -135,20 +135,37 @@ export function isSuperAdmin(employee: Employee): boolean {
  * Check if employee can approve appointments
  * Requires level >= 1 (assigner, pm, sale, technician_l2, etc.)
  */
+/**
+ * Check if employee can approve appointments
+ * Checks if employee is in appointment_approval_users table
+ */
 export async function requireCanApproveAppointments(employee: Employee): Promise<void> {
-  const level = employee.role_data?.level ?? 0;
+  const supabase = createServiceClient();
   
-  if (level < 1) {
+  const { data, error } = await supabase
+    .from('jct_appointment_approvers')
+    .select('id')
+    .eq('employee_id', employee.id)
+    .single();
+  
+  if (error || !data) {
     throw new AuthorizationError('ไม่มีสิทธิ์อนุมัตินัดหมาย');
   }
 }
 
 /**
  * Check if employee can approve appointments (returns boolean)
- * Returns true if level >= 1
+ * Checks if employee is in jct_appointment_approvers table
  */
 export async function canApproveAppointments(employee: Employee): Promise<boolean> {
-  const level = employee.role_data?.level ?? 0;
-  return level >= 1;
+  const supabase = createServiceClient();
+  
+  const { data, error } = await supabase
+    .from('jct_appointment_approvers')
+    .select('id')
+    .eq('employee_id', employee.id)
+    .maybeSingle();
+  
+  return !error && data !== null;
 }
 

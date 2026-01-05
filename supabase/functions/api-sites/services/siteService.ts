@@ -187,19 +187,39 @@ export class SiteService {
     const supabase = createServiceClient();
 
     // Run all queries in parallel for better performance
-    const [siteResult, ticketsResult, merchandiseResult, contactsResult] = await Promise.all([
+    const [siteResult, ticketsResult, ticketCountResult, merchandiseResult, contactsResult] = await Promise.all([
       // Get site data
       supabase
         .from('main_sites')
         .select('*, company:main_companies(tax_id, name_th, name_en)')
         .eq('id', id)
         .single(),
-      // Get tickets for this site
+      // Get tickets for this site (limited to 10 for preview)
       supabase
         .from('main_tickets')
-        .select('id, details, work_type:ref_ticket_work_types(name)')
+        .select(`
+          id,
+          details,
+          created_at,
+          updated_at,
+          work_type:ref_ticket_work_types(name, code),
+          status:ref_ticket_statuses(name, code),
+          appointment:main_appointments!main_tickets_appointment_id_fkey(
+            appointment_date,
+            appointment_time_start,
+            appointment_time_end,
+            appointment_type,
+            is_approved
+          )
+        `)
         .eq('site_id', id)
-        .order('created_at', { ascending: false }),
+        .order('created_at', { ascending: false })
+        .limit(10),
+      // Get total ticket count for this site
+      supabase
+        .from('main_tickets')
+        .select('*', { count: 'exact', head: true })
+        .eq('site_id', id),
       // Get merchandise for this site
       supabase
         .from('main_merchandise')
@@ -230,6 +250,9 @@ export class SiteService {
     if (ticketsResult.error) {
       throw new DatabaseError(ticketsResult.error.message);
     }
+    if (ticketCountResult.error) {
+      throw new DatabaseError(ticketCountResult.error.message);
+    }
     if (merchandiseResult.error) {
       throw new DatabaseError(merchandiseResult.error.message);
     }
@@ -237,12 +260,37 @@ export class SiteService {
       throw new DatabaseError(contactsResult.error.message);
     }
 
-    // Format tickets
-    const ticketsFormatted = (ticketsResult.data || []).map((ticket: Record<string, unknown>) => ({
-      id: ticket.id,
-      description: ticket.details || null,
-      worktype: ticket.work_type ? (ticket.work_type as Record<string, unknown>).name || null : null,
-    }));
+    // Get ticket count
+    const ticketCount = ticketCountResult.count || 0;
+
+    // Format tickets with more details
+    const ticketsFormatted = (ticketsResult.data || []).map((ticket: Record<string, unknown>) => {
+      const workType = ticket.work_type as Record<string, unknown> | null;
+      const status = ticket.status as Record<string, unknown> | null;
+      const appointment = ticket.appointment as Record<string, unknown> | null;
+
+      return {
+        id: ticket.id,
+        description: ticket.details || null,
+        created_at: ticket.created_at || null,
+        updated_at: ticket.updated_at || null,
+        work_type: workType ? {
+          name: workType.name || null,
+          code: workType.code || null,
+        } : null,
+        status: status ? {
+          name: status.name || null,
+          code: status.code || null,
+        } : null,
+        appointment: appointment ? {
+          appointment_date: appointment.appointment_date || null,
+          appointment_time_start: appointment.appointment_time_start || null,
+          appointment_time_end: appointment.appointment_time_end || null,
+          appointment_type: appointment.appointment_type || null,
+          is_approved: appointment.is_approved || null,
+        } : null,
+      };
+    });
 
     // Format merchandise
     const merchandiseFormatted = (merchandiseResult.data || []).map((merch: Record<string, unknown>) => ({
@@ -261,6 +309,7 @@ export class SiteService {
     return {
       ...siteResult.data,
       tickets: ticketsFormatted,
+      ticket_count: ticketCount,
       merchandise: merchandiseFormatted,
       contacts: contactsFormatted,
     };
