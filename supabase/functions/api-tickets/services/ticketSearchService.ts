@@ -122,7 +122,7 @@ function createTicketDisplayItem(
 ): TicketDisplayItem {
   const workType = ticket.work_type as { name?: string; code?: string } | null;
   const assigner = ticket.assigner as { name?: string; code?: string } | null;
-  const creator = ticket.creator as { name?: string; code?: string } | null;
+  const creator = ticket.creator as { id?: string; name?: string; code?: string } | null;
   const status = ticket.status as { name?: string; code?: string } | null;
   const site = ticket.site as { 
     id?: string; 
@@ -255,6 +255,7 @@ function createTicketDisplayItem(
       status_id: ticket.status_id as string,
       work_type_id: ticket.work_type_id as string,
       assigner_id: ticket.assigner_id as string,
+      creator_id: creator?.id || ticket.created_by as string || null,
       contact_id: contact?.id || ticket.contact_id as string || null,
     };
   }

@@ -74,6 +74,7 @@ export interface TicketIds {
   status_id: string;
   work_type_id: string;
   assigner_id: string;
+  creator_id: string | null;
   contact_id: string | null;
 }
 
