@@ -131,3 +131,24 @@ export function isSuperAdmin(employee: Employee): boolean {
   return level >= 3;
 }
 
+/**
+ * Check if employee can approve appointments
+ * Requires level >= 1 (assigner, pm, sale, technician_l2, etc.)
+ */
+export async function requireCanApproveAppointments(employee: Employee): Promise<void> {
+  const level = employee.role_data?.level ?? 0;
+  
+  if (level < 1) {
+    throw new AuthorizationError('ไม่มีสิทธิ์อนุมัตินัดหมาย');
+  }
+}
+
+/**
+ * Check if employee can approve appointments (returns boolean)
+ * Returns true if level >= 1
+ */
+export async function canApproveAppointments(employee: Employee): Promise<boolean> {
+  const level = employee.role_data?.level ?? 0;
+  return level >= 1;
+}
+

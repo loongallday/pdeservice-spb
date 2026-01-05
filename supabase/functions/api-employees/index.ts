@@ -17,6 +17,10 @@ import { unlinkAuth } from './handlers/unlinkAuth.ts';
 import { networkSearch } from './handlers/networkSearch.ts';
 import { getEmployeeSummary } from './handlers/employeeSummary.ts';
 import { getTechnicianAvailability } from './handlers/technicianAvailability.ts';
+// Achievement add-on handlers
+import { achievementTrack } from './handlers/achievementTrack.ts';
+import { achievementProgress } from './handlers/achievementProgress.ts';
+import { achievementCoupons } from './handlers/achievementCoupons.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -42,6 +46,16 @@ Deno.serve(async (req) => {
           return await getTechnicianAvailability(req, employee);
         }
 
+        // GET /achievements/progress - Get employee's achievement progress
+        if (relativePath.length === 2 && relativePath[0] === "achievements" && relativePath[1] === "progress") {
+          return await achievementProgress(req, employee);
+        }
+
+        // GET /achievements/coupons - Get employee's coupons
+        if (relativePath.length === 2 && relativePath[0] === "achievements" && relativePath[1] === "coupons") {
+          return await achievementCoupons(req, employee);
+        }
+
         // GET /network-search - Network search employees (for employee management)
         if (relativePath.length === 1 && relativePath[0] === "network-search") {
           return await networkSearch(req, employee);
@@ -60,6 +74,11 @@ Deno.serve(async (req) => {
         break;
 
       case "POST":
+        // POST /achievements/track - Track an achievement action
+        if (relativePath.length === 2 && relativePath[0] === "achievements" && relativePath[1] === "track") {
+          return await achievementTrack(req, employee);
+        }
+
         // POST / - Create employee
         if (relativePath.length === 0) {
           return await create(req, employee);
