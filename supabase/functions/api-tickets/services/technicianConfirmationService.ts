@@ -6,6 +6,8 @@ import { createServiceClient } from '../../_shared/supabase.ts';
 import { NotFoundError, DatabaseError, ValidationError } from '../../_shared/error.ts';
 import { AppointmentService } from '../../api-appointments/services/appointmentService.ts';
 import { batchResolveLocations } from './locationResolver.ts';
+import { logTicketAudit } from './ticketHelperService.ts';
+import { NotificationService } from './notificationService.ts';
 
 /**
  * Normalize employee_ids to array of objects with id and is_key
@@ -140,6 +142,37 @@ export class TechnicianConfirmationService {
       throw new DatabaseError(`ไม่สามารถยืนยันช่างได้: ${confirmError.message}`);
     }
 
+    // Log audit for technician confirmation
+    const employeeNames = confirmations?.map((c: Record<string, unknown>) => {
+      const emp = c.employee as { name?: string; code?: string } | null;
+      return emp?.name || emp?.code || 'Unknown';
+    }) || [];
+
+    await logTicketAudit({
+      ticketId,
+      action: 'technician_confirmed',
+      changedBy: confirmedBy,
+      newValues: {
+        confirmed_employees: uniqueEmployees.map(e => e.id),
+        employee_names: employeeNames,
+        date: appointmentDate,
+      },
+      metadata: {
+        employee_count: uniqueEmployees.length,
+        notes: notes || null,
+      },
+    });
+
+    // Create notifications for confirmed technicians (async, don't wait)
+    NotificationService.createTechnicianConfirmationNotifications(
+      ticketId,
+      uniqueEmployees.map(e => e.id),
+      confirmedBy,
+      appointmentDate
+    ).catch(err => {
+      console.error('[technician-confirmation] Failed to create notifications:', err);
+    });
+
     return confirmations || [];
   }
 
@@ -208,22 +241,27 @@ export class TechnicianConfirmationService {
    */
   private static formatAppointmentType(appointmentType: string | null | undefined): string {
     if (!appointmentType) return '';
-    
+
     const typeMap: Record<string, string> = {
-      'scheduled': 'นัดแล้ว',
+      'half_morning': 'ครึ่งเช้า',
+      'half_afternoon': 'ครึ่งบ่าย',
+      'full_day': 'เต็มวัน',
+      'time_range': 'ระบุเวลา',
       'call_to_schedule': 'โทรนัด',
       'backlog': 'Backlog',
     };
-    
+
     return typeMap[appointmentType] || appointmentType;
   }
 
   /**
-   * Generate LINE summary text for a single ticket (compact format)
+   * Generate summary text for a single ticket
    * Format: -WorkGiver - Company - Contact Phone - WorkType - Details – (Address) Time
    * WorkGiver defaults to "PDE" if not set
+   * @param ticketId - The ticket ID
+   * @param format - 'full' (default, preserves newlines) or 'compact' (replaces newlines with commas for LINE)
    */
-  static async generateLineSummary(ticketId: string): Promise<string> {
+  static async generateLineSummary(ticketId: string, format: 'full' | 'compact' = 'full'): Promise<string> {
     const supabase = createServiceClient();
 
     // Get ticket with all related data
@@ -429,12 +467,14 @@ export class TechnicianConfirmationService {
         workLine.push(`งาน: ${workTypeName}`);
       }
       if (ticket.details) {
-        // Clean up details: replace newlines with comma-space for compact display
-        const details = (ticket.details as string)
-          .trim()
-          .replace(/\r\n/g, '\n')
-          .replace(/\n+/g, ', ')
-          .replace(/\s+/g, ' ');
+        let details = (ticket.details as string).trim().replace(/\r\n/g, '\n');
+
+        if (format === 'compact') {
+          // Compact: replace newlines with comma-space for LINE messaging
+          details = details.replace(/\n+/g, ', ').replace(/\s+/g, ' ');
+        }
+        // Full format: keep newlines as-is
+
         workLine.push(details);
       }
       lines.push(workLine.join(' | '));
@@ -480,7 +520,7 @@ export class TechnicianConfirmationService {
    * Get summaries grouped by technician combinations for a specific date
    * Returns formatted LINE-ready text
    */
-  static async getSummariesGroupedByTechnicians(date: string): Promise<{
+  static async getSummariesGroupedByTechnicians(date: string, format: 'full' | 'compact' = 'full'): Promise<{
     date: string;
     date_display: string;
     team_count: number;
@@ -493,6 +533,7 @@ export class TechnicianConfirmationService {
         ticket_id: string;
         summary: string;
         appointment_time: string;
+        appointment_type: string;
         site_name: string;
         company_name: string;
       }>;
@@ -623,12 +664,13 @@ export class TechnicianConfirmationService {
         
         const ticketSummaries = await Promise.all(
           group.tickets.map(async (ticket: Record<string, unknown>) => {
-            const summary = await this.generateLineSummary(ticket.id as string);
-            
+            const summary = await this.generateLineSummary(ticket.id as string, format);
+
             const site = ticket.site as { name?: string; company?: { name_th?: string; name_en?: string } } | null;
             const appointment = ticket.appointment as {
               appointment_time_start?: string;
               appointment_time_end?: string;
+              appointment_type?: string;
             } | null;
 
             const timeDisplay = appointment?.appointment_time_start && appointment?.appointment_time_end
@@ -639,6 +681,7 @@ export class TechnicianConfirmationService {
               ticket_id: ticket.id as string,
               summary,
               appointment_time: timeDisplay,
+              appointment_type: this.formatAppointmentType(appointment?.appointment_type),
               site_name: site?.name || 'ไม่ระบุสถานที่',
               company_name: site?.company?.name_th || site?.company?.name_en || 'ไม่ระบุบริษัท',
             };

@@ -10,8 +10,8 @@ import { HTTP_STATUS } from '../../_shared/constants.ts';
 import type { Employee } from '../../_shared/auth.ts';
 
 export async function deleteSite(req: Request, employee: Employee, id: string) {
-  // Check permissions - Level 1 and above can delete sites
-  await requireMinLevel(employee, 1);
+  // Check permissions - Level 3 (Superadmin) only can delete sites
+  await requireMinLevel(employee, 3);
 
   // Validate ID
   validateUUID(id, 'Site ID');

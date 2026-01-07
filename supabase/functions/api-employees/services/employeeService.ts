@@ -224,8 +224,12 @@ export class EmployeeService {
   static async update(id: string, employeeData: Record<string, unknown>): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
 
-    // If only updating profile_image_url, use direct PostgREST API call to bypass schema cache
-    if (Object.keys(employeeData).length === 1 && employeeData.profile_image_url !== undefined) {
+    // If only updating image URLs, use direct PostgREST API call to bypass schema cache
+    const isOnlyImageUpdate = Object.keys(employeeData).every(key =>
+      key === 'profile_image_url' || key === 'cover_image_url'
+    ) && Object.keys(employeeData).length > 0;
+
+    if (isOnlyImageUpdate) {
       // @ts-ignore - Deno is available in Edge Functions
       const supabaseUrl = Deno.env.get('SUPABASE_URL');
       // @ts-ignore - Deno is available in Edge Functions
@@ -236,7 +240,19 @@ export class EmployeeService {
       }
 
       // Use PostgREST REST API directly to bypass schema cache
-      const url = `${supabaseUrl}/rest/v1/employees?id=eq.${id}`;
+      const url = `${supabaseUrl}/rest/v1/main_employees?id=eq.${id}`;
+
+      // Build update payload with only the provided image fields
+      const updatePayload: Record<string, unknown> = {
+        updated_at: new Date().toISOString(),
+      };
+      if (employeeData.profile_image_url !== undefined) {
+        updatePayload.profile_image_url = employeeData.profile_image_url;
+      }
+      if (employeeData.cover_image_url !== undefined) {
+        updatePayload.cover_image_url = employeeData.cover_image_url;
+      }
+
       const response = await fetch(url, {
         method: 'PATCH',
         headers: {
@@ -245,10 +261,7 @@ export class EmployeeService {
           'Authorization': `Bearer ${supabaseServiceKey}`,
           'Prefer': 'return=representation',
         },
-        body: JSON.stringify({
-          profile_image_url: employeeData.profile_image_url,
-          updated_at: new Date().toISOString(),
-        }),
+        body: JSON.stringify(updatePayload),
       });
 
       if (!response.ok) {

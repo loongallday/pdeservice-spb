@@ -17,6 +17,8 @@ import { removeTicketEmployee } from './handlers/removeTicketEmployee.ts';
 import { confirmTechnicians } from './handlers/confirmTechnicians.ts';
 import { getSummaries } from './handlers/getSummaries.ts';
 import { getConfirmedTechnicians } from './handlers/getConfirmedTechnicians.ts';
+import { getAuditLogs, getRecentAuditLogs } from './handlers/getAuditLogs.ts';
+import { getComments, createComment, updateComment, deleteComment } from './handlers/comments.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -58,17 +60,34 @@ Deno.serve(async (req) => {
           return await searchDuration(req, employee);
         }
 
+        // GET /audit - Get recent audit logs (admin only)
+        if (relativePath.length === 1 && relativePath[0] === 'audit') {
+          return await getRecentAuditLogs(req, employee);
+        }
+
         // GET /:id/confirmed-technicians - Get confirmed technicians for a ticket
         if (relativePath.length === 2 && relativePath[1] === 'confirmed-technicians') {
           const id = relativePath[0];
           return await getConfirmedTechnicians(req, employee, id);
         }
 
+        // GET /:id/audit - Get audit logs for a specific ticket
+        if (relativePath.length === 2 && relativePath[1] === 'audit') {
+          const id = relativePath[0];
+          return await getAuditLogs(req, employee, id);
+        }
+
+        // GET /:id/comments - Get comments for a ticket
+        if (relativePath.length === 2 && relativePath[1] === 'comments') {
+          const id = relativePath[0];
+          return await getComments(req, employee, id);
+        }
+
         // GET /:id - Get single ticket
         if (relativePath.length === 1) {
           const id = relativePath[0];
           // Validate it's not a special route
-          if (id === 'search' || id === 'search-duration' || id === 'summaries') {
+          if (id === 'search' || id === 'search-duration' || id === 'summaries' || id === 'audit') {
             return error('Not found', 404);
           }
           return await get(req, employee, id);
@@ -82,6 +101,12 @@ Deno.serve(async (req) => {
           return await confirmTechnicians(req, employee, id);
         }
 
+        // POST /:id/comments - Create a comment
+        if (relativePath.length === 2 && relativePath[1] === 'comments') {
+          const id = relativePath[0];
+          return await createComment(req, employee, id);
+        }
+
         // POST / - Create ticket
         if (relativePath.length === 0) {
           return await create(req, employee);
@@ -89,6 +114,13 @@ Deno.serve(async (req) => {
         break;
 
       case 'PUT':
+        // PUT /:id/comments/:commentId - Update a comment
+        if (relativePath.length === 3 && relativePath[1] === 'comments') {
+          const ticketId = relativePath[0];
+          const commentId = relativePath[2];
+          return await updateComment(req, employee, ticketId, commentId);
+        }
+
         // PUT /:id - Update ticket
         if (relativePath.length === 1) {
           const id = relativePath[0];
@@ -100,6 +132,13 @@ Deno.serve(async (req) => {
         // DELETE /employees - Remove ticket-employee assignment
         if (relativePath.length === 1 && relativePath[0] === 'employees') {
           return await removeTicketEmployee(req, employee);
+        }
+
+        // DELETE /:id/comments/:commentId - Delete a comment
+        if (relativePath.length === 3 && relativePath[1] === 'comments') {
+          const ticketId = relativePath[0];
+          const commentId = relativePath[2];
+          return await deleteComment(req, employee, ticketId, commentId);
         }
 
         // DELETE /:id - Delete ticket

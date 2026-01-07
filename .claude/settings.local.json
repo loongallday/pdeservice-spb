@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git show:*)",
+      "Bash(git branch:*)",
+      "Bash(grep:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(npx supabase migration new:*)",
+      "Bash(npx supabase functions deploy:*)",
+      "Bash(npx supabase db:*)",
+      "Bash(deno test:*)",
+      "Bash(deno task:*)",
+      "mcp__supabase__execute_sql",
+      "mcp__supabase__apply_migration",
+      "mcp__supabase__list_tables",
+      "mcp__supabase__list_migrations",
+      "mcp__supabase__get_logs",
+      "mcp__supabase__get_advisors",
+      "mcp__supabase__generate_typescript_types",
+      "mcp__supabase__search_docs",
+      "Skill(deploy)",
+      "Bash(npx supabase:*)",
+      "mcp__supabase__list_edge_functions"
+    ],
+    "deny": []
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "supabase"
+  ]
+}

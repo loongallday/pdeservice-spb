@@ -45,6 +45,12 @@ export async function search(req: Request, employee: Employee) {
   const orderParam = url.searchParams.get('order');
   const order = (orderParam === 'asc' || orderParam === 'desc') ? orderParam : undefined;
 
+  // Parse date_type for duration filtering (default: appointed)
+  const dateTypeParam = url.searchParams.get('date_type');
+  const date_type = dateTypeParam && ['create', 'update', 'appointed'].includes(dateTypeParam)
+    ? dateTypeParam
+    : undefined;
+
   // Parse appointment_is_approved (boolean parameter)
   const appointmentIsApprovedParam = url.searchParams.get('appointment_is_approved');
   let appointment_is_approved: boolean | undefined = undefined;
@@ -68,6 +74,7 @@ export async function search(req: Request, employee: Employee) {
     updated_at: url.searchParams.get('updated_at') || undefined,
     start_date: url.searchParams.get('start_date') || undefined,
     end_date: url.searchParams.get('end_date') || undefined,
+    date_type,
     exclude_backlog: url.searchParams.get('exclude_backlog') === 'true',
     appointment_is_approved,
     department_id,

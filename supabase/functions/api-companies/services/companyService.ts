@@ -176,7 +176,7 @@ export class CompanyService {
     const offset = (page - 1) * limit;
     let dataQuery = supabase
       .from('main_companies')
-      .select('tax_id, name_th, name_en, address_detail');
+      .select('id, tax_id, name_th, name_en, address_detail');
 
     // Apply search filter if query is provided
     // Trigram indexes will be used automatically by PostgreSQL query planner
@@ -194,7 +194,8 @@ export class CompanyService {
     
     // Transform data to return only required fields with aggregated description
     const transformedData = (data || []).map((company) => ({
-      tax_id: company.tax_id,
+      id: company.id,
+      tax_id: company.tax_id || null,
       name_th: company.name_th,
       name_en: company.name_en,
       description: company.address_detail || null,
@@ -281,168 +282,7 @@ export class CompanyService {
     if (error) throw new DatabaseError(error.message);
     if (!data) throw new DatabaseError('Failed to create or update company');
 
-    // Check if main branch site exists for this company
-    // Note: company_id in main_sites is UUID, so use data.id (not tax_id)
-    const { data: mainBranchSite } = await supabase
-      .from('main_sites')
-      .select('id')
-      .eq('company_id', data.id)
-      .eq('is_main_branch', true)
-      .maybeSingle();
-
-    if (mainBranchSite) {
-      // Update existing main branch site with new address info
-      await this.updateMainBranchSite(data);
-    } else {
-      // Create new main branch site
-      await this.createHeadOfficeSite(data);
-    }
-
     return data;
-  }
-
-  /**
-   * Create head office site for a company
-   * Site name: "สำนักงานใหญ่ (company name)"
-   * Sets is_main_branch = true
-   */
-  private static async createHeadOfficeSite(company: Record<string, unknown>): Promise<void> {
-    const { SiteService } = await import('../../api-sites/services/siteService.ts');
-
-    // Prepare site data from company address info
-    // Note: company_id in main_sites is UUID, so use company.id (not tax_id)
-    const siteData: Record<string, unknown> = {
-      name: `สำนักงานใหญ่ (${company.name_th})`,
-      company_id: company.id,
-      address_detail: company.address_detail || company.address_full || null,
-      is_main_branch: true,
-    };
-
-    // Map address codes (convert string to integer if needed)
-    if (company.address_tambon_code) {
-      const subdistrictCode = typeof company.address_tambon_code === 'string' 
-        ? parseInt(company.address_tambon_code, 10) 
-        : company.address_tambon_code;
-      if (!isNaN(subdistrictCode as number)) {
-        siteData.subdistrict_code = subdistrictCode;
-      }
-    }
-
-    if (company.address_district_code) {
-      const districtCode = typeof company.address_district_code === 'string'
-        ? parseInt(company.address_district_code, 10)
-        : company.address_district_code;
-      if (!isNaN(districtCode as number)) {
-        siteData.district_code = districtCode;
-      }
-    }
-
-    if (company.address_province_code) {
-      const provinceCode = typeof company.address_province_code === 'string'
-        ? parseInt(company.address_province_code, 10)
-        : company.address_province_code;
-      if (!isNaN(provinceCode as number)) {
-        siteData.province_code = provinceCode;
-      }
-    }
-
-    // Create the site (errors will be thrown and handled by caller)
-    await SiteService.create(siteData);
-  }
-
-  /**
-   * Update main branch site with company address info
-   * Ensures only one main branch exists per company
-   */
-  private static async updateMainBranchSite(company: Record<string, unknown>): Promise<void> {
-    const supabase = createServiceClient();
-
-    // Find all main branch sites for this company (should only be one, but handle multiple)
-    // Note: company_id in main_sites is UUID, so use company.id (not tax_id)
-    const { data: mainBranchSites, error: findError } = await supabase
-      .from('main_sites')
-      .select('id')
-      .eq('company_id', company.id as string)
-      .eq('is_main_branch', true);
-
-    if (findError) throw new DatabaseError(`Failed to find main branch site: ${findError.message}`);
-    
-    if (!mainBranchSites || mainBranchSites.length === 0) {
-      // If no main branch found, create one
-      await this.createHeadOfficeSite(company);
-      return;
-    }
-
-    // If multiple main branches exist (shouldn't happen due to unique constraint, but handle it)
-    // Keep only the first one and update it
-    const mainBranchSite = mainBranchSites[0];
-    
-    // If there are multiple, unset is_main_branch for the others
-    if (mainBranchSites.length > 1) {
-      const otherSiteIds = mainBranchSites.slice(1).map(s => s.id);
-      const { error: unsetError } = await supabase
-        .from('main_sites')
-        .update({ is_main_branch: false })
-        .in('id', otherSiteIds);
-      
-      if (unsetError) {
-        throw new DatabaseError(`Failed to unset duplicate main branches: ${unsetError.message}`);
-      }
-    }
-
-    // Prepare update data from company address info
-    const updateData: Record<string, unknown> = {
-      name: `สำนักงานใหญ่ (${company.name_th})`,
-      address_detail: company.address_detail || company.address_full || null,
-    };
-
-    // Map address codes (convert string to integer if needed)
-    if (company.address_tambon_code) {
-      const subdistrictCode = typeof company.address_tambon_code === 'string' 
-        ? parseInt(company.address_tambon_code, 10) 
-        : company.address_tambon_code;
-      if (!isNaN(subdistrictCode as number)) {
-        updateData.subdistrict_code = subdistrictCode;
-      } else {
-        updateData.subdistrict_code = null;
-      }
-    } else {
-      updateData.subdistrict_code = null;
-    }
-
-    if (company.address_district_code) {
-      const districtCode = typeof company.address_district_code === 'string'
-        ? parseInt(company.address_district_code, 10)
-        : company.address_district_code;
-      if (!isNaN(districtCode as number)) {
-        updateData.district_code = districtCode;
-      } else {
-        updateData.district_code = null;
-      }
-    } else {
-      updateData.district_code = null;
-    }
-
-    if (company.address_province_code) {
-      const provinceCode = typeof company.address_province_code === 'string'
-        ? parseInt(company.address_province_code, 10)
-        : company.address_province_code;
-      if (!isNaN(provinceCode as number)) {
-        updateData.province_code = provinceCode;
-      } else {
-        updateData.province_code = null;
-      }
-    } else {
-      updateData.province_code = null;
-    }
-
-    // Update the main branch site
-    const { error: updateError } = await supabase
-      .from('main_sites')
-      .update(updateData)
-      .eq('id', mainBranchSite.id);
-
-    if (updateError) throw new DatabaseError(`Failed to update main branch site: ${updateError.message}`);
   }
 
   /**
@@ -468,21 +308,6 @@ export class CompanyService {
 
     if (error) throw new DatabaseError(error.message);
     if (!data) throw new NotFoundError('ไม่พบข้อมูลบริษัท');
-
-    // Update main branch site if address info changed
-    // Note: company_id in main_sites is UUID, so use data.id (not tax_id)
-    const { data: mainBranchSite } = await supabase
-      .from('main_sites')
-      .select('id')
-      .eq('company_id', data.id)
-      .eq('is_main_branch', true)
-      .maybeSingle();
-
-    if (mainBranchSite) {
-      await this.updateMainBranchSite(data);
-    } else {
-      await this.createHeadOfficeSite(data);
-    }
 
     return data;
   }
@@ -548,21 +373,6 @@ export class CompanyService {
       if (updateError) throw new DatabaseError(updateError.message);
       if (!updatedCompany) throw new DatabaseError('Failed to update company');
 
-      // Update main branch site if it exists
-      // Note: company_id in main_sites is UUID, so use updatedCompany.id (not tax_id)
-      const { data: mainBranchSite } = await supabase
-        .from('main_sites')
-        .select('id')
-        .eq('company_id', updatedCompany.id)
-        .eq('is_main_branch', true)
-        .maybeSingle();
-
-      if (mainBranchSite) {
-        await this.updateMainBranchSite(updatedCompany);
-      } else {
-        await this.createHeadOfficeSite(updatedCompany);
-      }
-
       return updatedCompany;
     }
 
@@ -575,20 +385,6 @@ export class CompanyService {
 
     if (createError) throw new DatabaseError(createError.message);
     if (!newCompany) throw new DatabaseError('Failed to create company');
-
-    // Check if main branch site exists for this company
-    // Note: company_id in main_sites is UUID, so use newCompany.id (not tax_id)
-    const { data: mainBranchSite } = await supabase
-      .from('main_sites')
-      .select('id')
-      .eq('company_id', newCompany.id)
-      .eq('is_main_branch', true)
-      .maybeSingle();
-
-    if (!mainBranchSite) {
-      // Only create main branch site if it doesn't exist
-      await this.createHeadOfficeSite(newCompany);
-    }
 
     return newCompany;
   }

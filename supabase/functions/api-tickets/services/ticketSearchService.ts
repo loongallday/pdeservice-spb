@@ -433,6 +433,7 @@ export async function search(params: {
   updated_at?: string;
   start_date?: string;
   end_date?: string;
+  date_type?: 'create' | 'update' | 'appointed';
   exclude_backlog?: boolean;
   only_backlog?: boolean;
   appointment_is_approved?: boolean;
@@ -445,6 +446,11 @@ export async function search(params: {
   const supabase = createServiceClient();
   const { page, limit, sort, order, include = 'full', ...filters } = params;
 
+  // Map date_type to RPC parameter format
+  const rpcDateType = filters.date_type === 'create' ? 'created'
+    : filters.date_type === 'update' ? 'updated'
+    : 'appointed';
+
   // Use RPC for server-side filtering (avoids URL length issues with large result sets)
   const { data: ticketResults, error: rpcError } = await supabase.rpc('search_tickets', {
     p_page: page,
@@ -453,7 +459,7 @@ export async function search(params: {
     p_order: order || 'desc',
     p_start_date: filters.start_date || null,
     p_end_date: filters.end_date || null,
-    p_date_type: 'appointed', // Default to appointment date filtering
+    p_date_type: rpcDateType,
     p_site_id: filters.site_id || null,
     p_status_id: filters.status_id || null,
     p_work_type_id: filters.work_type_id || null,
@@ -464,6 +470,7 @@ export async function search(params: {
     p_only_backlog: filters.only_backlog || false,
     p_employee_id: Array.isArray(filters.employee_id) ? filters.employee_id[0] : (filters.employee_id || null),
     p_department_id: Array.isArray(filters.department_id) ? filters.department_id[0] : (filters.department_id || null),
+    p_appointment_is_approved: filters.appointment_is_approved ?? null,
   });
 
   if (rpcError) {

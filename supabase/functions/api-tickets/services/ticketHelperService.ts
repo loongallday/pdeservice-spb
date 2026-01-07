@@ -6,11 +6,28 @@ import { createServiceClient } from '../../_shared/supabase.ts';
 import { DatabaseError, ValidationError } from '../../_shared/error.ts';
 
 /**
+ * Audit action types for comprehensive ticket tracking
+ */
+export type TicketAuditAction =
+  | 'created'           // Ticket created
+  | 'updated'           // Ticket fields updated
+  | 'deleted'           // Ticket deleted
+  | 'approved'          // Appointment approved
+  | 'unapproved'        // Appointment un-approved
+  | 'technician_confirmed'    // Technicians confirmed
+  | 'technician_changed'      // Confirmed technicians changed
+  | 'employee_assigned'       // Employees assigned (requested)
+  | 'employee_removed'        // Employees removed from assignment
+  | 'work_giver_set'          // Work giver assigned
+  | 'work_giver_changed'      // Work giver changed
+  | 'comment_added';          // Comment added to ticket
+
+/**
  * Log ticket audit entry
  */
 export async function logTicketAudit(params: {
   ticketId: string;
-  action: 'created' | 'updated' | 'deleted';
+  action: TicketAuditAction;
   changedBy: string;
   oldValues?: Record<string, unknown>;
   newValues?: Record<string, unknown>;

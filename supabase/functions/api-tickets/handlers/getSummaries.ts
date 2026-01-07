@@ -12,9 +12,13 @@ export async function getSummaries(req: Request, employee: Employee) {
   // Check permissions - Level 0 and above can view summaries
   await requireMinLevel(employee, 0);
 
-  // Get date parameter (required)
+  // Get query parameters
   const url = new URL(req.url);
   const date = url.searchParams.get('date');
+  const formatParam = url.searchParams.get('format');
+
+  // Parse format parameter: 'full' (default) or 'compact'
+  const format: 'full' | 'compact' = formatParam === 'compact' ? 'compact' : 'full';
 
   if (!date) {
     throw new ValidationError('กรุณาระบุวันที่ (date parameter)');
@@ -33,7 +37,7 @@ export async function getSummaries(req: Request, employee: Employee) {
   }
 
   // Get summaries grouped by technicians
-  const result = await TechnicianConfirmationService.getSummariesGroupedByTechnicians(date);
+  const result = await TechnicianConfirmationService.getSummariesGroupedByTechnicians(date, format);
 
   return success(result);
 }

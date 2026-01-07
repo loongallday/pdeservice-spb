@@ -15,12 +15,9 @@ export async function createOrUpdate(req: Request, employee: Employee) {
   // Parse request body
   const body = await parseRequestBody<Record<string, unknown>>(req);
 
-  // Validate required fields
-  validateRequired(body.tax_id, 'เลขผู้เสียภาษี');
-  validateRequired(body.name_th, 'ชื่อบริษัท');
-  validateRequired(body.address_tambon_code, 'รหัสตำบล');
-  validateRequired(body.address_district_code, 'รหัสอำเภอ');
-  validateRequired(body.address_province_code, 'รหัสจังหวัด');
+  // Validate required fields (only name_th and name_en are required)
+  validateRequired(body.name_th, 'ชื่อบริษัท (ภาษาไทย)');
+  validateRequired(body.name_en, 'ชื่อบริษัท (ภาษาอังกฤษ)');
 
   // Create or update company
   const company = await CompanyService.createOrUpdate(body);

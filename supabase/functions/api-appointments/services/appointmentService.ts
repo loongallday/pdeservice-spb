@@ -6,6 +6,8 @@ import { createServiceClient } from '../../_shared/supabase.ts';
 import { NotFoundError, DatabaseError } from '../../_shared/error.ts';
 import { calculatePagination } from '../../_shared/response.ts';
 import type { PaginationInfo } from '../../_shared/response.ts';
+import { logTicketAudit } from '../../api-tickets/services/ticketHelperService.ts';
+import { NotificationService } from '../../api-tickets/services/notificationService.ts';
 
 export interface AppointmentQueryParams {
   page?: number;
@@ -128,9 +130,31 @@ export class AppointmentService {
    * Sets is_approved based on appointmentData.is_approved (defaults to true if not provided)
    * Updates provided fields
    */
-  static async approve(id: string, appointmentData: Record<string, unknown>): Promise<Record<string, unknown>> {
+  static async approve(
+    id: string,
+    appointmentData: Record<string, unknown>,
+    approvedBy?: string
+  ): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
-    
+
+    // Get current appointment state for audit logging
+    const [appointmentResult, ticketResult] = await Promise.all([
+      supabase
+        .from('main_appointments')
+        .select('*')
+        .eq('id', id)
+        .single(),
+      supabase
+        .from('main_tickets')
+        .select('id')
+        .eq('appointment_id', id)
+        .maybeSingle(),
+    ]);
+
+    const oldAppointment = appointmentResult.data;
+    const ticketId = ticketResult.data?.id || null;
+    const wasApproved = oldAppointment?.is_approved;
+
     // Set is_approved - use provided value or default to true
     const updateData = {
       ...appointmentData,
@@ -146,6 +170,44 @@ export class AppointmentService {
 
     if (error) throw new DatabaseError(error.message);
     if (!data) throw new NotFoundError('ไม่พบข้อมูลการนัดหมาย');
+
+    // Log audit if we have ticket and approver info
+    if (ticketId && approvedBy) {
+      const isApproved = data.is_approved as boolean;
+      const action = isApproved ? 'approved' : 'unapproved';
+
+      await logTicketAudit({
+        ticketId,
+        action,
+        changedBy: approvedBy,
+        oldValues: {
+          is_approved: wasApproved,
+          appointment_date: oldAppointment?.appointment_date,
+          appointment_time_start: oldAppointment?.appointment_time_start,
+          appointment_time_end: oldAppointment?.appointment_time_end,
+          appointment_type: oldAppointment?.appointment_type,
+        },
+        newValues: {
+          is_approved: isApproved,
+          appointment_date: data.appointment_date,
+          appointment_time_start: data.appointment_time_start,
+          appointment_time_end: data.appointment_time_end,
+          appointment_type: data.appointment_type,
+        },
+        metadata: {
+          appointment_id: id,
+        },
+      });
+
+      // Create notifications for confirmed technicians (async, don't wait)
+      NotificationService.createApprovalNotifications(
+        ticketId,
+        isApproved,
+        approvedBy
+      ).catch(err => {
+        console.error('[appointment] Failed to create approval notifications:', err);
+      });
+    }
 
     return data;
   }

@@ -18,7 +18,6 @@ export class SiteService {
   /**
    * Build search filter for name and address_detail
    * Handles queries with special characters (commas, etc.) that break PostgREST syntax
-   * PostgREST uses commas as separators in .or() filters, so we need to escape them
    * @param queryBuilder - Supabase query builder instance
    * @param query - Search query string (may contain commas or other special characters)
    * @returns Query builder with search filter applied
@@ -29,69 +28,30 @@ export class SiteService {
     query: string
     // deno-lint-ignore no-explicit-any
   ): any {
-    // PostgREST's .or() filter syntax uses commas to separate conditions
-    // When the query itself contains commas, it breaks the filter parsing
-    // Solution: Use separate filter chains with proper OR logic
-    // Since Supabase client doesn't support chaining OR easily, we'll use a workaround:
-    // Apply the search to both fields separately using .or() with proper escaping
-    
-    // The safest approach: if query contains commas or other special chars,
-    // we need to handle it carefully. For now, we'll use a pattern that works:
-    // Use the query as-is but ensure proper formatting
-    
-    // Actually, the best solution is to use PostgREST's text search capabilities
-    // or to properly escape. Since we can't easily escape in PostgREST filter strings,
-    // we'll use a workaround: apply filters in a way that doesn't break on commas
-    
-    // Workaround: Use separate conditions and combine with OR using proper PostgREST syntax
-    // Format: "field1.ilike.pattern,field2.ilike.pattern"
-    // The issue is that commas in the pattern break this
-    
-    // Best solution: Use a regex or text search, or escape commas properly
-    // For ilike patterns, we can use the query directly if we format it correctly
-    // But commas still break it
-    
-    // Final solution: Replace commas with a wildcard pattern that matches commas
-    // Or use a different search approach
-    
-    // Actually, let's use PostgREST's ability to handle this by using proper filter syntax
-    // We'll escape commas by URL-encoding them in the filter value
-    // But PostgREST doesn't support that in filter strings
-    
-    // Practical solution: Use separate .ilike() calls and let PostgREST handle OR
-    // But Supabase client doesn't support that pattern easily
-    
-    // Working solution: For queries with commas, split the search or use a workaround
-    // Since we want to search for the exact query (including commas), we need a different approach
-    
-    // Final working solution: Use PostgREST's text search with proper escaping
-    // Or: Use a filter that doesn't break on commas - we can use .or() with an array format
-    // But Supabase client uses string format for .or()
-    
-    // The actual fix: We need to escape commas in the filter string
-    // PostgREST filter syntax: "field.ilike.%value%"
-    // When value contains comma, it breaks because comma separates conditions
-    // Solution: Don't use .or() with string interpolation for user input with commas
-    // Instead, use a different approach
-    
-    // Working fix: Use separate filter application
-    // Apply name filter and address_detail filter separately, then combine
-    // But Supabase doesn't support OR between separate chains
-    
-    // Best practical solution: Use a regex pattern or escape mechanism
-    // Since we can't escape easily, we'll use a workaround:
-    // When query contains problematic characters, use a different search method
-    
-    // Final solution: Use PostgREST's full-text search or escape properly
-    // For now, let's use a simple fix: replace commas with spaces in the search pattern
-    // This maintains search functionality while avoiding syntax errors
-    // Note: This slightly changes search behavior but prevents errors
-    
+    // Replace commas with spaces to avoid breaking PostgREST filter syntax
     const safeQuery = query.replace(/,/g, ' ');
-    
+
     return queryBuilder.or(
       `name.ilike.%${safeQuery}%,address_detail.ilike.%${safeQuery}%`
     );
+  }
+
+  /**
+   * Get company IDs that match the search query
+   * Used to search sites by company name
+   */
+  private static async getMatchingCompanyIds(query: string): Promise<string[]> {
+    const supabase = createServiceClient();
+    const safeQuery = query.replace(/,/g, ' ');
+
+    const { data, error } = await supabase
+      .from('main_companies')
+      .select('id')
+      .or(`name_th.ilike.%${safeQuery}%,name_en.ilike.%${safeQuery}%`)
+      .limit(100);
+
+    if (error || !data) return [];
+    return data.map((c) => c.id);
   }
 
   /**
@@ -316,17 +276,34 @@ export class SiteService {
   }
 
   /**
-   * Global search sites by name or address_detail with pagination
+   * Global search sites by name, address_detail, or company name with pagination
    * Returns only summary fields: id, name, address_detail, company_id
+   * Supports filtering by ticket count (min_ticket_count, max_ticket_count)
    */
   static async globalSearch(params: {
     q?: string;
     page: number;
     limit: number;
     company_id?: string;
+    min_ticket_count?: number;
+    max_ticket_count?: number;
   }): Promise<{ data: Record<string, unknown>[]; pagination: PaginationInfo }> {
     const supabase = createServiceClient();
-    const { q, page, limit, company_id } = params;
+    const { q, page, limit, company_id, min_ticket_count, max_ticket_count } = params;
+
+    // Use database function when ticket count filters are provided
+    // This is more efficient as it handles counting in a single query
+    if (min_ticket_count !== undefined || max_ticket_count !== undefined) {
+      return this.globalSearchWithTicketCount(params);
+    }
+
+    // If searching, first get company IDs that match the query
+    let matchingCompanyIds: string[] = [];
+    if (q && q.length >= 1) {
+      matchingCompanyIds = await this.getMatchingCompanyIds(q);
+    }
+
+    const safeQuery = q ? q.replace(/,/g, ' ') : '';
 
     // Build count query
     let countQuery = supabase
@@ -335,8 +312,15 @@ export class SiteService {
 
     // Apply search filter if query is provided
     if (q && q.length >= 1) {
-      // Use helper method to handle special characters (commas, etc.)
-      countQuery = this.buildSearchFilter(countQuery, q);
+      if (matchingCompanyIds.length > 0) {
+        // Search by name, address_detail, OR matching company IDs
+        countQuery = countQuery.or(
+          `name.ilike.%${safeQuery}%,address_detail.ilike.%${safeQuery}%,company_id.in.(${matchingCompanyIds.join(',')})`
+        );
+      } else {
+        // No matching companies, just search by name and address_detail
+        countQuery = this.buildSearchFilter(countQuery, q);
+      }
     }
 
     // Apply company filter if provided
@@ -357,8 +341,15 @@ export class SiteService {
 
     // Apply search filter if query is provided
     if (q && q.length >= 1) {
-      // Use helper method to handle special characters (commas, etc.)
-      dataQuery = this.buildSearchFilter(dataQuery, q);
+      if (matchingCompanyIds.length > 0) {
+        // Search by name, address_detail, OR matching company IDs
+        dataQuery = dataQuery.or(
+          `name.ilike.%${safeQuery}%,address_detail.ilike.%${safeQuery}%,company_id.in.(${matchingCompanyIds.join(',')})`
+        );
+      } else {
+        // No matching companies, just search by name and address_detail
+        dataQuery = this.buildSearchFilter(dataQuery, q);
+      }
     }
 
     // Apply company filter if provided
@@ -369,9 +360,9 @@ export class SiteService {
     const { data, error } = await dataQuery
       .order('name')
       .range(offset, offset + limit - 1);
-    
+
     if (error) throw new DatabaseError(error.message);
-    
+
     // Transform data to return with description field
     const transformedData = (data || []).map((site) => ({
       id: site.id,
@@ -381,7 +372,56 @@ export class SiteService {
       is_main_branch: site.is_main_branch || false,
       company_name: site.company ? (site.company.name_th || site.company.name_en || null) : null,
     }));
-    
+
+    return {
+      data: transformedData,
+      pagination: calculatePagination(page, limit, total),
+    };
+  }
+
+  /**
+   * Global search sites using database function with ticket count filtering
+   * Uses search_sites_with_ticket_count RPC function for efficient querying
+   */
+  private static async globalSearchWithTicketCount(params: {
+    q?: string;
+    page: number;
+    limit: number;
+    company_id?: string;
+    min_ticket_count?: number;
+    max_ticket_count?: number;
+  }): Promise<{ data: Record<string, unknown>[]; pagination: PaginationInfo }> {
+    const supabase = createServiceClient();
+    const { q, page, limit, company_id, min_ticket_count, max_ticket_count } = params;
+
+    // Call the database function (returns JSON)
+    const { data, error } = await supabase.rpc('search_sites_with_ticket_count', {
+      p_query: q || null,
+      p_company_id: company_id || null,
+      p_min_ticket_count: min_ticket_count ?? null,
+      p_max_ticket_count: max_ticket_count ?? null,
+      p_page: page,
+      p_limit: limit,
+    });
+
+    if (error) throw new DatabaseError(error.message);
+
+    // Function returns JSON: { total: number, data: array }
+    const result = data as { total: number; data: Record<string, unknown>[] } | null;
+    const total = result?.total || 0;
+    const sites = result?.data || [];
+
+    // Transform data to match expected format
+    const transformedData = sites.map((site: Record<string, unknown>) => ({
+      id: site.id,
+      name: site.name,
+      description: site.address_detail || null,
+      company_id: site.company_id || null,
+      is_main_branch: site.is_main_branch || false,
+      company_name: site.company_name_th || site.company_name_en || null,
+      ticket_count: Number(site.ticket_count) || 0,
+    }));
+
     return {
       data: transformedData,
       pagination: calculatePagination(page, limit, total),
@@ -391,19 +431,33 @@ export class SiteService {
   /**
    * Get site hints (up to 5 sites)
    * If query is empty, returns 5 sites ordered by name
-   * If query is provided, searches and returns up to 5 matching sites
+   * If query is provided, searches by name, address_detail, or company name
    */
   static async hint(query: string, companyId?: string): Promise<Record<string, unknown>[]> {
     const supabase = createServiceClient();
+
+    // If searching, first get company IDs that match the query
+    let matchingCompanyIds: string[] = [];
+    if (query && query.length > 0) {
+      matchingCompanyIds = await this.getMatchingCompanyIds(query);
+    }
+
+    const safeQuery = query ? query.replace(/,/g, ' ') : '';
 
     let queryBuilder = supabase
       .from('main_sites')
       .select('id, name, address_detail, company_id, is_main_branch, company:main_companies(name_th, name_en)');
 
     if (query && query.length > 0) {
-      // Search by name or address_detail
-      // Use helper method to handle special characters (commas, etc.)
-      queryBuilder = this.buildSearchFilter(queryBuilder, query);
+      if (matchingCompanyIds.length > 0) {
+        // Search by name, address_detail, OR matching company IDs
+        queryBuilder = queryBuilder.or(
+          `name.ilike.%${safeQuery}%,address_detail.ilike.%${safeQuery}%,company_id.in.(${matchingCompanyIds.join(',')})`
+        );
+      } else {
+        // No matching companies, just search by name and address_detail
+        queryBuilder = this.buildSearchFilter(queryBuilder, query);
+      }
     }
 
     if (companyId) {
@@ -441,17 +495,14 @@ export class SiteService {
       return [];
     }
 
-    // Search by name or address_detail only
-    // Note: Location codes (province_code, district_code, subdistrict_code) are integers
-    // and cannot be searched using ilike. For location-based search, use the local JSON files
-    // in the frontend to convert location names to codes first.
+    // Search by name and address_detail
     let searchQuery = supabase
       .from('main_sites')
       .select('*');
-    
+
     // Use helper method to handle special characters (commas, etc.)
     searchQuery = this.buildSearchFilter(searchQuery, query);
-    
+
     searchQuery = searchQuery
       .limit(10)
       .order('name');

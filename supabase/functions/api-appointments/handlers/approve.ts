@@ -48,7 +48,7 @@ export async function approve(req: Request, employee: Employee) {
   }
 
   // Approve/un-approve and update appointment
-  const appointment = await AppointmentService.approve(appointmentId, updateData);
+  const appointment = await AppointmentService.approve(appointmentId, updateData, employee.id);
 
   return success(appointment);
 }
