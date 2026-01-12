@@ -14,6 +14,7 @@ import { create } from './handlers/create.ts';
 import { update } from './handlers/update.ts';
 import { deleteCompany } from './handlers/delete.ts';
 import { createOrUpdate } from './handlers/createOrUpdate.ts';
+import { getComments, createComment, updateComment, deleteComment } from './handlers/comments.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -44,6 +45,12 @@ Deno.serve(async (req) => {
           return await hint(req, employee);
         }
 
+        // GET /:id/comments - Get comments for a company
+        if (relativePath.length === 2 && relativePath[1] === 'comments') {
+          const id = relativePath[0];
+          return await getComments(req, employee, id);
+        }
+
         // GET /:id - Get single company
         if (relativePath.length === 1) {
           const id = relativePath[0];
@@ -61,6 +68,12 @@ Deno.serve(async (req) => {
           return await createOrUpdate(req, employee);
         }
 
+        // POST /:id/comments - Create a comment for a company
+        if (relativePath.length === 2 && relativePath[1] === 'comments') {
+          const id = relativePath[0];
+          return await createComment(req, employee, id);
+        }
+
         // POST / - Create company
         if (relativePath.length === 0) {
           return await create(req, employee);
@@ -68,6 +81,13 @@ Deno.serve(async (req) => {
         break;
 
       case "PUT":
+        // PUT /:id/comments/:commentId - Update a comment
+        if (relativePath.length === 3 && relativePath[1] === 'comments') {
+          const companyId = relativePath[0];
+          const commentId = relativePath[2];
+          return await updateComment(req, employee, companyId, commentId);
+        }
+
         // PUT /:id - Update company
         if (relativePath.length === 1) {
           const id = relativePath[0];
@@ -80,6 +100,13 @@ Deno.serve(async (req) => {
         break;
 
       case "DELETE":
+        // DELETE /:id/comments/:commentId - Delete a comment
+        if (relativePath.length === 3 && relativePath[1] === 'comments') {
+          const companyId = relativePath[0];
+          const commentId = relativePath[2];
+          return await deleteComment(req, employee, companyId, commentId);
+        }
+
         // DELETE /:id - Delete company
         if (relativePath.length === 1) {
           const id = relativePath[0];

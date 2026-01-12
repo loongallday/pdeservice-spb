@@ -35,7 +35,10 @@ export async function getById(id: string): Promise<Record<string, unknown>> {
     .from('main_tickets')
     .select(`
       id,
+      ticket_code,
+      ticket_number,
       details,
+      details_summary,
       work_type_id,
       assigner_id,
       status_id,
@@ -355,7 +358,9 @@ function createTicketDisplayItem(
   // Build the display item
   const displayItem: TicketDisplayItem = {
     id: ticket.id as string,
-    
+    ticket_code: ticket.ticket_code as string,
+    ticket_number: ticket.ticket_number as number,
+
     // Display strings
     site_name: site?.name || null,
     company_name: site?.company?.name_th || site?.company?.name_en || null,
@@ -382,6 +387,7 @@ function createTicketDisplayItem(
     
     // Content
     details: ticket.details as string | null,
+    details_summary: ticket.details_summary as string | null,
     additional: ticket.additional as string | null,
     
     // Merchandise
@@ -416,6 +422,8 @@ function createTicketDisplayItem(
  * Search tickets with filters for all ticket fields (paginated)
  * Returns display-ready data with pre-resolved location names
  * Uses server-side RPC for filtering to avoid URL length issues
+ *
+ * Supports `watching=true` with `watcher_employee_id` to filter only watched tickets
  */
 export async function search(params: {
   page: number;
@@ -442,60 +450,128 @@ export async function search(params: {
   sort?: string;
   order?: 'asc' | 'desc';
   include?: IncludeMode;
+  watching?: boolean;
+  watcher_employee_id?: string;
 }): Promise<{ data: TicketDisplayItem[]; pagination: PaginationInfo }> {
   const supabase = createServiceClient();
-  const { page, limit, sort, order, include = 'full', ...filters } = params;
+  const { page, limit, sort, order, include = 'full', watching, watcher_employee_id, ...filters } = params;
+
+  // If watching=true, get watched ticket IDs first
+  let watchedTicketIds: string[] | null = null;
+  if (watching && watcher_employee_id) {
+    const { data: watchedTickets, error: watchError } = await supabase
+      .from('jct_ticket_watchers')
+      .select('ticket_id')
+      .eq('employee_id', watcher_employee_id);
+
+    if (watchError) {
+      console.error('[ticketSearchService] Failed to get watched tickets:', watchError);
+      throw new DatabaseError(watchError.message);
+    }
+
+    watchedTicketIds = (watchedTickets || []).map(w => w.ticket_id);
+
+    // If no watched tickets, return empty result
+    if (watchedTicketIds.length === 0) {
+      return {
+        data: [],
+        pagination: calculatePagination(page, limit, 0),
+      };
+    }
+  }
 
   // Map date_type to RPC parameter format
   const rpcDateType = filters.date_type === 'create' ? 'created'
     : filters.date_type === 'update' ? 'updated'
     : 'appointed';
 
-  // Use RPC for server-side filtering (avoids URL length issues with large result sets)
-  const { data: ticketResults, error: rpcError } = await supabase.rpc('search_tickets', {
-    p_page: page,
-    p_limit: limit,
-    p_sort: sort || 'created_at',
-    p_order: order || 'desc',
-    p_start_date: filters.start_date || null,
-    p_end_date: filters.end_date || null,
-    p_date_type: rpcDateType,
-    p_site_id: filters.site_id || null,
-    p_status_id: filters.status_id || null,
-    p_work_type_id: filters.work_type_id || null,
-    p_assigner_id: filters.assigner_id || null,
-    p_contact_id: filters.contact_id || null,
-    p_details: filters.details || null,
-    p_exclude_backlog: filters.exclude_backlog || false,
-    p_only_backlog: filters.only_backlog || false,
-    p_employee_id: Array.isArray(filters.employee_id) ? filters.employee_id[0] : (filters.employee_id || null),
-    p_department_id: Array.isArray(filters.department_id) ? filters.department_id[0] : (filters.department_id || null),
-    p_appointment_is_approved: filters.appointment_is_approved ?? null,
-  });
+  // When watching filter is active, use direct query instead of RPC for accurate pagination
+  let ticketIds: string[];
+  let totalCount: number;
 
-  if (rpcError) {
-    console.error('[ticketSearchService] RPC error:', rpcError.message);
-    throw new DatabaseError(rpcError.message);
+  if (watchedTicketIds) {
+    // Direct query for watched tickets with pagination
+    const offset = (page - 1) * limit;
+
+    // Get total count of watched tickets
+    totalCount = watchedTicketIds.length;
+
+    // Paginate watched ticket IDs
+    const sortField = sort || 'created_at';
+    const sortOrder = order || 'desc';
+
+    // Fetch paginated watched tickets with sorting
+    const { data: paginatedTickets, error: paginateError } = await supabase
+      .from('main_tickets')
+      .select('id')
+      .in('id', watchedTicketIds)
+      .order(sortField, { ascending: sortOrder === 'asc' })
+      .range(offset, offset + limit - 1);
+
+    if (paginateError) {
+      console.error('[ticketSearchService] Pagination error:', paginateError.message);
+      throw new DatabaseError(paginateError.message);
+    }
+
+    ticketIds = (paginatedTickets || []).map(t => t.id);
+
+    // If no tickets in this page, return empty
+    if (ticketIds.length === 0) {
+      return {
+        data: [],
+        pagination: calculatePagination(page, limit, totalCount),
+      };
+    }
+  } else {
+    // Use RPC for server-side filtering (avoids URL length issues with large result sets)
+    const { data: ticketResults, error: rpcError } = await supabase.rpc('search_tickets', {
+      p_page: page,
+      p_limit: limit,
+      p_sort: sort || 'created_at',
+      p_order: order || 'desc',
+      p_start_date: filters.start_date || null,
+      p_end_date: filters.end_date || null,
+      p_date_type: rpcDateType,
+      p_site_id: filters.site_id || null,
+      p_status_id: filters.status_id || null,
+      p_work_type_id: filters.work_type_id || null,
+      p_assigner_id: filters.assigner_id || null,
+      p_contact_id: filters.contact_id || null,
+      p_details: filters.details || null,
+      p_exclude_backlog: filters.exclude_backlog || false,
+      p_only_backlog: filters.only_backlog || false,
+      p_employee_id: Array.isArray(filters.employee_id) ? filters.employee_id[0] : (filters.employee_id || null),
+      p_department_id: Array.isArray(filters.department_id) ? filters.department_id[0] : (filters.department_id || null),
+      p_appointment_is_approved: filters.appointment_is_approved ?? null,
+    });
+
+    if (rpcError) {
+      console.error('[ticketSearchService] RPC error:', rpcError.message);
+      throw new DatabaseError(rpcError.message);
+    }
+
+    // Handle empty results
+    if (!ticketResults || ticketResults.length === 0) {
+      return {
+        data: [],
+        pagination: calculatePagination(page, limit, 0),
+      };
+    }
+
+    // Extract ticket IDs and total count from RPC results
+    ticketIds = ticketResults.map((r: { ticket_id: string }) => r.ticket_id);
+    totalCount = Number(ticketResults[0]?.total_count || 0);
   }
-
-  // Handle empty results
-  if (!ticketResults || ticketResults.length === 0) {
-    return {
-      data: [],
-      pagination: calculatePagination(page, limit, 0),
-    };
-  }
-
-  // Extract ticket IDs and total count
-  const ticketIds = ticketResults.map((r: { ticket_id: string }) => r.ticket_id);
-  const totalCount = Number(ticketResults[0]?.total_count || 0);
 
   // Fetch full ticket data for the paginated IDs (limited set, safe for URL)
   const { data: rawTickets, error: ticketError } = await supabase
     .from('main_tickets')
     .select(`
       id,
+      ticket_code,
+      ticket_number,
       details,
+      details_summary,
       work_type_id,
       assigner_id,
       status_id,
@@ -691,7 +767,10 @@ export async function searchByDuration(params: {
     .from('main_tickets')
     .select(`
       id,
+      ticket_code,
+      ticket_number,
       details,
+      details_summary,
       work_type_id,
       assigner_id,
       status_id,
@@ -760,13 +839,13 @@ export async function searchByDuration(params: {
 
   // Extract location codes for batch resolution
   const locationInputs = orderedTickets.map(ticket => {
-    const site = ticket.site as { 
+    const site = ticket.site as {
       province_code?: number | null;
       district_code?: number | null;
       subdistrict_code?: number | null;
       address_detail?: string | null;
     } | null;
-    
+
     return {
       provinceCode: site?.province_code || null,
       districtCode: site?.district_code || null,
@@ -792,7 +871,7 @@ export async function searchByDuration(params: {
         )
       `)
       .in('ticket_id', ticketIds);
-    
+
     if (workGiverData) {
       for (const wg of workGiverData) {
         if (wg.ref_work_givers && wg.ticket_id) {

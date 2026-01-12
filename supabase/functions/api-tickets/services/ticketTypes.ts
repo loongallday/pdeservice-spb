@@ -26,6 +26,9 @@ export interface MasterTicketCreateInput {
     work_giver_id?: string; // Optional: FK → ref_work_givers
   };
 
+  // AI Summary flag - when true, auto-generates details_summary from details
+  summarize?: boolean;
+
   // Company data (optional - find or create)
   company?: {
     tax_id: string;
@@ -88,6 +91,9 @@ export interface MasterTicketUpdateInput {
     additional?: string;
     work_giver_id?: string | null; // Optional: FK → ref_work_givers, null to remove
   };
+
+  // AI Summary flag - when true, auto-generates details_summary from details
+  summarize?: boolean;
 
   // Company data (optional - update or create)
   company?: {

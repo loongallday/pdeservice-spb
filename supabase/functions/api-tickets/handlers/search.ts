@@ -1,8 +1,10 @@
 /**
  * Search tickets handler - supports filtering by all ticket fields with pagination
- * 
+ *
  * Enhanced to return display-ready data with pre-resolved location names,
  * employee details, and pre-formatted appointment strings.
+ *
+ * Supports `watching=true` to filter only tickets the user is watching.
  */
 
 import { successWithPagination } from '../../_shared/response.ts';
@@ -19,6 +21,9 @@ export async function search(req: Request, employee: Employee) {
   // Parse query parameters
   const url = new URL(req.url);
   const { page, limit } = parsePaginationParams(url);
+
+  // Parse watching parameter - filter to only watched tickets
+  const watching = url.searchParams.get('watching') === 'true';
 
   // Parse include parameter (minimal or full)
   const includeParam = url.searchParams.get('include');
@@ -80,6 +85,9 @@ export async function search(req: Request, employee: Employee) {
     department_id,
     employee_id,
     include,
+    // Watching filter - pass employee ID when watching=true
+    watching,
+    watcher_employee_id: watching ? employee.id : undefined,
   };
 
   // Remove undefined values

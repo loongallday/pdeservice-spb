@@ -1,0 +1,267 @@
+{
+	"info": {
+		"_postman_id": "pde-service-fleet-001",
+		"name": "PDE Service - Fleet API",
+		"description": "Fleet Management API for real-time vehicle GPS tracking",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "🚗 Fleet",
+			"item": [
+				{
+					"name": "List All Vehicles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has data array', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.be.an('array');",
+									"});",
+									"",
+									"pm.test('Vehicle has required fields', function () {",
+									"    const jsonData = pm.response.json();",
+									"    if (jsonData.data.length > 0) {",
+									"        const vehicle = jsonData.data[0];",
+									"        pm.expect(vehicle).to.have.property('id');",
+									"        pm.expect(vehicle).to.have.property('name');",
+									"        pm.expect(vehicle).to.have.property('plate_number');",
+									"        pm.expect(vehicle).to.have.property('driver_name');",
+									"        pm.expect(vehicle).to.have.property('status');",
+									"        pm.expect(vehicle).to.have.property('latitude');",
+									"        pm.expect(vehicle).to.have.property('longitude');",
+									"        pm.expect(vehicle).to.have.property('speed');",
+									"        pm.expect(vehicle).to.have.property('heading');",
+									"        pm.expect(vehicle).to.have.property('signal_strength');",
+									"        ",
+									"        // Save first vehicle ID for other tests",
+									"        pm.environment.set('testVehicleId', vehicle.id);",
+									"        console.log('Found ' + jsonData.data.length + ' vehicles');",
+									"        console.log('First vehicle:', vehicle.plate_number);",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-fleet?group=-1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-fleet"
+							],
+							"query": [
+								{
+									"key": "group",
+									"value": "-1",
+									"description": "Vehicle group ID. Use -1 for all groups"
+								}
+							]
+						},
+						"description": "Get all vehicles with real-time GPS data.\n\n**Query Parameters:**\n- `group`: Vehicle group ID (default: -1 for all)\n\n**Response Fields:**\n- `id`: Unique vehicle identifier\n- `name`: Full name (plate + driver)\n- `plate_number`: Vehicle plate number\n- `driver_name`: Driver name\n- `status`: 'moving' or 'stopped'\n- `latitude`: GPS latitude\n- `longitude`: GPS longitude\n- `speed`: Current speed (km/h)\n- `heading`: Direction (0-360 degrees)\n- `signal_strength`: GPS signal (0-100%)"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/functions/v1/api-fleet?group=-1",
+									"host": ["{{baseUrl}}"],
+									"path": ["functions", "v1", "api-fleet"],
+									"query": [{"key": "group", "value": "-1"}]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{"key": "Content-Type", "value": "application/json"}
+							],
+							"body": "{\n  \"data\": [\n    {\n      \"id\": \"NTQwNjMwMDE2NjYr\",\n      \"name\": \"1กฮ-6591 คุณณรงค์ชัย\",\n      \"plate_number\": \"1กฮ-6591\",\n      \"driver_name\": \"คุณณรงค์ชัย\",\n      \"status\": \"stopped\",\n      \"latitude\": 13.986683333333,\n      \"longitude\": 100.53465,\n      \"speed\": 0,\n      \"heading\": 140,\n      \"signal_strength\": 100\n    },\n    {\n      \"id\": \"MzkyNDk2ODM5NjYr\",\n      \"name\": \"ฒอ-7604 คุณรวี\",\n      \"plate_number\": \"ฒอ-7604\",\n      \"driver_name\": \"คุณรวี\",\n      \"status\": \"moving\",\n      \"latitude\": 13.63095,\n      \"longitude\": 100.7679,\n      \"speed\": 46.5,\n      \"heading\": 37,\n      \"signal_strength\": 57\n    }\n  ]\n}"
+						}
+					]
+				},
+				{
+					"name": "List Vehicles by Group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has data array', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-fleet?group=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-fleet"
+							],
+							"query": [
+								{
+									"key": "group",
+									"value": "1",
+									"description": "Specific group ID"
+								}
+							]
+						},
+						"description": "Get vehicles filtered by group ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Vehicle by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has vehicle data', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.have.property('id');",
+									"    pm.expect(jsonData.data).to.have.property('plate_number');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/functions/v1/api-fleet/{{testVehicleId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"functions",
+								"v1",
+								"api-fleet",
+								"{{testVehicleId}}"
+							]
+						},
+						"description": "Get single vehicle by ID.\n\n**Path Parameters:**\n- `id`: Vehicle ID (base64 encoded)\n\n**Note:** Run 'List All Vehicles' first to set {{testVehicleId}}"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/functions/v1/api-fleet/NTQwNjMwMDE2NjYr",
+									"host": ["{{baseUrl}}"],
+									"path": ["functions", "v1", "api-fleet", "NTQwNjMwMDE2NjYr"]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{"key": "Content-Type", "value": "application/json"}
+							],
+							"body": "{\n  \"data\": {\n    \"id\": \"NTQwNjMwMDE2NjYr\",\n    \"name\": \"1กฮ-6591 คุณณรงค์ชัย\",\n    \"plate_number\": \"1กฮ-6591\",\n    \"driver_name\": \"คุณณรงค์ชัย\",\n    \"status\": \"stopped\",\n    \"latitude\": 13.986683333333,\n    \"longitude\": 100.53465,\n    \"speed\": 0,\n    \"heading\": 140,\n    \"signal_strength\": 100\n  }\n}"
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/functions/v1/api-fleet/invalid-id",
+									"host": ["{{baseUrl}}"],
+									"path": ["functions", "v1", "api-fleet", "invalid-id"]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{"key": "Content-Type", "value": "application/json"}
+							],
+							"body": "{\n  \"error\": \"ไม่พบข้อมูลรถ\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Real-time vehicle GPS tracking endpoints"
+		}
+	],
+	"variable": [
+		{
+			"key": "testVehicleId",
+			"value": "",
+			"type": "string",
+			"description": "Auto-set by 'List All Vehicles' test script"
+		}
+	]
+}

@@ -14,6 +14,8 @@ import { deleteMerchandise } from './handlers/delete.ts';
 import { search } from './handlers/search.ts';
 import { hint } from './handlers/hint.ts';
 import { checkDuplicate } from './handlers/checkDuplicate.ts';
+import { getLocation, upsertLocation, updateLocation, deleteLocation } from './handlers/location.ts';
+import { getReplacementChain } from './handlers/replacementChain.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -47,6 +49,16 @@ Deno.serve(async (req) => {
         if (relativePath.length === 1 && relativePath[0] === 'search') {
           return await search(req, employee);
         }
+        // GET /:id/location - Get location for merchandise
+        if (relativePath.length === 2 && relativePath[1] === 'location') {
+          const merchandiseId = relativePath[0];
+          return await getLocation(req, employee, merchandiseId);
+        }
+        // GET /:id/replacement-chain - Get replacement chain for merchandise
+        if (relativePath.length === 2 && relativePath[1] === 'replacement-chain') {
+          const merchandiseId = relativePath[0];
+          return await getReplacementChain(req, employee, merchandiseId);
+        }
         // GET /:id - Get single merchandise by ID
         if (relativePath.length === 1) {
           const id = relativePath[0];
@@ -59,6 +71,11 @@ Deno.serve(async (req) => {
         break;
 
       case 'POST':
+        // POST /:id/location - Create/upsert location for merchandise
+        if (relativePath.length === 2 && relativePath[1] === 'location') {
+          const merchandiseId = relativePath[0];
+          return await upsertLocation(req, employee, merchandiseId);
+        }
         // POST / - Create merchandise
         if (relativePath.length === 0) {
           return await create(req, employee);
@@ -66,6 +83,11 @@ Deno.serve(async (req) => {
         break;
 
       case 'PUT':
+        // PUT /:id/location - Update location for merchandise
+        if (relativePath.length === 2 && relativePath[1] === 'location') {
+          const merchandiseId = relativePath[0];
+          return await updateLocation(req, employee, merchandiseId);
+        }
         // PUT /:id - Update merchandise
         if (relativePath.length === 1) {
           const id = relativePath[0];
@@ -74,6 +96,11 @@ Deno.serve(async (req) => {
         break;
 
       case 'DELETE':
+        // DELETE /:id/location - Delete location for merchandise
+        if (relativePath.length === 2 && relativePath[1] === 'location') {
+          const merchandiseId = relativePath[0];
+          return await deleteLocation(req, employee, merchandiseId);
+        }
         // DELETE /:id - Delete merchandise
         if (relativePath.length === 1) {
           const id = relativePath[0];

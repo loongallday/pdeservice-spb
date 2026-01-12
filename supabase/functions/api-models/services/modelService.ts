@@ -204,46 +204,61 @@ export class ModelService {
   }
 
   /**
-   * Search models by description and/or code
-   * If no parameters provided, returns all models (up to 20)
+   * Search models by description and/or code with pagination
    */
   static async search(params: {
     description?: string;
     code?: string;
-  }): Promise<Record<string, unknown>[]> {
+    page?: number;
+    limit?: number;
+  }): Promise<{ data: Record<string, unknown>[]; pagination: PaginationInfo }> {
     const supabase = createServiceClient();
-    const { description, code } = params;
+    const { description, code, page = 1, limit = 20 } = params;
 
-    let query = supabase
+    // Build filter conditions
+    const conditions: string[] = [];
+    if (description) {
+      conditions.push(`name.ilike.%${description}%`);
+    }
+    if (code) {
+      conditions.push(`model.ilike.%${code}%`);
+    }
+
+    // Count query
+    let countQuery = supabase
+      .from('main_models')
+      .select('*', { count: 'exact', head: true });
+
+    if (conditions.length > 0) {
+      countQuery = countQuery.or(conditions.join(','));
+    }
+
+    const { count, error: countError } = await countQuery;
+    if (countError) throw new DatabaseError(countError.message);
+
+    const total = count ?? 0;
+    const from = (page - 1) * limit;
+    const to = from + limit - 1;
+
+    // Data query
+    let dataQuery = supabase
       .from('main_models')
       .select('*');
 
-    // Build search conditions if parameters provided
-    if (description || code) {
-      const conditions: string[] = [];
-      
-      if (description) {
-        conditions.push(`name.ilike.%${description}%`);
-      }
-      
-      if (code) {
-        conditions.push(`model.ilike.%${code}%`);
-      }
-
-      // Apply search filter
-      if (conditions.length > 0) {
-        query = query.or(conditions.join(','));
-      }
+    if (conditions.length > 0) {
+      dataQuery = dataQuery.or(conditions.join(','));
     }
-    // If no parameters, return all models (no filter applied)
 
-    const { data, error } = await query
-      .limit(20)
-      .order('created_at', { ascending: false });
+    const { data, error } = await dataQuery
+      .order('created_at', { ascending: false })
+      .range(from, to);
 
     if (error) throw new DatabaseError(error.message);
 
-    return data || [];
+    return {
+      data: data || [],
+      pagination: calculatePagination(page, limit, total),
+    };
   }
 
   // ============================================================================

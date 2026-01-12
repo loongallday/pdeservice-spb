@@ -96,6 +96,8 @@ export interface TicketIds {
 export interface TicketDisplayItem {
   // === Core Identity ===
   id: string;
+  ticket_code: string;
+  ticket_number: number;
 
   // === Display Strings (No transformation needed!) ===
   site_name: string | null;
@@ -123,6 +125,7 @@ export interface TicketDisplayItem {
 
   // === Content ===
   details: string | null;
+  details_summary: string | null;
   additional: string | null;
 
   // === Merchandise Summary ===

@@ -19,6 +19,10 @@ import { getSummaries } from './handlers/getSummaries.ts';
 import { getConfirmedTechnicians } from './handlers/getConfirmedTechnicians.ts';
 import { getAuditLogs, getRecentAuditLogs } from './handlers/getAuditLogs.ts';
 import { getComments, createComment, updateComment, deleteComment } from './handlers/comments.ts';
+import { getWatchers, addWatch, removeWatch } from './handlers/watchers.ts';
+import { getAttachments, addAttachments, deleteAttachment } from './handlers/attachments.ts';
+import { backfillSummaries } from './handlers/backfillSummaries.ts';
+import { getRating, createRating, updateRating, deleteRating } from './handlers/ratings.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -65,6 +69,11 @@ Deno.serve(async (req) => {
           return await getRecentAuditLogs(req, employee);
         }
 
+        // GET /backfill-summaries?job_id=xxx - Check backfill job status
+        if (relativePath.length === 1 && relativePath[0] === 'backfill-summaries') {
+          return await backfillSummaries(req, employee);
+        }
+
         // GET /:id/confirmed-technicians - Get confirmed technicians for a ticket
         if (relativePath.length === 2 && relativePath[1] === 'confirmed-technicians') {
           const id = relativePath[0];
@@ -83,6 +92,24 @@ Deno.serve(async (req) => {
           return await getComments(req, employee, id);
         }
 
+        // GET /:id/watchers - Get watchers for a ticket
+        if (relativePath.length === 2 && relativePath[1] === 'watchers') {
+          const id = relativePath[0];
+          return await getWatchers(req, employee, id);
+        }
+
+        // GET /:id/attachments - Get attachments for a ticket
+        if (relativePath.length === 2 && relativePath[1] === 'attachments') {
+          const id = relativePath[0];
+          return await getAttachments(req, employee, id);
+        }
+
+        // GET /:id/rating - Get rating for a ticket
+        if (relativePath.length === 2 && relativePath[1] === 'rating') {
+          const id = relativePath[0];
+          return await getRating(req, employee, id);
+        }
+
         // GET /:id - Get single ticket
         if (relativePath.length === 1) {
           const id = relativePath[0];
@@ -95,6 +122,11 @@ Deno.serve(async (req) => {
         break;
 
       case 'POST':
+        // POST /backfill-summaries - Regenerate AI summaries for existing tickets
+        if (relativePath.length === 1 && relativePath[0] === 'backfill-summaries') {
+          return await backfillSummaries(req, employee);
+        }
+
         // POST /:id/confirm-technicians - Confirm technicians for a ticket
         if (relativePath.length === 2 && relativePath[1] === 'confirm-technicians') {
           const id = relativePath[0];
@@ -105,6 +137,24 @@ Deno.serve(async (req) => {
         if (relativePath.length === 2 && relativePath[1] === 'comments') {
           const id = relativePath[0];
           return await createComment(req, employee, id);
+        }
+
+        // POST /:id/watch - Add current user as watcher
+        if (relativePath.length === 2 && relativePath[1] === 'watch') {
+          const id = relativePath[0];
+          return await addWatch(req, employee, id);
+        }
+
+        // POST /:id/attachments - Add attachments to a ticket
+        if (relativePath.length === 2 && relativePath[1] === 'attachments') {
+          const id = relativePath[0];
+          return await addAttachments(req, employee, id);
+        }
+
+        // POST /:id/rating - Create rating for a ticket
+        if (relativePath.length === 2 && relativePath[1] === 'rating') {
+          const id = relativePath[0];
+          return await createRating(req, employee, id);
         }
 
         // POST / - Create ticket
@@ -119,6 +169,12 @@ Deno.serve(async (req) => {
           const ticketId = relativePath[0];
           const commentId = relativePath[2];
           return await updateComment(req, employee, ticketId, commentId);
+        }
+
+        // PUT /:id/rating - Update rating for a ticket
+        if (relativePath.length === 2 && relativePath[1] === 'rating') {
+          const id = relativePath[0];
+          return await updateRating(req, employee, id);
         }
 
         // PUT /:id - Update ticket
@@ -139,6 +195,25 @@ Deno.serve(async (req) => {
           const ticketId = relativePath[0];
           const commentId = relativePath[2];
           return await deleteComment(req, employee, ticketId, commentId);
+        }
+
+        // DELETE /:id/watch - Remove current user from watchers
+        if (relativePath.length === 2 && relativePath[1] === 'watch') {
+          const id = relativePath[0];
+          return await removeWatch(req, employee, id);
+        }
+
+        // DELETE /:id/attachments/:attachmentId - Delete an attachment
+        if (relativePath.length === 3 && relativePath[1] === 'attachments') {
+          const ticketId = relativePath[0];
+          const attachmentId = relativePath[2];
+          return await deleteAttachment(req, employee, ticketId, attachmentId);
+        }
+
+        // DELETE /:id/rating - Delete rating for a ticket
+        if (relativePath.length === 2 && relativePath[1] === 'rating') {
+          const id = relativePath[0];
+          return await deleteRating(req, employee, id);
         }
 
         // DELETE /:id - Delete ticket

@@ -4,6 +4,7 @@
 
 import { createServiceClient } from '../../_shared/supabase.ts';
 import { DatabaseError, ValidationError } from '../../_shared/error.ts';
+import { NotificationService } from './notificationService.ts';
 
 /**
  * Audit action types for comprehensive ticket tracking
@@ -23,7 +24,8 @@ export type TicketAuditAction =
   | 'comment_added';          // Comment added to ticket
 
 /**
- * Log ticket audit entry
+ * Log ticket audit entry and trigger watcher notifications
+ * Returns the audit ID if successful
  */
 export async function logTicketAudit(params: {
   ticketId: string;
@@ -33,7 +35,7 @@ export async function logTicketAudit(params: {
   newValues?: Record<string, unknown>;
   changedFields?: string[];
   metadata?: Record<string, unknown>;
-}): Promise<void> {
+}): Promise<string | undefined> {
   const supabase = createServiceClient();
   const { ticketId, action, changedBy, oldValues, newValues, changedFields, metadata } = params;
 
@@ -47,14 +49,35 @@ export async function logTicketAudit(params: {
     metadata: metadata || null,
   };
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('child_ticket_audit')
-    .insert([auditData]);
+    .insert([auditData])
+    .select('id')
+    .single();
 
   if (error) {
     // Log error but don't throw - audit logging should not break the main operation
     console.error('[ticket-audit] Failed to log audit entry:', error);
+    return undefined;
   }
+
+  const auditId = data?.id;
+
+  // Trigger watcher notifications (async, non-blocking)
+  // Skip for 'created' action since watchers haven't been added yet at this point
+  if (action !== 'created') {
+    NotificationService.createWatcherNotifications(
+      ticketId,
+      action,
+      changedBy,
+      auditId,
+      metadata
+    ).catch(err => {
+      console.error('[ticket-audit] Failed to create watcher notifications:', err);
+    });
+  }
+
+  return auditId;
 }
 
 /**

@@ -24,12 +24,30 @@
       "mcp__supabase__search_docs",
       "Skill(deploy)",
       "Bash(npx supabase:*)",
-      "mcp__supabase__list_edge_functions"
+      "mcp__supabase__list_edge_functions",
+      "Bash(find:*)",
+      "WebFetch(domain:ogzyihacqbasolfxymgo.supabase.co)",
+      "Bash(xargs:*)",
+      "Bash(supabase functions deploy:*)",
+      "Bash(mkdir:*)",
+      "mcp__ide__getDiagnostics",
+      "WebFetch(domain:maps.app.goo.gl)",
+      "WebSearch",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(curl:*)",
+      "Bash(python3 -c \" import sys, json, re data = open\\(''/Users/loongallday/.claude/projects/-Users-loongallday-pdeservice-spb/baea381a-3ba0-480d-a049-4140339787a5/tool-results/mcp-supabase-execute_sql-1767933710269.txt''\\).read\\(\\) parsed = json.loads\\(data\\) text = parsed[0][''text''] match = re.search\\(r''\\\\[.*\\\\]'', text, re.DOTALL\\) if match: print\\(match.group\\(0\\)\\) \")",
+      "Bash(deno check:*)",
+      "WebFetch(domain:www.dataforthai.com)",
+      "WebFetch(domain:bgfleet.loginto.me)"
     ],
     "deny": []
   },
   "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "supabase"
-  ]
+  ],
+  "enabledPlugins": {
+    "supabase@claude-plugins-official": true
+  }
 }

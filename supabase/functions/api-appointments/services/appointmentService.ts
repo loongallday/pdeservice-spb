@@ -112,6 +112,27 @@ export class AppointmentService {
 
   static async update(id: string, appointmentData: Record<string, unknown>): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
+
+    // Check if we're setting is_approved to false - need to remove confirmed technicians
+    const isBeingUnapproved = appointmentData.is_approved === false;
+
+    // Get current appointment and associated ticket
+    let ticketId: string | null = null;
+    let oldAppointmentDate: string | null = null;
+
+    if (isBeingUnapproved) {
+      const { data: currentAppointment } = await supabase
+        .from('main_appointments')
+        .select('ticket_id, appointment_date')
+        .eq('id', id)
+        .single();
+
+      if (currentAppointment) {
+        ticketId = currentAppointment.ticket_id as string | null;
+        oldAppointmentDate = currentAppointment.appointment_date as string | null;
+      }
+    }
+
     const { data, error } = await supabase
       .from('main_appointments')
       .update(appointmentData)
@@ -121,6 +142,36 @@ export class AppointmentService {
 
     if (error) throw new DatabaseError(error.message);
     if (!data) throw new NotFoundError('ไม่พบข้อมูลการนัดหมาย');
+
+    // If appointment was unapproved (edited by non-approver), remove confirmed technicians
+    if (isBeingUnapproved && ticketId) {
+      const { error: deleteError } = await supabase
+        .from('jct_ticket_employees_cf')
+        .delete()
+        .eq('ticket_id', ticketId);
+
+      if (deleteError) {
+        console.error('[appointment] Failed to remove confirmed technicians:', deleteError);
+      } else {
+        console.log(`[appointment] Removed confirmed technicians for ticket ${ticketId} due to unapproval`);
+
+        // Log audit for removed confirmations
+        await logTicketAudit({
+          ticketId,
+          action: 'technician_unconfirmed',
+          changedBy: 'system',
+          newValues: {
+            reason: 'appointment_edited',
+            appointment_id: id,
+          },
+          metadata: {
+            old_appointment_date: oldAppointmentDate,
+          },
+        }).catch(err => {
+          console.error('[appointment] Failed to log audit for technician removal:', err);
+        });
+      }
+    }
 
     return data;
   }

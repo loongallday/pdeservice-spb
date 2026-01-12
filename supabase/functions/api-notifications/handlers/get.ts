@@ -10,16 +10,23 @@ import type { Employee } from '../../_shared/auth.ts';
 /**
  * GET /api-notifications
  * List notifications for the current user
+ * Query params:
+ *   - page: number (default 1)
+ *   - limit: number (default 20)
+ *   - unread_only: boolean (default false)
+ *   - search: string (optional) - search in title and message
  */
 export async function getNotifications(req: Request, employee: Employee): Promise<Response> {
   const url = new URL(req.url);
   const { page, limit } = parsePaginationParams(url);
   const unreadOnly = url.searchParams.get('unread_only') === 'true';
+  const search = url.searchParams.get('search')?.trim() || undefined;
 
   const result = await NotificationService.getByRecipient(employee.id, {
     page,
     limit,
     unreadOnly,
+    search,
   });
 
   // Return data with pagination AND unread_count in response

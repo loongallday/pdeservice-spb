@@ -7,6 +7,16 @@ import { NotFoundError, DatabaseError, ValidationError } from '../../_shared/err
 import type { MasterTicketCreateInput, MasterTicketUpdateInput } from './ticketTypes.ts';
 import { linkMerchandiseToTicket, logTicketAudit } from './ticketHelperService.ts';
 import { getById } from './ticketSearchService.ts';
+import { WatcherService } from './watcherService.ts';
+import { NotificationService } from './notificationService.ts';
+import {
+  generateTicketSummary,
+  TicketSummaryContext,
+  MerchandiseItem,
+  ContactInfo,
+  AppointmentInfo,
+  SiteInfo,
+} from '../../_shared/summaryUtils.ts';
 
 /**
  * Normalize employee_ids to array of objects with id and is_key
@@ -72,12 +82,13 @@ export async function create(input: MasterTicketCreateInput, employeeId: string)
 
   // Step 2: Handle Site
   let siteId: string | null = null;
+  let resolvedSiteName: string | null = null;
   if (input.site) {
     if (input.site.id) {
-      // Use existing site - validate it exists
+      // Use existing site - validate it exists and get the name
       const { data: existingSite } = await supabase
         .from('main_sites')
-        .select('id')
+        .select('id, name')
         .eq('id', input.site.id)
         .single();
 
@@ -85,6 +96,7 @@ export async function create(input: MasterTicketCreateInput, employeeId: string)
         throw new NotFoundError('ไม่พบสถานที่');
       }
       siteId = input.site.id;
+      resolvedSiteName = existingSite.name;
     } else {
       // Create new site
       const siteData = {
@@ -94,13 +106,14 @@ export async function create(input: MasterTicketCreateInput, employeeId: string)
       const { data: newSite, error: siteError } = await supabase
         .from('main_sites')
         .insert([siteData])
-        .select('id')
+        .select('id, name')
         .single();
 
       if (siteError) {
         throw new DatabaseError(`ไม่สามารถสร้างสถานที่ได้: ${siteError.message}`);
       }
       siteId = newSite.id;
+      resolvedSiteName = newSite.name;
     }
   }
 
@@ -141,11 +154,233 @@ export async function create(input: MasterTicketCreateInput, employeeId: string)
   // Step 4: Create Ticket
   // Extract work_giver_id from ticket data (stored in separate child table)
   const { work_giver_id, ...ticketFieldsWithoutWorkGiver } = input.ticket;
+
+  // Generate AI summary if flag is set - using full ticket context with ALL details
+  let detailsSummary: string | null = null;
+  if (input.summarize) {
+    // Build comprehensive summary context with ALL ticket information
+    const summaryContext: TicketSummaryContext = {
+      details: input.ticket.details || null,
+      additional: input.ticket.additional || null,
+    };
+
+    // Fetch work type
+    if (input.ticket.work_type_id) {
+      const { data: workType } = await supabase
+        .from('ref_ticket_work_types')
+        .select('name, code')
+        .eq('id', input.ticket.work_type_id)
+        .single();
+      if (workType) {
+        summaryContext.workType = workType.name;
+        summaryContext.workTypeCode = workType.code;
+      }
+    }
+
+    // Fetch status
+    if (input.ticket.status_id) {
+      const { data: status } = await supabase
+        .from('ref_ticket_statuses')
+        .select('name, code')
+        .eq('id', input.ticket.status_id)
+        .single();
+      if (status) {
+        summaryContext.status = status.name;
+        summaryContext.statusCode = status.code;
+      }
+    }
+
+    // Fetch assigner
+    if (input.ticket.assigner_id) {
+      const { data: assigner } = await supabase
+        .from('main_employees')
+        .select('name, nickname')
+        .eq('id', input.ticket.assigner_id)
+        .single();
+      if (assigner) {
+        summaryContext.assignerName = assigner.nickname || assigner.name;
+      }
+    }
+
+    // Fetch company
+    if (companyId) {
+      const { data: company } = await supabase
+        .from('main_companies')
+        .select('name_th, name_en, tax_id')
+        .eq('tax_id', companyId)
+        .single();
+      if (company) {
+        summaryContext.companyName = company.name_th || company.name_en;
+        summaryContext.companyTaxId = company.tax_id;
+      }
+    }
+
+    // Fetch site with full location details
+    if (siteId) {
+      const { data: site } = await supabase
+        .from('main_sites')
+        .select('name, address_detail, province_code, district_code, subdistrict_code, postal_code, map_url')
+        .eq('id', siteId)
+        .single();
+
+      if (site) {
+        const siteInfo: SiteInfo = {
+          name: site.name,
+          addressDetail: site.address_detail,
+          postalCode: site.postal_code?.toString() || null,
+          mapUrl: site.map_url,
+        };
+
+        // Resolve location names
+        if (site.province_code) {
+          const { data: province } = await supabase
+            .from('ref_provinces')
+            .select('name_th')
+            .eq('code', site.province_code)
+            .single();
+          siteInfo.provinceName = province?.name_th || null;
+        }
+        if (site.district_code) {
+          const { data: district } = await supabase
+            .from('ref_districts')
+            .select('name_th')
+            .eq('code', site.district_code)
+            .single();
+          siteInfo.districtName = district?.name_th || null;
+        }
+        if (site.subdistrict_code) {
+          const { data: subdistrict } = await supabase
+            .from('ref_subdistricts')
+            .select('name_th')
+            .eq('code', site.subdistrict_code)
+            .single();
+          siteInfo.subdistrictName = subdistrict?.name_th || null;
+        }
+
+        summaryContext.site = siteInfo;
+      }
+    }
+
+    // Fetch contact with all details
+    if (contactId) {
+      const { data: contact } = await supabase
+        .from('child_site_contacts')
+        .select('person_name, nickname, phone, email, line_id, note')
+        .eq('id', contactId)
+        .single();
+
+      if (contact) {
+        const contactInfo: ContactInfo = {
+          name: contact.person_name,
+          nickname: contact.nickname,
+          phone: Array.isArray(contact.phone) ? contact.phone : null,
+          email: Array.isArray(contact.email) ? contact.email : null,
+          lineId: contact.line_id,
+          note: contact.note,
+        };
+        summaryContext.contact = contactInfo;
+      }
+    }
+
+    // Build appointment info
+    if (input.appointment) {
+      const apptInfo: AppointmentInfo = {
+        date: input.appointment.appointment_date || null,
+        timeStart: input.appointment.appointment_time_start || null,
+        timeEnd: input.appointment.appointment_time_end || null,
+        type: input.appointment.appointment_type || null,
+      };
+      summaryContext.appointment = apptInfo;
+    }
+
+    // Fetch employees with key employee info
+    if (input.employee_ids && input.employee_ids.length > 0) {
+      const normalizedEmps = normalizeEmployeeIds(input.employee_ids);
+      const empIds = normalizedEmps.map(e => e.id);
+      const { data: employees } = await supabase
+        .from('main_employees')
+        .select('id, nickname, first_name, name')
+        .in('id', empIds);
+
+      if (employees) {
+        const employeeNames: string[] = [];
+        let keyEmployee: string | null = null;
+
+        for (const emp of employees) {
+          const empName = emp.nickname || emp.first_name || emp.name || 'ช่าง';
+          employeeNames.push(empName);
+
+          // Check if this is the key employee
+          const empConfig = normalizedEmps.find(e => e.id === emp.id);
+          if (empConfig?.is_key) {
+            keyEmployee = empName;
+          }
+        }
+
+        summaryContext.employees = employeeNames;
+        summaryContext.keyEmployee = keyEmployee;
+      }
+    }
+
+    // Fetch merchandise with model details
+    if (input.merchandise_ids && input.merchandise_ids.length > 0) {
+      const { data: merchandiseData } = await supabase
+        .from('main_merchandise')
+        .select(`
+          serial_no,
+          model:main_models(
+            model,
+            brand:ref_brands(name),
+            capacity:ref_capacities(name)
+          )
+        `)
+        .in('id', input.merchandise_ids);
+
+      if (merchandiseData && merchandiseData.length > 0) {
+        const merchItems: MerchandiseItem[] = merchandiseData.map(m => {
+          const model = m.model as {
+            model?: string;
+            brand?: { name?: string } | null;
+            capacity?: { name?: string } | null;
+          } | null;
+
+          return {
+            serialNo: m.serial_no,
+            modelName: model?.model || null,
+            brand: model?.brand?.name || null,
+            capacity: model?.capacity?.name || null,
+          };
+        });
+        summaryContext.merchandise = merchItems;
+      }
+    }
+
+    // Fetch work giver
+    if (work_giver_id) {
+      const { data: workGiver } = await supabase
+        .from('ref_work_givers')
+        .select('name')
+        .eq('id', work_giver_id)
+        .single();
+      if (workGiver) {
+        summaryContext.workGiver = workGiver.name;
+      }
+    }
+
+    console.log('[ticket-create] Summary context fields:', Object.keys(summaryContext).filter(k => {
+      const val = summaryContext[k as keyof TicketSummaryContext];
+      return val !== null && val !== undefined;
+    }));
+    detailsSummary = await generateTicketSummary(summaryContext);
+    console.log('[ticket-create] Generated summary:', detailsSummary);
+  }
+
   const ticketData = {
     ...ticketFieldsWithoutWorkGiver,
     site_id: siteId,
     contact_id: contactId,
     created_by: employeeId,
+    details_summary: detailsSummary,
   };
 
   const { data: ticket, error: ticketError } = await supabase
@@ -279,6 +514,23 @@ export async function create(input: MasterTicketCreateInput, employeeId: string)
     },
   });
 
+  // Step 8.5: Add creator and assigner as auto-watchers (async, non-blocking)
+  WatcherService.addAutoWatchers(ticket.id, employeeId, ticketData.assigner_id || null)
+    .catch(err => {
+      console.error('[ticket-create] Failed to add auto-watchers:', err);
+    });
+
+  // Step 8.6: Notify approvers about new ticket (async, non-blocking)
+  const siteName = resolvedSiteName || 'ไม่ระบุสถานที่';
+  NotificationService.createApprovalRequestNotifications(
+    ticket.id,
+    employeeId,
+    siteName,
+    ticketData.work_type
+  ).catch(err => {
+    console.error('[ticket-create] Failed to notify approvers:', err);
+  });
+
   // Step 9: Fetch and return complete ticket data
   return await getById(ticket.id);
 }
@@ -298,6 +550,38 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
 
   if (checkError || !existingTicket) {
     throw new NotFoundError('ไม่พบตั๋วงาน');
+  }
+
+  // Check if appointment was approved (for auto-unapproval logic)
+  let wasApproved = false;
+  let siteName = '';
+  if (existingTicket.appointment_id) {
+    const { data: appointment } = await supabase
+      .from('main_appointments')
+      .select('is_approved')
+      .eq('id', existingTicket.appointment_id)
+      .single();
+    wasApproved = appointment?.is_approved === true;
+  }
+
+  // Check if user can approve appointments (to determine if auto-unapproval is needed)
+  const { data: approverCheck } = await supabase
+    .from('jct_appointment_approvers')
+    .select('id')
+    .eq('employee_id', employeeId)
+    .maybeSingle();
+  const userCanApprove = approverCheck !== null;
+
+  // Get site name for notification
+  if (existingTicket.site_id) {
+    const { data: site } = await supabase
+      .from('main_sites')
+      .select('name')
+      .eq('id', existingTicket.site_id)
+      .single();
+    siteName = site?.name || 'ไม่ระบุสถานที่';
+  } else {
+    siteName = 'ไม่ระบุสถานที่';
   }
 
   // Step 1: Handle Company
@@ -426,24 +710,346 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
     }
 
   // Step 4: Update Ticket
-  if (input.ticket || siteChanged || contactChanged) {
+  if (input.ticket || siteChanged || contactChanged || input.summarize) {
     // Remove created_by and work_giver_id if included (work_giver stored in child table)
     const ticketInputData = input.ticket || {};
-    const { 
-      created_by: _created_by, 
-      work_giver_id: _work_giver_id, 
-      ...ticketDataWithoutWorkGiver 
+    const {
+      created_by: _created_by,
+      work_giver_id: _work_giver_id,
+      ...ticketDataWithoutWorkGiver
     } = ticketInputData as Record<string, unknown> & { created_by?: string; work_giver_id?: string | null };
-    
+
     // Suppress unused variable warnings (these are intentionally extracted to exclude from update)
     void _created_by;
     void _work_giver_id;
-    
-    const ticketUpdate = {
+
+    // Generate AI summary if flag is set - using full ticket context with ALL details
+    let detailsSummary: string | null | undefined = undefined;
+    if (input.summarize) {
+      // Build comprehensive summary context with ALL ticket information
+      const summaryContext: TicketSummaryContext = {
+        ticketId: ticketId,
+        details: input.ticket?.details ?? existingTicket.details ?? null,
+        additional: input.ticket?.additional ?? existingTicket.additional ?? null,
+      };
+
+      // Fetch work type
+      const workTypeId = input.ticket?.work_type_id || existingTicket.work_type_id;
+      if (workTypeId) {
+        const { data: workType } = await supabase
+          .from('ref_ticket_work_types')
+          .select('name, code')
+          .eq('id', workTypeId)
+          .single();
+        if (workType) {
+          summaryContext.workType = workType.name;
+          summaryContext.workTypeCode = workType.code;
+        }
+      }
+
+      // Fetch status
+      const statusId = input.ticket?.status_id || existingTicket.status_id;
+      if (statusId) {
+        const { data: status } = await supabase
+          .from('ref_ticket_statuses')
+          .select('name, code')
+          .eq('id', statusId)
+          .single();
+        if (status) {
+          summaryContext.status = status.name;
+          summaryContext.statusCode = status.code;
+        }
+      }
+
+      // Fetch assigner
+      const assignerId = input.ticket?.assigner_id || existingTicket.assigner_id;
+      if (assignerId) {
+        const { data: assigner } = await supabase
+          .from('main_employees')
+          .select('name, nickname')
+          .eq('id', assignerId)
+          .single();
+        if (assigner) {
+          summaryContext.assignerName = assigner.nickname || assigner.name;
+        }
+      }
+
+      // Fetch company
+      if (companyId) {
+        const { data: company } = await supabase
+          .from('main_companies')
+          .select('name_th, name_en, tax_id')
+          .eq('tax_id', companyId)
+          .single();
+        if (company) {
+          summaryContext.companyName = company.name_th || company.name_en;
+          summaryContext.companyTaxId = company.tax_id;
+        }
+      }
+
+      // Fetch site with full location details
+      if (siteId) {
+        const { data: site } = await supabase
+          .from('main_sites')
+          .select('name, address_detail, province_code, district_code, subdistrict_code, postal_code, map_url')
+          .eq('id', siteId)
+          .single();
+
+        if (site) {
+          const siteInfo: SiteInfo = {
+            name: site.name,
+            addressDetail: site.address_detail,
+            postalCode: site.postal_code?.toString() || null,
+            mapUrl: site.map_url,
+          };
+
+          // Resolve location names
+          if (site.province_code) {
+            const { data: province } = await supabase
+              .from('ref_provinces')
+              .select('name_th')
+              .eq('code', site.province_code)
+              .single();
+            siteInfo.provinceName = province?.name_th || null;
+          }
+          if (site.district_code) {
+            const { data: district } = await supabase
+              .from('ref_districts')
+              .select('name_th')
+              .eq('code', site.district_code)
+              .single();
+            siteInfo.districtName = district?.name_th || null;
+          }
+          if (site.subdistrict_code) {
+            const { data: subdistrict } = await supabase
+              .from('ref_subdistricts')
+              .select('name_th')
+              .eq('code', site.subdistrict_code)
+              .single();
+            siteInfo.subdistrictName = subdistrict?.name_th || null;
+          }
+
+          summaryContext.site = siteInfo;
+        }
+      }
+
+      // Fetch contact with all details
+      if (contactId) {
+        const { data: contact } = await supabase
+          .from('child_site_contacts')
+          .select('person_name, nickname, phone, email, line_id, note')
+          .eq('id', contactId)
+          .single();
+
+        if (contact) {
+          const contactInfo: ContactInfo = {
+            name: contact.person_name,
+            nickname: contact.nickname,
+            phone: Array.isArray(contact.phone) ? contact.phone : null,
+            email: Array.isArray(contact.email) ? contact.email : null,
+            lineId: contact.line_id,
+            note: contact.note,
+          };
+          summaryContext.contact = contactInfo;
+        }
+      }
+
+      // Build appointment info
+      if ('appointment' in input && input.appointment !== null && input.appointment) {
+        const apptInfo: AppointmentInfo = {
+          date: input.appointment.appointment_date || null,
+          timeStart: input.appointment.appointment_time_start || null,
+          timeEnd: input.appointment.appointment_time_end || null,
+          type: input.appointment.appointment_type || null,
+        };
+        summaryContext.appointment = apptInfo;
+      } else if (existingTicket.appointment_id) {
+        const { data: existingAppt } = await supabase
+          .from('main_appointments')
+          .select('appointment_date, appointment_time_start, appointment_time_end, appointment_type, is_approved')
+          .eq('id', existingTicket.appointment_id)
+          .single();
+        if (existingAppt) {
+          summaryContext.appointment = {
+            date: existingAppt.appointment_date,
+            timeStart: existingAppt.appointment_time_start,
+            timeEnd: existingAppt.appointment_time_end,
+            type: existingAppt.appointment_type,
+            isApproved: existingAppt.is_approved,
+          };
+        }
+      }
+
+      // Fetch employees with key employee info
+      if (input.employee_ids !== undefined) {
+        const normalizedEmps = normalizeEmployeeIds(input.employee_ids);
+        const empIds = normalizedEmps.map(e => e.id);
+        if (empIds.length > 0) {
+          const { data: employees } = await supabase
+            .from('main_employees')
+            .select('id, nickname, first_name, name')
+            .in('id', empIds);
+
+          if (employees) {
+            const employeeNames: string[] = [];
+            let keyEmployee: string | null = null;
+
+            for (const emp of employees) {
+              const empName = emp.nickname || emp.first_name || emp.name || 'ช่าง';
+              employeeNames.push(empName);
+
+              const empConfig = normalizedEmps.find(e => e.id === emp.id);
+              if (empConfig?.is_key) {
+                keyEmployee = empName;
+              }
+            }
+
+            summaryContext.employees = employeeNames;
+            summaryContext.keyEmployee = keyEmployee;
+          }
+        }
+      } else {
+        // Use existing employees
+        const { data: ticketEmps } = await supabase
+          .from('jct_ticket_employees')
+          .select('is_key_employee, employee:main_employees(nickname, first_name, name)')
+          .eq('ticket_id', ticketId);
+
+        if (ticketEmps && ticketEmps.length > 0) {
+          const employeeNames: string[] = [];
+          let keyEmployee: string | null = null;
+
+          for (const te of ticketEmps) {
+            const emp = te.employee as { nickname?: string; first_name?: string; name?: string } | null;
+            const empName = emp?.nickname || emp?.first_name || emp?.name || 'ช่าง';
+            employeeNames.push(empName);
+            if (te.is_key_employee) {
+              keyEmployee = empName;
+            }
+          }
+
+          summaryContext.employees = employeeNames;
+          summaryContext.keyEmployee = keyEmployee;
+        }
+      }
+
+      // Fetch confirmed employees
+      const { data: confirmedEmps } = await supabase
+        .from('jct_ticket_employees_cf')
+        .select('employee:main_employees!jct_ticket_employees_cf_employee_id_fkey(nickname, first_name, name)')
+        .eq('ticket_id', ticketId);
+
+      if (confirmedEmps && confirmedEmps.length > 0) {
+        summaryContext.confirmedEmployees = confirmedEmps.map(ce => {
+          const emp = ce.employee as { nickname?: string; first_name?: string; name?: string } | null;
+          return emp?.nickname || emp?.first_name || emp?.name || 'ช่าง';
+        });
+      }
+
+      // Fetch merchandise with model details
+      const merchandiseIds = input.merchandise_ids !== undefined ? input.merchandise_ids : null;
+      if (merchandiseIds !== null && merchandiseIds.length > 0) {
+        const { data: merchandiseData } = await supabase
+          .from('main_merchandise')
+          .select(`
+            serial_no,
+            model:main_models(
+              model,
+              brand:ref_brands(name),
+              capacity:ref_capacities(name)
+            )
+          `)
+          .in('id', merchandiseIds);
+
+        if (merchandiseData && merchandiseData.length > 0) {
+          summaryContext.merchandise = merchandiseData.map(m => {
+            const model = m.model as {
+              model?: string;
+              brand?: { name?: string } | null;
+              capacity?: { name?: string } | null;
+            } | null;
+
+            return {
+              serialNo: m.serial_no,
+              modelName: model?.model || null,
+              brand: model?.brand?.name || null,
+              capacity: model?.capacity?.name || null,
+            };
+          });
+        }
+      } else if (merchandiseIds === null) {
+        // Use existing merchandise
+        const { data: ticketMerch } = await supabase
+          .from('jct_ticket_merchandise')
+          .select(`
+            merchandise:main_merchandise(
+              serial_no,
+              model:main_models(
+                model,
+                brand:ref_brands(name),
+                capacity:ref_capacities(name)
+              )
+            )
+          `)
+          .eq('ticket_id', ticketId);
+
+        if (ticketMerch && ticketMerch.length > 0) {
+          const merchItems: MerchandiseItem[] = [];
+          for (const tm of ticketMerch) {
+            const merch = tm.merchandise as {
+              serial_no?: string;
+              model?: {
+                model?: string;
+                brand?: { name?: string } | null;
+                capacity?: { name?: string } | null;
+              } | null;
+            } | null;
+
+            if (merch) {
+              merchItems.push({
+                serialNo: merch.serial_no,
+                modelName: merch.model?.model || null,
+                brand: merch.model?.brand?.name || null,
+                capacity: merch.model?.capacity?.name || null,
+              });
+            }
+          }
+          if (merchItems.length > 0) {
+            summaryContext.merchandise = merchItems;
+          }
+        }
+      }
+
+      // Fetch work giver
+      const { data: workGiverData } = await supabase
+        .from('child_ticket_work_givers')
+        .select('ref_work_givers:work_giver_id(name)')
+        .eq('ticket_id', ticketId)
+        .maybeSingle();
+
+      if (workGiverData?.ref_work_givers) {
+        const wg = workGiverData.ref_work_givers as { name?: string };
+        summaryContext.workGiver = wg.name || null;
+      }
+
+      console.log('[ticket-update] Summary context fields:', Object.keys(summaryContext).filter(k => {
+        const val = summaryContext[k as keyof TicketSummaryContext];
+        return val !== null && val !== undefined;
+      }));
+      detailsSummary = await generateTicketSummary(summaryContext);
+      console.log('[ticket-update] Generated summary:', detailsSummary);
+    }
+
+    const ticketUpdate: Record<string, unknown> = {
       ...ticketDataWithoutWorkGiver,
       site_id: siteId,
       contact_id: contactId,
     };
+
+    // Only include details_summary if we generated one
+    if (detailsSummary !== undefined) {
+      ticketUpdate.details_summary = detailsSummary;
+    }
 
     const { error: ticketError } = await supabase
       .from('main_tickets')
@@ -809,6 +1415,70 @@ export async function update(ticketId: string, input: MasterTicketUpdateInput, e
         work_giver_changed: workGiverChanged,
       },
     });
+
+    // Step 8.5: Auto-unapprove if appointment details were changed by non-approver
+    // Only appointment-related changes should trigger unapproval, not other ticket details
+    const appointmentFieldsChanged = changedFields.some(field =>
+      field.startsWith('appointment.') || field === 'appointment_id'
+    );
+
+    if (wasApproved && !userCanApprove && existingTicket.appointment_id && appointmentFieldsChanged) {
+      // Update appointment to unapproved
+      const { error: unapproveError } = await supabase
+        .from('main_appointments')
+        .update({ is_approved: false })
+        .eq('id', existingTicket.appointment_id);
+
+      if (!unapproveError) {
+        // Log unapproval audit entry
+        const auditId = await logTicketAudit({
+          ticketId,
+          action: 'unapproved',
+          changedBy: employeeId,
+          oldValues: { is_approved: true },
+          newValues: { is_approved: false },
+          changedFields: ['is_approved'],
+          metadata: {
+            auto_unapproved: true,
+            reason: 'ticket_edited_by_non_approver',
+            appointment_id: existingTicket.appointment_id,
+          },
+        });
+
+        // Get current site name for notification (may have changed during update)
+        let currentSiteName = siteName;
+        if (siteId && siteId !== existingTicket.site_id) {
+          const { data: newSite } = await supabase
+            .from('main_sites')
+            .select('name')
+            .eq('id', siteId)
+            .single();
+          currentSiteName = newSite?.name || siteName;
+        }
+
+        // Notify the original approver (async, don't wait)
+        NotificationService.createUnapprovalNotificationToApprover(
+          ticketId,
+          employeeId,
+          currentSiteName,
+          auditId
+        ).catch(err => {
+          console.error('[ticket-update] Failed to notify approver:', err);
+        });
+
+        // Also notify confirmed technicians about the unapproval
+        NotificationService.createApprovalNotifications(
+          ticketId,
+          false, // is_approved = false
+          employeeId,
+          auditId
+        ).catch(err => {
+          console.error('[ticket-update] Failed to notify technicians:', err);
+        });
+
+        console.log('[ticket-update] Auto-unapproved ticket:', ticketId);
+      }
+    }
   }
 
   // Step 9: Return updated ticket data

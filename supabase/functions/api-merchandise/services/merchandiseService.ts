@@ -506,6 +506,171 @@ export class MerchandiseService {
   }
 
   /**
+   * Get replacement chain/graph for a merchandise
+   * Traverses both directions: predecessors (what was replaced) and successors (what replaced it)
+   * Returns the complete chain from oldest to newest
+   */
+  static async getReplacementChain(merchandiseId: string): Promise<{
+    chain: Array<{
+      id: string;
+      serial_no: string;
+      model: { id: string; model: string; name: string | null } | null;
+      site: { id: string; name: string } | null;
+      replaced_by_id: string | null;
+      created_at: string;
+      is_current: boolean;
+      position: number;
+    }>;
+    total: number;
+    current_position: number;
+  }> {
+    const supabase = createServiceClient();
+
+    // First, get the starting merchandise
+    const { data: startMerchandise, error: startError } = await supabase
+      .from('main_merchandise')
+      .select(`
+        id,
+        serial_no,
+        replaced_by_id,
+        created_at,
+        model:main_models!main_merchandise_model_id_fkey (id, model, name),
+        site:main_sites!main_merchandise_site_id_fkey (id, name)
+      `)
+      .eq('id', merchandiseId)
+      .single();
+
+    if (startError || !startMerchandise) {
+      throw new NotFoundError('ไม่พบสินค้าที่ระบุ');
+    }
+
+    // Build the chain
+    const chain: Array<{
+      id: string;
+      serial_no: string;
+      model: { id: string; model: string; name: string | null } | null;
+      site: { id: string; name: string } | null;
+      replaced_by_id: string | null;
+      created_at: string;
+      is_current: boolean;
+      position: number;
+    }> = [];
+
+    const visited = new Set<string>();
+
+    // Helper to fetch merchandise by ID
+    const fetchMerchandise = async (id: string) => {
+      const { data } = await supabase
+        .from('main_merchandise')
+        .select(`
+          id,
+          serial_no,
+          replaced_by_id,
+          created_at,
+          model:main_models!main_merchandise_model_id_fkey (id, model, name),
+          site:main_sites!main_merchandise_site_id_fkey (id, name)
+        `)
+        .eq('id', id)
+        .single();
+      return data;
+    };
+
+    // Helper to find merchandise that was replaced by this one
+    const findPredecessor = async (id: string) => {
+      const { data } = await supabase
+        .from('main_merchandise')
+        .select(`
+          id,
+          serial_no,
+          replaced_by_id,
+          created_at,
+          model:main_models!main_merchandise_model_id_fkey (id, model, name),
+          site:main_sites!main_merchandise_site_id_fkey (id, name)
+        `)
+        .eq('replaced_by_id', id)
+        .maybeSingle();
+      return data;
+    };
+
+    // 1. Traverse backwards to find all predecessors (oldest first)
+    const predecessors: typeof chain = [];
+    let currentId: string | null = merchandiseId;
+
+    while (currentId && !visited.has(currentId)) {
+      visited.add(currentId);
+      const predecessor = await findPredecessor(currentId);
+      if (predecessor && !visited.has(predecessor.id)) {
+        predecessors.unshift({
+          id: predecessor.id,
+          serial_no: predecessor.serial_no,
+          model: predecessor.model as { id: string; model: string; name: string | null } | null,
+          site: predecessor.site as { id: string; name: string } | null,
+          replaced_by_id: predecessor.replaced_by_id,
+          created_at: predecessor.created_at,
+          is_current: false,
+          position: 0, // Will be set later
+        });
+        currentId = predecessor.id;
+      } else {
+        break;
+      }
+    }
+
+    // 2. Add the starting merchandise
+    visited.clear();
+    visited.add(merchandiseId);
+
+    const currentMerchandise = {
+      id: startMerchandise.id,
+      serial_no: startMerchandise.serial_no,
+      model: startMerchandise.model as { id: string; model: string; name: string | null } | null,
+      site: startMerchandise.site as { id: string; name: string } | null,
+      replaced_by_id: startMerchandise.replaced_by_id,
+      created_at: startMerchandise.created_at,
+      is_current: true,
+      position: 0,
+    };
+
+    // 3. Traverse forwards to find all successors (newest last)
+    const successors: typeof chain = [];
+    let nextId: string | null = startMerchandise.replaced_by_id as string | null;
+
+    while (nextId && !visited.has(nextId)) {
+      visited.add(nextId);
+      const successor = await fetchMerchandise(nextId);
+      if (successor) {
+        successors.push({
+          id: successor.id,
+          serial_no: successor.serial_no,
+          model: successor.model as { id: string; model: string; name: string | null } | null,
+          site: successor.site as { id: string; name: string } | null,
+          replaced_by_id: successor.replaced_by_id,
+          created_at: successor.created_at,
+          is_current: false,
+          position: 0,
+        });
+        nextId = successor.replaced_by_id as string | null;
+      } else {
+        break;
+      }
+    }
+
+    // 4. Combine and set positions
+    const fullChain = [...predecessors, currentMerchandise, ...successors];
+    fullChain.forEach((item, index) => {
+      item.position = index + 1;
+    });
+
+    const currentPosition = predecessors.length + 1;
+
+    return {
+      chain: fullChain,
+      total: fullChain.length,
+      current_position: currentPosition,
+    };
+  }
+
+  /**
    * Check if a serial number already exists
    * Returns the merchandise record if found, null otherwise
    */
