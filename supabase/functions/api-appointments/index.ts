@@ -1,6 +1,23 @@
 /**
- * Appointments API Edge Function
- * Handles all appointment CRUD operations
+ * @fileoverview Appointments API Edge Function
+ * @module api-appointments
+ *
+ * Handles all appointment CRUD operations for the Field Service Management system.
+ * Appointments are scheduled visits linked to tickets via main_tickets.appointment_id.
+ *
+ * @endpoints
+ * - GET    /                    - List all appointments (paginated)
+ * - GET    /search              - Search appointments by type
+ * - GET    /ticket/:ticketId    - Get appointment linked to a ticket
+ * - GET    /:id                 - Get single appointment by ID
+ * - POST   /                    - Create new appointment
+ * - POST   /approve             - Approve/unapprove appointment (approvers only)
+ * - PUT    /:id                 - Update appointment
+ * - DELETE /:id                 - Delete appointment
+ *
+ * @auth All endpoints require JWT authentication
+ * @see types.ts for TypeScript interfaces
+ * @see services/appointmentService.ts for business logic
  */
 
 import { handleCORS, corsHeaders } from '../_shared/cors.ts';
@@ -23,16 +40,19 @@ Deno.serve(async (req) => {
   if (corsResponse) return corsResponse;
 
   try {
-    // Authenticate user
+    // Authenticate user via JWT
     const { employee } = await authenticate(req);
 
-    // Route to appropriate handler
+    // Parse URL and extract path segments
     const url = new URL(req.url);
     const pathParts = url.pathname.split('/').filter(Boolean);
     // Find the function name in the path and slice after it
     const functionIndex = pathParts.indexOf('api-appointments');
     const relativePath = functionIndex >= 0 ? pathParts.slice(functionIndex + 1) : [];
     const method = req.method;
+
+    // Route to appropriate handler
+    // NOTE: Order matters - specific routes must come before parameterized routes
 
     // GET /ticket/:ticketId - Get appointment by ticket ID
     if (method === 'GET' && relativePath[0] === 'ticket' && relativePath[1]) {
@@ -56,8 +76,7 @@ Deno.serve(async (req) => {
       return await get(req, employee, id);
     }
 
-    // POST /approve - Approve appointment (and optionally edit)
-    // Check specific routes before generic routes
+    // POST /approve - Approve appointment (check before generic POST)
     if (method === 'POST' && relativePath.length === 1 && relativePath[0] === 'approve') {
       return await approve(req, employee);
     }
@@ -83,13 +102,12 @@ Deno.serve(async (req) => {
   } catch (err) {
     // If OPTIONS request fails, still return 200 with CORS headers
     if (req.method === 'OPTIONS') {
-      return new Response('ok', { 
+      return new Response('ok', {
         status: 200,
-        headers: corsHeaders
+        headers: corsHeaders,
       });
     }
     const { message, statusCode } = handleError(err);
     return error(message, statusCode);
   }
 });
-
