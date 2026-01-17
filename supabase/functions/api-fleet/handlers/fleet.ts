@@ -6,7 +6,7 @@ import { success } from '../../_shared/response.ts';
 import { requireMinLevel } from '../../_shared/auth.ts';
 import { NotFoundError, ValidationError } from '../../_shared/error.ts';
 import { parseRequestBody, validateUUID } from '../../_shared/validation.ts';
-import { FleetService, FleetListParams, RouteHistoryParams, GarageInput, VehicleStatus } from '../services/fleetService.ts';
+import { FleetService, FleetListParams, RouteHistoryParams, GarageInput, VehicleStatus, WorkLocation } from '../services/fleetService.ts';
 import type { Employee } from '../../_shared/auth.ts';
 
 /**
@@ -62,6 +62,52 @@ export async function updateVehicle(req: Request, employee: Employee, vehicleId:
 }
 
 /**
+ * PUT /fleet/:id/employees - Set employees for a vehicle (replaces all)
+ */
+export async function setVehicleEmployees(req: Request, employee: Employee, vehicleId: string) {
+  await requireMinLevel(employee, 2);
+
+  const body = await parseRequestBody<Record<string, unknown>>(req);
+
+  if (!Array.isArray(body.employee_ids)) {
+    throw new ValidationError('กรุณาระบุ employee_ids เป็น array');
+  }
+
+  const employees = await FleetService.setVehicleEmployees(vehicleId, body.employee_ids as string[]);
+
+  return success({ employees });
+}
+
+/**
+ * POST /fleet/:id/employees - Add an employee to a vehicle
+ */
+export async function addVehicleEmployee(req: Request, employee: Employee, vehicleId: string) {
+  await requireMinLevel(employee, 2);
+
+  const body = await parseRequestBody<Record<string, unknown>>(req);
+
+  if (!body.employee_id || typeof body.employee_id !== 'string') {
+    throw new ValidationError('กรุณาระบุ employee_id');
+  }
+
+  const employees = await FleetService.addVehicleEmployee(vehicleId, body.employee_id);
+
+  return success({ employees });
+}
+
+/**
+ * DELETE /fleet/:id/employees/:employeeId - Remove an employee from a vehicle
+ */
+export async function removeVehicleEmployee(_req: Request, employee: Employee, vehicleId: string, employeeId: string) {
+  await requireMinLevel(employee, 2);
+  validateUUID(employeeId, 'Employee ID');
+
+  await FleetService.removeVehicleEmployee(vehicleId, employeeId);
+
+  return success({ message: 'ลบพนักงานออกจากรถสำเร็จ' });
+}
+
+/**
  * GET /fleet/:id/route - Get route history for a vehicle
  */
 export async function getVehicleRoute(req: Request, employee: Employee, vehicleId: string) {
@@ -78,6 +124,21 @@ export async function getVehicleRoute(req: Request, employee: Employee, vehicleI
   const history = await FleetService.getRouteHistory(vehicleId, params);
 
   return success(history);
+}
+
+/**
+ * GET /fleet/:id/work-locations - Get work locations for a vehicle
+ * Returns site coordinates for tickets assigned to the vehicle's employee
+ */
+export async function getWorkLocations(req: Request, employee: Employee, vehicleId: string) {
+  await requireMinLevel(employee, 1);
+
+  const url = new URL(req.url);
+  const date = url.searchParams.get('date') || undefined;
+
+  const locations = await FleetService.getWorkLocations(vehicleId, date);
+
+  return success(locations);
 }
 
 /**

@@ -56,8 +56,9 @@ export class SiteService {
 
   /**
    * Sanitize site data - remove invalid fields and keep only valid schema fields
-   * Based on actual database schema: id, name, address_detail, subdistrict_code, 
-   * postal_code, contact_ids, map_url, company_id, district_code, province_code, is_main_branch, safety_standard
+   * Based on actual database schema: id, name, address_detail, subdistrict_code,
+   * postal_code, contact_ids, map_url, map_embed_url, company_id, district_code,
+   * province_code, is_main_branch, safety_standard, latitude, longitude
    */
   private static sanitizeSiteData(data: Record<string, unknown>): Record<string, unknown> {
     // Only include fields that exist in the database schema
@@ -71,10 +72,13 @@ export class SiteService {
       'postal_code',
       'address_detail',
       'map_url',
+      'map_embed_url',
       'company_id',
       'contact_ids',
       'is_main_branch',
       'safety_standard',
+      'latitude',
+      'longitude',
     ];
 
     const sanitized: Record<string, unknown> = {};

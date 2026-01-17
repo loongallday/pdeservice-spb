@@ -13,11 +13,17 @@ export interface GarageInfo {
   distance_meters: number;
 }
 
+export interface EmployeeInfo {
+  id: string;
+  name: string;
+}
+
 export interface VehicleInfo {
   id: string;
   name: string;
   plate_number: string | null;
   driver_name: string | null;
+  employees: EmployeeInfo[];
   status: VehicleStatus;
   speed: number;
   latitude: number;
@@ -27,6 +33,23 @@ export interface VehicleInfo {
   address: string | null;
   garage: GarageInfo | null;
   last_sync_at: string;
+}
+
+export interface WorkLocation {
+  ticket_id: string;
+  ticket_code: string | null;
+  site_id: string;
+  site_name: string;
+  latitude: number | null;
+  longitude: number | null;
+  address_detail: string | null;
+  appointment_date: string | null;
+  appointment_time_start: string | null;
+  appointment_time_end: string | null;
+  work_type_code: string | null;
+  work_type_name: string | null;
+  status_code: string | null;
+  status_name: string | null;
 }
 
 export interface VehicleHistoryPoint {
@@ -106,6 +129,13 @@ export class FleetService {
           name,
           latitude,
           longitude
+        ),
+        jct_fleet_vehicle_employees (
+          employee_id,
+          main_employees (
+            id,
+            name
+          )
         )
       `)
       .order('name');
@@ -135,11 +165,21 @@ export class FleetService {
         };
       }
 
+      // Map employees from junction table
+      const vehicleEmployees = v.jct_fleet_vehicle_employees as Array<{ employee_id: string; main_employees: { id: string; name: string } | null }> || [];
+      const employees: EmployeeInfo[] = vehicleEmployees
+        .filter((ve) => ve.main_employees)
+        .map((ve) => ({
+          id: ve.main_employees!.id,
+          name: ve.main_employees!.name,
+        }));
+
       return {
         id: v.id,
         name: v.name,
         plate_number: v.plate_number_override || v.plate_number,
         driver_name: v.driver_name_override || v.driver_name,
+        employees,
         status: v.status as VehicleStatus,
         speed: v.speed,
         latitude: v.latitude,
@@ -182,6 +222,13 @@ export class FleetService {
           name,
           latitude,
           longitude
+        ),
+        jct_fleet_vehicle_employees (
+          employee_id,
+          main_employees (
+            id,
+            name
+          )
         )
       `)
       .eq('id', vehicleId)
@@ -204,11 +251,21 @@ export class FleetService {
       };
     }
 
+    // Map employees from junction table
+    const vehicleEmployees = data.jct_fleet_vehicle_employees as Array<{ employee_id: string; main_employees: { id: string; name: string } | null }> || [];
+    const employees: EmployeeInfo[] = vehicleEmployees
+      .filter((ve) => ve.main_employees)
+      .map((ve) => ({
+        id: ve.main_employees!.id,
+        name: ve.main_employees!.name,
+      }));
+
     return {
       id: data.id,
       name: data.name,
       plate_number: data.plate_number_override || data.plate_number,
       driver_name: data.driver_name_override || data.driver_name,
+      employees,
       status: data.status as VehicleStatus,
       speed: data.speed,
       latitude: data.latitude,
@@ -219,6 +276,124 @@ export class FleetService {
       garage: garageInfo,
       last_sync_at: data.last_sync_at,
     };
+  }
+
+  /**
+   * Get work locations for a vehicle based on assigned tickets
+   * Returns sites with coordinates for tickets assigned to all employees of this vehicle
+   */
+  static async getWorkLocations(vehicleId: string, date?: string): Promise<WorkLocation[]> {
+    const supabase = createServiceClient();
+
+    // First get all employees assigned to this vehicle
+    const { data: vehicleEmployees, error: vehicleError } = await supabase
+      .from('jct_fleet_vehicle_employees')
+      .select('employee_id')
+      .eq('vehicle_id', vehicleId);
+
+    if (vehicleError) {
+      throw new DatabaseError(`ไม่สามารถดึงข้อมูลพนักงานของรถได้: ${vehicleError.message}`);
+    }
+
+    if (!vehicleEmployees || vehicleEmployees.length === 0) {
+      // No employees assigned to this vehicle
+      return [];
+    }
+
+    const employeeIds = vehicleEmployees.map((ve) => ve.employee_id);
+
+    // Determine date range
+    const targetDate = date || new Date().toISOString().split('T')[0];
+
+    // Get confirmed tickets for these employees on the target date
+    // Query from jct_ticket_employees_cf which has the date filter
+    const { data: confirmedTickets, error: ticketsError } = await supabase
+      .from('jct_ticket_employees_cf')
+      .select(`
+        ticket_id,
+        main_tickets!inner (
+          id,
+          ticket_code,
+          site_id,
+          main_sites!inner (
+            id,
+            name,
+            latitude,
+            longitude,
+            address_detail
+          ),
+          main_appointments!main_tickets_appointment_id_fkey (
+            appointment_date,
+            appointment_time_start,
+            appointment_time_end
+          ),
+          ref_ticket_work_types!inner (
+            code,
+            name
+          ),
+          ref_ticket_statuses!inner (
+            code,
+            name
+          )
+        )
+      `)
+      .in('employee_id', employeeIds)
+      .eq('date', targetDate);
+
+    // Use a Set to deduplicate tickets (multiple employees might be confirmed for same ticket)
+    const tickets = confirmedTickets || [];
+    const seenTicketIds = new Set<string>();
+    const uniqueTickets = tickets.filter((t) => {
+      if (seenTicketIds.has(t.ticket_id)) return false;
+      seenTicketIds.add(t.ticket_id);
+      return true;
+    });
+
+    if (ticketsError) {
+      throw new DatabaseError(`ไม่สามารถดึงข้อมูลงานได้: ${ticketsError.message}`);
+    }
+
+    // Filter out tickets without coordinates or appointment
+    const validTickets = uniqueTickets.filter((row) => {
+      const t = row.main_tickets as {
+        main_sites: { latitude: number | null; longitude: number | null };
+        main_appointments: { appointment_date: string | null } | null;
+      };
+      // Must have coordinates and appointment date
+      return t.main_sites.latitude != null &&
+             t.main_sites.longitude != null &&
+             t.main_appointments?.appointment_date != null;
+    });
+
+    // Transform to WorkLocation format
+    return validTickets.map((row) => {
+      const t = row.main_tickets as {
+        id: string;
+        ticket_code: string | null;
+        site_id: string;
+        main_sites: { id: string; name: string; latitude: number | null; longitude: number | null; address_detail: string | null };
+        main_appointments: { appointment_date: string | null; appointment_time_start: string | null; appointment_time_end: string | null } | null;
+        ref_ticket_work_types: { code: string; name: string };
+        ref_ticket_statuses: { code: string; name: string };
+      };
+
+      return {
+        ticket_id: t.id,
+        ticket_code: t.ticket_code,
+        site_id: t.main_sites.id,
+        site_name: t.main_sites.name,
+        latitude: t.main_sites.latitude,
+        longitude: t.main_sites.longitude,
+        address_detail: t.main_sites.address_detail,
+        appointment_date: t.main_appointments?.appointment_date || null,
+        appointment_time_start: t.main_appointments?.appointment_time_start || null,
+        appointment_time_end: t.main_appointments?.appointment_time_end || null,
+        work_type_code: t.ref_ticket_work_types.code,
+        work_type_name: t.ref_ticket_work_types.name,
+        status_code: t.ref_ticket_statuses.code,
+        status_name: t.ref_ticket_statuses.name,
+      };
+    });
   }
 
   /**
@@ -384,5 +559,123 @@ export class FleetService {
     }
 
     return vehicle;
+  }
+
+  /**
+   * Set employees for a vehicle (replaces all existing assignments)
+   */
+  static async setVehicleEmployees(vehicleId: string, employeeIds: string[]): Promise<EmployeeInfo[]> {
+    const supabase = createServiceClient();
+
+    // First, delete all existing assignments
+    const { error: deleteError } = await supabase
+      .from('jct_fleet_vehicle_employees')
+      .delete()
+      .eq('vehicle_id', vehicleId);
+
+    if (deleteError) {
+      throw new DatabaseError(`ไม่สามารถลบพนักงานเดิมได้: ${deleteError.message}`);
+    }
+
+    // If no employees to add, return empty array
+    if (employeeIds.length === 0) {
+      return [];
+    }
+
+    // Insert new assignments
+    const insertData = employeeIds.map((employeeId) => ({
+      vehicle_id: vehicleId,
+      employee_id: employeeId,
+    }));
+
+    const { error: insertError } = await supabase
+      .from('jct_fleet_vehicle_employees')
+      .insert(insertData);
+
+    if (insertError) {
+      throw new DatabaseError(`ไม่สามารถเพิ่มพนักงานได้: ${insertError.message}`);
+    }
+
+    // Fetch and return the employees with their names
+    const { data: employees, error: fetchError } = await supabase
+      .from('jct_fleet_vehicle_employees')
+      .select(`
+        employee_id,
+        main_employees (
+          id,
+          name
+        )
+      `)
+      .eq('vehicle_id', vehicleId);
+
+    if (fetchError) {
+      throw new DatabaseError(`ไม่สามารถดึงข้อมูลพนักงานได้: ${fetchError.message}`);
+    }
+
+    return (employees || [])
+      .filter((e) => e.main_employees)
+      .map((e) => ({
+        id: (e.main_employees as { id: string; name: string }).id,
+        name: (e.main_employees as { id: string; name: string }).name,
+      }));
+  }
+
+  /**
+   * Add an employee to a vehicle
+   */
+  static async addVehicleEmployee(vehicleId: string, employeeId: string): Promise<EmployeeInfo[]> {
+    const supabase = createServiceClient();
+
+    // Insert new assignment (will fail if already exists due to primary key)
+    const { error: insertError } = await supabase
+      .from('jct_fleet_vehicle_employees')
+      .insert({
+        vehicle_id: vehicleId,
+        employee_id: employeeId,
+      });
+
+    if (insertError && !insertError.message.includes('duplicate')) {
+      throw new DatabaseError(`ไม่สามารถเพิ่มพนักงานได้: ${insertError.message}`);
+    }
+
+    // Fetch and return all employees for this vehicle
+    const { data: employees, error: fetchError } = await supabase
+      .from('jct_fleet_vehicle_employees')
+      .select(`
+        employee_id,
+        main_employees (
+          id,
+          name
+        )
+      `)
+      .eq('vehicle_id', vehicleId);
+
+    if (fetchError) {
+      throw new DatabaseError(`ไม่สามารถดึงข้อมูลพนักงานได้: ${fetchError.message}`);
+    }
+
+    return (employees || [])
+      .filter((e) => e.main_employees)
+      .map((e) => ({
+        id: (e.main_employees as { id: string; name: string }).id,
+        name: (e.main_employees as { id: string; name: string }).name,
+      }));
+  }
+
+  /**
+   * Remove an employee from a vehicle
+   */
+  static async removeVehicleEmployee(vehicleId: string, employeeId: string): Promise<void> {
+    const supabase = createServiceClient();
+
+    const { error } = await supabase
+      .from('jct_fleet_vehicle_employees')
+      .delete()
+      .eq('vehicle_id', vehicleId)
+      .eq('employee_id', employeeId);
+
+    if (error) {
+      throw new DatabaseError(`ไม่สามารถลบพนักงานได้: ${error.message}`);
+    }
   }
 }

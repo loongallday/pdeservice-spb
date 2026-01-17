@@ -12,7 +12,11 @@ import {
   listFleet,
   getVehicle,
   updateVehicle,
+  setVehicleEmployees,
+  addVehicleEmployee,
+  removeVehicleEmployee,
   getVehicleRoute,
+  getWorkLocations,
   listGarages,
   createGarage,
   updateGarage,
@@ -59,6 +63,12 @@ Deno.serve(async (req) => {
           return await getVehicleRoute(req, employee, vehicleId);
         }
 
+        // GET /:id/work-locations - Get work locations for vehicle
+        if (relativePath.length === 2 && relativePath[1] === 'work-locations') {
+          const vehicleId = relativePath[0];
+          return await getWorkLocations(req, employee, vehicleId);
+        }
+
         // GET /:id - Get single vehicle
         if (relativePath.length === 1) {
           const id = relativePath[0];
@@ -71,6 +81,12 @@ Deno.serve(async (req) => {
         if (relativePath.length === 1 && relativePath[0] === 'garages') {
           return await createGarage(req, employee);
         }
+
+        // POST /:id/employees - Add an employee to a vehicle
+        if (relativePath.length === 2 && relativePath[1] === 'employees') {
+          const vehicleId = relativePath[0];
+          return await addVehicleEmployee(req, employee, vehicleId);
+        }
         break;
 
       case 'PUT':
@@ -78,6 +94,12 @@ Deno.serve(async (req) => {
         if (relativePath.length === 2 && relativePath[0] === 'garages') {
           const garageId = relativePath[1];
           return await updateGarage(req, employee, garageId);
+        }
+
+        // PUT /:id/employees - Set all employees for a vehicle
+        if (relativePath.length === 2 && relativePath[1] === 'employees') {
+          const vehicleId = relativePath[0];
+          return await setVehicleEmployees(req, employee, vehicleId);
         }
 
         // PUT /:id - Update vehicle (driver name override)
@@ -92,6 +114,13 @@ Deno.serve(async (req) => {
         if (relativePath.length === 2 && relativePath[0] === 'garages') {
           const garageId = relativePath[1];
           return await deleteGarage(req, employee, garageId);
+        }
+
+        // DELETE /:id/employees/:employeeId - Remove an employee from a vehicle
+        if (relativePath.length === 3 && relativePath[1] === 'employees') {
+          const vehicleId = relativePath[0];
+          const employeeId = relativePath[2];
+          return await removeVehicleEmployee(req, employee, vehicleId, employeeId);
         }
         break;
     }

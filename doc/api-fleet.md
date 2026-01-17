@@ -35,6 +35,10 @@ List all vehicles with real-time GPS data.
       "name": "1กฮ-6591 คุณณรงค์ชัย",
       "plate_number": "1กฮ-6591",
       "driver_name": "คุณณรงค์ชัย",
+      "employees": [
+        { "id": "uuid", "name": "สมชาย ใจดี" },
+        { "id": "uuid", "name": "สมหญิง ดีใจ" }
+      ],
       "status": "parked_at_base",
       "latitude": 13.7325,
       "longitude": 100.7309,
@@ -102,6 +106,97 @@ Get route history for a vehicle. Data is logged every 5 minutes (288 points/day)
 }
 ```
 
+#### GET /api-fleet/:id/work-locations
+Get work locations for a vehicle based on assigned tickets. Returns site coordinates for all employees assigned to this vehicle.
+
+**Query Parameters:**
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `date` | string | today | Date in YYYY-MM-DD format |
+
+**Response:**
+```json
+{
+  "data": [
+    {
+      "ticket_id": "uuid",
+      "ticket_code": "TK-2026-0001",
+      "site_id": "uuid",
+      "site_name": "บริษัท ABC จำกัด",
+      "latitude": 13.7500,
+      "longitude": 100.5000,
+      "address_detail": "123 ถนนสุขุมวิท",
+      "appointment_date": "2026-01-14",
+      "appointment_time_start": "09:00",
+      "appointment_time_end": "12:00",
+      "work_type_code": "pm",
+      "work_type_name": "บำรุงรักษา",
+      "status_code": "confirmed",
+      "status_name": "ยืนยันแล้ว"
+    }
+  ]
+}
+```
+
+### Vehicle Employees
+
+#### PUT /api-fleet/:id/employees
+Set all employees for a vehicle (replaces existing assignments). Level 2+ required.
+
+**Request Body:**
+```json
+{
+  "employee_ids": ["uuid-1", "uuid-2", "uuid-3"]
+}
+```
+
+**Response:**
+```json
+{
+  "data": {
+    "employees": [
+      { "id": "uuid-1", "name": "สมชาย ใจดี" },
+      { "id": "uuid-2", "name": "สมหญิง ดีใจ" },
+      { "id": "uuid-3", "name": "ณรงค์ชัย ฤทธิ์เรือง" }
+    ]
+  }
+}
+```
+
+#### POST /api-fleet/:id/employees
+Add a single employee to a vehicle. Level 2+ required.
+
+**Request Body:**
+```json
+{
+  "employee_id": "uuid"
+}
+```
+
+**Response:**
+```json
+{
+  "data": {
+    "employees": [
+      { "id": "uuid-1", "name": "สมชาย ใจดี" },
+      { "id": "uuid-2", "name": "สมหญิง ดีใจ" }
+    ]
+  }
+}
+```
+
+#### DELETE /api-fleet/:id/employees/:employeeId
+Remove an employee from a vehicle. Level 2+ required.
+
+**Response:**
+```json
+{
+  "data": {
+    "message": "ลบพนักงานออกจากรถสำเร็จ"
+  }
+}
+```
+
 ### Garages
 
 #### GET /api-fleet/garages
@@ -153,6 +248,7 @@ Delete a garage (Level 2+).
 | `name` | string | Full name (plate + driver) |
 | `plate_number` | string \| null | Vehicle plate number |
 | `driver_name` | string \| null | Driver name |
+| `employees` | EmployeeInfo[] | Employees assigned to this vehicle |
 | `status` | `"moving"` \| `"stopped"` \| `"parked_at_base"` | Current status |
 | `latitude` | number | GPS latitude |
 | `longitude` | number | GPS longitude |
@@ -163,12 +259,36 @@ Delete a garage (Level 2+).
 | `garage` | GarageInfo \| null | Garage info if parked at base |
 | `last_sync_at` | string | Last sync timestamp |
 
+### EmployeeInfo
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | string | Employee UUID |
+| `name` | string | Employee name |
+
 ### GarageInfo
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | string | Garage UUID |
 | `name` | string | Garage name |
 | `distance_meters` | number | Distance from vehicle to garage |
+
+### WorkLocation
+| Field | Type | Description |
+|-------|------|-------------|
+| `ticket_id` | string | Ticket UUID |
+| `ticket_code` | string \| null | Ticket code (e.g., TK-2026-0001) |
+| `site_id` | string | Site UUID |
+| `site_name` | string | Site/customer name |
+| `latitude` | number \| null | Site latitude |
+| `longitude` | number \| null | Site longitude |
+| `address_detail` | string \| null | Site address |
+| `appointment_date` | string \| null | Appointment date (YYYY-MM-DD) |
+| `appointment_time_start` | string \| null | Start time (HH:MM) |
+| `appointment_time_end` | string \| null | End time (HH:MM) |
+| `work_type_code` | string \| null | Work type code |
+| `work_type_name` | string \| null | Work type name (Thai) |
+| `status_code` | string \| null | Ticket status code |
+| `status_name` | string \| null | Ticket status name (Thai) |
 
 ### Status Values
 | Status | Thai | Description |
@@ -188,6 +308,17 @@ Stores garage/base locations with detection radius.
 ### fleet_vehicle_history
 Stores historical tracking data (optional).
 
+### jct_fleet_vehicle_employees
+Junction table for many-to-many relationship between vehicles and employees.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `vehicle_id` | TEXT | Vehicle ID (FK to fleet_vehicles) |
+| `employee_id` | UUID | Employee ID (FK to main_employees) |
+| `created_at` | TIMESTAMPTZ | Assignment timestamp |
+
+**Composite Primary Key**: (vehicle_id, employee_id)
+
 ## Configuration
 
 ### Required Secrets
@@ -204,6 +335,11 @@ npx supabase secrets set GOOGLE_MAPS_API_KEY=xxx
 ```typescript
 type VehicleStatus = 'moving' | 'stopped' | 'parked_at_base';
 
+interface EmployeeInfo {
+  id: string;
+  name: string;
+}
+
 interface GarageInfo {
   id: string;
   name: string;
@@ -215,6 +351,7 @@ interface VehicleInfo {
   name: string;
   plate_number: string | null;
   driver_name: string | null;
+  employees: EmployeeInfo[];
   status: VehicleStatus;
   latitude: number;
   longitude: number;
@@ -224,6 +361,23 @@ interface VehicleInfo {
   address: string | null;
   garage: GarageInfo | null;
   last_sync_at: string;
+}
+
+interface WorkLocation {
+  ticket_id: string;
+  ticket_code: string | null;
+  site_id: string;
+  site_name: string;
+  latitude: number | null;
+  longitude: number | null;
+  address_detail: string | null;
+  appointment_date: string | null;
+  appointment_time_start: string | null;
+  appointment_time_end: string | null;
+  work_type_code: string | null;
+  work_type_name: string | null;
+  status_code: string | null;
+  status_name: string | null;
 }
 ```
 
@@ -337,6 +491,56 @@ export const fleetService = {
       throw new Error(json.error);
     }
   },
+
+  // Get work locations for a vehicle
+  async getWorkLocations(vehicleId: string, date?: string): Promise<WorkLocation[]> {
+    const params = new URLSearchParams();
+    if (date) params.set('date', date);
+
+    const res = await fetch(
+      `${API_URL}/functions/v1/api-fleet/${vehicleId}/work-locations?${params}`,
+      { headers: await getAuthHeader() }
+    );
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error);
+    return json.data;
+  },
+
+  // Set employees for a vehicle (replaces all)
+  async setVehicleEmployees(vehicleId: string, employeeIds: string[]): Promise<EmployeeInfo[]> {
+    const res = await fetch(`${API_URL}/functions/v1/api-fleet/${vehicleId}/employees`, {
+      method: 'PUT',
+      headers: { ...await getAuthHeader(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ employee_ids: employeeIds }),
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error);
+    return json.data.employees;
+  },
+
+  // Add employee to a vehicle
+  async addVehicleEmployee(vehicleId: string, employeeId: string): Promise<EmployeeInfo[]> {
+    const res = await fetch(`${API_URL}/functions/v1/api-fleet/${vehicleId}/employees`, {
+      method: 'POST',
+      headers: { ...await getAuthHeader(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ employee_id: employeeId }),
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error);
+    return json.data.employees;
+  },
+
+  // Remove employee from a vehicle
+  async removeVehicleEmployee(vehicleId: string, employeeId: string): Promise<void> {
+    const res = await fetch(`${API_URL}/functions/v1/api-fleet/${vehicleId}/employees/${employeeId}`, {
+      method: 'DELETE',
+      headers: await getAuthHeader(),
+    });
+    if (!res.ok) {
+      const json = await res.json();
+      throw new Error(json.error);
+    }
+  },
 };
 ```
 
@@ -387,6 +591,47 @@ export function useDeleteGarage() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: fleetService.deleteGarage,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['fleet'] });
+    },
+  });
+}
+
+export function useWorkLocations(vehicleId: string, date?: string) {
+  return useQuery({
+    queryKey: ['fleet', 'work-locations', vehicleId, date],
+    queryFn: () => fleetService.getWorkLocations(vehicleId, date),
+    enabled: !!vehicleId,
+  });
+}
+
+export function useSetVehicleEmployees() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ vehicleId, employeeIds }: { vehicleId: string; employeeIds: string[] }) =>
+      fleetService.setVehicleEmployees(vehicleId, employeeIds),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['fleet'] });
+    },
+  });
+}
+
+export function useAddVehicleEmployee() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ vehicleId, employeeId }: { vehicleId: string; employeeId: string }) =>
+      fleetService.addVehicleEmployee(vehicleId, employeeId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['fleet'] });
+    },
+  });
+}
+
+export function useRemoveVehicleEmployee() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ vehicleId, employeeId }: { vehicleId: string; employeeId: string }) =>
+      fleetService.removeVehicleEmployee(vehicleId, employeeId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['fleet'] });
     },
@@ -733,6 +978,11 @@ function GarageForm({ onSubmit, onCancel, isLoading }: {
 // types/fleet.ts
 export type VehicleStatus = 'moving' | 'stopped' | 'parked_at_base';
 
+export interface EmployeeInfo {
+  id: string;
+  name: string;
+}
+
 export interface GarageInfo {
   id: string;
   name: string;
@@ -744,6 +994,7 @@ export interface VehicleInfo {
   name: string;
   plate_number: string | null;
   driver_name: string | null;
+  employees: EmployeeInfo[];
   status: VehicleStatus;
   latitude: number;
   longitude: number;
@@ -753,6 +1004,23 @@ export interface VehicleInfo {
   address: string | null;
   garage: GarageInfo | null;
   last_sync_at: string;
+}
+
+export interface WorkLocation {
+  ticket_id: string;
+  ticket_code: string | null;
+  site_id: string;
+  site_name: string;
+  latitude: number | null;
+  longitude: number | null;
+  address_detail: string | null;
+  appointment_date: string | null;
+  appointment_time_start: string | null;
+  appointment_time_end: string | null;
+  work_type_code: string | null;
+  work_type_name: string | null;
+  status_code: string | null;
+  status_name: string | null;
 }
 
 export interface GarageDetail {

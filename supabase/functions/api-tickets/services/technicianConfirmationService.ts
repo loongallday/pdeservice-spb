@@ -92,12 +92,12 @@ export class TechnicianConfirmationService {
       index === self.findIndex(e => e.id === emp.id)
     );
 
-    // Delete existing confirmations for this ticket and date (to allow re-confirmation)
+    // Delete ALL existing confirmations for this ticket (to allow re-confirmation)
+    // We delete all dates because the ticket should only have one set of confirmed technicians
     const { error: deleteError } = await supabase
       .from('jct_ticket_employees_cf')
       .delete()
-      .eq('ticket_id', ticketId)
-      .eq('date', appointmentDate);
+      .eq('ticket_id', ticketId);
 
     if (deleteError) {
       throw new DatabaseError(`ไม่สามารถลบการยืนยันเดิมได้: ${deleteError.message}`);
