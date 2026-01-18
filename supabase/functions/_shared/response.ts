@@ -16,6 +16,7 @@ export interface PaginationInfo {
 export interface APIResponse<T> {
   data?: T;
   error?: string;
+  code?: string;
   pagination?: PaginationInfo;
 }
 
@@ -58,14 +59,18 @@ export function successWithPagination<T>(
 /**
  * Create an error response
  */
-export function error(message: string, status = 400): Response {
+export function error(message: string, status = 400, code?: string): Response {
+  const body: APIResponse<never> = { error: message };
+  if (code) {
+    body.code = code;
+  }
   return new Response(
-    JSON.stringify({ error: message } as APIResponse<never>),
+    JSON.stringify(body),
     {
       status,
-      headers: { 
+      headers: {
         'Content-Type': 'application/json',
-        ...corsHeaders 
+        ...corsHeaders
       },
     }
   );

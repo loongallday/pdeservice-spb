@@ -1,0 +1,43 @@
+{
+  "scriptId": "335",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-notifications/handlers/get.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1617,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getNotifications",
+      "ranges": [
+        {
+          "startOffset": 631,
+          "endOffset": 1616,
+          "count": 3
+        },
+        {
+          "startOffset": 898,
+          "endOffset": 904,
+          "count": 1
+        },
+        {
+          "startOffset": 907,
+          "endOffset": 919,
+          "count": 2
+        },
+        {
+          "startOffset": 1492,
+          "endOffset": 1614,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

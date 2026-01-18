@@ -1,0 +1,94 @@
+{
+  "scriptId": "537",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/xlsx/xform/simple/date-xform.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1562,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 1561,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 1555,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "DateXform",
+      "ranges": [
+        {
+          "startOffset": 304,
+          "endOffset": 764,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "render",
+      "ranges": [
+        {
+          "startOffset": 768,
+          "endOffset": 1123,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseOpen",
+      "ranges": [
+        {
+          "startOffset": 1127,
+          "endOffset": 1320,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseText",
+      "ranges": [
+        {
+          "startOffset": 1324,
+          "endOffset": 1401,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseClose",
+      "ranges": [
+        {
+          "startOffset": 1405,
+          "endOffset": 1521,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "scriptId": "367",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-features/services/featureService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 4477,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getEnabledFeatures",
+      "ranges": [
+        {
+          "startOffset": 455,
+          "endOffset": 1920,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getMenuItems",
+      "ranges": [
+        {
+          "startOffset": 2238,
+          "endOffset": 4179,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getAll",
+      "ranges": [
+        {
+          "startOffset": 4242,
+          "endOffset": 4474,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

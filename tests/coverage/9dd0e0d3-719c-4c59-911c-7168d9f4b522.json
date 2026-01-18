@@ -1,0 +1,170 @@
+{
+  "scriptId": "471",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/pako/1.0.11/lib/utils/strings.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 5523,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 5522,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 5516,
+          "count": 1
+        },
+        {
+          "startOffset": 570,
+          "endOffset": 606,
+          "count": 0
+        },
+        {
+          "startOffset": 667,
+          "endOffset": 707,
+          "count": 0
+        },
+        {
+          "startOffset": 973,
+          "endOffset": 1072,
+          "count": 256
+        },
+        {
+          "startOffset": 1001,
+          "endOffset": 1004,
+          "count": 4
+        },
+        {
+          "startOffset": 1005,
+          "endOffset": 1068,
+          "count": 252
+        },
+        {
+          "startOffset": 1016,
+          "endOffset": 1019,
+          "count": 4
+        },
+        {
+          "startOffset": 1020,
+          "endOffset": 1068,
+          "count": 248
+        },
+        {
+          "startOffset": 1031,
+          "endOffset": 1034,
+          "count": 8
+        },
+        {
+          "startOffset": 1035,
+          "endOffset": 1068,
+          "count": 240
+        },
+        {
+          "startOffset": 1046,
+          "endOffset": 1049,
+          "count": 16
+        },
+        {
+          "startOffset": 1050,
+          "endOffset": 1068,
+          "count": 224
+        },
+        {
+          "startOffset": 1061,
+          "endOffset": 1064,
+          "count": 32
+        },
+        {
+          "startOffset": 1065,
+          "endOffset": 1068,
+          "count": 192
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "exports.string2buf",
+      "ranges": [
+        {
+          "startOffset": 1207,
+          "endOffset": 2631,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "buf2binstring",
+      "ranges": [
+        {
+          "startOffset": 2663,
+          "endOffset": 3208,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.buf2binstring",
+      "ranges": [
+        {
+          "startOffset": 3274,
+          "endOffset": 3333,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.binstring2buf",
+      "ranges": [
+        {
+          "startOffset": 3409,
+          "endOffset": 3569,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.buf2string",
+      "ranges": [
+        {
+          "startOffset": 3621,
+          "endOffset": 4706,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.utf8border",
+      "ranges": [
+        {
+          "startOffset": 4954,
+          "endOffset": 5512,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

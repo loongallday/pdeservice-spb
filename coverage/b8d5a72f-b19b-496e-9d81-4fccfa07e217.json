@@ -1,0 +1,83 @@
+{
+  "scriptId": "368",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-stock/services/stockItemService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3982,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "listItems",
+      "ranges": [
+        {
+          "startOffset": 628,
+          "endOffset": 1529,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getItemById",
+      "ranges": [
+        {
+          "startOffset": 1537,
+          "endOffset": 1996,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getItemsByLocation",
+      "ranges": [
+        {
+          "startOffset": 2004,
+          "endOffset": 2468,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "searchItems",
+      "ranges": [
+        {
+          "startOffset": 2476,
+          "endOffset": 3200,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getLowStockItems",
+      "ranges": [
+        {
+          "startOffset": 3208,
+          "endOffset": 3505,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getItemByLocationAndModel",
+      "ranges": [
+        {
+          "startOffset": 3513,
+          "endOffset": 3981,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "scriptId": "534",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/xlsx/xform/core/core-xform.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 5318,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 5317,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 5311,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "CoreXform",
+      "ranges": [
+        {
+          "startOffset": 523,
+          "endOffset": 1797,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "render",
+      "ranges": [
+        {
+          "startOffset": 1801,
+          "endOffset": 3041,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseOpen",
+      "ranges": [
+        {
+          "startOffset": 3045,
+          "endOffset": 3505,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseText",
+      "ranges": [
+        {
+          "startOffset": 3509,
+          "endOffset": 3594,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseClose",
+      "ranges": [
+        {
+          "startOffset": 3598,
+          "endOffset": 4788,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "CoreXform.DateFormat",
+      "ranges": [
+        {
+          "startOffset": 4815,
+          "endOffset": 4882,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

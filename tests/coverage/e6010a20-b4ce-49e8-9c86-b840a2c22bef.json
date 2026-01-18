@@ -1,0 +1,49 @@
+{
+  "scriptId": "437",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/inherits/2.0.4/inherits.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 480,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 479,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 473,
+          "count": 1
+        },
+        {
+          "startOffset": 329,
+          "endOffset": 338,
+          "count": 0
+        },
+        {
+          "startOffset": 375,
+          "endOffset": 470,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

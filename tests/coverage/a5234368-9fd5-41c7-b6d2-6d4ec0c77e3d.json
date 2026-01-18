@@ -1,0 +1,82 @@
+{
+  "scriptId": "717",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/wrappy/1.0.2/wrappy.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1135,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 1134,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 1128,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "wrappy",
+      "ranges": [
+        {
+          "startOffset": 522,
+          "endOffset": 1125,
+          "count": 3
+        },
+        {
+          "startOffset": 565,
+          "endOffset": 586,
+          "count": 0
+        },
+        {
+          "startOffset": 624,
+          "endOffset": 668,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 696,
+          "endOffset": 737,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "wrapper",
+      "ranges": [
+        {
+          "startOffset": 760,
+          "endOffset": 1123,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

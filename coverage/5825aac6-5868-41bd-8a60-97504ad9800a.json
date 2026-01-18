@@ -1,0 +1,215 @@
+{
+  "scriptId": "407",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/doc/workbook.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 6145,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 6144,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 6138,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Workbook",
+      "ranges": [
+        {
+          "startOffset": 643,
+          "endOffset": 1062,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get xlsx",
+      "ranges": [
+        {
+          "startOffset": 1066,
+          "endOffset": 1155,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get csv",
+      "ranges": [
+        {
+          "startOffset": 1159,
+          "endOffset": 1243,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get nextId",
+      "ranges": [
+        {
+          "startOffset": 1247,
+          "endOffset": 1478,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addWorksheet",
+      "ranges": [
+        {
+          "startOffset": 1482,
+          "endOffset": 2766,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "removeWorksheetEx",
+      "ranges": [
+        {
+          "startOffset": 2770,
+          "endOffset": 2847,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "removeWorksheet",
+      "ranges": [
+        {
+          "startOffset": 2851,
+          "endOffset": 2975,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getWorksheet",
+      "ranges": [
+        {
+          "startOffset": 2979,
+          "endOffset": 3302,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get worksheets",
+      "ranges": [
+        {
+          "startOffset": 3306,
+          "endOffset": 3478,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "eachSheet",
+      "ranges": [
+        {
+          "startOffset": 3482,
+          "endOffset": 3587,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get definedNames",
+      "ranges": [
+        {
+          "startOffset": 3591,
+          "endOffset": 3646,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "clearThemes",
+      "ranges": [
+        {
+          "startOffset": 3650,
+          "endOffset": 3769,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addImage",
+      "ranges": [
+        {
+          "startOffset": 3773,
+          "endOffset": 3933,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getImage",
+      "ranges": [
+        {
+          "startOffset": 3937,
+          "endOffset": 3982,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get model",
+      "ranges": [
+        {
+          "startOffset": 3986,
+          "endOffset": 4870,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set model",
+      "ranges": [
+        {
+          "startOffset": 4874,
+          "endOffset": 6105,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

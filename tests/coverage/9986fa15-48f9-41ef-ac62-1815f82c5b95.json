@@ -1,0 +1,149 @@
+{
+  "scriptId": "672",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/@fast-csv/parse/4.3.6/build/src/parser/Scanner.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2588,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2587,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2581,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Scanner",
+      "ranges": [
+        {
+          "startOffset": 422,
+          "endOffset": 681,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get hasMoreCharacters",
+      "ranges": [
+        {
+          "startOffset": 686,
+          "endOffset": 763,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get nextNonSpaceToken",
+      "ranges": [
+        {
+          "startOffset": 768,
+          "endOffset": 1340,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get nextCharacterToken",
+      "ranges": [
+        {
+          "startOffset": 1345,
+          "endOffset": 1642,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get lineFromCursor",
+      "ranges": [
+        {
+          "startOffset": 1647,
+          "endOffset": 1721,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "advancePastLine",
+      "ranges": [
+        {
+          "startOffset": 1726,
+          "endOffset": 2075,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "advanceTo",
+      "ranges": [
+        {
+          "startOffset": 2080,
+          "endOffset": 2156,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "advanceToToken",
+      "ranges": [
+        {
+          "startOffset": 2161,
+          "endOffset": 2252,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "advancePastToken",
+      "ranges": [
+        {
+          "startOffset": 2257,
+          "endOffset": 2352,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "truncateToCursor",
+      "ranges": [
+        {
+          "startOffset": 2357,
+          "endOffset": 2514,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "scriptId": "822",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/fstream/1.0.12/lib/file-reader.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 4214,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 4213,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 4207,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "FileReader",
+      "ranges": [
+        {
+          "startOffset": 485,
+          "endOffset": 1092,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "FileReader._getStream",
+      "ranges": [
+        {
+          "startOffset": 1128,
+          "endOffset": 2500,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "FileReader._read",
+      "ranges": [
+        {
+          "startOffset": 2531,
+          "endOffset": 3691,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "FileReader.pause",
+      "ranges": [
+        {
+          "startOffset": 3722,
+          "endOffset": 3937,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "FileReader.resume",
+      "ranges": [
+        {
+          "startOffset": 3969,
+          "endOffset": 4204,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

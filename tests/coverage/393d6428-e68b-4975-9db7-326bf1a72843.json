@@ -1,0 +1,44 @@
+{
+  "scriptId": "447",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/jszip/3.10.1/lib/external.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 668,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 667,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 661,
+          "count": 1
+        },
+        {
+          "startOffset": 512,
+          "endOffset": 554,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

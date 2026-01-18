@@ -1,0 +1,83 @@
+{
+  "scriptId": "799",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bluebird/3.4.7/js/release/any.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 651,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 650,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 644,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 252,
+          "endOffset": 640,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "any",
+      "ranges": [
+        {
+          "startOffset": 322,
+          "endOffset": 507,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.any",
+      "ranges": [
+        {
+          "startOffset": 523,
+          "endOffset": 572,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.any",
+      "ranges": [
+        {
+          "startOffset": 599,
+          "endOffset": 636,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

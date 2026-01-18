@@ -1,0 +1,149 @@
+{
+  "scriptId": "371",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-merchandise/services/merchandiseService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 23893,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "sanitizeMerchandiseData",
+      "ranges": [
+        {
+          "startOffset": 1813,
+          "endOffset": 2063,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getAll",
+      "ranges": [
+        {
+          "startOffset": 2124,
+          "endOffset": 5937,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getById",
+      "ranges": [
+        {
+          "startOffset": 5991,
+          "endOffset": 7916,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getBySite",
+      "ranges": [
+        {
+          "startOffset": 7965,
+          "endOffset": 8065,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getByModel",
+      "ranges": [
+        {
+          "startOffset": 8115,
+          "endOffset": 8218,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "create",
+      "ranges": [
+        {
+          "startOffset": 8266,
+          "endOffset": 10741,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "update",
+      "ranges": [
+        {
+          "startOffset": 10785,
+          "endOffset": 13113,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "delete",
+      "ranges": [
+        {
+          "startOffset": 13157,
+          "endOffset": 13584,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "search",
+      "ranges": [
+        {
+          "startOffset": 13753,
+          "endOffset": 17326,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "hint",
+      "ranges": [
+        {
+          "startOffset": 17609,
+          "endOffset": 19063,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getReplacementChain",
+      "ranges": [
+        {
+          "startOffset": 19287,
+          "endOffset": 23145,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "checkDuplicateSerial",
+      "ranges": [
+        {
+          "startOffset": 23271,
+          "endOffset": 23890,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,0 +1,204 @@
+{
+  "scriptId": "714",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/glob/7.2.3/sync.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 12250,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 12249,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 12243,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "globSync",
+      "ranges": [
+        {
+          "startOffset": 722,
+          "endOffset": 1011,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "GlobSync",
+      "ranges": [
+        {
+          "startOffset": 1013,
+          "endOffset": 1640,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "GlobSync._finish",
+      "ranges": [
+        {
+          "startOffset": 1671,
+          "endOffset": 2231,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "GlobSync._process",
+      "ranges": [
+        {
+          "startOffset": 2264,
+          "endOffset": 3851,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "GlobSync._processReaddir",
+      "ranges": [
+        {
+          "startOffset": 3891,
+          "endOffset": 5849,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "GlobSync._emitMatch",
+      "ranges": [
+        {
+          "startOffset": 5884,
+          "endOffset": 6272,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "GlobSync._readdirInGlobStar",
+      "ranges": [
+        {
+          "startOffset": 6315,
+          "endOffset": 7027,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "GlobSync._readdir",
+      "ranges": [
+        {
+          "startOffset": 7059,
+          "endOffset": 7490,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "GlobSync._readdirEntries",
+      "ranges": [
+        {
+          "startOffset": 7529,
+          "endOffset": 8010,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "GlobSync._readdirError",
+      "ranges": [
+        {
+          "startOffset": 8047,
+          "endOffset": 8911,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "GlobSync._processGlobStar",
+      "ranges": [
+        {
+          "startOffset": 8951,
+          "endOffset": 10049,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "GlobSync._processSimple",
+      "ranges": [
+        {
+          "startOffset": 10087,
+          "endOffset": 10833,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "GlobSync._stat",
+      "ranges": [
+        {
+          "startOffset": 10904,
+          "endOffset": 12084,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "GlobSync._mark",
+      "ranges": [
+        {
+          "startOffset": 12113,
+          "endOffset": 12159,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "GlobSync._makeAbs",
+      "ranges": [
+        {
+          "startOffset": 12191,
+          "endOffset": 12240,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -76,12 +76,37 @@ export function parsePaginationParams(url: URL): { page: number; limit: number }
 }
 
 /**
- * Parse request body as JSON
+ * Remove prototype pollution vectors from an object recursively
+ */
+function sanitizePrototypePollution(obj: unknown): unknown {
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map(sanitizePrototypePollution);
+  }
+
+  const sanitized: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(obj as Record<string, unknown>)) {
+    // Skip prototype pollution vectors
+    if (key === '__proto__' || key === 'constructor' || key === 'prototype') {
+      continue;
+    }
+    sanitized[key] = sanitizePrototypePollution(value);
+  }
+  return sanitized;
+}
+
+/**
+ * Parse request body as JSON with prototype pollution protection
  */
 export async function parseRequestBody<T>(req: Request): Promise<T> {
   try {
     const body = await req.json();
-    return body as T;
+    // Sanitize to prevent prototype pollution attacks
+    const sanitized = sanitizePrototypePollution(body);
+    return sanitized as T;
   } catch (_error) {
     throw new ValidationError('ข้อมูลที่ส่งมาไม่ถูกต้อง');
   }

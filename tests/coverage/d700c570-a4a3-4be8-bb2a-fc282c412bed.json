@@ -1,0 +1,94 @@
+{
+  "scriptId": "609",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/xlsx/xform/sheet/cf-ext/f-ext-xform.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 610,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 609,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 603,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "get tag",
+      "ranges": [
+        {
+          "startOffset": 307,
+          "endOffset": 341,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "render",
+      "ranges": [
+        {
+          "startOffset": 345,
+          "endOffset": 422,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseOpen",
+      "ranges": [
+        {
+          "startOffset": 426,
+          "endOffset": 464,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseText",
+      "ranges": [
+        {
+          "startOffset": 468,
+          "endOffset": 513,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseClose",
+      "ranges": [
+        {
+          "startOffset": 517,
+          "endOffset": 569,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

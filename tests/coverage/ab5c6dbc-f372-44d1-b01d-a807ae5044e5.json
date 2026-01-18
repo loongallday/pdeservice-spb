@@ -1,0 +1,457 @@
+{
+  "scriptId": "505",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/utils/stream-buf.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 9441,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 9440,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 9434,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "StringChunk",
+      "ranges": [
+        {
+          "startOffset": 533,
+          "endOffset": 620,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get length",
+      "ranges": [
+        {
+          "startOffset": 624,
+          "endOffset": 677,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "copy",
+      "ranges": [
+        {
+          "startOffset": 708,
+          "endOffset": 827,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toBuffer",
+      "ranges": [
+        {
+          "startOffset": 831,
+          "endOffset": 965,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "StringBufChunk",
+      "ranges": [
+        {
+          "startOffset": 994,
+          "endOffset": 1040,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get length",
+      "ranges": [
+        {
+          "startOffset": 1044,
+          "endOffset": 1092,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "copy",
+      "ranges": [
+        {
+          "startOffset": 1123,
+          "endOffset": 1295,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toBuffer",
+      "ranges": [
+        {
+          "startOffset": 1299,
+          "endOffset": 1349,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BufferChunk",
+      "ranges": [
+        {
+          "startOffset": 1375,
+          "endOffset": 1421,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get length",
+      "ranges": [
+        {
+          "startOffset": 1425,
+          "endOffset": 1473,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "copy",
+      "ranges": [
+        {
+          "startOffset": 1504,
+          "endOffset": 1611,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toBuffer",
+      "ranges": [
+        {
+          "startOffset": 1615,
+          "endOffset": 1654,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ReadWriteBuf",
+      "ranges": [
+        {
+          "startOffset": 1825,
+          "endOffset": 2004,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toBuffer",
+      "ranges": [
+        {
+          "startOffset": 2008,
+          "endOffset": 2241,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get length",
+      "ranges": [
+        {
+          "startOffset": 2245,
+          "endOffset": 2300,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get eod",
+      "ranges": [
+        {
+          "startOffset": 2304,
+          "endOffset": 2358,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get full",
+      "ranges": [
+        {
+          "startOffset": 2362,
+          "endOffset": 2416,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "read",
+      "ranges": [
+        {
+          "startOffset": 2420,
+          "endOffset": 2988,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "write",
+      "ranges": [
+        {
+          "startOffset": 2992,
+          "endOffset": 3300,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "StreamBuf",
+      "ranges": [
+        {
+          "startOffset": 3782,
+          "endOffset": 4360,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toBuffer",
+      "ranges": [
+        {
+          "startOffset": 4408,
+          "endOffset": 4647,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_getWritableBuffer",
+      "ranges": [
+        {
+          "startOffset": 4924,
+          "endOffset": 5190,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_pipe",
+      "ranges": [
+        {
+          "startOffset": 5195,
+          "endOffset": 5433,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_writeToBuffers",
+      "ranges": [
+        {
+          "startOffset": 5437,
+          "endOffset": 5712,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "write",
+      "ranges": [
+        {
+          "startOffset": 5716,
+          "endOffset": 6956,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "cork",
+      "ranges": [
+        {
+          "startOffset": 6960,
+          "endOffset": 6996,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_flush",
+      "ranges": [
+        {
+          "startOffset": 7000,
+          "endOffset": 7222,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "uncork",
+      "ranges": [
+        {
+          "startOffset": 7226,
+          "endOffset": 7284,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "end",
+      "ranges": [
+        {
+          "startOffset": 7288,
+          "endOffset": 7667,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "read",
+      "ranges": [
+        {
+          "startOffset": 7909,
+          "endOffset": 8491,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "setEncoding",
+      "ranges": [
+        {
+          "startOffset": 8495,
+          "endOffset": 8654,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "pause",
+      "ranges": [
+        {
+          "startOffset": 8658,
+          "endOffset": 8695,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "resume",
+      "ranges": [
+        {
+          "startOffset": 8699,
+          "endOffset": 8738,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isPaused",
+      "ranges": [
+        {
+          "startOffset": 8742,
+          "endOffset": 8784,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "pipe",
+      "ranges": [
+        {
+          "startOffset": 8788,
+          "endOffset": 8975,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "unpipe",
+      "ranges": [
+        {
+          "startOffset": 8979,
+          "endOffset": 9111,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "unshift",
+      "ranges": [
+        {
+          "startOffset": 9115,
+          "endOffset": 9306,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "wrap",
+      "ranges": [
+        {
+          "startOffset": 9310,
+          "endOffset": 9397,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

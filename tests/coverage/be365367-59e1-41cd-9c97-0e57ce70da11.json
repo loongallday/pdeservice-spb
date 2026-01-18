@@ -1,0 +1,94 @@
+{
+  "scriptId": "366",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/services/ticketService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3100,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getById",
+      "ranges": [
+        {
+          "startOffset": 2298,
+          "endOffset": 2357,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "search",
+      "ranges": [
+        {
+          "startOffset": 2390,
+          "endOffset": 2456,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "searchByDuration",
+      "ranges": [
+        {
+          "startOffset": 2466,
+          "endOffset": 2552,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "create",
+      "ranges": [
+        {
+          "startOffset": 2583,
+          "endOffset": 2668,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "update",
+      "ranges": [
+        {
+          "startOffset": 2678,
+          "endOffset": 2783,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deleteTicket",
+      "ranges": [
+        {
+          "startOffset": 2793,
+          "endOffset": 2914,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "removeTicketEmployee",
+      "ranges": [
+        {
+          "startOffset": 2924,
+          "endOffset": 3097,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,0 +1,207 @@
+{
+  "scriptId": "660",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/@fast-csv/parse/4.3.6/build/src/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2782,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2781,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2775,
+          "count": 1
+        },
+        {
+          "startOffset": 460,
+          "endOffset": 541,
+          "count": 0
+        },
+        {
+          "startOffset": 717,
+          "endOffset": 759,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 309,
+          "endOffset": 458,
+          "count": 119
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 425,
+          "endOffset": 452,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 463,
+          "endOffset": 540,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 624,
+          "endOffset": 715,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "__setModuleDefault",
+      "ranges": [
+        {
+          "startOffset": 719,
+          "endOffset": 759,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "__importStar",
+      "ranges": [
+        {
+          "startOffset": 812,
+          "endOffset": 1092,
+          "count": 1
+        },
+        {
+          "startOffset": 860,
+          "endOffset": 871,
+          "count": 0
+        },
+        {
+          "startOffset": 933,
+          "endOffset": 1034,
+          "count": 117
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "__exportStar",
+      "ranges": [
+        {
+          "startOffset": 1144,
+          "endOffset": 1295,
+          "count": 1
+        },
+        {
+          "startOffset": 1188,
+          "endOffset": 1293,
+          "count": 2
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 1854,
+          "endOffset": 1911,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 2039,
+          "endOffset": 2092,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.parse",
+      "ranges": [
+        {
+          "startOffset": 2113,
+          "endOffset": 2201,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.parseStream",
+      "ranges": [
+        {
+          "startOffset": 2225,
+          "endOffset": 2340,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.parseFile",
+      "ranges": [
+        {
+          "startOffset": 2362,
+          "endOffset": 2507,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.parseString",
+      "ranges": [
+        {
+          "startOffset": 2531,
+          "endOffset": 2738,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

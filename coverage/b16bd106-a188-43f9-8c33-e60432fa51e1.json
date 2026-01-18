@@ -1,0 +1,55 @@
+{
+  "scriptId": "805",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/unzipper/0.10.14/lib/BufferStream.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 899,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 898,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 892,
+          "count": 1
+        },
+        {
+          "startOffset": 434,
+          "endOffset": 470,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 489,
+          "endOffset": 888,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

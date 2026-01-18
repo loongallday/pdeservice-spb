@@ -1,0 +1,406 @@
+{
+  "scriptId": "695",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/graceful-fs/4.2.11/polyfills.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 10371,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 10370,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 10364,
+          "count": 1
+        },
+        {
+          "startOffset": 480,
+          "endOffset": 493,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "process.cwd",
+      "ranges": [
+        {
+          "startOffset": 384,
+          "endOffset": 455,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "process.chdir",
+      "ranges": [
+        {
+          "startOffset": 637,
+          "endOffset": 697,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "patch",
+      "ranges": [
+        {
+          "startOffset": 798,
+          "endOffset": 10361,
+          "count": 1
+        },
+        {
+          "startOffset": 1053,
+          "endOffset": 1078,
+          "count": 0
+        },
+        {
+          "startOffset": 1137,
+          "endOffset": 1163,
+          "count": 0
+        },
+        {
+          "startOffset": 2184,
+          "endOffset": 2309,
+          "count": 0
+        },
+        {
+          "startOffset": 2340,
+          "endOffset": 2469,
+          "count": 0
+        },
+        {
+          "startOffset": 3096,
+          "endOffset": 4003,
+          "count": 0
+        },
+        {
+          "startOffset": 4102,
+          "endOffset": 4111,
+          "count": 0
+        },
+        {
+          "startOffset": 4910,
+          "endOffset": 4923,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "fs.lchmod",
+      "ranges": [
+        {
+          "startOffset": 2202,
+          "endOffset": 2270,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "fs.lchmodSync",
+      "ranges": [
+        {
+          "startOffset": 2291,
+          "endOffset": 2305,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "fs.lchown",
+      "ranges": [
+        {
+          "startOffset": 2358,
+          "endOffset": 2430,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "fs.lchownSync",
+      "ranges": [
+        {
+          "startOffset": 2451,
+          "endOffset": 2465,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 3165,
+          "endOffset": 3987,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 4117,
+          "endOffset": 4848,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "read",
+      "ranges": [
+        {
+          "startOffset": 4142,
+          "endOffset": 4683,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 4929,
+          "endOffset": 5303,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "fs.readSync",
+      "ranges": [
+        {
+          "startOffset": 4961,
+          "endOffset": 5302,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "patchLchmod",
+      "ranges": [
+        {
+          "startOffset": 5321,
+          "endOffset": 6489,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "patchLutimes",
+      "ranges": [
+        {
+          "startOffset": 6493,
+          "endOffset": 7549,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "chmodFix",
+      "ranges": [
+        {
+          "startOffset": 7553,
+          "endOffset": 7802,
+          "count": 3
+        },
+        {
+          "startOffset": 7595,
+          "endOffset": 7606,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 7618,
+          "endOffset": 7798,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "chmodFixSync",
+      "ranges": [
+        {
+          "startOffset": 7806,
+          "endOffset": 8031,
+          "count": 3
+        },
+        {
+          "startOffset": 7852,
+          "endOffset": 7863,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 7875,
+          "endOffset": 8027,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "chownFix",
+      "ranges": [
+        {
+          "startOffset": 8036,
+          "endOffset": 8293,
+          "count": 3
+        },
+        {
+          "startOffset": 8078,
+          "endOffset": 8089,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 8101,
+          "endOffset": 8289,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "chownFixSync",
+      "ranges": [
+        {
+          "startOffset": 8297,
+          "endOffset": 8530,
+          "count": 3
+        },
+        {
+          "startOffset": 8343,
+          "endOffset": 8354,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 8366,
+          "endOffset": 8526,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "statFix",
+      "ranges": [
+        {
+          "startOffset": 8534,
+          "endOffset": 9157,
+          "count": 3
+        },
+        {
+          "startOffset": 8575,
+          "endOffset": 8586,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 8687,
+          "endOffset": 9153,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "statFixSync",
+      "ranges": [
+        {
+          "startOffset": 9161,
+          "endOffset": 9598,
+          "count": 3
+        },
+        {
+          "startOffset": 9206,
+          "endOffset": 9217,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 9318,
+          "endOffset": 9594,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "chownErOk",
+      "ranges": [
+        {
+          "startOffset": 10071,
+          "endOffset": 10359,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

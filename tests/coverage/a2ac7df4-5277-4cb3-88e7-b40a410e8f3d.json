@@ -1,0 +1,116 @@
+{
+  "scriptId": "547",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/xlsx/xform/book/workbook-xform.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 8319,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 8318,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 8312,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "WorkbookXform",
+      "ranges": [
+        {
+          "startOffset": 876,
+          "endOffset": 1458,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "prepare",
+      "ranges": [
+        {
+          "startOffset": 1462,
+          "endOffset": 3205,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "render",
+      "ranges": [
+        {
+          "startOffset": 3209,
+          "endOffset": 3729,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseOpen",
+      "ranges": [
+        {
+          "startOffset": 3733,
+          "endOffset": 4067,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseText",
+      "ranges": [
+        {
+          "startOffset": 4071,
+          "endOffset": 4156,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseClose",
+      "ranges": [
+        {
+          "startOffset": 4160,
+          "endOffset": 4786,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "reconcile",
+      "ranges": [
+        {
+          "startOffset": 4790,
+          "endOffset": 7725,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

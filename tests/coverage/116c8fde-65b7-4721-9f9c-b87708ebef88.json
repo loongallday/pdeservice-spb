@@ -1,0 +1,50 @@
+{
+  "scriptId": "369",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-analytics/services/technicianUtilizationService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 10991,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getAllTechnicians",
+      "ranges": [
+        {
+          "startOffset": 474,
+          "endOffset": 934,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getUtilizationForDate",
+      "ranges": [
+        {
+          "startOffset": 1017,
+          "endOffset": 5854,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getUtilizationSummary",
+      "ranges": [
+        {
+          "startOffset": 5921,
+          "endOffset": 10988,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

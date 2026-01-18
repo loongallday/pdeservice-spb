@@ -1,6 +1,34 @@
 /**
- * Leave Requests API Edge Function
- * Handles leave request CRUD and approval operations
+ * @fileoverview Leave Requests API Edge Function - Employee leave management
+ * @module api-leave-requests
+ *
+ * @description
+ * Manages employee leave requests with approval workflow.
+ * Supports vacation, sick leave, personal leave, etc.
+ *
+ * Leave Request Statuses:
+ * - pending: Awaiting approval
+ * - approved: Approved by manager
+ * - rejected: Rejected by manager
+ * - cancelled: Cancelled by employee
+ *
+ * @endpoints
+ * ## Leave Request Operations
+ * - GET    /                  - List leave requests
+ * - GET    /search            - Search leave requests
+ * - GET    /:id               - Get leave request by ID
+ * - POST   /                  - Create new leave request
+ * - PUT    /:id               - Update leave request
+ * - DELETE /:id               - Delete leave request
+ *
+ * ## Approval Workflow
+ * - POST   /:id/approve       - Approve leave request
+ * - POST   /:id/reject        - Reject leave request
+ * - POST   /:id/cancel        - Cancel leave request
+ *
+ * @auth All endpoints require JWT authentication
+ * @table main_leave_requests - Leave request data
+ * @table main_employees - Employee reference
  */
 
 import { handleCORS } from '../_shared/cors.ts';

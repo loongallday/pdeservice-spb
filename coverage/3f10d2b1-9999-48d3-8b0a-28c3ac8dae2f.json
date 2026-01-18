@@ -1,0 +1,432 @@
+{
+  "scriptId": "696",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/graceful-fs/4.2.11/graceful-fs.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 12910,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 12909,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 12903,
+          "count": 1
+        },
+        {
+          "startOffset": 750,
+          "endOffset": 845,
+          "count": 0
+        },
+        {
+          "startOffset": 1080,
+          "endOffset": 1282,
+          "count": 0
+        },
+        {
+          "startOffset": 2513,
+          "endOffset": 2651,
+          "count": 0
+        },
+        {
+          "startOffset": 2811,
+          "endOffset": 2827,
+          "count": 0
+        },
+        {
+          "startOffset": 2829,
+          "endOffset": 2888,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "noop",
+      "ranges": [
+        {
+          "startOffset": 847,
+          "endOffset": 866,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "publishQueue",
+      "ranges": [
+        {
+          "startOffset": 868,
+          "endOffset": 1011,
+          "count": 2
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 967,
+          "endOffset": 1004,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "debug",
+      "ranges": [
+        {
+          "startOffset": 1148,
+          "endOffset": 1282,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1713,
+          "endOffset": 2120,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "close",
+      "ranges": [
+        {
+          "startOffset": 1739,
+          "endOffset": 2018,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 2151,
+          "endOffset": 2442,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "closeSync",
+      "ranges": [
+        {
+          "startOffset": 2181,
+          "endOffset": 2328,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 2538,
+          "endOffset": 2646,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "patch",
+      "ranges": [
+        {
+          "startOffset": 2890,
+          "endOffset": 10256,
+          "count": 1
+        },
+        {
+          "startOffset": 6981,
+          "endOffset": 7098,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "readFile",
+      "ranges": [
+        {
+          "startOffset": 3169,
+          "endOffset": 3728,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "writeFile",
+      "ranges": [
+        {
+          "startOffset": 3793,
+          "endOffset": 4387,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "appendFile",
+      "ranges": [
+        {
+          "startOffset": 4479,
+          "endOffset": 5078,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "copyFile",
+      "ranges": [
+        {
+          "startOffset": 5160,
+          "endOffset": 5737,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "readdir",
+      "ranges": [
+        {
+          "startOffset": 5838,
+          "endOffset": 6932,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 7516,
+          "endOffset": 7559,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set",
+      "ranges": [
+        {
+          "startOffset": 7570,
+          "endOffset": 7615,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 7721,
+          "endOffset": 7765,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set",
+      "ranges": [
+        {
+          "startOffset": 7776,
+          "endOffset": 7822,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 7984,
+          "endOffset": 8031,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set",
+      "ranges": [
+        {
+          "startOffset": 8042,
+          "endOffset": 8091,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 8237,
+          "endOffset": 8285,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set",
+      "ranges": [
+        {
+          "startOffset": 8296,
+          "endOffset": 8346,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ReadStream",
+      "ranges": [
+        {
+          "startOffset": 8401,
+          "endOffset": 8621,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ReadStream$open",
+      "ranges": [
+        {
+          "startOffset": 8625,
+          "endOffset": 8946,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "WriteStream",
+      "ranges": [
+        {
+          "startOffset": 8950,
+          "endOffset": 9175,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "WriteStream$open",
+      "ranges": [
+        {
+          "startOffset": 9179,
+          "endOffset": 9450,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createReadStream",
+      "ranges": [
+        {
+          "startOffset": 9454,
+          "endOffset": 9545,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createWriteStream",
+      "ranges": [
+        {
+          "startOffset": 9549,
+          "endOffset": 9642,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "open",
+      "ranges": [
+        {
+          "startOffset": 9687,
+          "endOffset": 10241,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "enqueue",
+      "ranges": [
+        {
+          "startOffset": 10258,
+          "endOffset": 10368,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "resetQueue",
+      "ranges": [
+        {
+          "startOffset": 10617,
+          "endOffset": 11085,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "retry",
+      "ranges": [
+        {
+          "startOffset": 11087,
+          "endOffset": 12900,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

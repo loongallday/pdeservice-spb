@@ -1,0 +1,190 @@
+{
+  "scriptId": "448",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/setimmediate/1.0.5/setImmediate.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 6703,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 6702,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 6696,
+          "count": 1
+        },
+        {
+          "startOffset": 6636,
+          "endOffset": 6683,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 222,
+          "endOffset": 6607,
+          "count": 1
+        },
+        {
+          "startOffset": 324,
+          "endOffset": 5750,
+          "count": 0
+        },
+        {
+          "startOffset": 5776,
+          "endOffset": 5798,
+          "count": 0
+        },
+        {
+          "startOffset": 5799,
+          "endOffset": 5809,
+          "count": 0
+        },
+        {
+          "startOffset": 5810,
+          "endOffset": 5818,
+          "count": 0
+        },
+        {
+          "startOffset": 5943,
+          "endOffset": 6606,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "setImmediate",
+      "ranges": [
+        {
+          "startOffset": 511,
+          "endOffset": 1074,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "clearImmediate",
+      "ranges": [
+        {
+          "startOffset": 1080,
+          "endOffset": 1157,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "run",
+      "ranges": [
+        {
+          "startOffset": 1163,
+          "endOffset": 1663,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "runIfPresent",
+      "ranges": [
+        {
+          "startOffset": 1669,
+          "endOffset": 2493,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "installNextTickImplementation",
+      "ranges": [
+        {
+          "startOffset": 2499,
+          "endOffset": 2674,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "canUsePostMessage",
+      "ranges": [
+        {
+          "startOffset": 2680,
+          "endOffset": 3352,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "installPostMessageImplementation",
+      "ranges": [
+        {
+          "startOffset": 3358,
+          "endOffset": 4347,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "installMessageChannelImplementation",
+      "ranges": [
+        {
+          "startOffset": 4353,
+          "endOffset": 4691,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "installReadyStateChangeImplementation",
+      "ranges": [
+        {
+          "startOffset": 4697,
+          "endOffset": 5402,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "installSetTimeoutImplementation",
+      "ranges": [
+        {
+          "startOffset": 5408,
+          "endOffset": 5565,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "scriptId": "496",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/readable-stream/3.6.2/lib/internal/streams/state.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 975,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 974,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 968,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "highWaterMarkFrom",
+      "ranges": [
+        {
+          "startOffset": 320,
+          "endOffset": 483,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getHighWaterMark",
+      "ranges": [
+        {
+          "startOffset": 484,
+          "endOffset": 907,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

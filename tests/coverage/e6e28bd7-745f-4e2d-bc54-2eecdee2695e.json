@@ -1,0 +1,28 @@
+{
+  "scriptId": "337",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-reference-data/handlers/leaveTypes.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 536,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getLeaveTypes",
+      "ranges": [
+        {
+          "startOffset": 220,
+          "endOffset": 535,
+          "count": 2
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "scriptId": "371",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/_shared/idempotency.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 4978,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "checkIdempotencyKey",
+      "ranges": [
+        {
+          "startOffset": 322,
+          "endOffset": 3577,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "saveIdempotencyResponse",
+      "ranges": [
+        {
+          "startOffset": 3648,
+          "endOffset": 4193,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "saveIdempotencyError",
+      "ranges": [
+        {
+          "startOffset": 4260,
+          "endOffset": 4763,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getIdempotencyKey",
+      "ranges": [
+        {
+          "startOffset": 4859,
+          "endOffset": 4977,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

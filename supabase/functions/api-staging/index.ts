@@ -1,26 +1,50 @@
 /**
- * Staging API Edge Function
- * Handles staged file operations for n8n LINE integration
+ * @fileoverview Staging API Edge Function - LINE file staging and approval workflow
+ * @module api-staging
  *
- * Routes:
- * - POST /files - Create staged file (n8n, service_role)
- * - PUT /files/:id/link - Link file to ticket (n8n, service_role)
- * - GET /tickets/carousel - Get tickets for LINE carousel (n8n, service_role)
- * - GET /tickets/by-code/:code - Get ticket by code (n8n, service_role)
- * - GET /employee/:lineUserId - Get employee by LINE user ID (n8n, service_role)
+ * @description
+ * Handles staged file operations for n8n LINE integration.
+ * Files uploaded via LINE are staged for admin approval before linking to tickets.
  *
- * - GET /files - List staged files (canApproveAppointments)
- * - GET /files/grouped - List files grouped by ticket (canApproveAppointments)
- * - GET /files/:id - Get single staged file (canApproveAppointments)
- * - POST /files/:id/approve - Approve file (canApproveAppointments)
- * - POST /files/:id/reject - Reject file (canApproveAppointments)
- * - POST /files/bulk-approve - Bulk approve files (canApproveAppointments)
- * - DELETE /files/:id - Delete staged file (canApproveAppointments)
+ * Two authentication modes:
+ * 1. Service role (n8n): For automated file creation and ticket lookup
+ * 2. JWT (web app): For file approval/rejection workflow
  *
- * - GET /line-accounts - List LINE accounts (admin)
- * - POST /line-accounts - Create LINE account (admin)
- * - PUT /line-accounts/:id - Update LINE account (admin)
- * - DELETE /line-accounts/:id - Delete LINE account (admin)
+ * File Workflow:
+ * 1. Technician sends image via LINE
+ * 2. n8n webhook creates staged file (service_role)
+ * 3. Admin reviews and approves/rejects (JWT)
+ * 4. Approved files linked to tickets
+ *
+ * @endpoints
+ * ## n8n Integration (service_role auth)
+ * - POST   /files              - Create staged file
+ * - PUT    /files/:id/link     - Link file to ticket
+ * - GET    /tickets/carousel   - Get tickets for LINE carousel
+ * - GET    /tickets/by-code/:code - Get ticket by code
+ * - GET    /employee/:lineUserId  - Get employee by LINE user ID
+ *
+ * ## File Management (JWT auth, canApproveAppointments)
+ * - GET    /files              - List staged files
+ * - GET    /files/grouped      - List files grouped by ticket
+ * - GET    /files/:id          - Get single staged file
+ * - POST   /files/:id/approve  - Approve file
+ * - POST   /files/:id/reject   - Reject file
+ * - POST   /files/bulk-approve - Bulk approve files
+ * - POST   /files/bulk-delete  - Bulk delete files
+ * - DELETE /files/:id          - Delete staged file
+ *
+ * ## LINE Account Management (admin)
+ * - GET    /line-accounts      - List LINE accounts
+ * - POST   /line-accounts      - Create LINE account
+ * - PUT    /line-accounts/:id  - Update LINE account
+ * - DELETE /line-accounts/:id  - Delete LINE account
+ *
+ * @auth Service role for n8n, JWT for web app
+ * @permission canApproveAppointments for file management
+ * @table main_staged_files - Staged file uploads
+ * @table child_employee_line_accounts - LINE user mappings
+ * @table main_tickets - Related tickets
  */
 
 import { handleCORS } from '../_shared/cors.ts';
@@ -31,7 +55,7 @@ import { createServiceClient } from '../_shared/supabase.ts';
 
 // Handlers
 import { listFiles, listFilesGrouped, getFile, createFile, linkFile, deleteFile } from './handlers/files.ts';
-import { approveFile, rejectFile, bulkApproveFiles } from './handlers/approval.ts';
+import { approveFile, rejectFile, bulkApproveFiles, bulkDeleteFiles } from './handlers/approval.ts';
 import { getCarouselTickets, getTicketByCode } from './handlers/carousel.ts';
 import {
   listLineAccounts,
@@ -160,6 +184,11 @@ Deno.serve(async (req) => {
         // POST /files/bulk-approve - Bulk approve files
         if (relativePath.length === 2 && relativePath[0] === 'files' && relativePath[1] === 'bulk-approve') {
           return await bulkApproveFiles(req, employee);
+        }
+
+        // POST /files/bulk-delete - Bulk delete files
+        if (relativePath.length === 2 && relativePath[0] === 'files' && relativePath[1] === 'bulk-delete') {
+          return await bulkDeleteFiles(req, employee);
         }
 
         // POST /line-accounts - Create LINE account

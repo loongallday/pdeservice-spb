@@ -1,0 +1,138 @@
+{
+  "scriptId": "591",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/xlsx/xform/sheet/cf-ext/cf-rule-ext-xform.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2301,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2300,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2294,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "CfRuleExtXform",
+      "ranges": [
+        {
+          "startOffset": 607,
+          "endOffset": 796,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get tag",
+      "ranges": [
+        {
+          "startOffset": 800,
+          "endOffset": 840,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isExt",
+      "ranges": [
+        {
+          "startOffset": 851,
+          "endOffset": 1121,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "prepare",
+      "ranges": [
+        {
+          "startOffset": 1125,
+          "endOffset": 1241,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "render",
+      "ranges": [
+        {
+          "startOffset": 1245,
+          "endOffset": 1534,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "renderDataBar",
+      "ranges": [
+        {
+          "startOffset": 1538,
+          "endOffset": 1741,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "renderIconSet",
+      "ranges": [
+        {
+          "startOffset": 1745,
+          "endOffset": 1999,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createNewModel",
+      "ranges": [
+        {
+          "startOffset": 2003,
+          "endOffset": 2173,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "onParserClose",
+      "ranges": [
+        {
+          "startOffset": 2177,
+          "endOffset": 2255,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

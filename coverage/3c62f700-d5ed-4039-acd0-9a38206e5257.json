@@ -1,0 +1,171 @@
+{
+  "scriptId": "776",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bluebird/3.4.7/js/release/context.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2612,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2611,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2605,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 252,
+          "endOffset": 2601,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Promise._promiseCreated",
+      "ranges": [
+        {
+          "startOffset": 361,
+          "endOffset": 374,
+          "count": 9
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Promise._pushContext",
+      "ranges": [
+        {
+          "startOffset": 409,
+          "endOffset": 422,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._popContext",
+      "ranges": [
+        {
+          "startOffset": 456,
+          "endOffset": 481,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._peekContext.Promise._peekContext",
+      "ranges": [
+        {
+          "startOffset": 539,
+          "endOffset": 552,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Context",
+      "ranges": [
+        {
+          "startOffset": 555,
+          "endOffset": 637,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Context._pushContext",
+      "ranges": [
+        {
+          "startOffset": 671,
+          "endOffset": 813,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Context._popContext",
+      "ranges": [
+        {
+          "startOffset": 848,
+          "endOffset": 1062,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createContext",
+      "ranges": [
+        {
+          "startOffset": 1065,
+          "endOffset": 1140,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "peekContext",
+      "ranges": [
+        {
+          "startOffset": 1142,
+          "endOffset": 1307,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Context.deactivateLongStackTraces",
+      "ranges": [
+        {
+          "startOffset": 1406,
+          "endOffset": 1419,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Context.activateLongStackTraces",
+      "ranges": [
+        {
+          "startOffset": 1455,
+          "endOffset": 2582,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

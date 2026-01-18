@@ -1,0 +1,72 @@
+{
+  "scriptId": "374",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/services/ticketSearchService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 22669,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getById",
+      "ranges": [
+        {
+          "startOffset": 1796,
+          "endOffset": 5955,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createTicketDisplayItem",
+      "ranges": [
+        {
+          "startOffset": 6017,
+          "endOffset": 10614,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createDisplayItemFromFastResult",
+      "ranges": [
+        {
+          "startOffset": 10839,
+          "endOffset": 13605,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "search",
+      "ranges": [
+        {
+          "startOffset": 13903,
+          "endOffset": 20941,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "searchByDuration",
+      "ranges": [
+        {
+          "startOffset": 21084,
+          "endOffset": 22668,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

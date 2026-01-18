@@ -1,0 +1,94 @@
+{
+  "scriptId": "820",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/fstream/1.0.12/lib/file-writer.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2823,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2822,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2816,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "FileWriter",
+      "ranges": [
+        {
+          "startOffset": 397,
+          "endOffset": 780,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "FileWriter._create",
+      "ranges": [
+        {
+          "startOffset": 813,
+          "endOffset": 1704,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "FileWriter.write",
+      "ranges": [
+        {
+          "startOffset": 1735,
+          "endOffset": 2306,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "FileWriter.end",
+      "ranges": [
+        {
+          "startOffset": 2335,
+          "endOffset": 2492,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "FileWriter._finish",
+      "ranges": [
+        {
+          "startOffset": 2525,
+          "endOffset": 2813,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

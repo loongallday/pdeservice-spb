@@ -1,0 +1,94 @@
+{
+  "scriptId": "676",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/@fast-csv/parse/4.3.6/build/src/parser/RowParser.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3227,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 3226,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 3220,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "RowParser",
+      "ranges": [
+        {
+          "startOffset": 447,
+          "endOffset": 595,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isEmptyRow",
+      "ranges": [
+        {
+          "startOffset": 607,
+          "endOffset": 716,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parse",
+      "ranges": [
+        {
+          "startOffset": 721,
+          "endOffset": 2078,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getStartToken",
+      "ranges": [
+        {
+          "startOffset": 2083,
+          "endOffset": 2398,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "shouldSkipColumnParse",
+      "ranges": [
+        {
+          "startOffset": 2403,
+          "endOffset": 3147,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

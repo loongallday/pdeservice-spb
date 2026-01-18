@@ -1,0 +1,54 @@
+{
+  "scriptId": "493",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/readable-stream/3.6.2/readable.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 959,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 958,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 952,
+          "count": 1
+        },
+        {
+          "startOffset": 299,
+          "endOffset": 308,
+          "count": 0
+        },
+        {
+          "startOffset": 310,
+          "endOffset": 424,
+          "count": 0
+        },
+        {
+          "startOffset": 525,
+          "endOffset": 535,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

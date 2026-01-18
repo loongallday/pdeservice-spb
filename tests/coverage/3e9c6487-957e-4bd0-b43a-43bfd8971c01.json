@@ -1,0 +1,28 @@
+{
+  "scriptId": "336",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-initialize/handlers/features.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 537,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "features",
+      "ranges": [
+        {
+          "startOffset": 259,
+          "endOffset": 536,
+          "count": 2
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "scriptId": "377",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-reports/services/geographicService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 8202,
+          "count": 1
+        },
+        {
+          "startOffset": 5503,
+          "endOffset": 5534,
+          "count": 77
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getDistribution",
+      "ranges": [
+        {
+          "startOffset": 5642,
+          "endOffset": 7653,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getProvinceCount",
+      "ranges": [
+        {
+          "startOffset": 7731,
+          "endOffset": 7927,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getProvinceName",
+      "ranges": [
+        {
+          "startOffset": 7978,
+          "endOffset": 8072,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getRegionName",
+      "ranges": [
+        {
+          "startOffset": 8119,
+          "endOffset": 8199,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

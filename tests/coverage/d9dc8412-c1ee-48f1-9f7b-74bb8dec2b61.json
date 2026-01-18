@@ -1,0 +1,171 @@
+{
+  "scriptId": "369",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-sites/services/siteService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 21778,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "buildSearchFilter",
+      "ranges": [
+        {
+          "startOffset": 1963,
+          "endOffset": 2262,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getMatchingCompanyIds",
+      "ranges": [
+        {
+          "startOffset": 2373,
+          "endOffset": 2727,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "sanitizeSiteData",
+      "ranges": [
+        {
+          "startOffset": 3066,
+          "endOffset": 4043,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getAll",
+      "ranges": [
+        {
+          "startOffset": 4110,
+          "endOffset": 5160,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getById",
+      "ranges": [
+        {
+          "startOffset": 5311,
+          "endOffset": 9378,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "globalSearch",
+      "ranges": [
+        {
+          "startOffset": 9628,
+          "endOffset": 12787,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "globalSearchWithTicketCount",
+      "ranges": [
+        {
+          "startOffset": 12961,
+          "endOffset": 14245,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "hint",
+      "ranges": [
+        {
+          "startOffset": 14434,
+          "endOffset": 16109,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "search",
+      "ranges": [
+        {
+          "startOffset": 16233,
+          "endOffset": 16877,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "create",
+      "ranges": [
+        {
+          "startOffset": 16918,
+          "endOffset": 17402,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createOrReplace",
+      "ranges": [
+        {
+          "startOffset": 17554,
+          "endOffset": 18807,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "update",
+      "ranges": [
+        {
+          "startOffset": 18853,
+          "endOffset": 19331,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "delete",
+      "ranges": [
+        {
+          "startOffset": 19368,
+          "endOffset": 19568,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "findOrCreate",
+      "ranges": [
+        {
+          "startOffset": 19613,
+          "endOffset": 21775,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

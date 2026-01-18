@@ -1,0 +1,172 @@
+{
+  "scriptId": "335",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/_shared/error.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2120,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "<instance_members_initializer>",
+      "ranges": [
+        {
+          "startOffset": 104,
+          "endOffset": 122,
+          "count": 26
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "APIError",
+      "ranges": [
+        {
+          "startOffset": 126,
+          "endOffset": 271,
+          "count": 26
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "AuthenticationError",
+      "ranges": [
+        {
+          "startOffset": 328,
+          "endOffset": 414,
+          "count": 4
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "AuthorizationError",
+      "ranges": [
+        {
+          "startOffset": 470,
+          "endOffset": 556,
+          "count": 3
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "NotFoundError",
+      "ranges": [
+        {
+          "startOffset": 607,
+          "endOffset": 686,
+          "count": 4
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "ValidationError",
+      "ranges": [
+        {
+          "startOffset": 739,
+          "endOffset": 809,
+          "count": 3
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "DatabaseError",
+      "ranges": [
+        {
+          "startOffset": 860,
+          "endOffset": 965,
+          "count": 3
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "<instance_members_initializer>",
+      "ranges": [
+        {
+          "startOffset": 1019,
+          "endOffset": 1034,
+          "count": 4
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "IdempotencyError",
+      "ranges": [
+        {
+          "startOffset": 1038,
+          "endOffset": 1179,
+          "count": 4
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "handleError",
+      "ranges": [
+        {
+          "startOffset": 1268,
+          "endOffset": 2119,
+          "count": 11
+        },
+        {
+          "startOffset": 1327,
+          "endOffset": 1435,
+          "count": 4
+        },
+        {
+          "startOffset": 1435,
+          "endOffset": 1464,
+          "count": 7
+        },
+        {
+          "startOffset": 1464,
+          "endOffset": 2034,
+          "count": 4
+        },
+        {
+          "startOffset": 1552,
+          "endOffset": 1662,
+          "count": 1
+        },
+        {
+          "startOffset": 1662,
+          "endOffset": 1710,
+          "count": 3
+        },
+        {
+          "startOffset": 1710,
+          "endOffset": 1795,
+          "count": 1
+        },
+        {
+          "startOffset": 1795,
+          "endOffset": 1841,
+          "count": 2
+        },
+        {
+          "startOffset": 1841,
+          "endOffset": 2034,
+          "count": 1
+        },
+        {
+          "startOffset": 2034,
+          "endOffset": 2118,
+          "count": 3
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

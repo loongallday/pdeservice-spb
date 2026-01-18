@@ -1,0 +1,160 @@
+{
+  "scriptId": "785",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bluebird/3.4.7/js/release/map.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 5607,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 5606,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 5600,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 252,
+          "endOffset": 5596,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "MappingPromiseArray",
+      "ranges": [
+        {
+          "startOffset": 623,
+          "endOffset": 1084,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "MappingPromiseArray._asyncInit",
+      "ranges": [
+        {
+          "startOffset": 1179,
+          "endOffset": 1225,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "MappingPromiseArray._init",
+      "ranges": [
+        {
+          "startOffset": 1266,
+          "endOffset": 1280,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "MappingPromiseArray._promiseFulfilled",
+      "ranges": [
+        {
+          "startOffset": 1333,
+          "endOffset": 3676,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "MappingPromiseArray._drainQueue",
+      "ranges": [
+        {
+          "startOffset": 3723,
+          "endOffset": 4017,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "MappingPromiseArray._filter",
+      "ranges": [
+        {
+          "startOffset": 4060,
+          "endOffset": 4298,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "MappingPromiseArray.preservedValues",
+      "ranges": [
+        {
+          "startOffset": 4349,
+          "endOffset": 4398,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "map",
+      "ranges": [
+        {
+          "startOffset": 4401,
+          "endOffset": 5388,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.map",
+      "ranges": [
+        {
+          "startOffset": 5414,
+          "endOffset": 5481,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.map",
+      "ranges": [
+        {
+          "startOffset": 5498,
+          "endOffset": 5591,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

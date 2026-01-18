@@ -1,5 +1,26 @@
 /**
- * Comment Service - Business logic for ticket comments
+ * @fileoverview Ticket comment service - Comment CRUD with mentions and attachments
+ * @module api-tickets/services/commentService
+ *
+ * Provides full comment functionality for tickets:
+ * - getByTicketId(): List comments with pagination
+ * - getById(): Get single comment
+ * - create(): Create comment with optional photos/files
+ * - update(): Update comment (author only)
+ * - delete(): Delete comment (author or admin)
+ *
+ * @description
+ * Features:
+ * - @mention parsing: Supports @[uuid] and @employee_code formats
+ * - Photo attachments: Ordered images with display_order
+ * - File attachments: Documents with metadata (size, mime type)
+ * - Notifications: Auto-notifies mentioned users and previous commenters
+ * - Audit logging: All comment actions logged to ticket audit trail
+ *
+ * Permissions:
+ * - Create: Any authenticated user (Level 0+)
+ * - Update: Author only
+ * - Delete: Author or Admin (Level 2+)
  */
 
 import { createServiceClient } from '../../_shared/supabase.ts';

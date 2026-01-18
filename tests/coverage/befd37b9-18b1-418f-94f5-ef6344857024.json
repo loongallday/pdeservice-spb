@@ -1,0 +1,63 @@
+{
+  "scriptId": "335",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-reports/handlers/daily.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1258,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getDailyReport",
+      "ranges": [
+        {
+          "startOffset": 274,
+          "endOffset": 1257,
+          "count": 3
+        },
+        {
+          "startOffset": 476,
+          "endOffset": 548,
+          "count": 1
+        },
+        {
+          "startOffset": 548,
+          "endOffset": 660,
+          "count": 2
+        },
+        {
+          "startOffset": 660,
+          "endOffset": 837,
+          "count": 1
+        },
+        {
+          "startOffset": 837,
+          "endOffset": 893,
+          "count": 0
+        },
+        {
+          "startOffset": 893,
+          "endOffset": 1053,
+          "count": 1
+        },
+        {
+          "startOffset": 1053,
+          "endOffset": 1144,
+          "count": 0
+        },
+        {
+          "startOffset": 1144,
+          "endOffset": 1256,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

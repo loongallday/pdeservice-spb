@@ -1,6 +1,33 @@
 /**
- * API Reports Edge Function
- * Provides analytics and reporting endpoints
+ * @fileoverview Reports API Edge Function - Excel report generation
+ * @module api-reports
+ *
+ * @description
+ * Provides report generation endpoints with Excel export capability.
+ * Used for daily operations reports and work type specific exports.
+ *
+ * Report Types:
+ * - Daily: Summary of day's operations (tickets, appointments, status)
+ * - RMA Excel: RMA work orders with warranty/repair details
+ * - PM Excel: Preventive maintenance work orders
+ * - Sales Excel: Sales/installation work orders
+ *
+ * Excel Features:
+ * - Multi-sheet workbooks
+ * - Formatted headers and data
+ * - Auto-column width
+ * - Thai date formatting
+ *
+ * @endpoints
+ * ## Report Generation
+ * - GET    /daily         - Get daily operations report (JSON)
+ * - GET    /rma/excel     - Download RMA report (Excel)
+ * - GET    /pm/excel      - Download PM report (Excel)
+ * - GET    /sales/excel   - Download Sales report (Excel)
+ *
+ * @auth Level 1+ required (Assigner, PM, Sales and above)
+ * @table main_tickets - Ticket data for reports
+ * @table main_appointments - Appointment data
  */
 
 import { handleCORS } from '../_shared/cors.ts';

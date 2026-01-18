@@ -1,5 +1,24 @@
 /**
- * Contact service - Business logic for contact operations
+ * @fileoverview Contact service - Business logic for contact operations
+ * @module api-contacts/services/contactService
+ *
+ * Provides CRUD operations for customer contacts:
+ * - getAll(): List contacts with pagination, optional site filter
+ * - getById(): Get single contact by ID
+ * - getBySite(): Get all contacts for a site
+ * - search(): Search by person_name or nickname
+ * - create(): Create new contact
+ * - update(): Update existing contact
+ * - delete(): Delete contact
+ *
+ * @description
+ * Contacts are linked to sites (child_site_contacts table).
+ * Each contact stores person information including:
+ * - person_name, nickname
+ * - phone (array), email (array)
+ * - line_id, note
+ *
+ * @table child_site_contacts - Contact data (linked to main_sites)
  */
 
 import { createServiceClient } from '../../_shared/supabase.ts';

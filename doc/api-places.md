@@ -1,52 +1,85 @@
-# API Places - Google Places Proxy
+# API Places
 
-> Proxy endpoints for Google Places API (New) with Thai location code matching.
-> Uses the new Places API with 200+ million places.
-> https://developers.google.com/maps/documentation/places/web-service
+## Overview
+
+The Places API is a Google Places API proxy that provides address autocomplete and place details lookup functionality for Thai addresses. It is used in the site creation workflow to help users search for and select business locations.
+
+This API:
+- Provides address autocomplete as users type
+- Returns place details with coordinates (latitude/longitude)
+- Automatically matches addresses to Thai administrative codes (province/district/subdistrict)
+- Returns formatted data ready for site creation
+
+---
 
 ## Base URL
 
 ```
-https://ogzyihacqbasolfxymgo.supabase.co/functions/v1/api-places
+/api-places
 ```
+
+---
 
 ## Authentication
 
-All endpoints require JWT authentication via `Authorization: Bearer <token>` header.
+All endpoints require a valid JWT token in the Authorization header.
+
+```
+Authorization: Bearer <jwt_token>
+```
+
+**Required Permission Level:** 0 (Technician L1 or higher)
+
+---
+
+## Endpoints Summary
+
+| Method | Path | Description | Auth Required |
+|--------|------|-------------|---------------|
+| POST | `/autocomplete` | Search places as user types | Yes |
+| POST | `/details` | Get full place details by place_id | Yes |
 
 ---
 
 ## Endpoints
 
-### 1. Place Autocomplete
+### 1. Autocomplete
 
-Search for places as user types (like Google Maps search box).
+Search for places as the user types. Returns a list of matching place predictions.
 
-**Endpoint:** `POST /api-places/autocomplete`
+**Request**
 
-**Request:**
-```json
-{
-  "input": "Central World Bangkok",
-  "sessionToken": "optional-uuid-for-billing"
-}
 ```
+POST /api-places/autocomplete
+```
+
+**Request Body**
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `input` | string | ✅ | Search query (min 2 characters) |
-| `sessionToken` | string | ❌ | UUID for billing optimization |
+| `input` | string | Yes | Search query (minimum 2 characters) |
+| `sessionToken` | string | No | Google Places session token for billing optimization |
 
-**Response:**
+**Request Body Example**
+
+```json
+{
+  "input": "Central World",
+  "sessionToken": "uuid-session-token"
+}
+```
+
+**Response**
+
 ```json
 {
   "data": {
     "predictions": [
       {
-        "place_id": "ChIJgQqfwoKe4jARLqGay-fWlQI",
-        "description": "CentralWorld, ถนน ราชดำริ แขวง ปทุมวัน เขตปทุมวัน กรุงเทพมหานคร ประเทศไทย",
-        "main_text": "CentralWorld",
-        "secondary_text": "ถนน ราชดำริ แขวง ปทุมวัน เขตปทุมวัน กรุงเทพมหานคร",
+        "place_id": "ChIJN1t_tDeuEmsRUsoyG83frY4",
+        "description": "เซ็นทรัลเวิลด์ ถนนราชดำริ แขวงปทุมวัน เขตปทุมวัน กรุงเทพมหานคร ประเทศไทย",
+        "main_text": "เซ็นทรัลเวิลด์",
+        "secondary_text": "ถนนราชดำริ แขวงปทุมวัน เขตปทุมวัน กรุงเทพมหานคร ประเทศไทย",
         "types": ["shopping_mall", "point_of_interest", "establishment"]
       }
     ]
@@ -54,42 +87,79 @@ Search for places as user types (like Google Maps search box).
 }
 ```
 
-**Google API Used:** `POST https://places.googleapis.com/v1/places:autocomplete`
+**Response Fields**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `predictions` | array | List of place predictions |
+
+**Prediction Object Fields**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `place_id` | string | Google Places unique identifier |
+| `description` | string | Full place description |
+| `main_text` | string | Primary place name |
+| `secondary_text` | string | Secondary location information |
+| `types` | string[] | Array of place types (e.g., "restaurant", "establishment") |
+
+**Example Request**
+
+```bash
+curl -X POST "https://ogzyihacqbasolfxymgo.supabase.co/functions/v1/api-places/autocomplete" \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"input": "Central World"}'
+```
+
+**Notes**
+- Minimum input length is 2 characters; shorter inputs return an empty predictions array
+- Results are limited to Thailand (`includedRegionCodes: ['TH']`)
+- Language is set to Thai for localized results
+- Use `sessionToken` to group autocomplete and details requests for billing optimization
 
 ---
 
-### 2. Place Details
+### 2. Details
 
-Get full details of a selected place including coordinates and address components.
+Get full details of a place including coordinates and address components. Also attempts to match the address to Thai administrative location codes.
 
-**Endpoint:** `POST /api-places/details`
+**Request**
 
-**Request:**
-```json
-{
-  "place_id": "ChIJgQqfwoKe4jARLqGay-fWlQI",
-  "sessionToken": "same-uuid-from-autocomplete"
-}
 ```
+POST /api-places/details
+```
+
+**Request Body**
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `place_id` | string | ✅ | Google Place ID from autocomplete |
-| `sessionToken` | string | ❌ | Same token used in autocomplete |
+| `place_id` | string | Yes | Google Places ID from autocomplete |
+| `sessionToken` | string | No | Google Places session token (should match autocomplete) |
 
-**Response:**
+**Request Body Example**
+
+```json
+{
+  "place_id": "ChIJN1t_tDeuEmsRUsoyG83frY4",
+  "sessionToken": "uuid-session-token"
+}
+```
+
+**Response**
+
 ```json
 {
   "data": {
-    "place_id": "ChIJgQqfwoKe4jARLqGay-fWlQI",
-    "name": "CentralWorld",
-    "formatted_address": "999/9 ถนน พระรามที่ ๑ แขวง ปทุมวัน เขตปทุมวัน กรุงเทพมหานคร 10330 ประเทศไทย",
+    "place_id": "ChIJN1t_tDeuEmsRUsoyG83frY4",
+    "name": "เซ็นทรัลเวิลด์",
+    "formatted_address": "999/9 ถนนพระราม 1 แขวงปทุมวัน เขตปทุมวัน กรุงเทพมหานคร 10330 ประเทศไทย",
     "latitude": 13.7465354,
-    "longitude": 100.5391488,
-    "google_maps_url": "https://maps.google.com/?cid=...",
-    "google_maps_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d500!2d100.5391488!3d13.7465354!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1sChIJgQqfwoKe4jARLqGay-fWlQI!2s!5e0!3m2!1sth!2sth",
+    "longitude": 100.5393327,
+    "google_maps_url": "https://maps.google.com/?cid=12345678901234567890",
+    "google_maps_embed_url": "https://www.google.com/maps/embed?pb=...",
     "address_components": {
-      "street_address": "999/9 ถนน พระรามที่ ๑",
+      "street_address": "999/9 ถนนพระราม 1",
       "subdistrict": "ปทุมวัน",
       "district": "ปทุมวัน",
       "province": "กรุงเทพมหานคร",
@@ -97,173 +167,177 @@ Get full details of a selected place including coordinates and address component
       "country": "ประเทศไทย"
     },
     "matched_location": {
-      "province_code": 1,
-      "district_code": 1001,
-      "subdistrict_code": 100101
+      "province_code": 10,
+      "district_code": 1007,
+      "subdistrict_code": 100701
     }
   }
 }
 ```
 
-**Google API Used:** `GET https://places.googleapis.com/v1/places/{placeId}`
+**Response Fields**
 
----
+| Field | Type | Nullable | Description |
+|-------|------|----------|-------------|
+| `place_id` | string | No | Google Places unique identifier |
+| `name` | string | No | Place name |
+| `formatted_address` | string | No | Full formatted address |
+| `latitude` | number | No | Latitude coordinate |
+| `longitude` | number | No | Longitude coordinate |
+| `google_maps_url` | string | No | URL to open in Google Maps |
+| `google_maps_embed_url` | string | No | URL for embedding Google Maps |
+| `address_components` | object | No | Parsed address components |
+| `matched_location` | object | Yes | Matched Thai location codes (null if no match) |
 
-## Response Fields
+**Address Components Object**
 
-### address_components
+| Field | Type | Nullable | Description |
+|-------|------|----------|-------------|
+| `street_address` | string | Yes | Street number and route |
+| `subdistrict` | string | Yes | Thai: ตำบล/แขวง |
+| `district` | string | Yes | Thai: อำเภอ/เขต |
+| `province` | string | Yes | Thai: จังหวัด |
+| `postal_code` | string | Yes | Thai postal code |
+| `country` | string | Yes | Country name |
 
-| Field | Description | Thai Term |
-|-------|-------------|-----------|
-| `street_address` | Street number + route | บ้านเลขที่ + ถนน |
-| `subdistrict` | Sublocality level 2 | ตำบล/แขวง |
-| `district` | Sublocality level 1 | อำเภอ/เขต |
-| `province` | Administrative area level 1 | จังหวัด |
-| `postal_code` | Postal code | รหัสไปรษณีย์ |
-| `country` | Country | ประเทศ |
+**Matched Location Object**
 
-### matched_location
+| Field | Type | Nullable | Description |
+|-------|------|----------|-------------|
+| `province_code` | number | Yes | ID from ref_provinces table |
+| `district_code` | number | Yes | ID from ref_districts table |
+| `subdistrict_code` | number | Yes | ID from ref_sub_districts table |
 
-Automatically matched Thai location codes from `ref_provinces`, `ref_districts`, `ref_sub_districts` tables.
+**Example Request**
 
-| Field | Description |
-|-------|-------------|
-| `province_code` | Matched province ID |
-| `district_code` | Matched district ID |
-| `subdistrict_code` | Matched subdistrict ID |
-
-> **Note:** `matched_location` may be `null` if fuzzy matching fails. Frontend should handle fallback to manual selection.
+```bash
+curl -X POST "https://ogzyihacqbasolfxymgo.supabase.co/functions/v1/api-places/details" \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"place_id": "ChIJN1t_tDeuEmsRUsoyG83frY4"}'
+```
 
 ---
 
 ## Error Responses
 
+All errors follow the standard API error format:
+
+```json
+{
+  "error": "Error message"
+}
+```
+
+### Common Errors
+
+| HTTP Status | Error Message | Description |
+|-------------|---------------|-------------|
+| 400 | กรุณาระบุคำค้นหา | Missing or empty `input` field in autocomplete |
+| 400 | กรุณาระบุ place_id | Missing or empty `place_id` field in details |
+| 401 | ไม่มีสิทธิ์เข้าถึง | Missing or invalid authentication token |
+| 404 | ไม่พบ endpoint | Invalid endpoint path |
+| 405 | Method not allowed | Only POST methods are allowed |
+| 500 | CONFIGURATION_ERROR: Google Places API key is not configured | Server missing API key |
+
+### Google Places API Errors
+
+When the Google Places API returns an error, the response includes the error code:
+
 ```json
 {
   "error": {
-    "code": "NOT_FOUND",
-    "message": "Place not found"
+    "code": "INVALID_REQUEST",
+    "message": "Invalid place ID provided"
   }
 }
 ```
 
-| Code | Description |
-|------|-------------|
+| Error Code | Description |
+|------------|-------------|
+| `CONFIGURATION_ERROR` | Google Places API key is not configured on server |
+| `INVALID_REQUEST` | Invalid request parameters |
 | `NOT_FOUND` | Place not found |
-| `INVALID_ARGUMENT` | Invalid request parameters |
-| `RESOURCE_EXHAUSTED` | API quota exceeded |
-| `PERMISSION_DENIED` | API key issue |
-| `CONFIGURATION_ERROR` | API key not configured (500) |
+| `API_ERROR` | Generic Google API error |
 
 ---
 
-## Frontend Integration Example
+## Usage Notes
 
-```typescript
-// Generate session token once per search session
+### Session Tokens
+
+Google Places API uses session tokens for billing optimization. A session groups an autocomplete search and the subsequent details request:
+
+1. Generate a UUID on the client when the user starts typing
+2. Include the same `sessionToken` in both autocomplete and details requests
+3. Generate a new session token when the user starts a new search
+
+```javascript
+// Example session token usage
 const sessionToken = crypto.randomUUID();
 
-// 1. User types in search box (debounced 300ms)
-const { data } = await fetch('/api-places/autocomplete', {
+// Autocomplete request
+await fetch('/api-places/autocomplete', {
   method: 'POST',
-  headers: {
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    input: "Central World",
-    sessionToken
-  })
+  body: JSON.stringify({ input: 'Central', sessionToken })
 });
 
-// 2. User selects a prediction
-const details = await fetch('/api-places/details', {
+// Details request (same session)
+await fetch('/api-places/details', {
   method: 'POST',
-  headers: {
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    place_id: selectedPrediction.place_id,
-    sessionToken  // Same token for billing optimization
-  })
+  body: JSON.stringify({ place_id: 'ChIJ...', sessionToken })
 });
-
-// 3. Auto-fill site form
-const site = {
-  name: details.data.name,
-  address_detail: details.data.formatted_address,
-  latitude: details.data.latitude,
-  longitude: details.data.longitude,
-  map_url: details.data.google_maps_embed_url,  // Use embed URL for iframe
-  province_code: details.data.matched_location?.province_code,
-  district_code: details.data.matched_location?.district_code,
-  subdistrict_code: details.data.matched_location?.subdistrict_code,
-  postal_code: parseInt(details.data.address_components.postal_code)
-};
-
-// 4. Display map in iframe
-<iframe
-  src={details.data.google_maps_embed_url}
-  width="600"
-  height="450"
-  style="border:0"
-  allowFullScreen
-  loading="lazy"
-  referrerPolicy="no-referrer-when-downgrade"
-/>
 ```
 
+### Location Code Matching
+
+The API automatically attempts to match Google's address components to Thai administrative codes:
+
+1. **Province matching**: Matches `administrative_area_level_1` to `ref_provinces`
+2. **District matching**: Matches `sublocality_level_1` or `locality` to `ref_districts`
+3. **Subdistrict matching**: Matches `sublocality_level_2` to `ref_sub_districts`
+4. **Postal code fallback**: If subdistrict not found, tries matching by postal code
+
+The matching process:
+- Normalizes Thai location names (removes prefixes like จังหวัด, อำเภอ, etc.)
+- Uses fuzzy matching (ILIKE) for flexibility
+- Backfills missing codes from the hierarchy (e.g., if only subdistrict found, looks up its district and province)
+
+### Site Creation Workflow
+
+This API is typically used in the site creation flow:
+
+1. User types an address in the search field
+2. Frontend calls `/autocomplete` with user input
+3. User selects a place from the predictions
+4. Frontend calls `/details` with the selected `place_id`
+5. Frontend pre-fills site form with:
+   - `latitude` and `longitude` for map position
+   - `address_components` for address fields
+   - `matched_location` codes for province/district/subdistrict dropdowns
+   - `google_maps_url` for the site's Google Maps link
+
 ---
 
-## Session Tokens
+## Related Tables
 
-Session tokens group autocomplete + details calls into a single billable session.
-
-- Generate a UUID on the frontend when user starts typing
-- Use the same token for all autocomplete calls in that session
-- Use the same token when calling details for the selected place
-- Generate a new token when user clears the search and starts over
-
-**Billing Impact:**
-- Without session tokens: Each API call is billed separately
-- With session tokens: Autocomplete calls + 1 details call = 1 session (~40% savings)
+| Table | Description |
+|-------|-------------|
+| `ref_provinces` | Thai provinces (77 records) |
+| `ref_districts` | Thai districts/amphoes |
+| `ref_sub_districts` | Thai subdistricts/tambons with zip codes |
 
 ---
 
-## Configuration
+## Environment Variables
 
-### Environment Variables
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `GOOGLE_PLACES_API_KEY` | Yes | Google Cloud API key with Places API enabled |
 
-| Variable | Description |
-|----------|-------------|
-| `GOOGLE_PLACES_API_KEY` | Google Places API key (set via Supabase secrets) |
+---
 
-### Google API Configuration
+## Related Endpoints
 
-The proxy uses the **new Places API** (`places.googleapis.com/v1`):
-
-| Setting | Value |
-|---------|-------|
-| **Language** | Thai (`th`) |
-| **Region restriction** | Thailand only (`includedRegionCodes: ["TH"]`) |
-| **Field mask** | `id,displayName,formattedAddress,location,addressComponents,googleMapsUri` |
-
-### Google Cloud Setup
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Enable **Places API (New)**
-3. Create API key with restrictions:
-   - Application restriction: IP addresses (your server IPs)
-   - API restriction: Places API (New) only
-4. Set up billing (required)
-
-### Pricing (New API)
-
-| SKU | Price per 1000 requests |
-|-----|-------------------------|
-| Autocomplete (Essentials) | $2.83 |
-| Place Details (Essentials) | $5.00 |
-| Place Details (Pro) | $7.00 |
-
-Using session tokens reduces costs by grouping autocomplete + details into one session.
+- **Sites API** (`/api-sites`) - Create and manage customer sites using place data
+- **Reference Data API** (`/api-reference-data`) - Get province/district/subdistrict lists

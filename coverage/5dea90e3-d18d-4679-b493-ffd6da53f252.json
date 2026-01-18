@@ -1,0 +1,154 @@
+{
+  "scriptId": "817",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/rimraf/2.7.1/rimraf.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 9455,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 9454,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 9448,
+          "count": 1
+        },
+        {
+          "startOffset": 406,
+          "endOffset": 451,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "defaults",
+      "ranges": [
+        {
+          "startOffset": 630,
+          "endOffset": 1321,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "rimraf",
+      "ranges": [
+        {
+          "startOffset": 1323,
+          "endOffset": 3150,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "rimraf_",
+      "ranges": [
+        {
+          "startOffset": 3706,
+          "endOffset": 4628,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "fixWinEPERM",
+      "ranges": [
+        {
+          "startOffset": 4630,
+          "endOffset": 5135,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "fixWinEPERMSync",
+      "ranges": [
+        {
+          "startOffset": 5137,
+          "endOffset": 5611,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "rmdir",
+      "ranges": [
+        {
+          "startOffset": 5613,
+          "endOffset": 6187,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "rmkids",
+      "ranges": [
+        {
+          "startOffset": 6189,
+          "endOffset": 6712,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "rimrafSync",
+      "ranges": [
+        {
+          "startOffset": 6853,
+          "endOffset": 8223,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "rmdirSync",
+      "ranges": [
+        {
+          "startOffset": 8225,
+          "endOffset": 8621,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "rmkidsSync",
+      "ranges": [
+        {
+          "startOffset": 8623,
+          "endOffset": 9445,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

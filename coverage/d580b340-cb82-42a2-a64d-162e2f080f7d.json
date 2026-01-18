@@ -1,0 +1,468 @@
+{
+  "scriptId": "417",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/doc/column.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 7132,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 7131,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 7125,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Column",
+      "ranges": [
+        {
+          "startOffset": 598,
+          "endOffset": 792,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get number",
+      "ranges": [
+        {
+          "startOffset": 796,
+          "endOffset": 839,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get worksheet",
+      "ranges": [
+        {
+          "startOffset": 843,
+          "endOffset": 892,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get letter",
+      "ranges": [
+        {
+          "startOffset": 896,
+          "endOffset": 953,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get isCustomWidth",
+      "ranges": [
+        {
+          "startOffset": 957,
+          "endOffset": 1058,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get defn",
+      "ranges": [
+        {
+          "startOffset": 1062,
+          "endOffset": 1263,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set defn",
+      "ranges": [
+        {
+          "startOffset": 1267,
+          "endOffset": 1829,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get headers",
+      "ranges": [
+        {
+          "startOffset": 1833,
+          "endOffset": 1942,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get header",
+      "ranges": [
+        {
+          "startOffset": 1946,
+          "endOffset": 1989,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set header",
+      "ranges": [
+        {
+          "startOffset": 1993,
+          "endOffset": 2252,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get key",
+      "ranges": [
+        {
+          "startOffset": 2256,
+          "endOffset": 2293,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set key",
+      "ranges": [
+        {
+          "startOffset": 2297,
+          "endOffset": 2573,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get hidden",
+      "ranges": [
+        {
+          "startOffset": 2577,
+          "endOffset": 2622,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set hidden",
+      "ranges": [
+        {
+          "startOffset": 2626,
+          "endOffset": 2675,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get outlineLevel",
+      "ranges": [
+        {
+          "startOffset": 2679,
+          "endOffset": 2739,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set outlineLevel",
+      "ranges": [
+        {
+          "startOffset": 2743,
+          "endOffset": 2804,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get collapsed",
+      "ranges": [
+        {
+          "startOffset": 2808,
+          "endOffset": 2944,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toString",
+      "ranges": [
+        {
+          "startOffset": 2948,
+          "endOffset": 3109,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "equivalentTo",
+      "ranges": [
+        {
+          "startOffset": 3113,
+          "endOffset": 3323,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get isDefault",
+      "ranges": [
+        {
+          "startOffset": 3327,
+          "endOffset": 3667,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get headerCount",
+      "ranges": [
+        {
+          "startOffset": 3671,
+          "endOffset": 3726,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "eachCell",
+      "ranges": [
+        {
+          "startOffset": 3730,
+          "endOffset": 3991,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get values",
+      "ranges": [
+        {
+          "startOffset": 3995,
+          "endOffset": 4193,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set values",
+      "ranges": [
+        {
+          "startOffset": 4197,
+          "endOffset": 4525,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_applyStyle",
+      "ranges": [
+        {
+          "startOffset": 4620,
+          "endOffset": 4760,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get numFmt",
+      "ranges": [
+        {
+          "startOffset": 4764,
+          "endOffset": 4812,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set numFmt",
+      "ranges": [
+        {
+          "startOffset": 4816,
+          "endOffset": 4878,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get font",
+      "ranges": [
+        {
+          "startOffset": 4882,
+          "endOffset": 4926,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set font",
+      "ranges": [
+        {
+          "startOffset": 4930,
+          "endOffset": 4988,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get alignment",
+      "ranges": [
+        {
+          "startOffset": 4992,
+          "endOffset": 5046,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set alignment",
+      "ranges": [
+        {
+          "startOffset": 5050,
+          "endOffset": 5118,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get protection",
+      "ranges": [
+        {
+          "startOffset": 5122,
+          "endOffset": 5178,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set protection",
+      "ranges": [
+        {
+          "startOffset": 5182,
+          "endOffset": 5252,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get border",
+      "ranges": [
+        {
+          "startOffset": 5256,
+          "endOffset": 5304,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set border",
+      "ranges": [
+        {
+          "startOffset": 5308,
+          "endOffset": 5370,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get fill",
+      "ranges": [
+        {
+          "startOffset": 5374,
+          "endOffset": 5418,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set fill",
+      "ranges": [
+        {
+          "startOffset": 5422,
+          "endOffset": 5480,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toModel",
+      "ranges": [
+        {
+          "startOffset": 5597,
+          "endOffset": 6444,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "fromModel",
+      "ranges": [
+        {
+          "startOffset": 6455,
+          "endOffset": 7094,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -2,7 +2,7 @@
  * List leave requests handler
  */
 
-import { success } from '../../_shared/response.ts';
+import { successWithPagination } from '../../_shared/response.ts';
 import { requireMinLevel } from '../../_shared/auth.ts';
 import { parsePaginationParams } from '../../_shared/validation.ts';
 import { LeaveService } from '../services/leaveService.ts';
@@ -22,16 +22,16 @@ export async function list(req: Request, employee: Employee) {
   const end_date = url.searchParams.get('end_date') || undefined;
 
   // Fetch leave requests
-  const result = await LeaveService.getAll({ 
-    page, 
-    limit, 
-    status, 
-    leave_type_id, 
-    employee_id, 
-    start_date, 
-    end_date 
+  const result = await LeaveService.getAll({
+    page,
+    limit,
+    status,
+    leave_type_id,
+    employee_id,
+    start_date,
+    end_date
   });
 
-  return success(result);
+  return successWithPagination(result.data, result.pagination);
 }
 

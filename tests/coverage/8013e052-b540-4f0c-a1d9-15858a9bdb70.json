@@ -1,0 +1,830 @@
+{
+  "scriptId": "765",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bluebird/3.4.7/js/release/promise.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 25954,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 25953,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 25947,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 252,
+          "endOffset": 25943,
+          "count": 1
+        },
+        {
+          "startOffset": 852,
+          "endOffset": 918,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "makeSelfResolutionError",
+      "ranges": [
+        {
+          "startOffset": 295,
+          "endOffset": 419,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "reflectHandler",
+      "ranges": [
+        {
+          "startOffset": 442,
+          "endOffset": 514,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "apiRejection",
+      "ranges": [
+        {
+          "startOffset": 535,
+          "endOffset": 599,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Proxyable",
+      "ranges": [
+        {
+          "startOffset": 601,
+          "endOffset": 624,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getDomain",
+      "ranges": [
+        {
+          "startOffset": 734,
+          "endOffset": 849,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getDomain",
+      "ranges": [
+        {
+          "startOffset": 876,
+          "endOffset": 915,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "INTERNAL",
+      "ranges": [
+        {
+          "startOffset": 1533,
+          "endOffset": 1545,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "check",
+      "ranges": [
+        {
+          "startOffset": 2260,
+          "endOffset": 2608,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise",
+      "ranges": [
+        {
+          "startOffset": 2610,
+          "endOffset": 3001,
+          "count": 9
+        },
+        {
+          "startOffset": 2843,
+          "endOffset": 2926,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Promise.toString",
+      "ranges": [
+        {
+          "startOffset": 3032,
+          "endOffset": 3078,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.caught.Promise.catch",
+      "ranges": [
+        {
+          "startOffset": 3137,
+          "endOffset": 3809,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.reflect",
+      "ranges": [
+        {
+          "startOffset": 3840,
+          "endOffset": 3946,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.then",
+      "ranges": [
+        {
+          "startOffset": 3974,
+          "endOffset": 4476,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.done",
+      "ranges": [
+        {
+          "startOffset": 4504,
+          "endOffset": 4661,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.spread",
+      "ranges": [
+        {
+          "startOffset": 4691,
+          "endOffset": 4908,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.toJSON",
+      "ranges": [
+        {
+          "startOffset": 4938,
+          "endOffset": 5344,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.all",
+      "ranges": [
+        {
+          "startOffset": 5371,
+          "endOffset": 5545,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.error",
+      "ranges": [
+        {
+          "startOffset": 5574,
+          "endOffset": 5649,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.is",
+      "ranges": [
+        {
+          "startOffset": 5710,
+          "endOffset": 5763,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.fromNode.Promise.fromCallback",
+      "ranges": [
+        {
+          "startOffset": 5808,
+          "endOffset": 6239,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.all",
+      "ranges": [
+        {
+          "startOffset": 6256,
+          "endOffset": 6328,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.cast",
+      "ranges": [
+        {
+          "startOffset": 6346,
+          "endOffset": 6601,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.reject.Promise.rejected",
+      "ranges": [
+        {
+          "startOffset": 6693,
+          "endOffset": 6836,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.setScheduler",
+      "ranges": [
+        {
+          "startOffset": 6862,
+          "endOffset": 7040,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._then",
+      "ranges": [
+        {
+          "startOffset": 7069,
+          "endOffset": 8935,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._length",
+      "ranges": [
+        {
+          "startOffset": 8966,
+          "endOffset": 9016,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._isFateSealed",
+      "ranges": [
+        {
+          "startOffset": 9053,
+          "endOffset": 9115,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._isFollowing",
+      "ranges": [
+        {
+          "startOffset": 9151,
+          "endOffset": 9219,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._setLength",
+      "ranges": [
+        {
+          "startOffset": 9253,
+          "endOffset": 9343,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._setFulfilled",
+      "ranges": [
+        {
+          "startOffset": 9380,
+          "endOffset": 9490,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._setRejected",
+      "ranges": [
+        {
+          "startOffset": 9526,
+          "endOffset": 9635,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._setFollowing",
+      "ranges": [
+        {
+          "startOffset": 9672,
+          "endOffset": 9781,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._setIsFinal",
+      "ranges": [
+        {
+          "startOffset": 9816,
+          "endOffset": 9878,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._isFinal",
+      "ranges": [
+        {
+          "startOffset": 9910,
+          "endOffset": 9968,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._unsetCancelled",
+      "ranges": [
+        {
+          "startOffset": 10007,
+          "endOffset": 10069,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._setCancelled",
+      "ranges": [
+        {
+          "startOffset": 10106,
+          "endOffset": 10212,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._setWillBeCancelled",
+      "ranges": [
+        {
+          "startOffset": 10255,
+          "endOffset": 10316,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._setAsyncGuaranteed",
+      "ranges": [
+        {
+          "startOffset": 10359,
+          "endOffset": 10466,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._receiverAt",
+      "ranges": [
+        {
+          "startOffset": 10501,
+          "endOffset": 10780,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._promiseAt",
+      "ranges": [
+        {
+          "startOffset": 10814,
+          "endOffset": 10883,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._fulfillmentHandlerAt",
+      "ranges": [
+        {
+          "startOffset": 10928,
+          "endOffset": 10997,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._rejectionHandlerAt",
+      "ranges": [
+        {
+          "startOffset": 11040,
+          "endOffset": 11109,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._boundValue",
+      "ranges": [
+        {
+          "startOffset": 11144,
+          "endOffset": 11157,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._migrateCallback0",
+      "ranges": [
+        {
+          "startOffset": 11198,
+          "endOffset": 11565,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._migrateCallbackAt",
+      "ranges": [
+        {
+          "startOffset": 11607,
+          "endOffset": 11970,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._addCallbacks",
+      "ranges": [
+        {
+          "startOffset": 12007,
+          "endOffset": 13130,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._proxy",
+      "ranges": [
+        {
+          "startOffset": 13160,
+          "endOffset": 13257,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._resolveCallback",
+      "ranges": [
+        {
+          "startOffset": 13297,
+          "endOffset": 14514,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._rejectCallback",
+      "ranges": [
+        {
+          "startOffset": 14553,
+          "endOffset": 15003,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._resolveFromExecutor",
+      "ranges": [
+        {
+          "startOffset": 15047,
+          "endOffset": 15487,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._settlePromiseFromHandler",
+      "ranges": [
+        {
+          "startOffset": 15536,
+          "endOffset": 16519,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._target",
+      "ranges": [
+        {
+          "startOffset": 16550,
+          "endOffset": 16654,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._followee",
+      "ranges": [
+        {
+          "startOffset": 16687,
+          "endOffset": 16737,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._setFollowee",
+      "ranges": [
+        {
+          "startOffset": 16773,
+          "endOffset": 16833,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._settlePromise",
+      "ranges": [
+        {
+          "startOffset": 16871,
+          "endOffset": 18639,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._settlePromiseLateCancellationObserver",
+      "ranges": [
+        {
+          "startOffset": 18701,
+          "endOffset": 19167,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._settlePromiseCtx",
+      "ranges": [
+        {
+          "startOffset": 19208,
+          "endOffset": 19301,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._settlePromise0",
+      "ranges": [
+        {
+          "startOffset": 19340,
+          "endOffset": 19577,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._clearCallbackDataAtIndex",
+      "ranges": [
+        {
+          "startOffset": 19626,
+          "endOffset": 19770,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._fulfill",
+      "ranges": [
+        {
+          "startOffset": 19802,
+          "endOffset": 20307,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._reject",
+      "ranges": [
+        {
+          "startOffset": 20338,
+          "endOffset": 20734,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._fulfillPromises",
+      "ranges": [
+        {
+          "startOffset": 20774,
+          "endOffset": 21087,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._rejectPromises",
+      "ranges": [
+        {
+          "startOffset": 21126,
+          "endOffset": 21439,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._settlePromises",
+      "ranges": [
+        {
+          "startOffset": 21478,
+          "endOffset": 22073,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._settledValue",
+      "ranges": [
+        {
+          "startOffset": 22110,
+          "endOffset": 22336,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deferResolve",
+      "ranges": [
+        {
+          "startOffset": 22339,
+          "endOffset": 22399,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deferReject",
+      "ranges": [
+        {
+          "startOffset": 22400,
+          "endOffset": 22465,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.defer.Promise.pending",
+      "ranges": [
+        {
+          "startOffset": 22501,
+          "endOffset": 22715,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "fillTypes",
+      "ranges": [
+        {
+          "startOffset": 24463,
+          "endOffset": 24932,
+          "count": 8
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 25487,
+          "endOffset": 25499,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

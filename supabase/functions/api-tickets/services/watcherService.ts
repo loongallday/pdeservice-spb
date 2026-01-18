@@ -1,5 +1,26 @@
 /**
- * Watcher Service - Business logic for ticket watchers
+ * @fileoverview Ticket watcher service - Subscription management for notifications
+ * @module api-tickets/services/watcherService
+ *
+ * Provides watcher subscription functionality:
+ * - addWatcher(): Subscribe user to ticket notifications
+ * - removeWatcher(): Unsubscribe user from ticket
+ * - getWatchers(): Get all watchers with employee info
+ * - getWatcherIds(): Get watcher IDs for notification delivery
+ * - isWatching(): Check if user is watching a ticket
+ * - addAutoWatchers(): Bulk add auto-watchers on ticket creation
+ *
+ * @description
+ * Watchers receive notifications for ticket events (comments, status changes, etc.)
+ *
+ * Watcher Sources:
+ * - manual: User clicked "watch" button
+ * - auto_creator: Automatic for ticket creator
+ * - auto_assigner: Automatic for ticket assigner
+ * - auto_superadmin: Automatic for all superadmins
+ *
+ * The service uses upsert with ON CONFLICT DO NOTHING to safely handle
+ * duplicate watch requests without errors.
  */
 
 import { createServiceClient } from '../../_shared/supabase.ts';

@@ -1,0 +1,55 @@
+{
+  "scriptId": "806",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/unzipper/0.10.14/lib/parseOne.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1780,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 1779,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 1773,
+          "count": 1
+        },
+        {
+          "startOffset": 481,
+          "endOffset": 517,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "parseOne",
+      "ranges": [
+        {
+          "startOffset": 519,
+          "endOffset": 1742,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

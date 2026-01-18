@@ -1,0 +1,105 @@
+{
+  "scriptId": "372",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-appointments/services/appointmentService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 14664,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getAll",
+      "ranges": [
+        {
+          "startOffset": 1524,
+          "endOffset": 3207,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getById",
+      "ranges": [
+        {
+          "startOffset": 3463,
+          "endOffset": 3872,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getByTicketId",
+      "ranges": [
+        {
+          "startOffset": 4238,
+          "endOffset": 5131,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "create",
+      "ranges": [
+        {
+          "startOffset": 5539,
+          "endOffset": 6530,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "update",
+      "ranges": [
+        {
+          "startOffset": 6986,
+          "endOffset": 9223,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "approve",
+      "ranges": [
+        {
+          "startOffset": 9863,
+          "endOffset": 12888,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "delete",
+      "ranges": [
+        {
+          "startOffset": 13111,
+          "endOffset": 13981,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "search",
+      "ranges": [
+        {
+          "startOffset": 14200,
+          "endOffset": 14661,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

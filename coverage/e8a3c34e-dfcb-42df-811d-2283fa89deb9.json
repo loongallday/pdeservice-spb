@@ -1,0 +1,43 @@
+{
+  "scriptId": "339",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-merchandise/handlers/delete.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 694,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "deleteMerchandise",
+      "ranges": [
+        {
+          "startOffset": 234,
+          "endOffset": 693,
+          "count": 2
+        },
+        {
+          "startOffset": 391,
+          "endOffset": 532,
+          "count": 1
+        },
+        {
+          "startOffset": 532,
+          "endOffset": 573,
+          "count": 0
+        },
+        {
+          "startOffset": 573,
+          "endOffset": 692,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

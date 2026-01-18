@@ -1,0 +1,94 @@
+{
+  "scriptId": "457",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/jszip/3.10.1/lib/stream/DataWorker.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2978,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2977,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2971,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "DataWorker",
+      "ranges": [
+        {
+          "startOffset": 566,
+          "endOffset": 1113,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "DataWorker.cleanUp",
+      "ranges": [
+        {
+          "startOffset": 1228,
+          "endOffset": 1313,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "DataWorker.resume",
+      "ranges": [
+        {
+          "startOffset": 1383,
+          "endOffset": 1643,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "DataWorker._tickAndRepeat",
+      "ranges": [
+        {
+          "startOffset": 1753,
+          "endOffset": 2004,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "DataWorker._tick",
+      "ranges": [
+        {
+          "startOffset": 2070,
+          "endOffset": 2937,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

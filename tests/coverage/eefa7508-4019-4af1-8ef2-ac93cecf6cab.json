@@ -1,0 +1,99 @@
+{
+  "scriptId": "825",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/unzipper/0.10.14/lib/Open/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3073,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 3072,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 3066,
+          "count": 1
+        },
+        {
+          "startOffset": 473,
+          "endOffset": 509,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "buffer",
+      "ranges": [
+        {
+          "startOffset": 540,
+          "endOffset": 882,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "file",
+      "ranges": [
+        {
+          "startOffset": 892,
+          "endOffset": 1385,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "url",
+      "ranges": [
+        {
+          "startOffset": 1395,
+          "endOffset": 2339,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "s3",
+      "ranges": [
+        {
+          "startOffset": 2349,
+          "endOffset": 2977,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "custom",
+      "ranges": [
+        {
+          "startOffset": 2990,
+          "endOffset": 3060,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

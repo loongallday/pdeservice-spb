@@ -1,0 +1,116 @@
+{
+  "scriptId": "811",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/fstream/1.0.12/lib/reader.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 7314,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 7313,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 7307,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Reader",
+      "ranges": [
+        {
+          "startOffset": 621,
+          "endOffset": 3634,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "alphasort",
+      "ranges": [
+        {
+          "startOffset": 3636,
+          "endOffset": 3812,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Reader._stat",
+      "ranges": [
+        {
+          "startOffset": 3839,
+          "endOffset": 6460,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Reader.pipe",
+      "ranges": [
+        {
+          "startOffset": 6486,
+          "endOffset": 6874,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Reader.pause",
+      "ranges": [
+        {
+          "startOffset": 6901,
+          "endOffset": 7031,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Reader.resume",
+      "ranges": [
+        {
+          "startOffset": 7059,
+          "endOffset": 7207,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Reader._read",
+      "ranges": [
+        {
+          "startOffset": 7234,
+          "endOffset": 7304,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

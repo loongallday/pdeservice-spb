@@ -1,0 +1,94 @@
+{
+  "scriptId": "708",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/lodash.isplainobject/4.0.6/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3903,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 3902,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 3896,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "isHostObject",
+      "ranges": [
+        {
+          "startOffset": 882,
+          "endOffset": 1209,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "overArg",
+      "ranges": [
+        {
+          "startOffset": 1465,
+          "endOffset": 1565,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1510,
+          "endOffset": 1562,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isObjectLike",
+      "ranges": [
+        {
+          "startOffset": 2754,
+          "endOffset": 2832,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isPlainObject",
+      "ranges": [
+        {
+          "startOffset": 3433,
+          "endOffset": 3860,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

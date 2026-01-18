@@ -1,5 +1,27 @@
 /**
- * Get summaries grouped by technicians handler
+ * @fileoverview Get ticket summaries grouped by technician handler
+ * @endpoint GET /api-tickets/summaries
+ * @auth Required - Level 0+ (all authenticated users)
+ *
+ * @queryParam {string} date - Required: Date to get summaries for (YYYY-MM-DD)
+ * @queryParam {string} [format=full] - Response format: full|compact
+ *
+ * @returns {TechnicianSummary[]} Summaries grouped by technician
+ * @throws {ValidationError} 400 - Missing or invalid date parameter
+ * @throws {AuthenticationError} 401 - If not authenticated
+ *
+ * @description
+ * Returns ticket summaries for a specific date, grouped by assigned technician.
+ * Useful for daily dispatch views and workload planning.
+ *
+ * Format Options:
+ * - full: Complete ticket details with all related data
+ * - compact: Lightweight summary for quick overview
+ *
+ * Each technician group contains:
+ * - Technician details (name, code, contact info)
+ * - List of assigned tickets for the date
+ * - Ticket count and status breakdown
  */
 
 import { success } from '../../_shared/response.ts';

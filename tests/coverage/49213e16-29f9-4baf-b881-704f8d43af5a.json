@@ -1,0 +1,215 @@
+{
+  "scriptId": "662",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/@fast-csv/parse/4.3.6/build/src/CsvParserStream.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 7773,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 7772,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 7766,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "CsvParserStream",
+      "ranges": [
+        {
+          "startOffset": 559,
+          "endOffset": 1191,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get hasHitRowLimit",
+      "ranges": [
+        {
+          "startOffset": 1196,
+          "endOffset": 1316,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get shouldEmitRows",
+      "ranges": [
+        {
+          "startOffset": 1321,
+          "endOffset": 1415,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get shouldSkipLine",
+      "ranges": [
+        {
+          "startOffset": 1420,
+          "endOffset": 1517,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "transform",
+      "ranges": [
+        {
+          "startOffset": 1522,
+          "endOffset": 1650,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "validate",
+      "ranges": [
+        {
+          "startOffset": 1655,
+          "endOffset": 1780,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "emit",
+      "ranges": [
+        {
+          "startOffset": 1852,
+          "endOffset": 2130,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_transform",
+      "ranges": [
+        {
+          "startOffset": 2135,
+          "endOffset": 2692,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_flush",
+      "ranges": [
+        {
+          "startOffset": 2697,
+          "endOffset": 3209,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parse",
+      "ranges": [
+        {
+          "startOffset": 3214,
+          "endOffset": 3417,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "processRows",
+      "ranges": [
+        {
+          "startOffset": 3422,
+          "endOffset": 5196,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "transformRow",
+      "ranges": [
+        {
+          "startOffset": 5201,
+          "endOffset": 6550,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "checkAndEmitHeaders",
+      "ranges": [
+        {
+          "startOffset": 6555,
+          "endOffset": 6770,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "skipRow",
+      "ranges": [
+        {
+          "startOffset": 6775,
+          "endOffset": 6951,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "pushRow",
+      "ranges": [
+        {
+          "startOffset": 6956,
+          "endOffset": 7248,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "wrapDoneCallback",
+      "ranges": [
+        {
+          "startOffset": 7260,
+          "endOffset": 7675,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

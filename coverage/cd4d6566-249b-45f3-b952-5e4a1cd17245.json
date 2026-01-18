@@ -1,0 +1,270 @@
+{
+  "scriptId": "789",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bluebird/3.4.7/js/release/using.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 7755,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 7754,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 7748,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 252,
+          "endOffset": 7744,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "thrower",
+      "ranges": [
+        {
+          "startOffset": 568,
+          "endOffset": 640,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "castPreservingDisposable",
+      "ranges": [
+        {
+          "startOffset": 646,
+          "endOffset": 1060,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "dispose",
+      "ranges": [
+        {
+          "startOffset": 1065,
+          "endOffset": 2035,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Disposer",
+      "ranges": [
+        {
+          "startOffset": 2041,
+          "endOffset": 2183,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Disposer.data",
+      "ranges": [
+        {
+          "startOffset": 2215,
+          "endOffset": 2261,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Disposer.promise",
+      "ranges": [
+        {
+          "startOffset": 2297,
+          "endOffset": 2346,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Disposer.resource",
+      "ranges": [
+        {
+          "startOffset": 2383,
+          "endOffset": 2520,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Disposer.tryDispose",
+      "ranges": [
+        {
+          "startOffset": 2559,
+          "endOffset": 2965,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Disposer.isDisposer",
+      "ranges": [
+        {
+          "startOffset": 2994,
+          "endOffset": 3148,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "FunctionDisposer",
+      "ranges": [
+        {
+          "startOffset": 3155,
+          "endOffset": 3259,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "FunctionDisposer.doDispose",
+      "ranges": [
+        {
+          "startOffset": 3346,
+          "endOffset": 3471,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "maybeUnwrapDisposer",
+      "ranges": [
+        {
+          "startOffset": 3478,
+          "endOffset": 3693,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ResourceList",
+      "ranges": [
+        {
+          "startOffset": 3699,
+          "endOffset": 3826,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ResourceList._resultCancelled",
+      "ranges": [
+        {
+          "startOffset": 3874,
+          "endOffset": 4093,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.using",
+      "ranges": [
+        {
+          "startOffset": 4116,
+          "endOffset": 7032,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._setDisposable",
+      "ranges": [
+        {
+          "startOffset": 7074,
+          "endOffset": 7186,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._isDisposable",
+      "ranges": [
+        {
+          "startOffset": 7227,
+          "endOffset": 7292,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._getDisposer",
+      "ranges": [
+        {
+          "startOffset": 7332,
+          "endOffset": 7382,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._unsetDisposable",
+      "ranges": [
+        {
+          "startOffset": 7426,
+          "endOffset": 7534,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.disposer",
+      "ranges": [
+        {
+          "startOffset": 7570,
+          "endOffset": 7740,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

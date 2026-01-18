@@ -1,5 +1,38 @@
 /**
- * Update employee handler
+ * @fileoverview Update existing employee handler
+ * @endpoint PUT /api-employees/:id
+ * @auth Required - Variable permissions (see description)
+ *
+ * @param {string} id - Employee UUID from URL path
+ *
+ * @bodyParam {string} [name] - Employee full name
+ * @bodyParam {string} [code] - Employee code
+ * @bodyParam {string} [nickname] - Employee nickname
+ * @bodyParam {string} [email] - Email address
+ * @bodyParam {string} [role_id] - Role UUID
+ * @bodyParam {string} [role] - Role code (legacy)
+ * @bodyParam {string} [profile_image_url] - Profile image URL
+ * @bodyParam {string} [cover_image_url] - Cover image URL
+ * @bodyParam {string} [supervisor_id] - Supervisor employee UUID
+ * @bodyParam {boolean} [is_active] - Active status
+ *
+ * @returns {EmployeeWithRole} The updated employee with role/department data
+ * @throws {AuthenticationError} 401 - If not authenticated
+ * @throws {ForbiddenError} 403 - If trying to update restricted fields without admin
+ * @throws {ValidationError} 400 - If ID is not a valid UUID
+ * @throws {NotFoundError} 404 - If employee not found
+ *
+ * @description
+ * Updates an existing employee. Permission rules:
+ * - Self-update (own profile): Can update name, nickname, email, profile_image_url
+ * - Admin update (Level 2+): Can update all fields including role, status, etc.
+ *
+ * If a non-admin tries to update restricted fields (like role, is_active),
+ * admin permission check is enforced.
+ *
+ * @example
+ * PUT /api-employees/123e4567-e89b-12d3-a456-426614174000
+ * { "nickname": "Johnny", "email": "john.new@example.com" }
  */
 
 import { success } from '../../_shared/response.ts';

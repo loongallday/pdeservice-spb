@@ -1,10 +1,47 @@
 /**
- * Search tickets handler - supports filtering by all ticket fields with pagination
+ * @fileoverview Search tickets handler with comprehensive filtering
+ * @endpoint GET /api-tickets/search
+ * @auth Required - Level 0+ (all authenticated users)
  *
- * Enhanced to return display-ready data with pre-resolved location names,
- * employee details, and pre-formatted appointment strings.
+ * @queryParam {number} [page=1] - Page number
+ * @queryParam {number} [limit=50] - Items per page (max 100)
+ * @queryParam {string} [id] - Filter by ticket ID (exact match)
+ * @queryParam {string} [details] - Text search in ticket details
+ * @queryParam {string} [work_type_id] - Filter by work type UUID
+ * @queryParam {string} [assigner_id] - Filter by assigner employee UUID
+ * @queryParam {string} [status_id] - Filter by status UUID
+ * @queryParam {string} [site_id] - Filter by site UUID
+ * @queryParam {string} [contact_id] - Filter by contact UUID
+ * @queryParam {string} [appointment_id] - Filter by appointment UUID
+ * @queryParam {string} [department_id] - Filter by department (%-separated for multiple)
+ * @queryParam {string} [employee_id] - Filter by assigned employee (%-separated for multiple)
+ * @queryParam {string} [start_date] - Filter tickets from this date (YYYY-MM-DD)
+ * @queryParam {string} [end_date] - Filter tickets to this date (YYYY-MM-DD)
+ * @queryParam {string} [date_type=appointed] - Date field for filtering: create|update|appointed
+ * @queryParam {boolean} [exclude_backlog] - Exclude backlog tickets
+ * @queryParam {boolean} [appointment_is_approved] - Filter by appointment approval status
+ * @queryParam {boolean} [watching] - Only return tickets user is watching
+ * @queryParam {string} [include=full] - Data mode: minimal|full
+ * @queryParam {string} [sort] - Sort field
+ * @queryParam {string} [order=desc] - Sort order: asc|desc
  *
- * Supports `watching=true` to filter only tickets the user is watching.
+ * @returns {PaginatedResponse<Ticket[]>} Tickets with pagination metadata
+ * @throws {AuthenticationError} 401 - If not authenticated
+ *
+ * @description
+ * Powerful ticket search with multiple filter options and pagination.
+ *
+ * Include Modes:
+ * - full (default): Returns complete ticket data with all relations
+ * - minimal: Returns lightweight ticket data for list views
+ *
+ * Multi-value Filters:
+ * - department_id and employee_id support %-separated lists
+ * - Example: ?department_id=uuid1%uuid2 filters by multiple departments
+ *
+ * Watching Filter:
+ * - When watching=true, only returns tickets the current user is watching
+ * - Useful for "My Watched Tickets" views
  */
 
 import { successWithPagination } from '../../_shared/response.ts';

@@ -1,0 +1,336 @@
+{
+  "scriptId": "707",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/glob/7.2.3/glob.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 19675,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 19674,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 19668,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "glob",
+      "ranges": [
+        {
+          "startOffset": 2317,
+          "endOffset": 2628,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "extend",
+      "ranges": [
+        {
+          "startOffset": 2738,
+          "endOffset": 2966,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "glob.hasMagic",
+      "ranges": [
+        {
+          "startOffset": 2984,
+          "endOffset": 3341,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob",
+      "ranges": [
+        {
+          "startOffset": 3379,
+          "endOffset": 4809,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob._finish",
+      "ranges": [
+        {
+          "startOffset": 4836,
+          "endOffset": 5039,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob._realpath",
+      "ranges": [
+        {
+          "startOffset": 5068,
+          "endOffset": 5383,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob._realpathSet",
+      "ranges": [
+        {
+          "startOffset": 5415,
+          "endOffset": 6231,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob._mark",
+      "ranges": [
+        {
+          "startOffset": 6256,
+          "endOffset": 6302,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob._makeAbs",
+      "ranges": [
+        {
+          "startOffset": 6330,
+          "endOffset": 6379,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob.abort",
+      "ranges": [
+        {
+          "startOffset": 6404,
+          "endOffset": 6462,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob.pause",
+      "ranges": [
+        {
+          "startOffset": 6487,
+          "endOffset": 6574,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob.resume",
+      "ranges": [
+        {
+          "startOffset": 6600,
+          "endOffset": 7182,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob._process",
+      "ranges": [
+        {
+          "startOffset": 7210,
+          "endOffset": 9059,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob._processReaddir",
+      "ranges": [
+        {
+          "startOffset": 9094,
+          "endOffset": 9330,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob._processReaddir2",
+      "ranges": [
+        {
+          "startOffset": 9366,
+          "endOffset": 11410,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob._emitMatch",
+      "ranges": [
+        {
+          "startOffset": 11440,
+          "endOffset": 12008,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob._readdirInGlobStar",
+      "ranges": [
+        {
+          "startOffset": 12046,
+          "endOffset": 12848,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob._readdir",
+      "ranges": [
+        {
+          "startOffset": 12876,
+          "endOffset": 13393,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "readdirCb",
+      "ranges": [
+        {
+          "startOffset": 13395,
+          "endOffset": 13575,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob._readdirEntries",
+      "ranges": [
+        {
+          "startOffset": 13610,
+          "endOffset": 14107,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob._readdirError",
+      "ranges": [
+        {
+          "startOffset": 14140,
+          "endOffset": 15225,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob._processGlobStar",
+      "ranges": [
+        {
+          "startOffset": 15261,
+          "endOffset": 15491,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob._processGlobStar2",
+      "ranges": [
+        {
+          "startOffset": 15529,
+          "endOffset": 16676,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob._processSimple",
+      "ranges": [
+        {
+          "startOffset": 16710,
+          "endOffset": 16966,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob._processSimple2",
+      "ranges": [
+        {
+          "startOffset": 17000,
+          "endOffset": 17682,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob._stat",
+      "ranges": [
+        {
+          "startOffset": 17749,
+          "endOffset": 19140,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Glob._stat2",
+      "ranges": [
+        {
+          "startOffset": 19166,
+          "endOffset": 19665,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

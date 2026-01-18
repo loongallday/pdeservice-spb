@@ -1,6 +1,10 @@
 /**
- * API AI Edge Function
- * AI Assistant powered by OpenAI GPT-4o-mini for PDE Service Platform
+ * @fileoverview AI Assistant API Edge Function - GPT-powered conversational assistant
+ * @module api-ai
+ *
+ * @description
+ * AI Assistant powered by OpenAI GPT-4o-mini for PDE Service Platform.
+ * Provides ChatGPT-like conversational interface with session persistence.
  *
  * Features:
  * - Streaming responses (SSE) like ChatGPT
@@ -10,15 +14,29 @@
  * - Tool calling with user confirmation
  * - Auto-cleanup: max 10 sessions per user
  *
- * Endpoints:
- * - POST /api-ai/assistant - Non-streaming response
- * - POST /api-ai/assistant/stream - Streaming SSE response
- * - GET /api-ai/sessions - List all sessions
- * - POST /api-ai/sessions - Create new session
- * - GET /api-ai/sessions/:id - Get session details
- * - GET /api-ai/sessions/:id/messages - Get messages for a session
- * - DELETE /api-ai/sessions/:id - Delete single session
- * - DELETE /api-ai/sessions - Clear all sessions
+ * Use Cases:
+ * - Query ticket/work order information
+ * - Get summaries and insights
+ * - Natural language search
+ * - Report generation assistance
+ *
+ * @endpoints
+ * ## Assistant Operations
+ * - POST   /assistant          - Non-streaming response
+ * - POST   /assistant/stream   - Streaming SSE response
+ *
+ * ## Session Management
+ * - GET    /sessions              - List all sessions
+ * - POST   /sessions              - Create new session
+ * - GET    /sessions/:id          - Get session details
+ * - GET    /sessions/:id/messages - Get messages for a session
+ * - DELETE /sessions/:id          - Delete single session
+ * - DELETE /sessions              - Clear all sessions
+ *
+ * @auth All endpoints require JWT authentication
+ * @env OPENAI_API_KEY - OpenAI API key for GPT-4o-mini
+ * @table main_ai_sessions - Chat session metadata
+ * @table child_ai_messages - Chat message history
  */
 
 import { handleCORS } from '../_shared/cors.ts';

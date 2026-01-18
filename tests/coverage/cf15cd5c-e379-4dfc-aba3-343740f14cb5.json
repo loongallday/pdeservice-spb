@@ -1,0 +1,28 @@
+{
+  "scriptId": "336",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-announcements/handlers/getById.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 411,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getById",
+      "ranges": [
+        {
+          "startOffset": 233,
+          "endOffset": 410,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

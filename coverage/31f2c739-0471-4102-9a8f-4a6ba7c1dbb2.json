@@ -1,0 +1,116 @@
+{
+  "scriptId": "467",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/pako/1.0.11/lib/deflate.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 11304,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 11303,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 11297,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Deflate",
+      "ranges": [
+        {
+          "startOffset": 3510,
+          "endOffset": 5168,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Deflate.push",
+      "ranges": [
+        {
+          "startOffset": 6435,
+          "endOffset": 8161,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Deflate.onData",
+      "ranges": [
+        {
+          "startOffset": 8540,
+          "endOffset": 8587,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Deflate.onEnd",
+      "ranges": [
+        {
+          "startOffset": 8980,
+          "endOffset": 9277,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deflate",
+      "ranges": [
+        {
+          "startOffset": 10155,
+          "endOffset": 10419,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deflateRaw",
+      "ranges": [
+        {
+          "startOffset": 10693,
+          "endOffset": 10815,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "gzip",
+      "ranges": [
+        {
+          "startOffset": 11067,
+          "endOffset": 11184,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "scriptId": "739",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/archiver-utils/3.0.4/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3724,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 3723,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 3717,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "utils.collectStream",
+      "ranges": [
+        {
+          "startOffset": 774,
+          "endOffset": 1202,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "utils.dateify",
+      "ranges": [
+        {
+          "startOffset": 1221,
+          "endOffset": 1471,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "utils.defaults",
+      "ranges": [
+        {
+          "startOffset": 1541,
+          "endOffset": 1656,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "utils.isStream",
+      "ranges": [
+        {
+          "startOffset": 1676,
+          "endOffset": 1731,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "utils.lazyReadStream",
+      "ranges": [
+        {
+          "startOffset": 1757,
+          "endOffset": 1873,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "utils.normalizeInputSource",
+      "ranges": [
+        {
+          "startOffset": 1905,
+          "endOffset": 2402,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "utils.sanitizePath",
+      "ranges": [
+        {
+          "startOffset": 2426,
+          "endOffset": 2539,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "utils.trailingSlashIt",
+      "ranges": [
+        {
+          "startOffset": 2566,
+          "endOffset": 2633,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "utils.unixifyPath",
+      "ranges": [
+        {
+          "startOffset": 2656,
+          "endOffset": 2740,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "utils.walkdir",
+      "ranges": [
+        {
+          "startOffset": 2759,
+          "endOffset": 3713,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

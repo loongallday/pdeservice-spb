@@ -1,0 +1,33 @@
+{
+  "scriptId": "336",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-features/handlers/getMenuItems.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 793,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getMenuItems",
+      "ranges": [
+        {
+          "startOffset": 308,
+          "endOffset": 792,
+          "count": 3
+        },
+        {
+          "startOffset": 629,
+          "endOffset": 636,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

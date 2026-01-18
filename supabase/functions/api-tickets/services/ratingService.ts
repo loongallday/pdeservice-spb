@@ -1,5 +1,26 @@
 /**
- * Rating Service - Business logic for ticket customer ratings
+ * @fileoverview Ticket rating service - Customer feedback management
+ * @module api-tickets/services/ratingService
+ *
+ * Provides customer rating functionality for completed tickets:
+ * - getRating(): Get rating for a ticket
+ * - createRating(): Create new rating (one per ticket)
+ * - updateRating(): Update existing rating
+ * - deleteRating(): Delete rating (admin only)
+ *
+ * @description
+ * Rating Categories (each 1-5 scale):
+ * - serviceQualityRating: Quality of service provided
+ * - responseTimeRating: Speed of response
+ * - professionalismRating: Professional conduct
+ *
+ * Average Rating:
+ * - Calculated automatically from the three category ratings
+ * - Rounded to 2 decimal places
+ *
+ * Additional Fields:
+ * - customerComment: Customer's feedback text
+ * - callNotes: Internal notes from follow-up call
  */
 
 import { createServiceClient } from '../../_shared/supabase.ts';

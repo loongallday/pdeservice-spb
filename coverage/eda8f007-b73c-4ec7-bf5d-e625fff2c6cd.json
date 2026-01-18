@@ -1,0 +1,61 @@
+{
+  "scriptId": "453",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/jszip/3.10.1/lib/stream/ConvertWorker.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 878,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 877,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 871,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "ConvertWorker",
+      "ranges": [
+        {
+          "startOffset": 446,
+          "endOffset": 574,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ConvertWorker.processChunk",
+      "ranges": [
+        {
+          "startOffset": 704,
+          "endOffset": 835,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

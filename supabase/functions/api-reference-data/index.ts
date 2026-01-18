@@ -1,6 +1,37 @@
 /**
- * Reference Data API Edge Function
- * Handles read-only reference data (work_types, ticket_statuses, leave_types, provinces)
+ * @fileoverview Reference Data API Edge Function - Read-only lookup tables
+ * @module api-reference-data
+ *
+ * @description
+ * Provides read-only access to reference/lookup data used throughout the system.
+ * All data is cacheable and rarely changes.
+ *
+ * Reference Data Types:
+ * - Work Types: Service categories (PM, RMA, Sales, etc.)
+ * - Statuses: Ticket lifecycle states
+ * - Leave Types: Employee leave categories
+ * - Provinces: Thai administrative regions
+ * - Work Givers: External work assignment sources
+ *
+ * Note: /constants endpoint removed - use GET /api-initialize/me instead
+ * for bootstrapping all constants in a single request.
+ *
+ * @endpoints
+ * ## Reference Data Endpoints
+ * - GET    /work-types     - List all work types
+ * - GET    /statuses       - List all ticket statuses
+ * - GET    /leave-types    - List all leave types
+ * - GET    /provinces      - List Thai provinces with districts
+ * - GET    /work-givers    - List external work sources
+ *
+ * @auth All endpoints require JWT authentication
+ * @table ref_work_types - Work type definitions
+ * @table ref_ticket_statuses - Ticket status definitions
+ * @table ref_leave_types - Leave type definitions
+ * @table ref_provinces - Thai provinces
+ * @table ref_districts - Thai districts
+ * @table ref_subdistricts - Thai subdistricts
+ * @table ref_work_givers - External work sources
  */
 
 import { handleCORS } from '../_shared/cors.ts';
@@ -12,7 +43,6 @@ import { getStatuses } from './handlers/statuses.ts';
 import { getLeaveTypes } from './handlers/leaveTypes.ts';
 import { getProvinces } from './handlers/provinces.ts';
 import { getWorkGivers } from './handlers/workGivers.ts';
-import { getAllConstants } from './handlers/constants.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -38,11 +68,6 @@ Deno.serve(async (req) => {
     const endpoint = relativePath[0] || '';
 
     // Route based on endpoint
-    // GET /constants - Get all constants
-    if (endpoint === 'constants' && relativePath.length === 1) {
-      return await getAllConstants(req, employee);
-    }
-
     if (endpoint === 'work-types') {
       return await getWorkTypes(req, employee);
     }

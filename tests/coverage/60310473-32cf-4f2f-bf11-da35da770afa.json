@@ -1,0 +1,83 @@
+{
+  "scriptId": "515",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/xmlchars/2.2.0/xml/1.0/ed5.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3572,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 3571,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 3565,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "isChar",
+      "ranges": [
+        {
+          "startOffset": 1738,
+          "endOffset": 1928,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isS",
+      "ranges": [
+        {
+          "startOffset": 2121,
+          "endOffset": 2201,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isNameStartChar",
+      "ranges": [
+        {
+          "startOffset": 2408,
+          "endOffset": 3040,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isNameChar",
+      "ranges": [
+        {
+          "startOffset": 3259,
+          "endOffset": 3498,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

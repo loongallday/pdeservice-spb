@@ -1,0 +1,55 @@
+{
+  "scriptId": "827",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/unzipper/0.10.14/lib/Open/unzip.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 4112,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 4111,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 4105,
+          "count": 1
+        },
+        {
+          "startOffset": 677,
+          "endOffset": 713,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "unzip",
+      "ranges": [
+        {
+          "startOffset": 732,
+          "endOffset": 4101,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

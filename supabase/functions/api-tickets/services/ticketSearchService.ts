@@ -1,6 +1,34 @@
 /**
- * Ticket search service - Business logic for searching tickets
- * Enhanced with display-ready response format
+ * @fileoverview Ticket search service - Optimized ticket search operations
+ * @module api-tickets/services/ticketSearchService
+ *
+ * Provides high-performance ticket search with display-ready responses:
+ * - getById(id): Get single ticket with full details
+ * - search(params): Search tickets with comprehensive filters
+ * - searchByDuration(params): Search tickets by date range
+ *
+ * @description
+ * Key optimizations:
+ * - Uses search_tickets_fast RPC for server-side filtering (avoids URL length issues)
+ * - Returns pre-resolved location names (no client-side lookups needed)
+ * - Supports minimal/full include modes for list vs detail views
+ * - Batch location resolution for efficient province/district name lookup
+ *
+ * Response Format (TicketDisplayItem):
+ * - Pre-formatted strings for display (site_name, company_name, work_type_name)
+ * - Pre-resolved location with province/district names
+ * - Pre-formatted appointment with type display string
+ * - Employee arrays with profile images
+ * - Optional _ids object for update operations (full mode only)
+ *
+ * Filters Supported:
+ * - Date range (start_date, end_date, date_type)
+ * - Status, work type, assigner
+ * - Site, contact, appointment
+ * - Department, employee (multi-select)
+ * - Watching (user's watched tickets only)
+ * - Backlog exclusion
+ * - Appointment approval status
  */
 
 import { createServiceClient } from '../../_shared/supabase.ts';
@@ -22,6 +50,44 @@ import {
   normalizeAppointmentType 
 } from './ticketDisplayTypes.ts';
 import { batchResolveLocations } from './locationResolver.ts';
+
+// Fast RPC result type (v3 - includes employee arrays)
+interface FastTicketResult {
+  id: string;
+  ticket_code: string;
+  ticket_number: number;
+  details: string | null;
+  details_summary: string | null;
+  additional: string | null;
+  created_at: string;
+  updated_at: string;
+  site_id: string | null;
+  site_name: string | null;
+  company_name: string | null;
+  province_code: number | null;
+  province_name: string | null;
+  district_code: number | null;
+  district_name: string | null;
+  work_type_code: string | null;
+  work_type_name: string | null;
+  status_code: string | null;
+  status_name: string | null;
+  assigner_name: string | null;
+  creator_name: string | null;
+  appointment_id: string | null;
+  appointment_date: string | null;
+  appointment_time_start: string | null;
+  appointment_time_end: string | null;
+  appointment_type: string | null;
+  appointment_is_approved: boolean | null;
+  work_giver_code: string | null;
+  work_giver_name: string | null;
+  employees: Array<{ id: string; name: string; code: string | null; is_key: boolean; profile_image_url: string | null }>;
+  cf_employees: Array<{ id: string; name: string; code: string | null; is_key: boolean; profile_image_url: string | null }>;
+  employee_count: number;
+  cf_employee_count: number;
+  total_count: number;
+}
 
 /**
  * Get single ticket by ID with full details (site, appointment)
@@ -143,7 +209,6 @@ export async function getById(id: string): Promise<Record<string, unknown>> {
     : [];
 
   // Transform work_giver (1:1 relationship via child table)
-  // First try from joined data
   let work_giver: { id: string; code: string; name: string } | null = null;
   if (Array.isArray(data.work_giver) && data.work_giver.length > 0) {
     const workGiverLink = data.work_giver[0] as { work_giver: { id: string; code: string; name: string } | null };
@@ -152,32 +217,6 @@ export async function getById(id: string): Promise<Record<string, unknown>> {
         id: workGiverLink.work_giver.id,
         code: workGiverLink.work_giver.code,
         name: workGiverLink.work_giver.name,
-      };
-    }
-  }
-  
-  // Fallback: Query work_giver separately if join didn't return data
-  if (!work_giver) {
-    const { data: workGiverData } = await supabase
-      .from('child_ticket_work_givers')
-      .select(`
-        id,
-        work_giver_id,
-        ref_work_givers:work_giver_id (
-          id,
-          code,
-          name
-        )
-      `)
-      .eq('ticket_id', id)
-      .maybeSingle();
-    
-    if (workGiverData?.ref_work_givers) {
-      const wg = workGiverData.ref_work_givers as { id: string; code: string; name: string };
-      work_giver = {
-        id: wg.id,
-        code: wg.code,
-        name: wg.name,
       };
     }
   }
@@ -419,6 +458,98 @@ function createTicketDisplayItem(
 }
 
 /**
+ * Transform fast RPC result to display format (no second query needed)
+ * Optimized for list views - uses counts instead of arrays for employees/merchandise
+ * v2: Province and district names come directly from RPC
+ */
+function createDisplayItemFromFastResult(result: FastTicketResult): TicketDisplayItem {
+  // Build location display using names from RPC (no lookup needed)
+  const displayParts: string[] = [];
+  if (result.district_name) {
+    const shortDistrict = result.district_name.replace(/^(เขต|อ\.|อำเภอ)/, '');
+    displayParts.push(shortDistrict);
+  }
+  if (result.province_name) {
+    const shortProvince = result.province_name === 'กรุงเทพมหานคร' ? 'กทม.' : result.province_name;
+    displayParts.push(shortProvince);
+  }
+
+  const location: TicketLocation = {
+    province_code: result.province_code,
+    province_name: result.province_name,
+    district_code: result.district_code,
+    district_name: result.district_name,
+    subdistrict_code: null, // Not included for list view performance
+    subdistrict_name: null,
+    address_detail: null,
+    display: displayParts.join(', ') || '',
+  };
+
+  // Build appointment display
+  const appointmentType = normalizeAppointmentType(result.appointment_type);
+  const appointment: TicketAppointment = {
+    id: result.appointment_id,
+    date: result.appointment_date,
+    time_start: result.appointment_time_start?.substring(0, 5) || null,
+    time_end: result.appointment_time_end?.substring(0, 5) || null,
+    type: appointmentType,
+    type_display: formatAppointmentTypeDisplay(
+      appointmentType,
+      result.appointment_time_start,
+      result.appointment_time_end
+    ),
+    is_approved: result.appointment_is_approved,
+  };
+
+  // Build work giver (if present)
+  const workGiver = result.work_giver_code ? {
+    id: '', // Not available in fast query
+    code: result.work_giver_code,
+    name: result.work_giver_name || '',
+  } : null;
+
+  return {
+    id: result.id,
+    ticket_code: result.ticket_code,
+    ticket_number: result.ticket_number,
+    site_name: result.site_name,
+    company_name: result.company_name,
+    work_type_name: result.work_type_name,
+    work_type_code: result.work_type_code,
+    status_name: result.status_name,
+    status_code: result.status_code,
+    assigner_name: result.assigner_name,
+    creator_name: result.creator_name,
+    location,
+    appointment,
+    employees: (result.employees || []).map(e => ({
+      id: e.id,
+      name: e.name || '',
+      code: e.code,
+      is_key: e.is_key || false,
+      profile_image_url: e.profile_image_url,
+    })),
+    employee_count: Number(result.employee_count) || 0,
+    cf_employees: (result.cf_employees || []).map(e => ({
+      id: e.id,
+      name: e.name || '',
+      code: e.code,
+      is_key: e.is_key || false,
+      profile_image_url: e.profile_image_url,
+    })),
+    cf_employee_count: Number(result.cf_employee_count) || 0,
+    details: result.details,
+    details_summary: result.details_summary,
+    additional: result.additional,
+    merchandise: [], // Empty for fast mode
+    merchandise_count: 0,
+    work_giver: workGiver,
+    created_at: result.created_at,
+    updated_at: result.updated_at,
+  };
+}
+
+/**
  * Search tickets with filters for all ticket fields (paginated)
  * Returns display-ready data with pre-resolved location names
  * Uses server-side RPC for filtering to avoid URL length issues
@@ -523,8 +654,8 @@ export async function search(params: {
       };
     }
   } else {
-    // Use RPC for server-side filtering (avoids URL length issues with large result sets)
-    const { data: ticketResults, error: rpcError } = await supabase.rpc('search_tickets', {
+    // Use optimized RPC that returns full data in one query
+    const { data: fastResults, error: rpcError } = await supabase.rpc('search_tickets_fast', {
       p_page: page,
       p_limit: limit,
       p_sort: sort || 'created_at',
@@ -543,27 +674,34 @@ export async function search(params: {
       p_employee_id: Array.isArray(filters.employee_id) ? filters.employee_id[0] : (filters.employee_id || null),
       p_department_id: Array.isArray(filters.department_id) ? filters.department_id[0] : (filters.department_id || null),
       p_appointment_is_approved: filters.appointment_is_approved ?? null,
-    });
+    }) as { data: FastTicketResult[] | null; error: { message: string } | null };
 
     if (rpcError) {
-      console.error('[ticketSearchService] RPC error:', rpcError.message);
+      console.error('[ticketSearchService] Fast RPC error:', rpcError.message);
       throw new DatabaseError(rpcError.message);
     }
 
     // Handle empty results
-    if (!ticketResults || ticketResults.length === 0) {
+    if (!fastResults || fastResults.length === 0) {
       return {
         data: [],
         pagination: calculatePagination(page, limit, 0),
       };
     }
 
-    // Extract ticket IDs and total count from RPC results
-    ticketIds = ticketResults.map((r: { ticket_id: string }) => r.ticket_id);
-    totalCount = Number(ticketResults[0]?.total_count || 0);
+    // Extract total count from first result
+    totalCount = Number(fastResults[0]?.total_count || 0);
+
+    // Transform to display format (no additional queries - all data from RPC)
+    const displayItems: TicketDisplayItem[] = fastResults.map(r => createDisplayItemFromFastResult(r));
+
+    return {
+      data: displayItems,
+      pagination: calculatePagination(page, limit, totalCount),
+    };
   }
 
-  // Fetch full ticket data for the paginated IDs (limited set, safe for URL)
+  // Watching mode: Fetch full ticket data for the paginated IDs
   const { data: rawTickets, error: ticketError } = await supabase
     .from('main_tickets')
     .select(`
@@ -634,206 +772,7 @@ export async function search(params: {
     throw new DatabaseError(ticketError.message);
   }
 
-  // Sort results to match RPC order (RPC returns in sorted order)
-  const ticketMap = new Map((rawTickets || []).map(t => [t.id, t]));
-  const orderedTickets = ticketIds.map((id: string) => ticketMap.get(id)).filter(Boolean) as Record<string, unknown>[];
-
-  // Extract location codes for batch resolution
-  const locationInputs = orderedTickets.map(ticket => {
-    const site = ticket.site as { 
-      province_code?: number | null;
-      district_code?: number | null;
-      subdistrict_code?: number | null;
-      address_detail?: string | null;
-    } | null;
-    
-    return {
-      provinceCode: site?.province_code || null,
-      districtCode: site?.district_code || null,
-      subdistrictCode: site?.subdistrict_code || null,
-      addressDetail: site?.address_detail || null,
-    };
-  });
-
-  // Batch resolve all locations (single database call for districts/subdistricts)
-  const resolvedLocations = await batchResolveLocations(locationInputs);
-
-  // Batch fetch work_givers for all tickets (fallback if join doesn't return data)
-  const workGiverMap = new Map<string, { id: string; code: string; name: string }>();
-  if (ticketIds.length > 0) {
-    const { data: workGiverData } = await supabase
-      .from('child_ticket_work_givers')
-      .select(`
-        ticket_id,
-        ref_work_givers:work_giver_id (
-          id,
-          code,
-          name
-        )
-      `)
-      .in('ticket_id', ticketIds);
-    
-    if (workGiverData) {
-      for (const wg of workGiverData) {
-        if (wg.ref_work_givers && wg.ticket_id) {
-          const refWg = wg.ref_work_givers as { id: string; code: string; name: string };
-          workGiverMap.set(wg.ticket_id as string, {
-            id: refWg.id,
-            code: refWg.code,
-            name: refWg.name,
-          });
-        }
-      }
-    }
-  }
-
-  // Transform tickets to display format
-  const displayItems: TicketDisplayItem[] = orderedTickets.map((ticket, index) => {
-    const item = createTicketDisplayItem(ticket, resolvedLocations[index], include);
-    // Apply work_giver from fallback if join didn't return it
-    if (!item.work_giver && workGiverMap.has(ticket.id as string)) {
-      item.work_giver = workGiverMap.get(ticket.id as string) || null;
-    }
-    return item;
-  });
-
-  return {
-    data: displayItems,
-    pagination: calculatePagination(page, limit, totalCount),
-  };
-}
-
-/**
- * Search tickets by duration (date range) with selectable date type
- * Uses server-side RPC for filtering to avoid URL length issues
- */
-export async function searchByDuration(params: {
-  page: number;
-  limit: number;
-  startDate: string;
-  endDate: string;
-  dateType: DateType;
-  sort?: string;
-  order?: 'asc' | 'desc';
-  include?: IncludeMode;
-}): Promise<{ data: TicketDisplayItem[]; pagination: PaginationInfo }> {
-  const supabase = createServiceClient();
-  const { page, limit, startDate, endDate, dateType, sort, order, include = 'full' } = params;
-
-  // Map dateType to RPC parameter
-  const rpcDateType = dateType === 'create' ? 'created' : dateType === 'update' ? 'updated' : 'appointed';
-
-  // Use comprehensive RPC for server-side filtering
-  const { data: ticketResults, error: rpcError } = await supabase.rpc('search_tickets', {
-    p_page: page,
-    p_limit: limit,
-    p_sort: sort || 'created_at',
-    p_order: order || 'desc',
-    p_start_date: startDate,
-    p_end_date: endDate,
-    p_date_type: rpcDateType,
-    // No other filters for duration search
-    p_site_id: null,
-    p_status_id: null,
-    p_work_type_id: null,
-    p_assigner_id: null,
-    p_contact_id: null,
-    p_details: null,
-    p_exclude_backlog: false,
-    p_only_backlog: false,
-    p_employee_id: null,
-    p_department_id: null,
-  });
-
-  if (rpcError) {
-    console.error('[ticketSearchService] RPC error:', rpcError.message);
-    throw new DatabaseError(rpcError.message);
-  }
-
-  // Handle empty results
-  if (!ticketResults || ticketResults.length === 0) {
-    return {
-      data: [],
-      pagination: calculatePagination(page, limit, 0),
-    };
-  }
-
-  // Extract ticket IDs and total count
-  const ticketIds = ticketResults.map((r: { ticket_id: string }) => r.ticket_id);
-  const totalCount = Number(ticketResults[0]?.total_count || 0);
-
-  // Fetch full ticket data for the paginated IDs
-  const { data: rawTickets, error: ticketError } = await supabase
-    .from('main_tickets')
-    .select(`
-      id,
-      ticket_code,
-      ticket_number,
-      details,
-      details_summary,
-      work_type_id,
-      assigner_id,
-      status_id,
-      additional,
-      created_at,
-      updated_at,
-      created_by,
-      site_id,
-      contact_id,
-      appointment_id,
-      work_type:ref_ticket_work_types(name, code),
-      assigner:main_employees!main_tickets_assigner_id_fkey(id, name, code),
-      creator:main_employees!main_tickets_created_by_fkey(id, name, code),
-      status:ref_ticket_statuses(name, code),
-      site:main_sites(
-        id,
-        name,
-        province_code,
-        district_code,
-        subdistrict_code,
-        address_detail,
-        company:main_companies(name_th, name_en, tax_id)
-      ),
-      contact:child_site_contacts(id, person_name),
-      appointment:main_appointments!main_tickets_appointment_id_fkey(
-        id,
-        appointment_date,
-        appointment_time_start,
-        appointment_time_end,
-        appointment_type,
-        is_approved
-      ),
-      employees:jct_ticket_employees(
-        id,
-        date,
-        is_key_employee,
-        employee:main_employees(id, name, code, profile_image_url)
-      ),
-      confirmed_technicians:jct_ticket_employees_cf(
-        id,
-        date,
-        employee:main_employees!jct_ticket_employees_cf_employee_id_fkey(id, name, code, profile_image_url)
-      ),
-      merchandise:jct_ticket_merchandise(
-        merchandise:main_merchandise(
-          id,
-          serial_no,
-          model:main_models(model)
-        )
-      ),
-      work_giver:child_ticket_work_givers!child_ticket_work_givers_ticket_id_fkey(
-        id,
-        work_giver_id,
-        work_giver:ref_work_givers!child_ticket_work_givers_work_giver_id_fkey(id, code, name)
-      )
-    `)
-    .in('id', ticketIds);
-
-  if (ticketError) {
-    throw new DatabaseError(ticketError.message);
-  }
-
-  // Sort results to match RPC order
+  // Sort results to match order
   const ticketMap = new Map((rawTickets || []).map(t => [t.id, t]));
   const orderedTickets = ticketIds.map((id: string) => ticketMap.get(id)).filter(Boolean) as Record<string, unknown>[];
 
@@ -857,44 +796,77 @@ export async function searchByDuration(params: {
   // Batch resolve all locations
   const resolvedLocations = await batchResolveLocations(locationInputs);
 
-  // Batch fetch work_givers for all tickets (fallback if join doesn't return data)
-  const workGiverMap = new Map<string, { id: string; code: string; name: string }>();
-  if (ticketIds.length > 0) {
-    const { data: workGiverData } = await supabase
-      .from('child_ticket_work_givers')
-      .select(`
-        ticket_id,
-        ref_work_givers:work_giver_id (
-          id,
-          code,
-          name
-        )
-      `)
-      .in('ticket_id', ticketIds);
-
-    if (workGiverData) {
-      for (const wg of workGiverData) {
-        if (wg.ref_work_givers && wg.ticket_id) {
-          const refWg = wg.ref_work_givers as { id: string; code: string; name: string };
-          workGiverMap.set(wg.ticket_id as string, {
-            id: refWg.id,
-            code: refWg.code,
-            name: refWg.name,
-          });
-        }
-      }
-    }
-  }
-
   // Transform tickets to display format
   const displayItems: TicketDisplayItem[] = orderedTickets.map((ticket, index) => {
-    const item = createTicketDisplayItem(ticket, resolvedLocations[index], include);
-    // Apply work_giver from fallback if join didn't return it
-    if (!item.work_giver && workGiverMap.has(ticket.id as string)) {
-      item.work_giver = workGiverMap.get(ticket.id as string) || null;
-    }
-    return item;
+    return createTicketDisplayItem(ticket, resolvedLocations[index], include);
   });
+
+  return {
+    data: displayItems,
+    pagination: calculatePagination(page, limit, totalCount),
+  };
+}
+
+/**
+ * Search tickets by duration (date range) with selectable date type
+ * Uses optimized RPC that returns full data in one query
+ */
+export async function searchByDuration(params: {
+  page: number;
+  limit: number;
+  startDate: string;
+  endDate: string;
+  dateType: DateType;
+  sort?: string;
+  order?: 'asc' | 'desc';
+  include?: IncludeMode;
+}): Promise<{ data: TicketDisplayItem[]; pagination: PaginationInfo }> {
+  const supabase = createServiceClient();
+  const { page, limit, startDate, endDate, dateType, sort, order } = params;
+
+  // Map dateType to RPC parameter
+  const rpcDateType = dateType === 'create' ? 'created' : dateType === 'update' ? 'updated' : 'appointed';
+
+  // Use optimized RPC that returns full data
+  const { data: fastResults, error: rpcError } = await supabase.rpc('search_tickets_fast', {
+    p_page: page,
+    p_limit: limit,
+    p_sort: sort || 'created_at',
+    p_order: order || 'desc',
+    p_start_date: startDate,
+    p_end_date: endDate,
+    p_date_type: rpcDateType,
+    p_site_id: null,
+    p_status_id: null,
+    p_work_type_id: null,
+    p_assigner_id: null,
+    p_contact_id: null,
+    p_details: null,
+    p_exclude_backlog: false,
+    p_only_backlog: false,
+    p_employee_id: null,
+    p_department_id: null,
+    p_appointment_is_approved: null,
+  }) as { data: FastTicketResult[] | null; error: { message: string } | null };
+
+  if (rpcError) {
+    console.error('[ticketSearchService] Fast RPC error:', rpcError.message);
+    throw new DatabaseError(rpcError.message);
+  }
+
+  // Handle empty results
+  if (!fastResults || fastResults.length === 0) {
+    return {
+      data: [],
+      pagination: calculatePagination(page, limit, 0),
+    };
+  }
+
+  // Extract total count
+  const totalCount = Number(fastResults[0]?.total_count || 0);
+
+  // Transform to display format (no additional queries - all data from RPC)
+  const displayItems: TicketDisplayItem[] = fastResults.map(r => createDisplayItemFromFastResult(r));
 
   return {
     data: displayItems,

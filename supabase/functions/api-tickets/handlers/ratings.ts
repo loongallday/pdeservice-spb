@@ -1,6 +1,17 @@
 /**
- * Ticket ratings handlers
- * Handles customer rating functionality for tickets
+ * @fileoverview Ticket customer rating handlers
+ * @module api-tickets/handlers/ratings
+ *
+ * Provides rating functionality for tickets:
+ * - GET /:id/rating - Get rating (Level 0+)
+ * - POST /:id/rating - Create rating (Level 1+)
+ * - PUT /:id/rating - Update rating (Level 1+)
+ * - DELETE /:id/rating - Delete rating (Level 2+)
+ *
+ * @description
+ * Customer ratings capture feedback after ticket completion.
+ * Each ticket can have at most one rating. Ratings include
+ * score (1-5) and optional feedback text.
  */
 
 import { success } from '../../_shared/response.ts';

@@ -1,0 +1,109 @@
+{
+  "scriptId": "653",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/lodash.isfunction/3.0.9/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 4468,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 4467,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 4461,
+          "count": 1
+        },
+        {
+          "startOffset": 1212,
+          "endOffset": 1223,
+          "count": 0
+        },
+        {
+          "startOffset": 1224,
+          "endOffset": 1252,
+          "count": 0
+        },
+        {
+          "startOffset": 1733,
+          "endOffset": 1744,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "baseGetTag",
+      "ranges": [
+        {
+          "startOffset": 1939,
+          "endOffset": 2166,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getRawTag",
+      "ranges": [
+        {
+          "startOffset": 2367,
+          "endOffset": 2775,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "objectToString",
+      "ranges": [
+        {
+          "startOffset": 2960,
+          "endOffset": 3037,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isFunction",
+      "ranges": [
+        {
+          "startOffset": 3377,
+          "endOffset": 3722,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isObject",
+      "ranges": [
+        {
+          "startOffset": 4305,
+          "endOffset": 4428,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

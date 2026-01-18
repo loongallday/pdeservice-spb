@@ -1,0 +1,72 @@
+{
+  "scriptId": "441",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/readable-stream/2.3.8/lib/internal/streams/destroy.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2405,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2404,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2398,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "destroy",
+      "ranges": [
+        {
+          "startOffset": 380,
+          "endOffset": 1706,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "undestroy",
+      "ranges": [
+        {
+          "startOffset": 1708,
+          "endOffset": 2266,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "emitErrorNT",
+      "ranges": [
+        {
+          "startOffset": 2268,
+          "endOffset": 2330,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

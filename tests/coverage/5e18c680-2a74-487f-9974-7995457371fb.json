@@ -1,0 +1,150 @@
+{
+  "scriptId": "370",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/_shared/validation.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2506,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "validateUUID",
+      "ranges": [
+        {
+          "startOffset": 125,
+          "endOffset": 356,
+          "count": 7
+        },
+        {
+          "startOffset": 291,
+          "endOffset": 354,
+          "count": 3
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "validateRequired",
+      "ranges": [
+        {
+          "startOffset": 399,
+          "endOffset": 575,
+          "count": 5
+        },
+        {
+          "startOffset": 489,
+          "endOffset": 504,
+          "count": 3
+        },
+        {
+          "startOffset": 506,
+          "endOffset": 573,
+          "count": 2
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "validateEmail",
+      "ranges": [
+        {
+          "startOffset": 616,
+          "endOffset": 787,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "validateNumberRange",
+      "ranges": [
+        {
+          "startOffset": 828,
+          "endOffset": 1009,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "validateStringLength",
+      "ranges": [
+        {
+          "startOffset": 1051,
+          "endOffset": 1261,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parsePaginationParams",
+      "ranges": [
+        {
+          "startOffset": 1317,
+          "endOffset": 1560,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "sanitizePrototypePollution",
+      "ranges": [
+        {
+          "startOffset": 1634,
+          "endOffset": 2123,
+          "count": 10
+        },
+        {
+          "startOffset": 1724,
+          "endOffset": 1772,
+          "count": 5
+        },
+        {
+          "startOffset": 1772,
+          "endOffset": 1825,
+          "count": 0
+        },
+        {
+          "startOffset": 1825,
+          "endOffset": 2101,
+          "count": 5
+        },
+        {
+          "startOffset": 2018,
+          "endOffset": 2041,
+          "count": 0
+        },
+        {
+          "startOffset": 2101,
+          "endOffset": 2122,
+          "count": 5
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "parseRequestBody",
+      "ranges": [
+        {
+          "startOffset": 2205,
+          "endOffset": 2505,
+          "count": 5
+        },
+        {
+          "startOffset": 2424,
+          "endOffset": 2503,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

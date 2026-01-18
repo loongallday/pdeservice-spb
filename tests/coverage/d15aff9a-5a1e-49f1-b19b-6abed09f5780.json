@@ -1,0 +1,187 @@
+{
+  "scriptId": "652",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/@fast-csv/format/4.3.5/build/src/formatter/RowFormatter.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 6652,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 6651,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 6645,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "__importDefault",
+      "ranges": [
+        {
+          "startOffset": 291,
+          "endOffset": 372,
+          "count": 2
+        },
+        {
+          "startOffset": 343,
+          "endOffset": 348,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "RowFormatter",
+      "ranges": [
+        {
+          "startOffset": 728,
+          "endOffset": 1302,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isRowHashArray",
+      "ranges": [
+        {
+          "startOffset": 1314,
+          "endOffset": 1472,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isRowArray",
+      "ranges": [
+        {
+          "startOffset": 1484,
+          "endOffset": 1571,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "gatherHeaders",
+      "ranges": [
+        {
+          "startOffset": 1618,
+          "endOffset": 1927,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createTransform",
+      "ranges": [
+        {
+          "startOffset": 2000,
+          "endOffset": 2513,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set rowTransform",
+      "ranges": [
+        {
+          "startOffset": 2518,
+          "endOffset": 2783,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "format",
+      "ranges": [
+        {
+          "startOffset": 2788,
+          "endOffset": 3648,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "finish",
+      "ranges": [
+        {
+          "startOffset": 3653,
+          "endOffset": 4244,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "checkHeaders",
+      "ranges": [
+        {
+          "startOffset": 4416,
+          "endOffset": 5146,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "gatherColumns",
+      "ranges": [
+        {
+          "startOffset": 5195,
+          "endOffset": 5973,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "callTransformer",
+      "ranges": [
+        {
+          "startOffset": 5978,
+          "endOffset": 6133,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "formatColumns",
+      "ranges": [
+        {
+          "startOffset": 6138,
+          "endOffset": 6563,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

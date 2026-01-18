@@ -1,0 +1,73 @@
+{
+  "scriptId": "336",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-leave-requests/handlers/create.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1860,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "create",
+      "ranges": [
+        {
+          "startOffset": 357,
+          "endOffset": 1859,
+          "count": 5
+        },
+        {
+          "startOffset": 1244,
+          "endOffset": 1251,
+          "count": 0
+        },
+        {
+          "startOffset": 1277,
+          "endOffset": 1289,
+          "count": 1
+        },
+        {
+          "startOffset": 1454,
+          "endOffset": 1484,
+          "count": 0
+        },
+        {
+          "startOffset": 1485,
+          "endOffset": 1520,
+          "count": 0
+        },
+        {
+          "startOffset": 1521,
+          "endOffset": 1549,
+          "count": 0
+        },
+        {
+          "startOffset": 1550,
+          "endOffset": 1582,
+          "count": 0
+        },
+        {
+          "startOffset": 1583,
+          "endOffset": 1658,
+          "count": 0
+        },
+        {
+          "startOffset": 1660,
+          "endOffset": 1716,
+          "count": 0
+        },
+        {
+          "startOffset": 1716,
+          "endOffset": 1858,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

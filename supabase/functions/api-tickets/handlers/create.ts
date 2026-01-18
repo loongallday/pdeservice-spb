@@ -1,6 +1,42 @@
 /**
- * Create ticket handler - Comprehensive ticket creation with all related data
- * Supports idempotency to prevent duplicate ticket creation
+ * @fileoverview Create new ticket handler with idempotency support
+ * @endpoint POST /api-tickets
+ * @auth Required - Level 1+ (Assigner, PM, Sales, Admin, Superadmin)
+ *
+ * @header {string} [Idempotency-Key] - Optional key for idempotent requests
+ *
+ * @bodyParam {object} ticket - Required: Core ticket data
+ * @bodyParam {string} ticket.work_type_id - Required: Work type UUID
+ * @bodyParam {string} ticket.assigner_id - Required: Assigner employee UUID
+ * @bodyParam {string} ticket.status_id - Required: Initial status UUID
+ * @bodyParam {string} [ticket.details] - Ticket description
+ * @bodyParam {string} [ticket.site_id] - Site UUID
+ * @bodyParam {string} [ticket.company_id] - Company UUID
+ * @bodyParam {object} [contact] - Contact information
+ * @bodyParam {object} [appointment] - Appointment scheduling
+ * @bodyParam {object[]} [employees] - Assigned technicians
+ * @bodyParam {object[]} [upses] - Equipment to service
+ *
+ * @returns {Ticket} Created ticket object (HTTP 201)
+ * @throws {ValidationError} 400 - Missing required fields or invalid JSON
+ * @throws {AuthenticationError} 401 - If not authenticated
+ * @throws {ForbiddenError} 403 - Insufficient permissions (Level < 1)
+ *
+ * @description
+ * Creates a comprehensive ticket with all related data in a single transaction.
+ *
+ * Idempotency Support:
+ * - When Idempotency-Key header is provided, duplicate requests with the
+ *   same key will return the cached response instead of creating duplicates
+ * - Cached responses include both success and error states
+ * - Use for critical operations to prevent duplicate ticket creation from
+ *   network retries or user double-clicks
+ *
+ * Related Data:
+ * - Contact: Creates or links contact for the ticket
+ * - Appointment: Creates scheduled appointment with date/time
+ * - Employees: Assigns technicians to the ticket
+ * - UPSes: Links equipment to be serviced
  */
 
 import { success, error } from '../../_shared/response.ts';

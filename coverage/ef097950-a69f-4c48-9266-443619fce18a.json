@@ -1,0 +1,72 @@
+{
+  "scriptId": "693",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/balanced-match/1.0.2/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1449,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 1448,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 1442,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "balanced",
+      "ranges": [
+        {
+          "startOffset": 262,
+          "endOffset": 589,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "maybeMatch",
+      "ranges": [
+        {
+          "startOffset": 591,
+          "endOffset": 676,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "range",
+      "ranges": [
+        {
+          "startOffset": 702,
+          "endOffset": 1439,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "scriptId": "794",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bluebird/3.4.7/js/release/props.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3334,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 3333,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 3327,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 252,
+          "endOffset": 3323,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 492,
+          "endOffset": 865,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "extractEntry",
+      "ranges": [
+        {
+          "startOffset": 547,
+          "endOffset": 668,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "mapToEntries",
+      "ranges": [
+        {
+          "startOffset": 681,
+          "endOffset": 862,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "entriesToMap",
+      "ranges": [
+        {
+          "startOffset": 890,
+          "endOffset": 1141,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PropertiesPromiseArray",
+      "ranges": [
+        {
+          "startOffset": 1144,
+          "endOffset": 1703,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PropertiesPromiseArray._init",
+      "ranges": [
+        {
+          "startOffset": 1799,
+          "endOffset": 1813,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PropertiesPromiseArray._promiseFulfilled",
+      "ranges": [
+        {
+          "startOffset": 1869,
+          "endOffset": 2419,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PropertiesPromiseArray.shouldCopyValues",
+      "ranges": [
+        {
+          "startOffset": 2474,
+          "endOffset": 2507,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PropertiesPromiseArray.getActualLength",
+      "ranges": [
+        {
+          "startOffset": 2561,
+          "endOffset": 2600,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "props",
+      "ranges": [
+        {
+          "startOffset": 2603,
+          "endOffset": 3183,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.props",
+      "ranges": [
+        {
+          "startOffset": 3211,
+          "endOffset": 3250,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.props",
+      "ranges": [
+        {
+          "startOffset": 3269,
+          "endOffset": 3320,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

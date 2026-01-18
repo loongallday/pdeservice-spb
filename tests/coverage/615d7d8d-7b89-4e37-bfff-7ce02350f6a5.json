@@ -1,0 +1,175 @@
+{
+  "scriptId": "703",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/lodash.flatten/4.4.0/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 9126,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 9125,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 9119,
+          "count": 1
+        },
+        {
+          "startOffset": 1203,
+          "endOffset": 1214,
+          "count": 0
+        },
+        {
+          "startOffset": 1215,
+          "endOffset": 1243,
+          "count": 0
+        },
+        {
+          "startOffset": 2197,
+          "endOffset": 2208,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "arrayPush",
+      "ranges": [
+        {
+          "startOffset": 1446,
+          "endOffset": 1653,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "baseFlatten",
+      "ranges": [
+        {
+          "startOffset": 2688,
+          "endOffset": 3289,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isFlattenable",
+      "ranges": [
+        {
+          "startOffset": 3499,
+          "endOffset": 3643,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "flatten",
+      "ranges": [
+        {
+          "startOffset": 3938,
+          "endOffset": 4052,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isArguments",
+      "ranges": [
+        {
+          "startOffset": 4441,
+          "endOffset": 4709,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isArrayLike",
+      "ranges": [
+        {
+          "startOffset": 5787,
+          "endOffset": 5890,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isArrayLikeObject",
+      "ranges": [
+        {
+          "startOffset": 6416,
+          "endOffset": 6505,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isFunction",
+      "ranges": [
+        {
+          "startOffset": 6845,
+          "endOffset": 7137,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isLength",
+      "ranges": [
+        {
+          "startOffset": 7684,
+          "endOffset": 7812,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isObject",
+      "ranges": [
+        {
+          "startOffset": 8395,
+          "endOffset": 8512,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isObjectLike",
+      "ranges": [
+        {
+          "startOffset": 9011,
+          "endOffset": 9089,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

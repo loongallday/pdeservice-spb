@@ -1,0 +1,127 @@
+{
+  "scriptId": "761",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/binary/0.3.0/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 10783,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 10782,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 10776,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 446,
+          "endOffset": 882,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.stream",
+      "ranges": [
+        {
+          "startOffset": 902,
+          "endOffset": 6488,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parse",
+      "ranges": [
+        {
+          "startOffset": 6507,
+          "endOffset": 9186,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "decodeLEu",
+      "ranges": [
+        {
+          "startOffset": 9247,
+          "endOffset": 9404,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "decodeBEu",
+      "ranges": [
+        {
+          "startOffset": 9461,
+          "endOffset": 9638,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "decodeBEs",
+      "ranges": [
+        {
+          "startOffset": 9693,
+          "endOffset": 9858,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "decodeLEs",
+      "ranges": [
+        {
+          "startOffset": 9916,
+          "endOffset": 10096,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "words",
+      "ranges": [
+        {
+          "startOffset": 10098,
+          "endOffset": 10773,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

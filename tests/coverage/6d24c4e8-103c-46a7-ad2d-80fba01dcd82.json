@@ -1,0 +1,28 @@
+{
+  "scriptId": "336",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-reference-data/handlers/statuses.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 519,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getStatuses",
+      "ranges": [
+        {
+          "startOffset": 224,
+          "endOffset": 518,
+          "count": 2
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

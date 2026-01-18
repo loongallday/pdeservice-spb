@@ -1,0 +1,83 @@
+{
+  "scriptId": "366",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-stock/services/stockLocationService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 5368,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "resolveLocationTypeId",
+      "ranges": [
+        {
+          "startOffset": 466,
+          "endOffset": 962,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "listLocations",
+      "ranges": [
+        {
+          "startOffset": 1402,
+          "endOffset": 2090,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getLocationById",
+      "ranges": [
+        {
+          "startOffset": 2098,
+          "endOffset": 2499,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createLocation",
+      "ranges": [
+        {
+          "startOffset": 2507,
+          "endOffset": 3307,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "updateLocation",
+      "ranges": [
+        {
+          "startOffset": 3315,
+          "endOffset": 4818,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deleteLocation",
+      "ranges": [
+        {
+          "startOffset": 4826,
+          "endOffset": 5367,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

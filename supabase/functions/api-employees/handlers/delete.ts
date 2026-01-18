@@ -1,5 +1,24 @@
 /**
- * Delete employee handler
+ * @fileoverview Delete (soft delete) employee handler
+ * @endpoint DELETE /api-employees/:id
+ * @auth Required - Level 2+ (Admin, Superadmin)
+ *
+ * @param {string} id - Employee UUID from URL path
+ *
+ * @returns {Object} Success message: { message: "ลบพนักงานสำเร็จ" }
+ * @throws {AuthenticationError} 401 - If not authenticated
+ * @throws {ForbiddenError} 403 - If permission level < 2
+ * @throws {ValidationError} 400 - If ID is not a valid UUID
+ *
+ * @description
+ * Performs a soft delete on an employee by setting is_active=false.
+ * The employee record is preserved but will not appear in active listings.
+ * This operation does NOT:
+ * - Delete the associated auth account (use unlink-auth first if needed)
+ * - Remove any historical data or relationships
+ *
+ * @example
+ * DELETE /api-employees/123e4567-e89b-12d3-a456-426614174000
  */
 
 import { success } from '../../_shared/response.ts';

@@ -1,0 +1,72 @@
+{
+  "scriptId": "386",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/_shared/summaryUtils.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 13645,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "generateSummary",
+      "ranges": [
+        {
+          "startOffset": 371,
+          "endOffset": 3324,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "generateSummaryIfNeeded",
+      "ranges": [
+        {
+          "startOffset": 3436,
+          "endOffset": 3679,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "buildFullTicketText",
+      "ranges": [
+        {
+          "startOffset": 3799,
+          "endOffset": 9015,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "generateTicketSummary",
+      "ranges": [
+        {
+          "startOffset": 9331,
+          "endOffset": 12332,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "buildFallbackSummary",
+      "ranges": [
+        {
+          "startOffset": 12392,
+          "endOffset": 13644,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

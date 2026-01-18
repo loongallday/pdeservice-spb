@@ -1,0 +1,209 @@
+{
+  "scriptId": "814",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/fstream/1.0.12/lib/writer.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 11274,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 11273,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 11267,
+          "count": 1
+        },
+        {
+          "startOffset": 442,
+          "endOffset": 445,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Writer",
+      "ranges": [
+        {
+          "startOffset": 1064,
+          "endOffset": 3230,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Writer._create",
+      "ranges": [
+        {
+          "startOffset": 3385,
+          "endOffset": 3648,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Writer._stat",
+      "ranges": [
+        {
+          "startOffset": 3675,
+          "endOffset": 4829,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "create",
+      "ranges": [
+        {
+          "startOffset": 4831,
+          "endOffset": 5305,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "endChmod",
+      "ranges": [
+        {
+          "startOffset": 5307,
+          "endOffset": 5718,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "endChown",
+      "ranges": [
+        {
+          "startOffset": 5720,
+          "endOffset": 6383,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "endUtimes",
+      "ranges": [
+        {
+          "startOffset": 6385,
+          "endOffset": 7076,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Writer._finish",
+      "ranges": [
+        {
+          "startOffset": 7152,
+          "endOffset": 9795,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "endMadeDir",
+      "ranges": [
+        {
+          "startOffset": 9797,
+          "endOffset": 10154,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "endMadeDir_",
+      "ranges": [
+        {
+          "startOffset": 10156,
+          "endOffset": 10858,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Writer.pipe",
+      "ranges": [
+        {
+          "startOffset": 10884,
+          "endOffset": 10947,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Writer.add",
+      "ranges": [
+        {
+          "startOffset": 10972,
+          "endOffset": 11035,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Writer.write",
+      "ranges": [
+        {
+          "startOffset": 11062,
+          "endOffset": 11091,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "objectToString",
+      "ranges": [
+        {
+          "startOffset": 11093,
+          "endOffset": 11167,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isDate",
+      "ranges": [
+        {
+          "startOffset": 11169,
+          "endOffset": 11264,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

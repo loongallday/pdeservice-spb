@@ -1,0 +1,38 @@
+{
+  "scriptId": "337",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-leave-requests/handlers/approve.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 624,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "approve",
+      "ranges": [
+        {
+          "startOffset": 278,
+          "endOffset": 623,
+          "count": 3
+        },
+        {
+          "startOffset": 437,
+          "endOffset": 589,
+          "count": 2
+        },
+        {
+          "startOffset": 589,
+          "endOffset": 622,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

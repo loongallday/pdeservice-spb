@@ -1,0 +1,532 @@
+{
+  "scriptId": "498",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/readable-stream/3.6.2/lib/_stream_writable.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 22137,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 22136,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 22130,
+          "count": 1
+        },
+        {
+          "startOffset": 2366,
+          "endOffset": 2448,
+          "count": 0
+        },
+        {
+          "startOffset": 2461,
+          "endOffset": 2478,
+          "count": 0
+        },
+        {
+          "startOffset": 8522,
+          "endOffset": 8626,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "WriteReq",
+      "ranges": [
+        {
+          "startOffset": 1575,
+          "endOffset": 1709,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "CorkedRequest",
+      "ranges": [
+        {
+          "startOffset": 1800,
+          "endOffset": 1963,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "OurUint8Array",
+      "ranges": [
+        {
+          "startOffset": 2464,
+          "endOffset": 2478,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_uint8ArrayToBuffer",
+      "ranges": [
+        {
+          "startOffset": 2480,
+          "endOffset": 2548,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_isUint8Array",
+      "ranges": [
+        {
+          "startOffset": 2549,
+          "endOffset": 2643,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "nop",
+      "ranges": [
+        {
+          "startOffset": 3468,
+          "endOffset": 3485,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "WritableState",
+      "ranges": [
+        {
+          "startOffset": 3486,
+          "endOffset": 7388,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getBuffer",
+      "ranges": [
+        {
+          "startOffset": 7425,
+          "endOffset": 7592,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 7595,
+          "endOffset": 7915,
+          "count": 1
+        },
+        {
+          "startOffset": 7901,
+          "endOffset": 7913,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "writableStateBufferGetter",
+      "ranges": [
+        {
+          "startOffset": 7714,
+          "endOffset": 7793,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "value",
+      "ranges": [
+        {
+          "startOffset": 8311,
+          "endOffset": 8514,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "realHasInstance",
+      "ranges": [
+        {
+          "startOffset": 8550,
+          "endOffset": 8623,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Writable",
+      "ranges": [
+        {
+          "startOffset": 8627,
+          "endOffset": 9832,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Writable.pipe",
+      "ranges": [
+        {
+          "startOffset": 9928,
+          "endOffset": 9997,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "writeAfterEnd",
+      "ranges": [
+        {
+          "startOffset": 9999,
+          "endOffset": 10211,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "validChunk",
+      "ranges": [
+        {
+          "startOffset": 10435,
+          "endOffset": 10808,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Writable.write",
+      "ranges": [
+        {
+          "startOffset": 10836,
+          "endOffset": 11487,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Writable.cork",
+      "ranges": [
+        {
+          "startOffset": 11515,
+          "endOffset": 11562,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Writable.uncork",
+      "ranges": [
+        {
+          "startOffset": 11592,
+          "endOffset": 11807,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "setDefaultEncoding",
+      "ranges": [
+        {
+          "startOffset": 11849,
+          "endOffset": 12271,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 12497,
+          "endOffset": 12584,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "decodeChunk",
+      "ranges": [
+        {
+          "startOffset": 12589,
+          "endOffset": 12788,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 13020,
+          "endOffset": 13086,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "writeOrBuffer",
+      "ranges": [
+        {
+          "startOffset": 13279,
+          "endOffset": 14248,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "doWrite",
+      "ranges": [
+        {
+          "startOffset": 14249,
+          "endOffset": 14609,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "onwriteError",
+      "ranges": [
+        {
+          "startOffset": 14610,
+          "endOffset": 15320,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "onwriteStateUpdate",
+      "ranges": [
+        {
+          "startOffset": 15321,
+          "endOffset": 15464,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "onwrite",
+      "ranges": [
+        {
+          "startOffset": 15465,
+          "endOffset": 16146,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "afterWrite",
+      "ranges": [
+        {
+          "startOffset": 16147,
+          "endOffset": 16304,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "onwriteDrain",
+      "ranges": [
+        {
+          "startOffset": 16497,
+          "endOffset": 16643,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "clearBuffer",
+      "ranges": [
+        {
+          "startOffset": 16708,
+          "endOffset": 18512,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Writable._write",
+      "ranges": [
+        {
+          "startOffset": 18541,
+          "endOffset": 18625,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Writable.end",
+      "ranges": [
+        {
+          "startOffset": 18687,
+          "endOffset": 19211,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 19437,
+          "endOffset": 19496,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "needFinish",
+      "ranges": [
+        {
+          "startOffset": 19501,
+          "endOffset": 19647,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "callFinal",
+      "ranges": [
+        {
+          "startOffset": 19648,
+          "endOffset": 19895,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "prefinish",
+      "ranges": [
+        {
+          "startOffset": 19896,
+          "endOffset": 20244,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "finishMaybe",
+      "ranges": [
+        {
+          "startOffset": 20245,
+          "endOffset": 20789,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "endWritable",
+      "ranges": [
+        {
+          "startOffset": 20790,
+          "endOffset": 21028,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "onCorkedFinish",
+      "ranges": [
+        {
+          "startOffset": 21029,
+          "endOffset": 21314,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 21534,
+          "endOffset": 21667,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set",
+      "ranges": [
+        {
+          "startOffset": 21676,
+          "endOffset": 21954,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Writable._destroy",
+      "ranges": [
+        {
+          "startOffset": 22094,
+          "endOffset": 22127,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

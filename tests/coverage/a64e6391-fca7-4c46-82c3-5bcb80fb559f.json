@@ -1,0 +1,363 @@
+{
+  "scriptId": "467",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/pako/1.0.11/lib/zlib/trees.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 40109,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 40108,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 40102,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "zero",
+      "ranges": [
+        {
+          "startOffset": 1884,
+          "endOffset": 1965,
+          "count": 6
+        },
+        {
+          "startOffset": 1946,
+          "endOffset": 1963,
+          "count": 1463
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "StaticTreeDesc",
+      "ranges": [
+        {
+          "startOffset": 5537,
+          "endOffset": 6110,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "TreeDesc",
+      "ranges": [
+        {
+          "startOffset": 6173,
+          "endOffset": 6413,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "d_code",
+      "ranges": [
+        {
+          "startOffset": 6417,
+          "endOffset": 6515,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "put_short",
+      "ranges": [
+        {
+          "startOffset": 6697,
+          "endOffset": 6896,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "send_bits",
+      "ranges": [
+        {
+          "startOffset": 7086,
+          "endOffset": 7419,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "send_code",
+      "ranges": [
+        {
+          "startOffset": 7422,
+          "endOffset": 7519,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "bi_reverse",
+      "ranges": [
+        {
+          "startOffset": 7744,
+          "endOffset": 7896,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "bi_flush",
+      "ranges": [
+        {
+          "startOffset": 8037,
+          "endOffset": 8282,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "gen_bitlen",
+      "ranges": [
+        {
+          "startOffset": 8837,
+          "endOffset": 11775,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "gen_codes",
+      "ranges": [
+        {
+          "startOffset": 12182,
+          "endOffset": 13511,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "tr_static_init",
+      "ranges": [
+        {
+          "startOffset": 13642,
+          "endOffset": 16800,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "init_block",
+      "ranges": [
+        {
+          "startOffset": 16913,
+          "endOffset": 17327,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "bi_windup",
+      "ranges": [
+        {
+          "startOffset": 17477,
+          "endOffset": 17702,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "copy_block",
+      "ranges": [
+        {
+          "startOffset": 17878,
+          "endOffset": 18339,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "smaller",
+      "ranges": [
+        {
+          "startOffset": 18566,
+          "endOffset": 18775,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "pqdownheap",
+      "ranges": [
+        {
+          "startOffset": 19099,
+          "endOffset": 19784,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "compress_block",
+      "ranges": [
+        {
+          "startOffset": 19976,
+          "endOffset": 21775,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "build_tree",
+      "ranges": [
+        {
+          "startOffset": 22275,
+          "endOffset": 25177,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "scan_tree",
+      "ranges": [
+        {
+          "startOffset": 25367,
+          "endOffset": 26899,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "send_tree",
+      "ranges": [
+        {
+          "startOffset": 27071,
+          "endOffset": 28804,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "build_bl_tree",
+      "ranges": [
+        {
+          "startOffset": 29013,
+          "endOffset": 30093,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "send_all_trees",
+      "ranges": [
+        {
+          "startOffset": 30390,
+          "endOffset": 31469,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "detect_data_type",
+      "ranges": [
+        {
+          "startOffset": 32195,
+          "endOffset": 33101,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_tr_init",
+      "ranges": [
+        {
+          "startOffset": 33280,
+          "endOffset": 33662,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_tr_stored_block",
+      "ranges": [
+        {
+          "startOffset": 33771,
+          "endOffset": 34138,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_tr_align",
+      "ranges": [
+        {
+          "startOffset": 34357,
+          "endOffset": 34476,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_tr_flush_block",
+      "ranges": [
+        {
+          "startOffset": 34703,
+          "endOffset": 37711,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_tr_tally",
+      "ranges": [
+        {
+          "startOffset": 37904,
+          "endOffset": 39917,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

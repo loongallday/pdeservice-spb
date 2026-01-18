@@ -1,6 +1,25 @@
 /**
- * Employee service - Business logic for employee operations
- * OPTIMIZED: Combined count+data queries, cached static lookups
+ * @fileoverview Employee service - Business logic for employee operations
+ * @module api-employees/services/employeeService
+ *
+ * Handles all employee-related database operations including:
+ * - CRUD operations for employees
+ * - Auth account linking/unlinking
+ * - Employee search (master and network)
+ * - Technician workload/availability
+ * - Leave balance initialization
+ *
+ * @performance
+ * OPTIMIZED with:
+ * - Combined count + data queries (single DB roundtrip for paginated results)
+ * - In-memory cache for role/department ID lookups (5-minute TTL)
+ * - Uses v_employees view for flattened role/department data
+ *
+ * @note Cache Behavior in Serverless
+ * The static cache is acceptable in serverless because:
+ * - Role/department IDs are immutable (never change)
+ * - If a new instance spins up, it simply fetches fresh data
+ * - 5-minute TTL prevents stale data in long-running instances
  */
 
 import { createServiceClient } from '../../_shared/supabase.ts';
@@ -8,7 +27,15 @@ import { NotFoundError, DatabaseError } from '../../_shared/error.ts';
 import { calculatePagination } from '../../_shared/response.ts';
 import type { PaginationInfo } from '../../_shared/response.ts';
 
-// Static cache for frequently looked up values that rarely change
+/**
+ * In-memory cache for frequently looked up values that rarely change.
+ * Used for role and department ID lookups by code.
+ *
+ * @property {Map<string, string>} roleIdByCode - Maps role code to UUID
+ * @property {Map<string, string>} departmentIdByCode - Maps department code to UUID
+ * @property {number} lastCacheTime - Timestamp of last cache update
+ * @property {number} cacheTTL - Time-to-live in milliseconds (5 minutes)
+ */
 const staticCache = {
   roleIdByCode: new Map<string, string>(),
   departmentIdByCode: new Map<string, string>(),
@@ -17,7 +44,12 @@ const staticCache = {
 };
 
 /**
- * Get role ID by code with caching
+ * Get role ID by code with caching.
+ * Uses in-memory cache with 5-minute TTL to reduce database lookups.
+ *
+ * @param {string} code - Role code (e.g., "technician_l1", "admin")
+ * @returns {Promise<string | null>} Role UUID or null if not found
+ * @throws {DatabaseError} If database query fails
  */
 async function getRoleIdByCode(code: string): Promise<string | null> {
   // Check cache first
@@ -46,7 +78,12 @@ async function getRoleIdByCode(code: string): Promise<string | null> {
 }
 
 /**
- * Get department ID by code with caching
+ * Get department ID by code with caching.
+ * Uses in-memory cache with 5-minute TTL to reduce database lookups.
+ *
+ * @param {string} code - Department code (e.g., "technical", "sales")
+ * @returns {Promise<string | null>} Department UUID or null if not found
+ * @throws {DatabaseError} If database query fails
  */
 async function getDepartmentIdByCode(code: string): Promise<string | null> {
   // Check cache first
@@ -74,10 +111,19 @@ async function getDepartmentIdByCode(code: string): Promise<string | null> {
   return data.id;
 }
 
+/**
+ * Service class for employee-related operations.
+ * All methods are static - no instance required.
+ */
 export class EmployeeService {
 
   /**
-   * Get single employee by ID
+   * Get single employee by ID with role and department data.
+   *
+   * @param {string} id - Employee UUID
+   * @returns {Promise<Record<string, unknown>>} Employee with nested role_data
+   * @throws {NotFoundError} If employee not found
+   * @throws {DatabaseError} If database query fails
    */
   static async getById(id: string): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
@@ -110,7 +156,16 @@ export class EmployeeService {
 
 
   /**
-   * Create new employee
+   * Create new employee with optional role code resolution.
+   *
+   * @param {Record<string, unknown>} employeeData - Employee data including name, code, etc.
+   * @returns {Promise<Record<string, unknown>>} Created employee with nested role_data
+   * @throws {DatabaseError} If role code not found or creation fails
+   *
+   * @description
+   * Supports both role_id (UUID) and role (code) for backward compatibility.
+   * If role code is provided, it's converted to role_id before insert.
+   * Also creates initial leave balances (sick: 30, vacation: 6, personal: 3).
    */
   static async create(employeeData: Record<string, unknown>): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
@@ -161,8 +216,21 @@ export class EmployeeService {
   }
 
   /**
-   * Create initial leave balances for a new employee
-   * Note: Uses hardcoded values, not days_per_year from leave_types table
+   * Create initial leave balances for a new employee.
+   * Called automatically during employee creation.
+   *
+   * @param {string} employeeId - UUID of the newly created employee
+   * @throws {DatabaseError} If leave type lookup or balance creation fails
+   *
+   * @description
+   * Creates leave balance records for the current year with hardcoded initial values:
+   * - Sick leave: 30 days
+   * - Vacation leave: 6 days
+   * - Personal leave: 3 days
+   *
+   * Note: Uses hardcoded values, NOT days_per_year from ref_leave_types table.
+   * This ensures consistent initial balances regardless of leave type config.
+   * @private
    */
   private static async createInitialLeaveBalances(employeeId: string): Promise<void> {
     const supabase = createServiceClient();
@@ -219,7 +287,17 @@ export class EmployeeService {
   }
 
   /**
-   * Update existing employee
+   * Update existing employee with optional role code resolution.
+   *
+   * @param {string} id - Employee UUID
+   * @param {Record<string, unknown>} employeeData - Fields to update
+   * @returns {Promise<Record<string, unknown>>} Updated employee with nested role_data
+   * @throws {NotFoundError} If employee not found
+   * @throws {DatabaseError} If role code not found or update fails
+   *
+   * @description
+   * Supports both role_id (UUID) and role (code) for backward compatibility.
+   * Special handling for image-only updates uses direct REST API to bypass schema cache.
    */
   static async update(id: string, employeeData: Record<string, unknown>): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
@@ -340,7 +418,14 @@ export class EmployeeService {
   }
 
   /**
-   * Delete employee (soft delete - set is_active to false)
+   * Soft delete employee by setting is_active to false.
+   *
+   * @param {string} id - Employee UUID
+   * @throws {DatabaseError} If update fails
+   *
+   * @description
+   * Performs a soft delete - the employee record is preserved but marked inactive.
+   * Does NOT delete the associated auth account or any related data.
    */
   static async delete(id: string): Promise<void> {
     const supabase = createServiceClient();
@@ -354,7 +439,17 @@ export class EmployeeService {
   }
 
   /**
-   * Link auth account to employee
+   * Create new Supabase auth user and link to employee.
+   *
+   * @param {string} employeeId - Employee UUID
+   * @param {string} email - Email for the new auth account
+   * @param {string} password - Password for the new auth account
+   * @returns {Promise<Record<string, unknown>>} Updated employee with nested role_data
+   * @throws {DatabaseError} If auth user creation fails or employee update fails
+   *
+   * @description
+   * Creates a new auth user with email_confirm=true (pre-verified) and links it
+   * to the employee by setting auth_user_id and email.
    */
   static async linkAuth(employeeId: string, email: string, password: string): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
@@ -369,24 +464,41 @@ export class EmployeeService {
     if (authError) throw new DatabaseError(authError.message);
     if (!authData.user) throw new DatabaseError('Failed to create auth user');
 
-    // Then link the auth user to the employee
+    // Then link the auth user to the employee and fetch full employee data with relations
     const { data, error } = await supabase
       .from('main_employees')
-      .update({ 
+      .update({
         auth_user_id: authData.user.id,
         email: authData.user.email || email
       })
       .eq('id', employeeId)
-      .select()
+      .select(`
+        *,
+        role_data:main_org_roles!role_id(
+          *,
+          department:main_org_departments!main_org_roles_department_id_fkey(id, code, name_th, name_en)
+        )
+      `)
       .single();
 
     if (error) throw new DatabaseError(error.message);
+    if (!data) throw new DatabaseError('Failed to link auth account');
 
     return data;
   }
 
   /**
-   * Link existing auth account to employee
+   * Link existing Supabase auth user to employee.
+   *
+   * @param {string} employeeId - Employee UUID
+   * @param {string} authUserId - Existing Supabase auth user UUID
+   * @param {string} email - Email to set on the employee record
+   * @returns {Promise<Record<string, unknown>>} Updated employee with nested role_data
+   * @throws {DatabaseError} If auth user doesn't exist, is already linked, or update fails
+   *
+   * @description
+   * Links an existing auth account that was created outside the system.
+   * Validates that the auth user exists and isn't already linked to another employee.
    */
   static async linkExistingAuth(employeeId: string, authUserId: string, email: string): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
@@ -409,47 +521,77 @@ export class EmployeeService {
       throw new DatabaseError(`บัญชีนี้ถูกเชื่อมต่อกับพนักงาน ${existingEmployee.name} (${existingEmployee.code}) อยู่แล้ว`);
     }
 
-    // Link the auth user to the employee
+    // Link the auth user to the employee and fetch full employee data with relations
     const { data, error } = await supabase
       .from('main_employees')
-      .update({ 
+      .update({
         auth_user_id: authUserId,
         email: email || authUser.user.email || ''
       })
       .eq('id', employeeId)
-      .select()
+      .select(`
+        *,
+        role_data:main_org_roles!role_id(
+          *,
+          department:main_org_departments!main_org_roles_department_id_fkey(id, code, name_th, name_en)
+        )
+      `)
       .single();
 
     if (error) throw new DatabaseError(error.message);
+    if (!data) throw new DatabaseError('Failed to link auth account');
 
     return data;
   }
 
   /**
-   * Unlink auth account from employee
+   * Unlink auth account from employee.
+   *
+   * @param {string} employeeId - Employee UUID
+   * @returns {Promise<Record<string, unknown>>} Updated employee with nested role_data
+   * @throws {DatabaseError} If update fails
+   *
+   * @description
+   * Removes the link between employee and auth account by setting auth_user_id to null.
+   * The auth account is NOT deleted - it can be linked to another employee.
    */
   static async unlinkAuth(employeeId: string): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
 
-    // Unlink the auth user from the employee (set auth_user_id to null, keep email)
+    // Unlink the auth user from the employee and fetch full employee data with relations
     const { data, error } = await supabase
       .from('main_employees')
-      .update({ 
+      .update({
         auth_user_id: null
       })
       .eq('id', employeeId)
-      .select()
+      .select(`
+        *,
+        role_data:main_org_roles!role_id(
+          *,
+          department:main_org_departments!main_org_roles_department_id_fkey(id, code, name_th, name_en)
+        )
+      `)
       .single();
 
     if (error) throw new DatabaseError(error.message);
+    if (!data) throw new DatabaseError('Failed to unlink auth account');
 
     return data;
   }
 
   /**
-   * Get employee counts grouped by department
-   * Returns consolidated data about employee counts for each department
-   * SIMPLIFIED: Now uses denormalized department_id column on employees
+   * Get employee counts grouped by department.
+   *
+   * @returns {Promise<Record<string, unknown>[]>} Array of department counts
+   * @throws {DatabaseError} If database query fails
+   *
+   * @description
+   * Returns consolidated employee count statistics for each department:
+   * - department_id, department_code, department_name_th/en
+   * - total_employees, active_employees, inactive_employees
+   *
+   * Uses v_employees view which provides department_id via role relationship.
    */
   static async getEmployeeCountsByDepartment(): Promise<Record<string, unknown>[]> {
     const supabase = createServiceClient();
@@ -520,8 +662,22 @@ export class EmployeeService {
   }
 
   /**
-   * Master search employees with text search and filters
-   * OPTIMIZED: Combined count+data query, cached role lookup
+   * Master search employees with text search and comprehensive filters.
+   * Admin-level search with full filtering capabilities.
+   *
+   * @param {Object} params - Search parameters
+   * @param {string} [params.q] - Text search (name, code, email, nickname)
+   * @param {number} params.page - Page number (1-based)
+   * @param {number} params.limit - Items per page
+   * @param {string} [params.role] - Filter by role code
+   * @param {string} [params.department_id] - Filter by department UUID
+   * @param {string} [params.code] - Filter by exact employee code
+   * @param {boolean} [params.is_active] - Filter by active status
+   * @returns {Promise<{data: Record<string, unknown>[], pagination: PaginationInfo}>}
+   * @throws {DatabaseError} If database query fails
+   *
+   * @performance
+   * OPTIMIZED with combined count + data query and cached role lookup.
    */
   static async search(params: {
     q?: string;
@@ -611,9 +767,28 @@ export class EmployeeService {
   }
 
   /**
-   * Network search employees - Optimized for network user search API
-   * Focuses on name/email search and network-relevant filters (department, role, active status)
-   * OPTIMIZED: Combined count+data query, cached role lookup
+   * Network search employees - Optimized for user management UI.
+   * Simpler search focusing on name/email and network-relevant filters.
+   *
+   * @param {Object} params - Search parameters
+   * @param {string} [params.q] - Text search (name and email only)
+   * @param {number} params.page - Page number (1-based)
+   * @param {number} params.limit - Items per page
+   * @param {string|string[]} [params.department_id] - Filter by department UUID(s)
+   * @param {string} [params.role] - Filter by role code
+   * @param {string} [params.role_id] - Filter by role UUID
+   * @param {boolean} [params.is_active] - Filter by active status
+   * @returns {Promise<{data: Record<string, unknown>[], pagination: PaginationInfo}>}
+   * @throws {DatabaseError} If database query fails
+   *
+   * @description
+   * Key differences from master search:
+   * - Text search only on name and email (not code/nickname)
+   * - Supports array of department_ids
+   * - Includes auth_user_id in response
+   *
+   * @performance
+   * OPTIMIZED with combined count + data query and cached role lookup.
    */
   static async networkSearch(params: {
     q?: string;
@@ -707,8 +882,17 @@ export class EmployeeService {
   }
 
   /**
-   * Get employee summary
-   * Returns lightweight employee list with minimal fields (only active employees)
+   * Get lightweight employee summary for dropdowns and pickers.
+   *
+   * @returns {Promise<Record<string, unknown>[]>} Array of employee summaries
+   * @throws {DatabaseError} If database query fails
+   *
+   * @description
+   * Returns minimal employee data for UI components:
+   * - id, name, email, role_name, is_link_auth, profile_image_url
+   *
+   * Only includes active employees (is_active=true).
+   * NOT paginated - returns all active employees.
    */
   static async getEmployeeSummary(): Promise<Record<string, unknown>[]> {
     const supabase = createServiceClient();
@@ -743,11 +927,24 @@ export class EmployeeService {
   }
 
   /**
-   * Get technicians with workload status for a given date
-   * Returns all active employees from 'technical' department with workload level
-   * Workload is based on appointment count: 0=no_work, 1-2=light, 3-4=medium, 5+=heavy
-   * If no date is provided, returns all technicians with "no_work" status
-   * OPTIMIZED: Uses cached department lookup
+   * Get technicians with workload status for a given date.
+   *
+   * @param {string} [date] - Date in YYYY-MM-DD format
+   * @returns {Promise<Array<{id: string, name: string, workload: WorkloadLevel}>>}
+   * @throws {DatabaseError} If technical department not found or query fails
+   *
+   * @description
+   * Returns all active technicians from the "technical" department with their
+   * workload based on appointment count for the given date:
+   * - no_work: 0 appointments
+   * - light: 1-2 appointments
+   * - medium: 3-4 appointments
+   * - heavy: 5+ appointments
+   *
+   * If no date is provided, returns all technicians with "no_work" status.
+   *
+   * @performance
+   * Uses cached department ID lookup for "technical" department.
    */
   static async getTechniciansWithWorkload(
     date?: string

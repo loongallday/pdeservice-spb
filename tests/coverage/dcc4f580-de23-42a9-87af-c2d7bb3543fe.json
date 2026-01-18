@@ -1,0 +1,94 @@
+{
+  "scriptId": "336",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-analytics/handlers/workload.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2253,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getWorkload",
+      "ranges": [
+        {
+          "startOffset": 438,
+          "endOffset": 950,
+          "count": 3
+        },
+        {
+          "startOffset": 573,
+          "endOffset": 635,
+          "count": 1
+        },
+        {
+          "startOffset": 635,
+          "endOffset": 703,
+          "count": 2
+        },
+        {
+          "startOffset": 703,
+          "endOffset": 949,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getWorkloadDistribution",
+      "ranges": [
+        {
+          "startOffset": 1135,
+          "endOffset": 2252,
+          "count": 5
+        },
+        {
+          "startOffset": 1349,
+          "endOffset": 1360,
+          "count": 4
+        },
+        {
+          "startOffset": 1362,
+          "endOffset": 1435,
+          "count": 1
+        },
+        {
+          "startOffset": 1435,
+          "endOffset": 1565,
+          "count": 4
+        },
+        {
+          "startOffset": 1567,
+          "endOffset": 1651,
+          "count": 1
+        },
+        {
+          "startOffset": 1651,
+          "endOffset": 1704,
+          "count": 3
+        },
+        {
+          "startOffset": 1704,
+          "endOffset": 1787,
+          "count": 1
+        },
+        {
+          "startOffset": 1787,
+          "endOffset": 1996,
+          "count": 2
+        },
+        {
+          "startOffset": 1996,
+          "endOffset": 2251,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "scriptId": "596",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/uuid/8.3.2/dist/rng.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 779,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 778,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 772,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "_interopRequireDefault",
+      "ranges": [
+        {
+          "startOffset": 383,
+          "endOffset": 478,
+          "count": 1
+        },
+        {
+          "startOffset": 451,
+          "endOffset": 456,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "rng",
+      "ranges": [
+        {
+          "startOffset": 591,
+          "endOffset": 770,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

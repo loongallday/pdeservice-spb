@@ -1,0 +1,50 @@
+{
+  "scriptId": "368",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-initialize/services/initializeService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 8622,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getFeatures",
+      "ranges": [
+        {
+          "startOffset": 396,
+          "endOffset": 2460,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getCurrentUserInfo",
+      "ranges": [
+        {
+          "startOffset": 2629,
+          "endOffset": 5294,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getInitializeData",
+      "ranges": [
+        {
+          "startOffset": 5359,
+          "endOffset": 8619,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

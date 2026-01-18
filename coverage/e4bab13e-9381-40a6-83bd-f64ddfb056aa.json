@@ -1,0 +1,100 @@
+{
+  "scriptId": "335",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-search/handlers/search.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1319,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "search",
+      "ranges": [
+        {
+          "startOffset": 225,
+          "endOffset": 1318,
+          "count": 4
+        },
+        {
+          "startOffset": 343,
+          "endOffset": 348,
+          "count": 0
+        },
+        {
+          "startOffset": 555,
+          "endOffset": 630,
+          "count": 1
+        },
+        {
+          "startOffset": 630,
+          "endOffset": 802,
+          "count": 3
+        },
+        {
+          "startOffset": 802,
+          "endOffset": 1066,
+          "count": 1
+        },
+        {
+          "startOffset": 974,
+          "endOffset": 1062,
+          "count": 0
+        },
+        {
+          "startOffset": 1066,
+          "endOffset": 1130,
+          "count": 3
+        },
+        {
+          "startOffset": 1130,
+          "endOffset": 1188,
+          "count": 1
+        },
+        {
+          "startOffset": 1175,
+          "endOffset": 1179,
+          "count": 0
+        },
+        {
+          "startOffset": 1189,
+          "endOffset": 1192,
+          "count": 2
+        },
+        {
+          "startOffset": 1289,
+          "endOffset": 1317,
+          "count": 3
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 842,
+          "endOffset": 869,
+          "count": 2
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 910,
+          "endOffset": 938,
+          "count": 2
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

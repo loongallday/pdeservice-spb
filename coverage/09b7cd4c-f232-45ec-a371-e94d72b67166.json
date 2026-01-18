@@ -1,0 +1,72 @@
+{
+  "scriptId": "700",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/lazystream/1.0.1/lib/lazystream.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1549,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 1548,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 1542,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "beforeFirstCall",
+      "ranges": [
+        {
+          "startOffset": 585,
+          "endOffset": 794,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Readable",
+      "ranges": [
+        {
+          "startOffset": 796,
+          "endOffset": 1158,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Writable",
+      "ranges": [
+        {
+          "startOffset": 1160,
+          "endOffset": 1538,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

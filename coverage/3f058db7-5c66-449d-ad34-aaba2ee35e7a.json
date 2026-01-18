@@ -1,0 +1,215 @@
+{
+  "scriptId": "796",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bluebird/3.4.7/js/release/reduce.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 5356,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 5355,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 5349,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 252,
+          "endOffset": 5345,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "ReductionPromiseArray",
+      "ranges": [
+        {
+          "startOffset": 565,
+          "endOffset": 1263,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ReductionPromiseArray._gotAccum",
+      "ranges": [
+        {
+          "startOffset": 1361,
+          "endOffset": 1535,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ReductionPromiseArray._eachComplete",
+      "ranges": [
+        {
+          "startOffset": 1586,
+          "endOffset": 1715,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ReductionPromiseArray._init",
+      "ranges": [
+        {
+          "startOffset": 1758,
+          "endOffset": 1771,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ReductionPromiseArray._resolveEmptyArray",
+      "ranges": [
+        {
+          "startOffset": 1827,
+          "endOffset": 1981,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ReductionPromiseArray.shouldCopyValues",
+      "ranges": [
+        {
+          "startOffset": 2035,
+          "endOffset": 2068,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ReductionPromiseArray._resolve",
+      "ranges": [
+        {
+          "startOffset": 2114,
+          "endOffset": 2201,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ReductionPromiseArray._resultCancelled",
+      "ranges": [
+        {
+          "startOffset": 2255,
+          "endOffset": 2599,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ReductionPromiseArray._iterate",
+      "ranges": [
+        {
+          "startOffset": 2645,
+          "endOffset": 3527,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.reduce",
+      "ranges": [
+        {
+          "startOffset": 3557,
+          "endOffset": 3637,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.reduce",
+      "ranges": [
+        {
+          "startOffset": 3657,
+          "endOffset": 3759,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "completed",
+      "ranges": [
+        {
+          "startOffset": 3762,
+          "endOffset": 3932,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "reduce",
+      "ranges": [
+        {
+          "startOffset": 3934,
+          "endOffset": 4221,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "gotAccum",
+      "ranges": [
+        {
+          "startOffset": 4223,
+          "endOffset": 4601,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "gotValue",
+      "ranges": [
+        {
+          "startOffset": 4603,
+          "endOffset": 5343,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

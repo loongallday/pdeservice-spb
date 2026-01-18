@@ -1,0 +1,33 @@
+{
+  "scriptId": "339",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-announcements/handlers/delete.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 476,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "deleteAnnouncement",
+      "ranges": [
+        {
+          "startOffset": 230,
+          "endOffset": 475,
+          "count": 2
+        },
+        {
+          "startOffset": 378,
+          "endOffset": 474,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

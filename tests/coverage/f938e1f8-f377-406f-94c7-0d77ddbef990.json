@@ -1,0 +1,149 @@
+{
+  "scriptId": "752",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/stream/xlsx/sheet-comments-writer.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3968,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 3967,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 3961,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "SheetCommentsWriter",
+      "ranges": [
+        {
+          "startOffset": 551,
+          "endOffset": 820,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get commentsStream",
+      "ranges": [
+        {
+          "startOffset": 824,
+          "endOffset": 1064,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get vmlStream",
+      "ranges": [
+        {
+          "startOffset": 1068,
+          "endOffset": 1298,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_addRelationships",
+      "ranges": [
+        {
+          "startOffset": 1302,
+          "endOffset": 1683,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_addCommentRefs",
+      "ranges": [
+        {
+          "startOffset": 1687,
+          "endOffset": 1839,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_writeOpen",
+      "ranges": [
+        {
+          "startOffset": 1843,
+          "endOffset": 2732,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_writeComment",
+      "ranges": [
+        {
+          "startOffset": 2736,
+          "endOffset": 3160,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_writeClose",
+      "ranges": [
+        {
+          "startOffset": 3164,
+          "endOffset": 3279,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addComments",
+      "ranges": [
+        {
+          "startOffset": 3283,
+          "endOffset": 3784,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "commit",
+      "ranges": [
+        {
+          "startOffset": 3788,
+          "endOffset": 3917,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

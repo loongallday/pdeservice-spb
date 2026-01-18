@@ -1,0 +1,50 @@
+{
+  "scriptId": "378",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-reports/services/technicianAnalyticsService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 5052,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getPerformance",
+      "ranges": [
+        {
+          "startOffset": 325,
+          "endOffset": 3502,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getUniqueTeamCount",
+      "ranges": [
+        {
+          "startOffset": 3580,
+          "endOffset": 4510,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getActiveTechnicianCount",
+      "ranges": [
+        {
+          "startOffset": 4578,
+          "endOffset": 5049,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

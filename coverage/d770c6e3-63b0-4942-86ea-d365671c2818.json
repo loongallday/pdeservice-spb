@@ -1,0 +1,204 @@
+{
+  "scriptId": "783",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bluebird/3.4.7/js/release/cancel.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3937,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 3936,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 3930,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 252,
+          "endOffset": 3926,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Promise.break.Promise.cancel",
+      "ranges": [
+        {
+          "startOffset": 482,
+          "endOffset": 1392,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._branchHasCancelled",
+      "ranges": [
+        {
+          "startOffset": 1435,
+          "endOffset": 1488,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._enoughBranchesHaveCancelled",
+      "ranges": [
+        {
+          "startOffset": 1540,
+          "endOffset": 1663,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._cancelBy",
+      "ranges": [
+        {
+          "startOffset": 1696,
+          "endOffset": 2042,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._cancelBranched",
+      "ranges": [
+        {
+          "startOffset": 2081,
+          "endOffset": 2172,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._cancel",
+      "ranges": [
+        {
+          "startOffset": 2203,
+          "endOffset": 2340,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._cancelPromises",
+      "ranges": [
+        {
+          "startOffset": 2379,
+          "endOffset": 2445,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._unsetOnCancel",
+      "ranges": [
+        {
+          "startOffset": 2483,
+          "endOffset": 2534,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._isCancellable",
+      "ranges": [
+        {
+          "startOffset": 2572,
+          "endOffset": 2639,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.isCancellable",
+      "ranges": [
+        {
+          "startOffset": 2676,
+          "endOffset": 2742,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._doInvokeOnCancel",
+      "ranges": [
+        {
+          "startOffset": 2783,
+          "endOffset": 3471,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._invokeOnCancel",
+      "ranges": [
+        {
+          "startOffset": 3510,
+          "endOffset": 3662,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._invokeInternalOnCancel",
+      "ranges": [
+        {
+          "startOffset": 3709,
+          "endOffset": 3849,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._resultCancelled",
+      "ranges": [
+        {
+          "startOffset": 3889,
+          "endOffset": 3922,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

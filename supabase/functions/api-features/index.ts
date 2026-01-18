@@ -1,6 +1,29 @@
 /**
- * Features API Edge Function
- * Handles feature retrieval based on employee level
+ * @fileoverview Features API Edge Function - Feature flag management
+ * @module api-features
+ *
+ * @description
+ * Handles feature retrieval based on employee permission level.
+ * Controls which features are visible/accessible to different user roles.
+ *
+ * Feature System:
+ * - Features are gated by minimum permission level (0-3)
+ * - Menu items grouped by category (group_label)
+ * - Used for dynamic UI rendering based on user role
+ *
+ * Permission Levels:
+ * - Level 0: Technician - Basic features
+ * - Level 1: Planner/Sales - Scheduling features
+ * - Level 2: Admin - Management features
+ * - Level 3: Superadmin - All features
+ *
+ * @endpoints
+ * ## Feature Endpoints
+ * - GET    /       - Get enabled features for employee level
+ * - GET    /menu   - Get menu items grouped by group_label
+ *
+ * @auth All endpoints require JWT authentication
+ * @table main_features - Feature & menu definitions (is_menu_item flag)
  */
 
 import { handleCORS } from '../_shared/cors.ts';

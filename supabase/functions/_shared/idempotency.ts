@@ -3,7 +3,7 @@
  */
 
 import { createServiceClient } from './supabase.ts';
-import { DatabaseError, ValidationError } from './error.ts';
+import { DatabaseError, IdempotencyError } from './error.ts';
 
 export interface IdempotencyResult {
   isNew: boolean;
@@ -47,14 +47,20 @@ export async function checkIdempotencyKey(
   if (existing) {
     // Key exists - check if it's from the same user
     if (existing.employee_id !== employeeId) {
-      throw new ValidationError('Idempotency key นี้ถูกใช้โดยพนักงานคนอื่นแล้ว');
+      throw new IdempotencyError(
+        'Idempotency key นี้ถูกใช้โดยพนักงานคนอื่นแล้ว กรุณาสร้าง key ใหม่ด้วย crypto.randomUUID()',
+        'DUPLICATE_KEY_DIFFERENT_USER'
+      );
     }
 
     // Check if request payload matches (to detect misuse of same key for different requests)
     const existingPayload = JSON.stringify(existing.request_payload);
     const newPayload = JSON.stringify(requestPayload);
     if (existingPayload !== newPayload) {
-      throw new ValidationError('Idempotency key นี้ถูกใช้กับข้อมูลที่แตกต่างกันแล้ว');
+      throw new IdempotencyError(
+        'Idempotency key ซ้ำ: key นี้ถูกใช้กับข้อมูลอื่นแล้ว กรุณาสร้าง key ใหม่ด้วย crypto.randomUUID() สำหรับทุกคำขอใหม่',
+        'DUPLICATE_KEY_DIFFERENT_PAYLOAD'
+      );
     }
 
     // Check if expired
@@ -88,7 +94,10 @@ export async function checkIdempotencyKey(
 
     // Operation is in progress - this is a concurrent duplicate request
     // Return a "processing" response
-    throw new ValidationError('คำขอกำลังดำเนินการอยู่ กรุณารอสักครู่');
+    throw new IdempotencyError(
+      'คำขอกำลังดำเนินการอยู่ กรุณารอสักครู่แล้วลองใหม่',
+      'REQUEST_IN_PROGRESS'
+    );
   }
 
   // Key doesn't exist - create a new in-progress entry

@@ -1,0 +1,61 @@
+{
+  "scriptId": "818",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/mkdirp/0.5.6/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3055,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 3054,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 3048,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "mkdirP",
+      "ranges": [
+        {
+          "startOffset": 365,
+          "endOffset": 1903,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "sync",
+      "ranges": [
+        {
+          "startOffset": 1919,
+          "endOffset": 3044,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

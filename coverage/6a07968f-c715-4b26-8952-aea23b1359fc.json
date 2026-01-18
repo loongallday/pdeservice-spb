@@ -1,0 +1,148 @@
+{
+  "scriptId": "509",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/utils/string-buf.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2178,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2177,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2171,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "StringBuf",
+      "ranges": [
+        {
+          "startOffset": 356,
+          "endOffset": 629,
+          "count": 1
+        },
+        {
+          "startOffset": 417,
+          "endOffset": 432,
+          "count": 0
+        },
+        {
+          "startOffset": 475,
+          "endOffset": 494,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "get length",
+      "ranges": [
+        {
+          "startOffset": 633,
+          "endOffset": 675,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get capacity",
+      "ranges": [
+        {
+          "startOffset": 679,
+          "endOffset": 728,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get buffer",
+      "ranges": [
+        {
+          "startOffset": 732,
+          "endOffset": 772,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toBuffer",
+      "ranges": [
+        {
+          "startOffset": 776,
+          "endOffset": 1011,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "reset",
+      "ranges": [
+        {
+          "startOffset": 1015,
+          "endOffset": 1124,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_grow",
+      "ranges": [
+        {
+          "startOffset": 1128,
+          "endOffset": 1314,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addText",
+      "ranges": [
+        {
+          "startOffset": 1318,
+          "endOffset": 1779,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addStringBuf",
+      "ranges": [
+        {
+          "startOffset": 1783,
+          "endOffset": 2137,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

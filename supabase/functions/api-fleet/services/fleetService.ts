@@ -82,6 +82,26 @@ export interface GarageInput {
 
 export class FleetService {
   /**
+   * Validate date format (YYYY-MM-DD)
+   */
+  private static validateDateFormat(date: string | undefined, fieldName: string = 'date'): string | undefined {
+    if (!date) return undefined;
+
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!dateRegex.test(date)) {
+      throw new Error(`Invalid ${fieldName} format. Expected YYYY-MM-DD, got: ${date}`);
+    }
+
+    // Also validate it's a valid date
+    const parsed = new Date(date);
+    if (isNaN(parsed.getTime())) {
+      throw new Error(`Invalid ${fieldName}. Not a valid date: ${date}`);
+    }
+
+    return date;
+  }
+
+  /**
    * Calculate distance between two points (Haversine formula)
    */
   private static calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
@@ -285,6 +305,9 @@ export class FleetService {
   static async getWorkLocations(vehicleId: string, date?: string): Promise<WorkLocation[]> {
     const supabase = createServiceClient();
 
+    // Validate date format if provided
+    const validatedDate = this.validateDateFormat(date, 'date');
+
     // First get all employees assigned to this vehicle
     const { data: vehicleEmployees, error: vehicleError } = await supabase
       .from('jct_fleet_vehicle_employees')
@@ -303,7 +326,7 @@ export class FleetService {
     const employeeIds = vehicleEmployees.map((ve) => ve.employee_id);
 
     // Determine date range
-    const targetDate = date || new Date().toISOString().split('T')[0];
+    const targetDate = validatedDate || new Date().toISOString().split('T')[0];
 
     // Get confirmed tickets for these employees on the target date
     // Query from jct_ticket_employees_cf which has the date filter
@@ -402,16 +425,21 @@ export class FleetService {
   static async getRouteHistory(vehicleId: string, params: RouteHistoryParams): Promise<VehicleHistoryPoint[]> {
     const supabase = createServiceClient();
 
+    // Validate date formats if provided
+    const validatedDate = this.validateDateFormat(params.date, 'date');
+    const validatedStartDate = this.validateDateFormat(params.start_date, 'start_date');
+    const validatedEndDate = this.validateDateFormat(params.end_date, 'end_date');
+
     // Default to today if no date specified
     let startDate: string;
     let endDate: string;
 
-    if (params.start_date && params.end_date) {
-      startDate = params.start_date;
-      endDate = params.end_date;
-    } else if (params.date) {
-      startDate = `${params.date}T00:00:00`;
-      endDate = `${params.date}T23:59:59`;
+    if (validatedStartDate && validatedEndDate) {
+      startDate = `${validatedStartDate}T00:00:00`;
+      endDate = `${validatedEndDate}T23:59:59`;
+    } else if (validatedDate) {
+      startDate = `${validatedDate}T00:00:00`;
+      endDate = `${validatedDate}T23:59:59`;
     } else {
       const today = new Date().toISOString().split('T')[0];
       startDate = `${today}T00:00:00`;

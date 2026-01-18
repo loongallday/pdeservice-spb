@@ -1,0 +1,121 @@
+{
+  "scriptId": "459",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/jszip/3.10.1/lib/zipObject.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 4758,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 4757,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 4751,
+          "count": 1
+        },
+        {
+          "startOffset": 4661,
+          "endOffset": 4720,
+          "count": 5
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "ZipObject",
+      "ranges": [
+        {
+          "startOffset": 733,
+          "endOffset": 1207,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "internalStream",
+      "ranges": [
+        {
+          "startOffset": 1427,
+          "endOffset": 2416,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "async",
+      "ranges": [
+        {
+          "startOffset": 2672,
+          "endOffset": 2768,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "nodeStream",
+      "ranges": [
+        {
+          "startOffset": 3014,
+          "endOffset": 3130,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_compressWorker",
+      "ranges": [
+        {
+          "startOffset": 3416,
+          "endOffset": 3951,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_decompressWorker",
+      "ranges": [
+        {
+          "startOffset": 4096,
+          "endOffset": 4382,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "removedFn",
+      "ranges": [
+        {
+          "startOffset": 4497,
+          "endOffset": 4611,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

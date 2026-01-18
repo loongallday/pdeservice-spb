@@ -1,0 +1,1547 @@
+{
+  "scriptId": "829",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/big-integer/1.6.52/BigInteger.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 52188,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 52187,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 52181,
+          "count": 1
+        },
+        {
+          "startOffset": 52098,
+          "endOffset": 52111,
+          "count": 0
+        },
+        {
+          "startOffset": 52113,
+          "endOffset": 52177,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 235,
+          "endOffset": 51917,
+          "count": 1
+        },
+        {
+          "startOffset": 35535,
+          "endOffset": 35593,
+          "count": 23
+        },
+        {
+          "startOffset": 51225,
+          "endOffset": 51320,
+          "count": 1000
+        },
+        {
+          "startOffset": 51284,
+          "endOffset": 51313,
+          "count": 999
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Integer",
+      "ranges": [
+        {
+          "startOffset": 545,
+          "endOffset": 835,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger",
+      "ranges": [
+        {
+          "startOffset": 843,
+          "endOffset": 971,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SmallInteger",
+      "ranges": [
+        {
+          "startOffset": 1041,
+          "endOffset": 1169,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "NativeBigInt",
+      "ranges": [
+        {
+          "startOffset": 1241,
+          "endOffset": 1307,
+          "count": 1999
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "isPrecise",
+      "ranges": [
+        {
+          "startOffset": 1379,
+          "endOffset": 1454,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "smallToArray",
+      "ranges": [
+        {
+          "startOffset": 1462,
+          "endOffset": 1789,
+          "count": 1
+        },
+        {
+          "startOffset": 1620,
+          "endOffset": 1631,
+          "count": 0
+        },
+        {
+          "startOffset": 1668,
+          "endOffset": 1706,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "arrayToSmall",
+      "ranges": [
+        {
+          "startOffset": 1797,
+          "endOffset": 2285,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "trim",
+      "ranges": [
+        {
+          "startOffset": 2293,
+          "endOffset": 2403,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createArray",
+      "ranges": [
+        {
+          "startOffset": 2411,
+          "endOffset": 2680,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "truncate",
+      "ranges": [
+        {
+          "startOffset": 2688,
+          "endOffset": 2789,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "add",
+      "ranges": [
+        {
+          "startOffset": 2797,
+          "endOffset": 3426,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addAny",
+      "ranges": [
+        {
+          "startOffset": 3434,
+          "endOffset": 3544,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addSmall",
+      "ranges": [
+        {
+          "startOffset": 3552,
+          "endOffset": 4096,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.add",
+      "ranges": [
+        {
+          "startOffset": 4131,
+          "endOffset": 4488,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SmallInteger.add",
+      "ranges": [
+        {
+          "startOffset": 4585,
+          "endOffset": 4997,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "NativeBigInt.add",
+      "ranges": [
+        {
+          "startOffset": 5098,
+          "endOffset": 5187,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "subtract",
+      "ranges": [
+        {
+          "startOffset": 5258,
+          "endOffset": 6142,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "subtractAny",
+      "ranges": [
+        {
+          "startOffset": 6150,
+          "endOffset": 6599,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "subtractSmall",
+      "ranges": [
+        {
+          "startOffset": 6607,
+          "endOffset": 7267,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.subtract",
+      "ranges": [
+        {
+          "startOffset": 7307,
+          "endOffset": 7624,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SmallInteger.subtract",
+      "ranges": [
+        {
+          "startOffset": 7732,
+          "endOffset": 8063,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "NativeBigInt.subtract",
+      "ranges": [
+        {
+          "startOffset": 8175,
+          "endOffset": 8264,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.negate",
+      "ranges": [
+        {
+          "startOffset": 8371,
+          "endOffset": 8447,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SmallInteger.negate",
+      "ranges": [
+        {
+          "startOffset": 8486,
+          "endOffset": 8641,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "NativeBigInt.negate",
+      "ranges": [
+        {
+          "startOffset": 8680,
+          "endOffset": 8747,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.abs",
+      "ranges": [
+        {
+          "startOffset": 8782,
+          "endOffset": 8853,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SmallInteger.abs",
+      "ranges": [
+        {
+          "startOffset": 8889,
+          "endOffset": 8965,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "NativeBigInt.abs",
+      "ranges": [
+        {
+          "startOffset": 9001,
+          "endOffset": 9099,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "multiplyLong",
+      "ranges": [
+        {
+          "startOffset": 9109,
+          "endOffset": 9725,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "multiplySmall",
+      "ranges": [
+        {
+          "startOffset": 9733,
+          "endOffset": 10276,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "shiftLeft",
+      "ranges": [
+        {
+          "startOffset": 10284,
+          "endOffset": 10403,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "multiplyKaratsuba",
+      "ranges": [
+        {
+          "startOffset": 10411,
+          "endOffset": 11024,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "useKaratsuba",
+      "ranges": [
+        {
+          "startOffset": 11243,
+          "endOffset": 11348,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.multiply",
+      "ranges": [
+        {
+          "startOffset": 11388,
+          "endOffset": 12120,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "multiplySmallAndArray",
+      "ranges": [
+        {
+          "startOffset": 12196,
+          "endOffset": 12428,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SmallInteger._multiplyBySmall",
+      "ranges": [
+        {
+          "startOffset": 12476,
+          "endOffset": 12732,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger._multiplyBySmall",
+      "ranges": [
+        {
+          "startOffset": 12779,
+          "endOffset": 13031,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SmallInteger.multiply",
+      "ranges": [
+        {
+          "startOffset": 13072,
+          "endOffset": 13147,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "NativeBigInt.multiply",
+      "ranges": [
+        {
+          "startOffset": 13259,
+          "endOffset": 13348,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "square",
+      "ranges": [
+        {
+          "startOffset": 13425,
+          "endOffset": 14068,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.square",
+      "ranges": [
+        {
+          "startOffset": 14106,
+          "endOffset": 14185,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SmallInteger.square",
+      "ranges": [
+        {
+          "startOffset": 14226,
+          "endOffset": 14438,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "NativeBigInt.square",
+      "ranges": [
+        {
+          "startOffset": 14479,
+          "endOffset": 14559,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "divMod1",
+      "ranges": [
+        {
+          "startOffset": 14567,
+          "endOffset": 17000,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "divMod2",
+      "ranges": [
+        {
+          "startOffset": 17008,
+          "endOffset": 18232,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "divModSmall",
+      "ranges": [
+        {
+          "startOffset": 18240,
+          "endOffset": 18731,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "divModAny",
+      "ranges": [
+        {
+          "startOffset": 18739,
+          "endOffset": 21006,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.divmod",
+      "ranges": [
+        {
+          "startOffset": 21044,
+          "endOffset": 21205,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.divide",
+      "ranges": [
+        {
+          "startOffset": 21344,
+          "endOffset": 21404,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "NativeBigInt.over.NativeBigInt.divide",
+      "ranges": [
+        {
+          "startOffset": 21473,
+          "endOffset": 21562,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.mod",
+      "ranges": [
+        {
+          "startOffset": 21722,
+          "endOffset": 21782,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "NativeBigInt.mod.NativeBigInt.remainder",
+      "ranges": [
+        {
+          "startOffset": 21853,
+          "endOffset": 21942,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.pow",
+      "ranges": [
+        {
+          "startOffset": 22106,
+          "endOffset": 23025,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "NativeBigInt.pow",
+      "ranges": [
+        {
+          "startOffset": 23123,
+          "endOffset": 23837,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.modPow",
+      "ranges": [
+        {
+          "startOffset": 23875,
+          "endOffset": 24496,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "compareAbs",
+      "ranges": [
+        {
+          "startOffset": 24603,
+          "endOffset": 24878,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.compareAbs",
+      "ranges": [
+        {
+          "startOffset": 24920,
+          "endOffset": 25096,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SmallInteger.compareAbs",
+      "ranges": [
+        {
+          "startOffset": 25139,
+          "endOffset": 25394,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "NativeBigInt.compareAbs",
+      "ranges": [
+        {
+          "startOffset": 25437,
+          "endOffset": 25631,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.compare",
+      "ranges": [
+        {
+          "startOffset": 25670,
+          "endOffset": 26256,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SmallInteger.compare",
+      "ranges": [
+        {
+          "startOffset": 26366,
+          "endOffset": 26806,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "NativeBigInt.compare",
+      "ranges": [
+        {
+          "startOffset": 26920,
+          "endOffset": 27186,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.equals",
+      "ranges": [
+        {
+          "startOffset": 27296,
+          "endOffset": 27356,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.notEquals",
+      "ranges": [
+        {
+          "startOffset": 27578,
+          "endOffset": 27638,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.greater",
+      "ranges": [
+        {
+          "startOffset": 27870,
+          "endOffset": 27928,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.lesser",
+      "ranges": [
+        {
+          "startOffset": 28150,
+          "endOffset": 28208,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.greaterOrEquals",
+      "ranges": [
+        {
+          "startOffset": 28436,
+          "endOffset": 28495,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.lesserOrEquals",
+      "ranges": [
+        {
+          "startOffset": 28752,
+          "endOffset": 28811,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.isEven",
+      "ranges": [
+        {
+          "startOffset": 29057,
+          "endOffset": 29120,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SmallInteger.isEven",
+      "ranges": [
+        {
+          "startOffset": 29159,
+          "endOffset": 29219,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "NativeBigInt.isEven",
+      "ranges": [
+        {
+          "startOffset": 29258,
+          "endOffset": 29334,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.isOdd",
+      "ranges": [
+        {
+          "startOffset": 29371,
+          "endOffset": 29434,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SmallInteger.isOdd",
+      "ranges": [
+        {
+          "startOffset": 29472,
+          "endOffset": 29532,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "NativeBigInt.isOdd",
+      "ranges": [
+        {
+          "startOffset": 29570,
+          "endOffset": 29646,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.isPositive",
+      "ranges": [
+        {
+          "startOffset": 29688,
+          "endOffset": 29736,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SmallInteger.isPositive",
+      "ranges": [
+        {
+          "startOffset": 29779,
+          "endOffset": 29831,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.isNegative",
+      "ranges": [
+        {
+          "startOffset": 29950,
+          "endOffset": 29997,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SmallInteger.isNegative",
+      "ranges": [
+        {
+          "startOffset": 30040,
+          "endOffset": 30092,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.isUnit",
+      "ranges": [
+        {
+          "startOffset": 30207,
+          "endOffset": 30250,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SmallInteger.isUnit",
+      "ranges": [
+        {
+          "startOffset": 30289,
+          "endOffset": 30353,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "NativeBigInt.isUnit",
+      "ranges": [
+        {
+          "startOffset": 30392,
+          "endOffset": 30460,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.isZero",
+      "ranges": [
+        {
+          "startOffset": 30498,
+          "endOffset": 30541,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SmallInteger.isZero",
+      "ranges": [
+        {
+          "startOffset": 30580,
+          "endOffset": 30634,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "NativeBigInt.isZero",
+      "ranges": [
+        {
+          "startOffset": 30673,
+          "endOffset": 30735,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.isDivisibleBy",
+      "ranges": [
+        {
+          "startOffset": 30780,
+          "endOffset": 31006,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isBasicPrime",
+      "ranges": [
+        {
+          "startOffset": 31134,
+          "endOffset": 31503,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "millerRabinTest",
+      "ranges": [
+        {
+          "startOffset": 31511,
+          "endOffset": 32152,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.isPrime",
+      "ranges": [
+        {
+          "startOffset": 32269,
+          "endOffset": 32831,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.isProbablePrime",
+      "ranges": [
+        {
+          "startOffset": 32980,
+          "endOffset": 33357,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.modInv",
+      "ranges": [
+        {
+          "startOffset": 33521,
+          "endOffset": 34203,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.next",
+      "ranges": [
+        {
+          "startOffset": 34340,
+          "endOffset": 34549,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SmallInteger.next",
+      "ranges": [
+        {
+          "startOffset": 34586,
+          "endOffset": 34761,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "NativeBigInt.next",
+      "ranges": [
+        {
+          "startOffset": 34798,
+          "endOffset": 34876,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.prev",
+      "ranges": [
+        {
+          "startOffset": 34912,
+          "endOffset": 35116,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SmallInteger.prev",
+      "ranges": [
+        {
+          "startOffset": 35153,
+          "endOffset": 35328,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "NativeBigInt.prev",
+      "ranges": [
+        {
+          "startOffset": 35365,
+          "endOffset": 35443,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "shift_isSmall",
+      "ranges": [
+        {
+          "startOffset": 35694,
+          "endOffset": 35765,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.shiftLeft",
+      "ranges": [
+        {
+          "startOffset": 35806,
+          "endOffset": 36300,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.shiftRight",
+      "ranges": [
+        {
+          "startOffset": 36450,
+          "endOffset": 37166,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "bitwise",
+      "ranges": [
+        {
+          "startOffset": 37285,
+          "endOffset": 38498,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.not",
+      "ranges": [
+        {
+          "startOffset": 38533,
+          "endOffset": 38591,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.and",
+      "ranges": [
+        {
+          "startOffset": 38716,
+          "endOffset": 38806,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.or",
+      "ranges": [
+        {
+          "startOffset": 38930,
+          "endOffset": 39020,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.xor",
+      "ranges": [
+        {
+          "startOffset": 39142,
+          "endOffset": 39232,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "roughLOB",
+      "ranges": [
+        {
+          "startOffset": 39418,
+          "endOffset": 39836,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "integerLogarithm",
+      "ranges": [
+        {
+          "startOffset": 39844,
+          "endOffset": 40238,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.bitLength",
+      "ranges": [
+        {
+          "startOffset": 40279,
+          "endOffset": 40585,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "max",
+      "ranges": [
+        {
+          "startOffset": 40700,
+          "endOffset": 40821,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "min",
+      "ranges": [
+        {
+          "startOffset": 40827,
+          "endOffset": 40947,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "gcd",
+      "ranges": [
+        {
+          "startOffset": 40953,
+          "endOffset": 41770,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "lcm",
+      "ranges": [
+        {
+          "startOffset": 41776,
+          "endOffset": 41920,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "randBetween",
+      "ranges": [
+        {
+          "startOffset": 41926,
+          "endOffset": 42705,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseBase",
+      "ranges": [
+        {
+          "startOffset": 42729,
+          "endOffset": 44263,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseBaseFromArray",
+      "ranges": [
+        {
+          "startOffset": 44272,
+          "endOffset": 44584,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "stringify",
+      "ranges": [
+        {
+          "startOffset": 44592,
+          "endOffset": 44809,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toBase",
+      "ranges": [
+        {
+          "startOffset": 44817,
+          "endOffset": 46738,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toBaseString",
+      "ranges": [
+        {
+          "startOffset": 46746,
+          "endOffset": 46972,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.toArray",
+      "ranges": [
+        {
+          "startOffset": 47011,
+          "endOffset": 47073,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SmallInteger.toArray",
+      "ranges": [
+        {
+          "startOffset": 47115,
+          "endOffset": 47177,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "NativeBigInt.toArray",
+      "ranges": [
+        {
+          "startOffset": 47219,
+          "endOffset": 47281,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.toString",
+      "ranges": [
+        {
+          "startOffset": 47322,
+          "endOffset": 47776,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SmallInteger.toString",
+      "ranges": [
+        {
+          "startOffset": 47819,
+          "endOffset": 48018,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "NativeBigInt.toJSON.BigInteger.toJSON.SmallInteger.toJSON",
+      "ranges": [
+        {
+          "startOffset": 48195,
+          "endOffset": 48234,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BigInteger.valueOf",
+      "ranges": [
+        {
+          "startOffset": 48273,
+          "endOffset": 48340,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SmallInteger.valueOf",
+      "ranges": [
+        {
+          "startOffset": 48451,
+          "endOffset": 48499,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "NativeBigInt.valueOf.NativeBigInt.toJSNumber",
+      "ranges": [
+        {
+          "startOffset": 48648,
+          "endOffset": 48715,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseStringValue",
+      "ranges": [
+        {
+          "startOffset": 48723,
+          "endOffset": 50462,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseNumberValue",
+      "ranges": [
+        {
+          "startOffset": 50470,
+          "endOffset": 50813,
+          "count": 1999
+        },
+        {
+          "startOffset": 50597,
+          "endOffset": 50812,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "parseValue",
+      "ranges": [
+        {
+          "startOffset": 50821,
+          "endOffset": 51141,
+          "count": 1999
+        },
+        {
+          "startOffset": 50935,
+          "endOffset": 51140,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Integer.isInstance",
+      "ranges": [
+        {
+          "startOffset": 51575,
+          "endOffset": 51681,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Integer.fromArray",
+      "ranges": [
+        {
+          "startOffset": 51750,
+          "endOffset": 51890,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 52128,
+          "endOffset": 52172,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

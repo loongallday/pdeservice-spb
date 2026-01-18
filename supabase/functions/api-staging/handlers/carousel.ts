@@ -45,9 +45,8 @@ export async function getTicketByCode(
 
   const ticket = await CarouselService.getTicketByCode(code);
 
-  if (!ticket) {
-    return success({ found: false, ticket: null });
-  }
-
-  return success({ found: true, ticket });
+  return success({
+    found: !!ticket,
+    ticket: ticket || null,
+  });
 }

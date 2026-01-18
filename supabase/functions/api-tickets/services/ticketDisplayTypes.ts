@@ -1,8 +1,45 @@
 /**
- * Ticket display types - Display-ready response interfaces for the enhanced ticket search API
- * 
- * These types represent the transformed data that can be used directly by the frontend
- * without any additional processing or lookup.
+ * @fileoverview Ticket display types - Frontend-ready response interfaces
+ * @module api-tickets/services/ticketDisplayTypes
+ *
+ * Defines TypeScript interfaces for ticket search API responses that are
+ * fully resolved and ready for direct UI rendering without transformation.
+ *
+ * Main Types:
+ * - TicketDisplayItem: Complete ticket with all data pre-resolved
+ * - TicketLocation: Pre-resolved Thai administrative location
+ * - TicketAppointment: Appointment with formatted display string
+ * - TicketEmployee: Employee info for assignment display
+ * - TicketMerchandiseSummary: Equipment summary
+ * - TicketWorkGiver: Work source information
+ * - TicketIds: Raw IDs for update forms
+ *
+ * Helper Functions:
+ * - formatAppointmentTypeDisplay(): Format appointment for display
+ * - normalizeAppointmentType(): Normalize appointment type strings
+ *
+ * @description
+ * Design Philosophy:
+ * The frontend should NOT need to:
+ * - Look up province/district names from codes
+ * - Format appointment time ranges
+ * - Join employee names from IDs
+ * - Calculate counts or summaries
+ *
+ * All this is done server-side in ticketSearchService.ts before
+ * returning TicketDisplayItem objects.
+ *
+ * Include Modes:
+ * - 'minimal': Reduced data for table views (excludes _ids)
+ * - 'full': Complete data including _ids for edit forms
+ *
+ * Appointment Type Display:
+ * - full_day → "เต็มวัน"
+ * - half_morning → "ครึ่งเช้า"
+ * - half_afternoon → "ครึ่งบ่าย"
+ * - time_range/scheduled → "09:00 - 12:00"
+ * - call_to_schedule → "รอนัดหมาย"
+ * - backlog → "Backlog"
  */
 
 /**

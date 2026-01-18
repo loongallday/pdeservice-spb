@@ -1,0 +1,270 @@
+{
+  "scriptId": "686",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/stream/xlsx/workbook-writer.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 9998,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 9997,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 9991,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "WorkbookWriter",
+      "ranges": [
+        {
+          "startOffset": 1154,
+          "endOffset": 2384,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get definedNames",
+      "ranges": [
+        {
+          "startOffset": 2388,
+          "endOffset": 2443,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_openStream",
+      "ranges": [
+        {
+          "startOffset": 2447,
+          "endOffset": 2666,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_commitWorksheets",
+      "ranges": [
+        {
+          "startOffset": 2670,
+          "endOffset": 3225,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "commit",
+      "ranges": [
+        {
+          "startOffset": 3229,
+          "endOffset": 3643,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get nextId",
+      "ranges": [
+        {
+          "startOffset": 3647,
+          "endOffset": 3885,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addImage",
+      "ranges": [
+        {
+          "startOffset": 3889,
+          "endOffset": 4089,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getImage",
+      "ranges": [
+        {
+          "startOffset": 4093,
+          "endOffset": 4138,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addWorksheet",
+      "ranges": [
+        {
+          "startOffset": 4142,
+          "endOffset": 5242,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getWorksheet",
+      "ranges": [
+        {
+          "startOffset": 5246,
+          "endOffset": 5572,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addStyles",
+      "ranges": [
+        {
+          "startOffset": 5576,
+          "endOffset": 5719,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addThemes",
+      "ranges": [
+        {
+          "startOffset": 5723,
+          "endOffset": 5866,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addOfficeRels",
+      "ranges": [
+        {
+          "startOffset": 5870,
+          "endOffset": 6336,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addContentTypes",
+      "ranges": [
+        {
+          "startOffset": 6340,
+          "endOffset": 6760,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addMedia",
+      "ranges": [
+        {
+          "startOffset": 6764,
+          "endOffset": 7470,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addApp",
+      "ranges": [
+        {
+          "startOffset": 7474,
+          "endOffset": 7764,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addCore",
+      "ranges": [
+        {
+          "startOffset": 7768,
+          "endOffset": 7983,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addSharedStrings",
+      "ranges": [
+        {
+          "startOffset": 7987,
+          "endOffset": 8340,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addWorkbookRels",
+      "ranges": [
+        {
+          "startOffset": 8344,
+          "endOffset": 9260,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addWorkbook",
+      "ranges": [
+        {
+          "startOffset": 9264,
+          "endOffset": 9702,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_finalize",
+      "ranges": [
+        {
+          "startOffset": 9706,
+          "endOffset": 9952,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

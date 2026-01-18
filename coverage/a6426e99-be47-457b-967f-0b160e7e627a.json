@@ -1,0 +1,28 @@
+{
+  "scriptId": "339",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-reference-data/handlers/workGivers.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 513,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getWorkGivers",
+      "ranges": [
+        {
+          "startOffset": 220,
+          "endOffset": 512,
+          "count": 2
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

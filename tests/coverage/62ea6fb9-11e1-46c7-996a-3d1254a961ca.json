@@ -1,0 +1,66 @@
+{
+  "scriptId": "712",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/concat-map/0.0.1/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 575,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 574,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 568,
+          "count": 1
+        },
+        {
+          "startOffset": 476,
+          "endOffset": 564,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 238,
+          "endOffset": 445,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isArray",
+      "ranges": [
+        {
+          "startOffset": 479,
+          "endOffset": 564,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

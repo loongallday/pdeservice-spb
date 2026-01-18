@@ -1,0 +1,446 @@
+{
+  "scriptId": "426",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/xlsx/xlsx.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 22524,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 22523,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 22517,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "fsReadFileAsync",
+      "ranges": [
+        {
+          "startOffset": 1398,
+          "endOffset": 1645,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "XLSX",
+      "ranges": [
+        {
+          "startOffset": 1662,
+          "endOffset": 1719,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "readFile",
+      "ranges": [
+        {
+          "startOffset": 1912,
+          "endOffset": 2288,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseRels",
+      "ranges": [
+        {
+          "startOffset": 2292,
+          "endOffset": 2397,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseWorkbook",
+      "ranges": [
+        {
+          "startOffset": 2401,
+          "endOffset": 2505,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseSharedStrings",
+      "ranges": [
+        {
+          "startOffset": 2509,
+          "endOffset": 2623,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "reconcile",
+      "ranges": [
+        {
+          "startOffset": 2627,
+          "endOffset": 4840,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_processWorksheetEntry",
+      "ranges": [
+        {
+          "startOffset": 4844,
+          "endOffset": 5133,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_processCommentEntry",
+      "ranges": [
+        {
+          "startOffset": 5137,
+          "endOffset": 5332,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_processTableEntry",
+      "ranges": [
+        {
+          "startOffset": 5336,
+          "endOffset": 5525,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_processWorksheetRelsEntry",
+      "ranges": [
+        {
+          "startOffset": 5529,
+          "endOffset": 5744,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_processMediaEntry",
+      "ranges": [
+        {
+          "startOffset": 5748,
+          "endOffset": 6608,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_processDrawingEntry",
+      "ranges": [
+        {
+          "startOffset": 6612,
+          "endOffset": 6790,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_processDrawingRelsEntry",
+      "ranges": [
+        {
+          "startOffset": 6794,
+          "endOffset": 6997,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_processVmlDrawingEntry",
+      "ranges": [
+        {
+          "startOffset": 7001,
+          "endOffset": 7213,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_processThemeEntry",
+      "ranges": [
+        {
+          "startOffset": 7217,
+          "endOffset": 7649,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createInputStream",
+      "ranges": [
+        {
+          "startOffset": 7830,
+          "endOffset": 8108,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "read",
+      "ranges": [
+        {
+          "startOffset": 8112,
+          "endOffset": 8488,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "load",
+      "ranges": [
+        {
+          "startOffset": 8492,
+          "endOffset": 13878,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addMedia",
+      "ranges": [
+        {
+          "startOffset": 13973,
+          "endOffset": 14762,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addDrawings",
+      "ranges": [
+        {
+          "startOffset": 14766,
+          "endOffset": 15288,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addTables",
+      "ranges": [
+        {
+          "startOffset": 15292,
+          "endOffset": 15645,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addContentTypes",
+      "ranges": [
+        {
+          "startOffset": 15649,
+          "endOffset": 15819,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addApp",
+      "ranges": [
+        {
+          "startOffset": 15823,
+          "endOffset": 15972,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addCore",
+      "ranges": [
+        {
+          "startOffset": 15976,
+          "endOffset": 16115,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addThemes",
+      "ranges": [
+        {
+          "startOffset": 16119,
+          "endOffset": 16370,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addOfficeRels",
+      "ranges": [
+        {
+          "startOffset": 16374,
+          "endOffset": 16783,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addWorkbookRels",
+      "ranges": [
+        {
+          "startOffset": 16787,
+          "endOffset": 17624,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addSharedStrings",
+      "ranges": [
+        {
+          "startOffset": 17628,
+          "endOffset": 17809,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addStyles",
+      "ranges": [
+        {
+          "startOffset": 17813,
+          "endOffset": 17947,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addWorkbook",
+      "ranges": [
+        {
+          "startOffset": 17951,
+          "endOffset": 18088,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addWorksheets",
+      "ranges": [
+        {
+          "startOffset": 18092,
+          "endOffset": 19253,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_finalize",
+      "ranges": [
+        {
+          "startOffset": 19257,
+          "endOffset": 19448,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "prepareModel",
+      "ranges": [
+        {
+          "startOffset": 19452,
+          "endOffset": 21092,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "write",
+      "ranges": [
+        {
+          "startOffset": 21096,
+          "endOffset": 21913,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "writeFile",
+      "ranges": [
+        {
+          "startOffset": 21917,
+          "endOffset": 22312,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "writeBuffer",
+      "ranges": [
+        {
+          "startOffset": 22316,
+          "endOffset": 22449,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

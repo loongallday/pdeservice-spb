@@ -1,0 +1,105 @@
+{
+  "scriptId": "817",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/fstream/1.0.12/lib/dir-writer.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 4731,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 4730,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 4724,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "DirWriter",
+      "ranges": [
+        {
+          "startOffset": 724,
+          "endOffset": 1128,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "DirWriter._create",
+      "ranges": [
+        {
+          "startOffset": 1160,
+          "endOffset": 1388,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "DirWriter.write",
+      "ranges": [
+        {
+          "startOffset": 1638,
+          "endOffset": 1667,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "DirWriter.end",
+      "ranges": [
+        {
+          "startOffset": 1695,
+          "endOffset": 1749,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "DirWriter.add",
+      "ranges": [
+        {
+          "startOffset": 1777,
+          "endOffset": 2195,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "DirWriter._process",
+      "ranges": [
+        {
+          "startOffset": 2228,
+          "endOffset": 4721,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

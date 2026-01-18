@@ -1,0 +1,94 @@
+{
+  "scriptId": "704",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/archiver-utils/2.1.0/file.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 7044,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 7043,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 7037,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "processPatterns",
+      "ranges": [
+        {
+          "startOffset": 925,
+          "endOffset": 1629,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "file.exists",
+      "ranges": [
+        {
+          "startOffset": 1682,
+          "endOffset": 1784,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "file.expand",
+      "ranges": [
+        {
+          "startOffset": 1881,
+          "endOffset": 3147,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "file.expandMapping",
+      "ranges": [
+        {
+          "startOffset": 3224,
+          "endOffset": 4637,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "file.normalizeFilesArray",
+      "ranges": [
+        {
+          "startOffset": 4729,
+          "endOffset": 7032,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

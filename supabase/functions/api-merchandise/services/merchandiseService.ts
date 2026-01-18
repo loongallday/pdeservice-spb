@@ -1,5 +1,38 @@
 /**
- * Merchandise service - Business logic for merchandise operations
+ * @fileoverview Merchandise service - Business logic for equipment inventory
+ * @module api-merchandise/services/merchandiseService
+ *
+ * Provides CRUD and search operations for merchandise (equipment/UPS units):
+ * - getAll(): List merchandise with pagination and filters
+ * - getById(): Get single merchandise with relations
+ * - getBySite(): Get merchandise filtered by site
+ * - getByModel(): Get merchandise filtered by model
+ * - create(): Create new merchandise (validates model/site)
+ * - update(): Update merchandise
+ * - delete(): Delete merchandise (checks foreign keys)
+ * - search(): Search by serial number with pagination
+ * - hint(): Quick search (up to 5 results)
+ * - getReplacementChain(): Get equipment replacement history
+ * - checkDuplicateSerial(): Check if serial number exists
+ *
+ * @description
+ * Key Features:
+ * - Serial number tracking
+ * - Model reference (main_models)
+ * - Site assignment (main_sites)
+ * - Distributor/Dealer tracking (main_companies)
+ * - Replacement chain (replaced_by_id) for equipment history
+ * - PM count tracking
+ *
+ * Replacement Chain:
+ * - Traverses both predecessors and successors
+ * - Returns complete chain from oldest to newest
+ * - Shows current position in chain
+ *
+ * @table main_merchandise - Primary merchandise data
+ * @table main_models - Model reference
+ * @table main_sites - Site reference
+ * @table main_companies - Distributor/dealer reference
  */
 
 import { createServiceClient } from '../../_shared/supabase.ts';
@@ -43,25 +76,44 @@ export class MerchandiseService {
     const supabase = createServiceClient();
     const { page, limit, search, siteId, modelId } = params;
 
-    // Build query
+    // Build count query
     let countQuery = supabase
       .from('main_merchandise')
       .select('*', { count: 'exact', head: true });
 
+    // Build data query
     let dataQuery = supabase
       .from('main_merchandise')
       .select(`
-        *,
-        model:main_models!main_merchandise_model_id_fkey (
-          id,
-          model,
-          name,
-          website_url
-        ),
+        id,
+        serial_no,
+        model_id,
+        site_id,
+        pm_count,
         site:main_sites!main_merchandise_site_id_fkey (
           id,
           name
-        )
+        ),
+        model:main_models!main_merchandise_model_id_fkey (
+          id,
+          model,
+          name
+        ),
+        distributor_id,
+        dealer_id,
+        distributor:main_companies!main_merchandise_distributor_id_fkey (
+          tax_id,
+          name_th,
+          name_en
+        ),
+        dealer:main_companies!main_merchandise_dealer_id_fkey (
+          tax_id,
+          name_th,
+          name_en
+        ),
+        replaced_by_id,
+        created_at,
+        updated_at
       `);
 
     // Apply filters
@@ -93,17 +145,61 @@ export class MerchandiseService {
     // Get paginated data
     const offset = (page - 1) * limit;
     const { data, error } = await dataQuery
-      .range(offset, offset + limit - 1)
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1);
 
     if (error) {
       console.error('[MerchandiseService] Query error:', error);
       throw new DatabaseError(error.message);
     }
 
+    // Collect all unique replaced_by_id values
+    const replacedByIds = (data || [])
+      .map((m: Record<string, unknown>) => m.replaced_by_id)
+      .filter((id: unknown): id is string => typeof id === 'string' && id.length > 0);
+
+    // Fetch all replaced_by merchandise serial_nos in one query
+    let replacedByMap: Record<string, string> = {};
+    if (replacedByIds.length > 0) {
+      const { data: replacedByData, error: replacedByError } = await supabase
+        .from('main_merchandise')
+        .select('id, serial_no')
+        .in('id', replacedByIds);
+
+      if (!replacedByError && replacedByData) {
+        replacedByMap = replacedByData.reduce((acc: Record<string, string>, item: Record<string, unknown>) => {
+          if (item.id && item.serial_no) {
+            acc[item.id as string] = item.serial_no as string;
+          }
+          return acc;
+        }, {});
+      }
+    }
+
+    // Transform data to remove site_id, model_id, pm_count, distributor_id, dealer_id, replaced_by_id
+    // and format distributor, dealer as nested objects, replaced_by as string
+    const transformedData = (data || []).map((merchandise) => {
+      const { site_id, model_id, pm_count, distributor_id, dealer_id, replaced_by_id, ...rest } = merchandise;
+
+      return {
+        ...rest,
+        distributor: merchandise.distributor ? {
+          id: merchandise.distributor.tax_id,
+          name: merchandise.distributor.name_th || merchandise.distributor.name_en || null,
+        } : null,
+        dealer: merchandise.dealer ? {
+          id: merchandise.dealer.tax_id,
+          name: merchandise.dealer.name_th || merchandise.dealer.name_en || null,
+        } : null,
+        replaced_by: replaced_by_id && typeof replaced_by_id === 'string'
+          ? (replacedByMap[replaced_by_id] || null)
+          : null,
+      };
+    });
+
     const pagination = calculatePagination(page, limit, total);
 
-    return { data, pagination };
+    return { data: transformedData, pagination };
   }
 
   /**
@@ -115,17 +211,35 @@ export class MerchandiseService {
     const { data, error } = await supabase
       .from('main_merchandise')
       .select(`
-        *,
-        model:main_models!main_merchandise_model_id_fkey (
-          id,
-          model,
-          name,
-          website_url
-        ),
+        id,
+        serial_no,
+        model_id,
+        site_id,
+        pm_count,
         site:main_sites!main_merchandise_site_id_fkey (
           id,
           name
-        )
+        ),
+        model:main_models!main_merchandise_model_id_fkey (
+          id,
+          model,
+          name
+        ),
+        distributor_id,
+        dealer_id,
+        distributor:main_companies!main_merchandise_distributor_id_fkey (
+          tax_id,
+          name_th,
+          name_en
+        ),
+        dealer:main_companies!main_merchandise_dealer_id_fkey (
+          tax_id,
+          name_th,
+          name_en
+        ),
+        replaced_by_id,
+        created_at,
+        updated_at
       `)
       .eq('id', id)
       .single();
@@ -139,7 +253,32 @@ export class MerchandiseService {
       throw new NotFoundError('ไม่พบข้อมูล');
     }
 
-    return data;
+    // Transform to match list response format
+    const { site_id, model_id, pm_count, distributor_id, dealer_id, replaced_by_id, ...rest } = data;
+
+    // Fetch replaced_by merchandise if needed
+    let replacedBySerial: string | null = null;
+    if (replaced_by_id && typeof replaced_by_id === 'string') {
+      const { data: replacedBy } = await supabase
+        .from('main_merchandise')
+        .select('serial_no')
+        .eq('id', replaced_by_id)
+        .maybeSingle();
+      replacedBySerial = replacedBy?.serial_no || null;
+    }
+
+    return {
+      ...rest,
+      distributor: data.distributor ? {
+        id: data.distributor.tax_id,
+        name: data.distributor.name_th || data.distributor.name_en || null,
+      } : null,
+      dealer: data.dealer ? {
+        id: data.dealer.tax_id,
+        name: data.dealer.name_th || data.dealer.name_en || null,
+      } : null,
+      replaced_by: replacedBySerial,
+    };
   }
 
   /**
@@ -208,17 +347,35 @@ export class MerchandiseService {
       .from('main_merchandise')
       .insert(sanitized)
       .select(`
-        *,
-        model:main_models!main_merchandise_model_id_fkey (
-          id,
-          model,
-          name,
-          website_url
-        ),
+        id,
+        serial_no,
+        model_id,
+        site_id,
+        pm_count,
         site:main_sites!main_merchandise_site_id_fkey (
           id,
           name
-        )
+        ),
+        model:main_models!main_merchandise_model_id_fkey (
+          id,
+          model,
+          name
+        ),
+        distributor_id,
+        dealer_id,
+        distributor:main_companies!main_merchandise_distributor_id_fkey (
+          tax_id,
+          name_th,
+          name_en
+        ),
+        dealer:main_companies!main_merchandise_dealer_id_fkey (
+          tax_id,
+          name_th,
+          name_en
+        ),
+        replaced_by_id,
+        created_at,
+        updated_at
       `)
       .single();
 
@@ -229,7 +386,21 @@ export class MerchandiseService {
       throw new DatabaseError('ไม่สามารถสร้างข้อมูลได้');
     }
 
-    return data;
+    // Transform to match list response format
+    const { site_id, model_id, pm_count, distributor_id, dealer_id, replaced_by_id, ...rest } = data;
+
+    return {
+      ...rest,
+      distributor: data.distributor ? {
+        id: data.distributor.tax_id,
+        name: data.distributor.name_th || data.distributor.name_en || null,
+      } : null,
+      dealer: data.dealer ? {
+        id: data.dealer.tax_id,
+        name: data.dealer.name_th || data.dealer.name_en || null,
+      } : null,
+      replaced_by: replaced_by_id || null,
+    };
   }
 
   /**
@@ -273,17 +444,35 @@ export class MerchandiseService {
       .update(sanitized)
       .eq('id', id)
       .select(`
-        *,
-        model:main_models!main_merchandise_model_id_fkey (
-          id,
-          model,
-          name,
-          website_url
-        ),
+        id,
+        serial_no,
+        model_id,
+        site_id,
+        pm_count,
         site:main_sites!main_merchandise_site_id_fkey (
           id,
           name
-        )
+        ),
+        model:main_models!main_merchandise_model_id_fkey (
+          id,
+          model,
+          name
+        ),
+        distributor_id,
+        dealer_id,
+        distributor:main_companies!main_merchandise_distributor_id_fkey (
+          tax_id,
+          name_th,
+          name_en
+        ),
+        dealer:main_companies!main_merchandise_dealer_id_fkey (
+          tax_id,
+          name_th,
+          name_en
+        ),
+        replaced_by_id,
+        created_at,
+        updated_at
       `)
       .single();
 
@@ -295,7 +484,21 @@ export class MerchandiseService {
       throw new NotFoundError('ไม่พบข้อมูล');
     }
 
-    return data;
+    // Transform to match list response format
+    const { site_id, model_id, pm_count, distributor_id, dealer_id, replaced_by_id, ...rest } = data;
+
+    return {
+      ...rest,
+      distributor: data.distributor ? {
+        id: data.distributor.tax_id,
+        name: data.distributor.name_th || data.distributor.name_en || null,
+      } : null,
+      dealer: data.dealer ? {
+        id: data.dealer.tax_id,
+        name: data.dealer.name_th || data.dealer.name_en || null,
+      } : null,
+      replaced_by: replaced_by_id || null,
+    };
   }
 
   /**

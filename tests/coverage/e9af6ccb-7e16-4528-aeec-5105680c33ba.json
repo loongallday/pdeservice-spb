@@ -1,0 +1,116 @@
+{
+  "scriptId": "739",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/archiver/5.3.2/lib/plugins/tar.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 4099,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 4098,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 4092,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Tar",
+      "ranges": [
+        {
+          "startOffset": 594,
+          "endOffset": 1126,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Tar._onCompressorError",
+      "ranges": [
+        {
+          "startOffset": 1262,
+          "endOffset": 1313,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Tar.append",
+      "ranges": [
+        {
+          "startOffset": 1488,
+          "endOffset": 2127,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Tar.finalize",
+      "ranges": [
+        {
+          "startOffset": 2208,
+          "endOffset": 2248,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Tar.on",
+      "ranges": [
+        {
+          "startOffset": 2324,
+          "endOffset": 2393,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Tar.pipe",
+      "ranges": [
+        {
+          "startOffset": 2533,
+          "endOffset": 2760,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Tar.unpipe",
+      "ranges": [
+        {
+          "startOffset": 2844,
+          "endOffset": 3028,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

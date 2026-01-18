@@ -1,0 +1,83 @@
+{
+  "scriptId": "370",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-analytics/services/workloadAnalyticsService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 17075,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getWorkloadForDate",
+      "ranges": [
+        {
+          "startOffset": 414,
+          "endOffset": 8603,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getWorkloadDistribution",
+      "ranges": [
+        {
+          "startOffset": 8743,
+          "endOffset": 12111,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "buildDistributionResult",
+      "ranges": [
+        {
+          "startOffset": 12178,
+          "endOffset": 14773,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "calculateDistribution",
+      "ranges": [
+        {
+          "startOffset": 14832,
+          "endOffset": 16076,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "calculateBalanceScore",
+      "ranges": [
+        {
+          "startOffset": 16159,
+          "endOffset": 16746,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getWorkloadStatus",
+      "ranges": [
+        {
+          "startOffset": 16831,
+          "endOffset": 17072,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

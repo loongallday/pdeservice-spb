@@ -1,0 +1,50 @@
+{
+  "scriptId": "369",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-reports/services/rmaReportService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3547,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "loadProvinceCache",
+      "ranges": [
+        {
+          "startOffset": 410,
+          "endOffset": 896,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "fetchTicketsByWorkType",
+      "ranges": [
+        {
+          "startOffset": 959,
+          "endOffset": 3356,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "fetchRmaTickets",
+      "ranges": [
+        {
+          "startOffset": 3432,
+          "endOffset": 3546,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

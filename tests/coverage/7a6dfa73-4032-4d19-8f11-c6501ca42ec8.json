@@ -1,0 +1,204 @@
+{
+  "scriptId": "789",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bluebird/3.4.7/js/release/generators.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 7983,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 7982,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 7976,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 252,
+          "endOffset": 7972,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "promiseFromYieldHandler",
+      "ranges": [
+        {
+          "startOffset": 648,
+          "endOffset": 1255,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PromiseSpawn",
+      "ranges": [
+        {
+          "startOffset": 1257,
+          "endOffset": 2122,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PromiseSpawn._isResolved",
+      "ranges": [
+        {
+          "startOffset": 2201,
+          "endOffset": 2250,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PromiseSpawn._cleanup",
+      "ranges": [
+        {
+          "startOffset": 2287,
+          "endOffset": 2494,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PromiseSpawn._promiseCancelled",
+      "ranges": [
+        {
+          "startOffset": 2540,
+          "endOffset": 3461,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PromiseSpawn._promiseFulfilled",
+      "ranges": [
+        {
+          "startOffset": 3507,
+          "endOffset": 3732,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PromiseSpawn._promiseRejected",
+      "ranges": [
+        {
+          "startOffset": 3777,
+          "endOffset": 4062,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PromiseSpawn._resultCancelled",
+      "ranges": [
+        {
+          "startOffset": 4107,
+          "endOffset": 4285,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PromiseSpawn.promise",
+      "ranges": [
+        {
+          "startOffset": 4321,
+          "endOffset": 4362,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PromiseSpawn._run",
+      "ranges": [
+        {
+          "startOffset": 4395,
+          "endOffset": 4583,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PromiseSpawn._continue",
+      "ranges": [
+        {
+          "startOffset": 4621,
+          "endOffset": 6618,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.coroutine",
+      "ranges": [
+        {
+          "startOffset": 6641,
+          "endOffset": 7335,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.coroutine.addYieldHandler",
+      "ranges": [
+        {
+          "startOffset": 7374,
+          "endOffset": 7545,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.spawn",
+      "ranges": [
+        {
+          "startOffset": 7564,
+          "endOffset": 7969,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

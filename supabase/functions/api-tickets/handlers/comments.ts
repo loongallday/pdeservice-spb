@@ -1,5 +1,14 @@
 /**
- * Comment handlers for ticket comments CRUD
+ * @fileoverview Ticket comments CRUD handlers
+ * @module api-tickets/handlers/comments
+ *
+ * Provides comment functionality for tickets including:
+ * - GET /:id/comments - List comments with pagination
+ * - POST /:id/comments - Create new comment
+ * - PUT /:id/comments/:commentId - Update comment (author only)
+ * - DELETE /:id/comments/:commentId - Delete comment (author or admin)
+ *
+ * @auth All operations require Level 0+ authentication
  */
 
 import { success, successWithPagination } from '../../_shared/response.ts';

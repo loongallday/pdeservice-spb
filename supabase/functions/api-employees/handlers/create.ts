@@ -1,5 +1,39 @@
 /**
- * Create employee handler
+ * @fileoverview Create new employee handler
+ * @endpoint POST /api-employees
+ * @auth Required - Level 2+ (Admin, Superadmin)
+ *
+ * @bodyParam {string} name - Required: Employee full name
+ * @bodyParam {string} code - Required: Employee code/ID (unique identifier)
+ * @bodyParam {string} [nickname] - Employee nickname
+ * @bodyParam {string} [email] - Email address
+ * @bodyParam {string} [role_id] - Role UUID (preferred over role code)
+ * @bodyParam {string} [role] - Role code (legacy, converted to role_id)
+ * @bodyParam {string} [profile_image_url] - Profile image URL
+ * @bodyParam {string} [cover_image_url] - Cover image URL
+ * @bodyParam {string} [supervisor_id] - Supervisor employee UUID
+ * @bodyParam {boolean} [is_active=true] - Active status
+ *
+ * @returns {EmployeeWithRole} The created employee with role/department data (HTTP 201)
+ * @throws {AuthenticationError} 401 - If not authenticated
+ * @throws {ForbiddenError} 403 - If permission level < 2
+ * @throws {ValidationError} 400 - If name or code is missing
+ * @throws {DatabaseError} 500 - If role code not found or creation fails
+ *
+ * @description
+ * Creates a new employee in the system. On creation:
+ * - If `role` (code) is provided instead of `role_id`, it's converted to UUID
+ * - Initial leave balances are automatically created (sick: 30, vacation: 6, personal: 3)
+ * - Employee is created with is_active=true by default
+ *
+ * @example
+ * POST /api-employees
+ * {
+ *   "name": "John Doe",
+ *   "code": "EMP001",
+ *   "email": "john@example.com",
+ *   "role_id": "uuid-of-technician-role"
+ * }
  */
 
 import { success } from '../../_shared/response.ts';

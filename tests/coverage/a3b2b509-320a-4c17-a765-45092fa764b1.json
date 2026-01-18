@@ -1,0 +1,270 @@
+{
+  "scriptId": "512",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/xlsx/xform/base-xform.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3762,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 3761,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 3755,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "prepare",
+      "ranges": [
+        {
+          "startOffset": 601,
+          "endOffset": 709,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "render",
+      "ranges": [
+        {
+          "startOffset": 713,
+          "endOffset": 777,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseOpen",
+      "ranges": [
+        {
+          "startOffset": 781,
+          "endOffset": 825,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseText",
+      "ranges": [
+        {
+          "startOffset": 829,
+          "endOffset": 900,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseClose",
+      "ranges": [
+        {
+          "startOffset": 904,
+          "endOffset": 949,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "reconcile",
+      "ranges": [
+        {
+          "startOffset": 953,
+          "endOffset": 1038,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "reset",
+      "ranges": [
+        {
+          "startOffset": 1108,
+          "endOffset": 1470,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "mergeModel",
+      "ranges": [
+        {
+          "startOffset": 1474,
+          "endOffset": 1587,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parse",
+      "ranges": [
+        {
+          "startOffset": 1591,
+          "endOffset": 2043,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseStream",
+      "ranges": [
+        {
+          "startOffset": 2047,
+          "endOffset": 2119,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get xml",
+      "ranges": [
+        {
+          "startOffset": 2123,
+          "endOffset": 2302,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toXml",
+      "ranges": [
+        {
+          "startOffset": 2306,
+          "endOffset": 2424,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toAttribute",
+      "ranges": [
+        {
+          "startOffset": 2523,
+          "endOffset": 2751,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toStringAttribute",
+      "ranges": [
+        {
+          "startOffset": 2762,
+          "endOffset": 2869,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toStringValue",
+      "ranges": [
+        {
+          "startOffset": 2880,
+          "endOffset": 2956,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toBoolAttribute",
+      "ranges": [
+        {
+          "startOffset": 2967,
+          "endOffset": 3200,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toBoolValue",
+      "ranges": [
+        {
+          "startOffset": 3211,
+          "endOffset": 3293,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toIntAttribute",
+      "ranges": [
+        {
+          "startOffset": 3304,
+          "endOffset": 3408,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toIntValue",
+      "ranges": [
+        {
+          "startOffset": 3419,
+          "endOffset": 3506,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toFloatAttribute",
+      "ranges": [
+        {
+          "startOffset": 3517,
+          "endOffset": 3623,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toFloatValue",
+      "ranges": [
+        {
+          "startOffset": 3634,
+          "endOffset": 3721,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

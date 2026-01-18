@@ -1,0 +1,391 @@
+{
+  "scriptId": "830",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/tmp/0.2.5/lib/tmp.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 24297,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 24296,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 24290,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "rimraf",
+      "ranges": [
+        {
+          "startOffset": 1559,
+          "endOffset": 1653,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "FN_RIMRAF_SYNC",
+      "ranges": [
+        {
+          "startOffset": 1800,
+          "endOffset": 1886,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "tmpName",
+      "ranges": [
+        {
+          "startOffset": 2056,
+          "endOffset": 2895,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "tmpNameSync",
+      "ranges": [
+        {
+          "startOffset": 3096,
+          "endOffset": 3535,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "file",
+      "ranges": [
+        {
+          "startOffset": 3745,
+          "endOffset": 4935,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "fileSync",
+      "ranges": [
+        {
+          "startOffset": 5127,
+          "endOffset": 5663,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "dir",
+      "ranges": [
+        {
+          "startOffset": 5823,
+          "endOffset": 6342,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "dirSync",
+      "ranges": [
+        {
+          "startOffset": 6536,
+          "endOffset": 6806,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_removeFileAsync",
+      "ranges": [
+        {
+          "startOffset": 6916,
+          "endOffset": 7263,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_removeFileSync",
+      "ranges": [
+        {
+          "startOffset": 7346,
+          "endOffset": 7816,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_prepareTmpFileRemoveCallback",
+      "ranges": [
+        {
+          "startOffset": 8231,
+          "endOffset": 8605,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_prepareTmpDirRemoveCallback",
+      "ranges": [
+        {
+          "startOffset": 8962,
+          "endOffset": 9475,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_prepareRemoveCallback",
+      "ranges": [
+        {
+          "startOffset": 9870,
+          "endOffset": 10648,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_garbageCollector",
+      "ranges": [
+        {
+          "startOffset": 10699,
+          "endOffset": 11026,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_randomChars",
+      "ranges": [
+        {
+          "startOffset": 11257,
+          "endOffset": 11632,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_isUndefined",
+      "ranges": [
+        {
+          "startOffset": 11791,
+          "endOffset": 11858,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_parseArguments",
+      "ranges": [
+        {
+          "startOffset": 12093,
+          "endOffset": 12565,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_resolvePath",
+      "ranges": [
+        {
+          "startOffset": 12799,
+          "endOffset": 13232,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_resolvePathSync",
+      "ranges": [
+        {
+          "startOffset": 13466,
+          "endOffset": 13828,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_generateTmpName",
+      "ranges": [
+        {
+          "startOffset": 13971,
+          "endOffset": 14565,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_assertOptionsBase",
+      "ranges": [
+        {
+          "startOffset": 14634,
+          "endOffset": 16157,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_getRelativePath",
+      "ranges": [
+        {
+          "startOffset": 16224,
+          "endOffset": 16667,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_getRelativePathSync",
+      "ranges": [
+        {
+          "startOffset": 16729,
+          "endOffset": 17104,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_assertAndSanitizeOptions",
+      "ranges": [
+        {
+          "startOffset": 17255,
+          "endOffset": 18040,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_assertAndSanitizeOptionsSync",
+      "ranges": [
+        {
+          "startOffset": 18191,
+          "endOffset": 18555,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_isEBADF",
+      "ranges": [
+        {
+          "startOffset": 18670,
+          "endOffset": 18749,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_isENOENT",
+      "ranges": [
+        {
+          "startOffset": 18865,
+          "endOffset": 18947,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_isExpectedError",
+      "ranges": [
+        {
+          "startOffset": 19465,
+          "endOffset": 19602,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "setGracefulCleanup",
+      "ranges": [
+        {
+          "startOffset": 19895,
+          "endOffset": 19955,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "_getTmpDir",
+      "ranges": [
+        {
+          "startOffset": 20042,
+          "endOffset": 20148,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_getTmpDirSync",
+      "ranges": [
+        {
+          "startOffset": 20235,
+          "endOffset": 20341,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 23977,
+          "endOffset": 24023,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

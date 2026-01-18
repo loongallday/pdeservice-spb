@@ -1,0 +1,66 @@
+{
+  "scriptId": "598",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/uuid/8.3.2/dist/validate.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 640,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 639,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 633,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "_interopRequireDefault",
+      "ranges": [
+        {
+          "startOffset": 389,
+          "endOffset": 484,
+          "count": 1
+        },
+        {
+          "startOffset": 463,
+          "endOffset": 481,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "validate",
+      "ranges": [
+        {
+          "startOffset": 486,
+          "endOffset": 577,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

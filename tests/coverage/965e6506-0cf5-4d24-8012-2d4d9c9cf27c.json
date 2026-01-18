@@ -1,0 +1,127 @@
+{
+  "scriptId": "823",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/fstream/1.0.12/lib/dir-reader.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 6731,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 6730,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 6724,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "DirReader",
+      "ranges": [
+        {
+          "startOffset": 610,
+          "endOffset": 1101,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "DirReader._getEntries",
+      "ranges": [
+        {
+          "startOffset": 1137,
+          "endOffset": 1802,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "DirReader._read",
+      "ranges": [
+        {
+          "startOffset": 1898,
+          "endOffset": 5448,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "DirReader.disown",
+      "ranges": [
+        {
+          "startOffset": 5479,
+          "endOffset": 5683,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "DirReader.getChildProps",
+      "ranges": [
+        {
+          "startOffset": 5721,
+          "endOffset": 5938,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "DirReader.pause",
+      "ranges": [
+        {
+          "startOffset": 5968,
+          "endOffset": 6193,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "DirReader.resume",
+      "ranges": [
+        {
+          "startOffset": 6224,
+          "endOffset": 6611,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "DirReader.emitEntry",
+      "ranges": [
+        {
+          "startOffset": 6645,
+          "endOffset": 6721,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

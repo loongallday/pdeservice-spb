@@ -1,5 +1,31 @@
 /**
- * Technician confirmation service - Business logic for confirming technicians on tickets
+ * @fileoverview Technician confirmation service - Appointment scheduling finalization
+ * @module api-tickets/services/technicianConfirmationService
+ *
+ * Provides technician confirmation functionality:
+ * - confirmTechnicians(): Confirm technicians for approved appointments
+ * - getConfirmedTechnicians(): Get confirmed technicians for a ticket
+ * - getSummariesGroupedByTechnicians(): Get daily workload by technician teams
+ * - generateLineSummary(): Generate LINE-ready summary for a ticket
+ *
+ * @description
+ * Technician confirmation is a separate step from initial assignment:
+ * - Assignments (jct_ticket_employees): Initial suggested technicians
+ * - Confirmations (jct_ticket_employees_cf): Final approved technicians
+ *
+ * Prerequisites for Confirmation:
+ * - Ticket must have an appointment
+ * - Appointment must be approved
+ * - Appointment must have a date
+ *
+ * Key Employee:
+ * - One technician per ticket can be marked as "is_key"
+ * - Indicates the lead/primary technician for the job
+ *
+ * LINE Summary Generation:
+ * - Thai-formatted date and time
+ * - Includes work giver, company, contact, location
+ * - Two formats: 'full' (preserves newlines) or 'compact' (for messaging)
  */
 
 import { createServiceClient } from '../../_shared/supabase.ts';

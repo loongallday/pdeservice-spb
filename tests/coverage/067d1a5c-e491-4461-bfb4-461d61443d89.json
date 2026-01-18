@@ -1,0 +1,253 @@
+{
+  "scriptId": "335",
+  "url": "file:///Users/loongallday/pdeservice-spb/tests/e2e/test-utils.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 10207,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getServiceClient",
+      "ranges": [
+        {
+          "startOffset": 3852,
+          "endOffset": 4095,
+          "count": 5
+        },
+        {
+          "startOffset": 3904,
+          "endOffset": 4069,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "setupTestUsers",
+      "ranges": [
+        {
+          "startOffset": 4180,
+          "endOffset": 6682,
+          "count": 1
+        },
+        {
+          "startOffset": 5470,
+          "endOffset": 5555,
+          "count": 0
+        },
+        {
+          "startOffset": 5587,
+          "endOffset": 6680,
+          "count": 10
+        },
+        {
+          "startOffset": 5828,
+          "endOffset": 5871,
+          "count": 0
+        },
+        {
+          "startOffset": 6212,
+          "endOffset": 6589,
+          "count": 0
+        },
+        {
+          "startOffset": 6596,
+          "endOffset": 6676,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 5299,
+          "endOffset": 5316,
+          "count": 10
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 5756,
+          "endOffset": 5783,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getAccessToken",
+      "ranges": [
+        {
+          "startOffset": 6734,
+          "endOffset": 7446,
+          "count": 42
+        },
+        {
+          "startOffset": 6835,
+          "endOffset": 6879,
+          "count": 38
+        },
+        {
+          "startOffset": 6879,
+          "endOffset": 7003,
+          "count": 4
+        },
+        {
+          "startOffset": 7019,
+          "endOffset": 7092,
+          "count": 0
+        },
+        {
+          "startOffset": 7092,
+          "endOffset": 7271,
+          "count": 4
+        },
+        {
+          "startOffset": 7273,
+          "endOffset": 7351,
+          "count": 0
+        },
+        {
+          "startOffset": 7351,
+          "endOffset": 7445,
+          "count": 4
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 6969,
+          "endOffset": 6997,
+          "count": 10
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "createHeaders",
+      "ranges": [
+        {
+          "startOffset": 7508,
+          "endOffset": 7733,
+          "count": 42
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "apiGet",
+      "ranges": [
+        {
+          "startOffset": 7790,
+          "endOffset": 8016,
+          "count": 25
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "apiPost",
+      "ranges": [
+        {
+          "startOffset": 8074,
+          "endOffset": 8340,
+          "count": 17
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "apiPut",
+      "ranges": [
+        {
+          "startOffset": 8397,
+          "endOffset": 8661,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "apiDelete",
+      "ranges": [
+        {
+          "startOffset": 8721,
+          "endOffset": 8953,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "assertSuccess",
+      "ranges": [
+        {
+          "startOffset": 9018,
+          "endOffset": 9329,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "assertError",
+      "ranges": [
+        {
+          "startOffset": 9376,
+          "endOffset": 9686,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "randomUUID",
+      "ranges": [
+        {
+          "startOffset": 9740,
+          "endOffset": 9795,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "wait",
+      "ranges": [
+        {
+          "startOffset": 9858,
+          "endOffset": 9937,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "cleanupTestData",
+      "ranges": [
+        {
+          "startOffset": 9996,
+          "endOffset": 10206,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

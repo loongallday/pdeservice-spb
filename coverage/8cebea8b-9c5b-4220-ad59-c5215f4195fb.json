@@ -1,0 +1,127 @@
+{
+  "scriptId": "372",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-companies/services/companyService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 12823,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "sanitizeCompanyData",
+      "ranges": [
+        {
+          "startOffset": 2085,
+          "endOffset": 2825,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getAll",
+      "ranges": [
+        {
+          "startOffset": 2884,
+          "endOffset": 3613,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getById",
+      "ranges": [
+        {
+          "startOffset": 3773,
+          "endOffset": 5516,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "globalSearch",
+      "ranges": [
+        {
+          "startOffset": 5711,
+          "endOffset": 7901,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "search",
+      "ranges": [
+        {
+          "startOffset": 8027,
+          "endOffset": 8421,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "hint",
+      "ranges": [
+        {
+          "startOffset": 8615,
+          "endOffset": 9189,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "create",
+      "ranges": [
+        {
+          "startOffset": 9281,
+          "endOffset": 9944,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "update",
+      "ranges": [
+        {
+          "startOffset": 10044,
+          "endOffset": 10675,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "delete",
+      "ranges": [
+        {
+          "startOffset": 10766,
+          "endOffset": 11546,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createOrUpdate",
+      "ranges": [
+        {
+          "startOffset": 11596,
+          "endOffset": 12820,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

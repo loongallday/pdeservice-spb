@@ -1,7 +1,39 @@
 /**
- * Fleet API Edge Function
- * Reads vehicle data from database (synced by api-fleet-sync)
- * Manages garage/base locations and route history
+ * @fileoverview Fleet API Edge Function - Vehicle tracking and management
+ * @module api-fleet
+ *
+ * @description
+ * Manages vehicle fleet data including real-time tracking, route history,
+ * and garage/base locations. Vehicle data is synced from external fleet
+ * system by api-fleet-sync every 5 minutes.
+ *
+ * @endpoints
+ * ## Vehicle Operations
+ * - GET    /                       - List all vehicles
+ * - GET    /:id                    - Get single vehicle
+ * - PUT    /:id                    - Update vehicle (driver name override)
+ * - GET    /:id/route              - Get route history
+ * - GET    /:id/work-locations     - Get work locations for vehicle
+ *
+ * ## Vehicle Employee Assignment
+ * - POST   /:id/employees          - Add employee to vehicle
+ * - PUT    /:id/employees          - Set all employees for vehicle
+ * - DELETE /:id/employees/:empId   - Remove employee from vehicle
+ *
+ * ## Garage/Base Management
+ * - GET    /garages                - List all garages
+ * - POST   /garages                - Create new garage
+ * - PUT    /garages/:id            - Update garage
+ * - DELETE /garages/:id            - Delete garage
+ *
+ * ## Utility
+ * - GET    /warmup                 - Keep function warm (no auth)
+ *
+ * @auth All endpoints require JWT authentication except /warmup
+ * @table fleet_vehicles - Vehicle current state
+ * @table fleet_vehicle_history - Route history
+ * @table fleet_garages - Base/garage locations
+ * @table jct_fleet_vehicle_employees - Vehicle-employee assignments
  */
 
 import { handleCORS } from '../_shared/cors.ts';
@@ -23,26 +55,36 @@ import {
   deleteGarage,
 } from './handlers/fleet.ts';
 
+import { corsHeaders } from '../_shared/cors.ts';
+
 Deno.serve(async (req) => {
   // Handle CORS preflight
   const corsResponse = handleCORS(req);
   if (corsResponse) return corsResponse;
 
+  // Parse URL early for warmup check
+  let url: URL;
+  try {
+    url = new URL(req.url);
+  } catch {
+    return error('Invalid URL', 400);
+  }
+
+  const pathParts = url.pathname.split('/').filter(Boolean);
+  const functionIndex = pathParts.indexOf('api-fleet');
+  const relativePath = functionIndex >= 0 ? pathParts.slice(functionIndex + 1) : [];
+
+  // GET /warmup - Keep function warm (no auth required)
+  if (req.method === 'GET' && relativePath.length === 1 && relativePath[0] === 'warmup') {
+    return new Response(
+      JSON.stringify({ status: 'warm', timestamp: new Date().toISOString() }),
+      { headers: { 'Content-Type': 'application/json', ...corsHeaders } }
+    );
+  }
+
   try {
     // Authenticate user
     const { employee } = await authenticate(req);
-
-    // Route to appropriate handler
-    let url: URL;
-    try {
-      url = new URL(req.url);
-    } catch {
-      return error('Invalid URL', 400);
-    }
-
-    const pathParts = url.pathname.split('/').filter(Boolean);
-    const functionIndex = pathParts.indexOf('api-fleet');
-    const relativePath = functionIndex >= 0 ? pathParts.slice(functionIndex + 1) : [];
     const method = req.method;
 
     switch (method) {

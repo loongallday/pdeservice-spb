@@ -1,0 +1,22 @@
+{
+  "scriptId": "381",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/excel.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 539,
+          "count": 1
+        },
+        {
+          "startOffset": 189,
+          "endOffset": 323,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

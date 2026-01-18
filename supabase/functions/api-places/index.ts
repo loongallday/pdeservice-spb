@@ -1,6 +1,32 @@
 /**
- * Places API Edge Function
- * Proxy for Google Places API with location code matching
+ * @fileoverview Places API Edge Function - Google Places API proxy
+ * @module api-places
+ *
+ * @description
+ * Proxy for Google Places API with Thai location code matching.
+ * Used for address autocomplete and place details lookup.
+ *
+ * Features:
+ * - Address autocomplete for Thai addresses
+ * - Place details with lat/lng coordinates
+ * - Automatic matching to Thai province/district/subdistrict codes
+ * - Results formatted for site creation workflow
+ *
+ * Location Code Matching:
+ * - Parses address components from Google
+ * - Matches to ref_provinces, ref_districts, ref_subdistricts
+ * - Returns location_code for database storage
+ *
+ * @endpoints
+ * ## Place Operations
+ * - POST   /autocomplete   - Address autocomplete search
+ * - POST   /details        - Get place details by place_id
+ *
+ * @auth All endpoints require JWT authentication
+ * @env GOOGLE_MAPS_API_KEY - Google Places API key
+ * @table ref_provinces - Thai provinces lookup
+ * @table ref_districts - Thai districts lookup
+ * @table ref_subdistricts - Thai subdistricts lookup
  */
 
 import { handleCORS } from '../_shared/cors.ts';

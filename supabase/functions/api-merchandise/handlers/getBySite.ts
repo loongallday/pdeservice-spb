@@ -2,7 +2,7 @@
  * Get merchandise by site handler
  */
 
-import { success, error } from '../../_shared/response.ts';
+import { successWithPagination, error } from '../../_shared/response.ts';
 import { requireMinLevel } from '../../_shared/auth.ts';
 import { parsePaginationParams } from '../../_shared/validation.ts';
 import { MerchandiseService } from '../services/merchandiseService.ts';
@@ -25,6 +25,6 @@ export async function getBySite(req: Request, employee: Employee, siteId: string
   // Get merchandise by site
   const result = await MerchandiseService.getBySite(siteId, { page, limit });
 
-  return success(result);
+  return successWithPagination(result.data, result.pagination);
 }
 

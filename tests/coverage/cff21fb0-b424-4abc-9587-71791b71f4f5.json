@@ -1,0 +1,38 @@
+{
+  "scriptId": "339",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-appointments/handlers/delete.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1742,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "deleteAppointment",
+      "ranges": [
+        {
+          "startOffset": 1329,
+          "endOffset": 1741,
+          "count": 3
+        },
+        {
+          "startOffset": 1507,
+          "endOffset": 1680,
+          "count": 2
+        },
+        {
+          "startOffset": 1680,
+          "endOffset": 1740,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

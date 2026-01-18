@@ -1,0 +1,110 @@
+{
+  "scriptId": "830",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/unzipper/0.10.14/lib/Decrypt.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1862,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 1861,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 1855,
+          "count": 1
+        },
+        {
+          "startOffset": 402,
+          "endOffset": 438,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "generateTable",
+      "ranges": [
+        {
+          "startOffset": 452,
+          "endOffset": 675,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "crc",
+      "ranges": [
+        {
+          "startOffset": 677,
+          "endOffset": 894,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Decrypt",
+      "ranges": [
+        {
+          "startOffset": 896,
+          "endOffset": 1054,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Decrypt.update",
+      "ranges": [
+        {
+          "startOffset": 1083,
+          "endOffset": 1369,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Decrypt.decryptByte",
+      "ranges": [
+        {
+          "startOffset": 1404,
+          "endOffset": 1550,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Decrypt.stream",
+      "ranges": [
+        {
+          "startOffset": 1581,
+          "endOffset": 1822,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

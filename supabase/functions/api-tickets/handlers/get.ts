@@ -1,5 +1,26 @@
 /**
- * Get single ticket handler
+ * @fileoverview Get single ticket by ID handler
+ * @endpoint GET /api-tickets/:id
+ * @auth Required - Level 0+ (all authenticated users)
+ *
+ * @param {string} id - Ticket UUID (path parameter)
+ *
+ * @returns {Ticket} Full ticket object with all related data
+ * @throws {ValidationError} 400 - Invalid UUID format
+ * @throws {AuthenticationError} 401 - If not authenticated
+ * @throws {NotFoundError} 404 - Ticket not found
+ *
+ * @description
+ * Retrieves a single ticket with all associated data including:
+ * - Ticket core data (work_type, status, assigner, details)
+ * - Site and company information
+ * - Contact details
+ * - Appointment scheduling
+ * - Assigned employees/technicians
+ * - Equipment (UPS) information
+ *
+ * Includes defensive checks to ensure the response is a single ticket
+ * object and not a paginated response.
  */
 
 import { success } from '../../_shared/response.ts';

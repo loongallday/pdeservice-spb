@@ -1,0 +1,61 @@
+{
+  "scriptId": "730",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/compress-commons/4.1.2/lib/util/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 995,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 994,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 988,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "util.isStream",
+      "ranges": [
+        {
+          "startOffset": 572,
+          "endOffset": 627,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "util.normalizeInputSource",
+      "ranges": [
+        {
+          "startOffset": 658,
+          "endOffset": 985,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "scriptId": "364",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/_shared/response.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1267,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "success",
+      "ranges": [
+        {
+          "startOffset": 169,
+          "endOffset": 367,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "successWithPagination",
+      "ranges": [
+        {
+          "startOffset": 440,
+          "endOffset": 680,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "error",
+      "ranges": [
+        {
+          "startOffset": 724,
+          "endOffset": 1000,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "calculatePagination",
+      "ranges": [
+        {
+          "startOffset": 1045,
+          "endOffset": 1266,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "scriptId": "728",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/compress-commons/4.1.2/lib/archivers/zip/util.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2225,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2224,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2218,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "util.dateToDos",
+      "ranges": [
+        {
+          "startOffset": 475,
+          "endOffset": 1252,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "util.dosToDate",
+      "ranges": [
+        {
+          "startOffset": 1272,
+          "endOffset": 1441,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "util.fromDosTime",
+      "ranges": [
+        {
+          "startOffset": 1463,
+          "endOffset": 1526,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "util.getEightBytes",
+      "ranges": [
+        {
+          "startOffset": 1550,
+          "endOffset": 1699,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "util.getShortBytes",
+      "ranges": [
+        {
+          "startOffset": 1723,
+          "endOffset": 1826,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "util.getShortBytesValue",
+      "ranges": [
+        {
+          "startOffset": 1855,
+          "endOffset": 1915,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "util.getLongBytes",
+      "ranges": [
+        {
+          "startOffset": 1938,
+          "endOffset": 2045,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "util.getLongBytesValue",
+      "ranges": [
+        {
+          "startOffset": 2073,
+          "endOffset": 2133,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "util.toDosTime",
+      "ranges": [
+        {
+          "startOffset": 2153,
+          "endOffset": 2215,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

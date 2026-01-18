@@ -1,0 +1,127 @@
+{
+  "scriptId": "370",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-reports/services/excelService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 7448,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getWorkTypeTitle",
+      "ranges": [
+        {
+          "startOffset": 826,
+          "endOffset": 972,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getWorkTypeFilePrefix",
+      "ranges": [
+        {
+          "startOffset": 1032,
+          "endOffset": 1156,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "formatDateThai",
+      "ranges": [
+        {
+          "startOffset": 1215,
+          "endOffset": 1450,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getTimeDisplay",
+      "ranges": [
+        {
+          "startOffset": 1491,
+          "endOffset": 1889,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "formatTechnicianNames",
+      "ranges": [
+        {
+          "startOffset": 1940,
+          "endOffset": 2139,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getBorderStyle",
+      "ranges": [
+        {
+          "startOffset": 2178,
+          "endOffset": 2608,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "generateWorkTypeExcel",
+      "ranges": [
+        {
+          "startOffset": 2667,
+          "endOffset": 5527,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "generateRmaExcel",
+      "ranges": [
+        {
+          "startOffset": 5594,
+          "endOffset": 5693,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "transformToReportRows",
+      "ranges": [
+        {
+          "startOffset": 5759,
+          "endOffset": 7284,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "transformToRmaRows",
+      "ranges": [
+        {
+          "startOffset": 7366,
+          "endOffset": 7447,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

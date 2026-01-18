@@ -1,291 +1,400 @@
-# API LINE Webhook - LINE Bot Integration
+# LINE Webhook API
 
 ## Overview
 
-Edge Function ที่รับ webhook จาก LINE Platform สำหรับให้ช่างเทคนิคส่งรูปภาพ/ไฟล์ผ่าน LINE แล้วเชื่อมต่อกับตั๋วงาน
+The LINE Webhook API receives and processes events from the LINE Messaging Platform. It enables employees to upload images and files via LINE chat, link them to service tickets, and manage file submissions. The system supports role-based features including technician file submission workflows and approver review capabilities.
 
-## Workflow
+### Key Features
+- Receive images, files, and text messages from LINE users
+- Upload files to Supabase storage automatically
+- Link files to service tickets
+- Technician-specific workflow with active ticket context
+- File approval workflow for supervisors/approvers
+- View daily assigned tickets via LINE chat
 
-```
-1. ช่างเทคนิคส่งรูป/ไฟล์ผ่าน LINE
-2. Bot อัพโหลดไฟล์ไป staging bucket
-3. Bot ส่ง carousel ให้เลือกตั๋วงาน
-4. ช่างเทคนิคเลือกตั๋ว → ไฟล์เชื่อมกับตั๋ว (status: linked)
-5. ผู้อนุมัติอนุมัติใน web app → สร้าง comment บนตั๋ว
-```
-
----
-
-## Setup Guide
-
-### 1. LINE Developers Console
-
-1. ไปที่ [LINE Developers Console](https://developers.line.biz/console/)
-2. สร้าง **Provider** (ถ้ายังไม่มี)
-3. สร้าง **Messaging API Channel**
-
-### 2. Get Credentials
-
-| Credential | Location | Description |
-|------------|----------|-------------|
-| Channel ID | Basic settings | ใช้ระบุ channel |
-| Channel Secret | Basic settings | ใช้ verify webhook signature |
-| Channel Access Token | Messaging API > Issue | ใช้เรียก LINE API |
-
-### 3. Configure Webhook
-
-ใน **Messaging API** tab:
-
-| Setting | Value |
-|---------|-------|
-| Webhook URL | `https://ogzyihacqbasolfxymgo.supabase.co/functions/v1/api-line-webhook` |
-| Use webhook | Enabled |
-| Webhook redelivery | Disabled (recommended) |
-| Auto-reply messages | Disabled |
-| Greeting messages | Disabled |
-
-### 4. Set Environment Variables
-
-ใน Supabase Dashboard > Settings > Edge Functions > Secrets:
+## Base URL
 
 ```
-LINE_CHANNEL_SECRET=your_channel_secret
-LINE_CHANNEL_ACCESS_TOKEN=your_channel_access_token
+https://ogzyihacqbasolfxymgo.supabase.co/functions/v1/api-line-webhook
 ```
 
-หรือใช้ CLI:
-```bash
-npx supabase secrets set LINE_CHANNEL_SECRET=your_channel_secret
-npx supabase secrets set LINE_CHANNEL_ACCESS_TOKEN=your_channel_access_token
-```
+## Endpoints
 
----
+### POST /
 
-## Webhook Endpoint
+Receive LINE webhook events from the LINE Platform.
 
-```
-POST https://ogzyihacqbasolfxymgo.supabase.co/functions/v1/api-line-webhook
-```
+**Authentication:** LINE signature verification (not JWT)
 
-### Headers
+**Headers:**
 
-| Header | Description |
-|--------|-------------|
-| `x-line-signature` | HMAC-SHA256 signature for verification |
-| `Content-Type` | `application/json` |
+| Header | Required | Description |
+|--------|----------|-------------|
+| `x-line-signature` | Yes | HMAC-SHA256 signature of the request body using the channel secret |
+| `Content-Type` | Yes | `application/json` |
 
-### Signature Verification
-
-```
-signature = Base64(HMAC-SHA256(channel_secret, request_body))
-```
-
----
-
-## Supported Events
-
-### Message Events
-
-| Type | Action |
-|------|--------|
-| `image` | อัพโหลดรูปไป staging → ส่ง carousel เลือกตั๋ว |
-| `file` | อัพโหลดไฟล์ไป staging → ส่ง carousel เลือกตั๋ว |
-| `video` | แจ้งว่าไม่รองรับ |
-| `text` | แนะนำให้ส่งรูปหรือไฟล์ |
-| `sticker` | ไม่ตอบ |
-
-### Postback Events
-
-| Action | Description |
-|--------|-------------|
-| `select_ticket` | เชื่อมไฟล์กับตั๋วที่เลือก |
-| `cancel` | ยกเลิกและลบไฟล์ |
-
-### Follow/Unfollow Events
-
-| Event | Action |
-|-------|--------|
-| `follow` | ส่งข้อความต้อนรับ + คำแนะนำการใช้งาน |
-| `unfollow` | Log เท่านั้น (ไม่ลบ mapping) |
-
----
-
-## User Flow
-
-### 1. ส่งรูปภาพ
-
-```
-User → ส่งรูปภาพ
-Bot  → "✅ อัพโหลดสำเร็จ"
-       + Carousel ตั๋วงาน
-```
-
-### 2. เลือกตั๋ว
-
-```
-User → กดปุ่ม "เลือกตั๋วนี้"
-Bot  → "✅ เชื่อมต่อสำเร็จ
-        ไฟล์: photo.jpg
-        ตั๋ว: TK-2601-0001
-
-        รอผู้อนุมัติตรวจสอบและอนุมัติ"
-```
-
-### 3. ไม่มีตั๋วงาน
-
-```
-User → ส่งรูปภาพ
-Bot  → "❌ ไม่พบตั๋วงาน
-        คุณไม่มีตั๋วงานที่กำลังดำเนินการ
-        ไฟล์จะถูกเก็บไว้ 30 วัน"
-```
-
-### 4. บัญชียังไม่เชื่อมต่อ
-
-```
-User → ส่งรูปภาพ
-Bot  → "❌ ไม่พบบัญชี
-        บัญชี LINE ของคุณยังไม่ได้เชื่อมต่อกับระบบ
-        กรุณาติดต่อผู้ดูแลระบบ"
-```
-
----
-
-## Flex Message Examples
-
-### Ticket Carousel
+**Request Body:**
 
 ```json
 {
-  "type": "carousel",
-  "contents": [
+  "destination": "U1234567890abcdef",
+  "events": [
     {
-      "type": "bubble",
-      "size": "kilo",
-      "header": {
-        "type": "box",
-        "layout": "vertical",
-        "contents": [
-          { "type": "text", "text": "TK-2601-0001", "weight": "bold", "color": "#1DB446" }
-        ]
+      "type": "message",
+      "timestamp": 1704067200000,
+      "source": {
+        "type": "user",
+        "userId": "U9876543210fedcba"
       },
-      "body": {
-        "type": "box",
-        "layout": "vertical",
-        "contents": [
-          { "type": "text", "text": "ซ่อมเครื่อง UPS", "weight": "bold", "wrap": true },
-          { "type": "text", "text": "บริษัท ABC จำกัด", "size": "xs", "color": "#666666" },
-          { "type": "text", "text": "📅 2026-01-15", "size": "xs", "color": "#888888" }
-        ]
+      "replyToken": "reply-token-xxx",
+      "webhookEventId": "event-id-xxx",
+      "deliveryContext": {
+        "isRedelivery": false
       },
-      "footer": {
-        "type": "box",
-        "layout": "vertical",
-        "contents": [
-          {
-            "type": "button",
-            "action": {
-              "type": "postback",
-              "label": "เลือกตั๋วนี้",
-              "data": "{\"action\":\"select_ticket\",\"fileId\":\"...\",\"ticketId\":\"...\"}"
-            },
-            "style": "primary",
-            "color": "#1DB446"
-          }
-        ]
+      "message": {
+        "id": "message-id-xxx",
+        "type": "text",
+        "text": "PDE-904"
       }
     }
   ]
 }
 ```
 
----
+**Response:**
 
-## Error Handling
+```http
+HTTP/1.1 200 OK
+Content-Type: text/plain
 
-| Scenario | Response |
-|----------|----------|
-| Invalid signature | HTTP 401 |
-| Missing LINE account | Flex: "ไม่พบบัญชี" |
-| No active tickets | Flex: "ไม่พบตั๋วงาน" |
-| Upload failed | Flex: "เกิดข้อผิดพลาด" |
-| File already linked | Flex: "ไฟล์ถูกใช้แล้ว" |
-
----
-
-## Files Structure
-
+OK
 ```
-supabase/functions/api-line-webhook/
-├── index.ts                 # Main webhook handler
-├── types.ts                 # TypeScript types
-├── utils/
-│   └── signature.ts         # Signature verification
-├── services/
-│   └── lineApiService.ts    # LINE API calls
-└── handlers/
-    ├── messageHandler.ts    # Handle message events
-    ├── postbackHandler.ts   # Handle postback events
-    └── followHandler.ts     # Handle follow/unfollow
-```
+
+> Note: The webhook always returns 200 OK immediately. Event processing happens asynchronously.
+
+**Error Responses:**
+
+| Status | Message | Cause |
+|--------|---------|-------|
+| 401 | Missing signature | `x-line-signature` header not present |
+| 401 | Invalid signature | Signature verification failed |
+| 405 | Method not allowed | Request method is not POST |
+| 500 | Internal error | Server-side processing error |
 
 ---
 
-## LINE Account Management
+## Environment Variables Required
 
-ผู้ดูแลระบบต้องเชื่อมต่อบัญชี LINE กับพนักงานก่อนใช้งาน:
-
-```
-POST /api-staging/line-accounts
-Authorization: Bearer {JWT}
-
-{
-  "employee_id": "uuid",
-  "line_user_id": "Uxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-  "display_name": "ชื่อใน LINE"
-}
-```
+| Variable | Description |
+|----------|-------------|
+| `LINE_CHANNEL_SECRET` | LINE channel secret for webhook signature verification |
+| `LINE_CHANNEL_ACCESS_TOKEN` | LINE channel access token for sending reply messages |
 
 ---
 
-## Debugging
+## Webhook Events
 
-### Check Logs
+The API handles the following LINE webhook event types:
+
+| Event Type | Description |
+|------------|-------------|
+| `message` | User sends a message (text, image, file, video, sticker) |
+| `postback` | User taps a button or quick reply action |
+| `follow` | User adds the bot as a friend |
+| `unfollow` | User blocks or removes the bot |
+
+---
+
+## Message Events
+
+### Image Upload
+
+When a user sends an image, the system:
+1. Downloads the image from LINE servers
+2. Uploads to `staging-files` storage bucket
+3. Creates a `main_staged_files` record with status `pending`
+4. If technician has active ticket context, auto-links to that ticket with status `linked`
+
+**Response (First image or single upload):**
+- Flex message showing upload success with thumbnail
+- Quick reply options for file management
+
+**Response (Batch upload - multiple images within 3 seconds):**
+- Silent acknowledgment (no reply to prevent spam)
+- Files are stored and can be viewed with "รายการ" command
+
+### File Upload
+
+Same behavior as image upload, but preserves original filename.
+
+### Video Upload
+
+Videos are not supported. User receives:
+```
+ขออภัย ระบบยังไม่รองรับการอัพโหลดวิดีโอ กรุณาส่งเป็นรูปภาพหรือไฟล์แทน
+```
+
+### Sticker Message
+
+Stickers are ignored with no response.
+
+### Text Commands
+
+Users can type text commands to interact with the system:
+
+#### Ticket Code Input
+
+| Pattern | Example | Description |
+|---------|---------|-------------|
+| `PDE-XXX` | `PDE-904` | Link pending files to ticket by full code |
+| `XXX` (1-6 digits) | `904` | Link pending files to ticket (auto-adds PDE- prefix) |
+
+**Behavior:**
+- If files are selected, links only selected files
+- If no files selected, links all pending files
+- Creates `linked` status on files
+
+#### File Management Commands
+
+| Command (Thai) | Command (English) | Description |
+|----------------|-------------------|-------------|
+| `รายการ` | `list` | Show carousel of pending files |
+| `ลบทั้งหมด` | `delete all` | Delete all pending files |
+| `เลือกทั้งหมด` | `select all` | Select all pending files |
+| `ยกเลิกเลือก` | `clear` | Clear file selection |
+| `เชื่อมตั๋ว` | `link` | Show link ticket prompt |
+| `เมนู` / `?` | `menu` / `help` | Show available commands (role-based) |
+
+#### Status & Ticket Commands
+
+| Command (Thai) | Command (English) | Description |
+|----------------|-------------------|-------------|
+| `รออนุมัติ` / `สถานะ` | `status` | Approvers: view all linked files pending approval (7 days) |
+| `วันนี้` | `today` | View today's tickets (technicians see own, others see all) |
+| `งานของฉัน` / `งานฉัน` | `my` / `mytasks` | View my assigned tickets for today |
+| `เสร็จ` | `done` | Clear active ticket context (technicians only) |
+
+---
+
+## Postback Actions
+
+Postback events are triggered when users tap buttons in Flex messages or quick replies.
+
+### File Management Actions
+
+| Action | Description | Required Data |
+|--------|-------------|---------------|
+| `view_files` | View pending files carousel | - |
+| `view_files_page` | View specific page of files | `page` |
+| `toggle_select` | Toggle file selection | `fileId` |
+| `delete_file` | Delete single file | `fileId` |
+| `select_all` | Select all files | - |
+| `clear_selection` | Clear all selections | - |
+| `delete_all` | Delete all pending files | - |
+
+### Linked Files Actions
+
+| Action | Description | Required Data |
+|--------|-------------|---------------|
+| `view_linked_files` | View files linked to tickets (own files) | - |
+| `view_linked_files_page` | View specific page | `page` |
+| `unlink_file` | Return file to pending status (only for `linked` status) | `fileId` |
+
+### Ticket Actions
+
+| Action | Description | Required Data |
+|--------|-------------|---------------|
+| `select_ticket` | Link file to specific ticket | `fileId`, `ticketId`, `ticketCode` |
+| `submit_work` | Start submitting work to ticket (sets active ticket) | `ticketId`, `ticketCode` |
+| `view_ticket_files` | View files submitted to specific ticket | `ticketId`, `ticketCode` |
+| `cancel` | Cancel current action and optionally delete file | `fileId` (optional) |
+
+### Approval Actions (Level 1+)
+
+| Action | Description | Required Data |
+|--------|-------------|---------------|
+| `approve_file` | Approve a pending file | `fileId` |
+| `reject_file` | Reject a pending file | `fileId` |
+| `approver_files_page` | View specific page of pending files | `page` |
+
+---
+
+## Follow/Unfollow Events
+
+### Follow Event
+
+When a user adds the bot as friend:
+
+1. **Existing linked account:** Updates profile info (display name, picture), sends welcome back message
+2. **New user:** Sends welcome message with instructions to contact admin for account linking
+
+### Unfollow Event
+
+Logged but no action taken. Account mapping is preserved for re-follow scenario.
+
+---
+
+## Authorization Levels
+
+File approval features require specific permission levels:
+
+| Feature | Required Level |
+|---------|----------------|
+| Upload files | 0 (Technician) |
+| View own files | 0 (Technician) |
+| View all linked files for approval | 1 (Assigner/PM) |
+| Approve/Reject files | 1 (Assigner/PM) |
+
+---
+
+## Database Tables
+
+### main_staged_files
+
+Stores uploaded files with workflow status.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | uuid | Primary key |
+| `employee_id` | uuid | Uploader employee ID |
+| `ticket_id` | uuid | Linked ticket (null if pending) |
+| `file_url` | text | Public URL in storage |
+| `file_name` | text | Original filename |
+| `file_size` | int | File size in bytes |
+| `mime_type` | text | MIME type |
+| `source` | text | Upload source (e.g., 'line') |
+| `status` | text | `pending`, `linked`, `approved`, `rejected` |
+| `metadata` | jsonb | Additional data (e.g., `selected`, `line_message_id`) |
+| `approved_at` | timestamptz | Approval timestamp |
+| `approved_by` | uuid | Approver employee ID |
+| `rejection_reason` | text | Reason for rejection |
+
+### child_employee_line_accounts
+
+Links LINE users to employees.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | uuid | Primary key |
+| `employee_id` | uuid | Linked employee |
+| `line_user_id` | text | LINE user ID |
+| `display_name` | text | LINE display name |
+| `profile_picture_url` | text | LINE profile picture |
+| `active_ticket_id` | uuid | Current ticket context for technicians |
+
+---
+
+## Workflow Examples
+
+### Technician File Submission Flow
+
+1. Technician types "งานของฉัน" to see assigned tickets
+2. Taps "ส่งงาน" button on desired ticket
+3. System sets `active_ticket_id` for the technician
+4. Technician sends images - automatically linked to active ticket with status `linked`
+5. Technician types "เสร็จ" when done
+6. System clears active ticket context
+
+### Standard File Upload Flow
+
+1. User sends image(s) via LINE
+2. System uploads to storage, creates pending files
+3. User types ticket code (e.g., "904" or "PDE-904")
+4. System links all pending files to ticket
+5. Files are now in `linked` status awaiting approval
+
+### Approver Review Flow
+
+1. Approver types "รออนุมัติ" or "สถานะ"
+2. System shows carousel of all linked files from all employees (last 7 days)
+3. Approver taps "อนุมัติ" (approve) or "ปฏิเสธ" (reject) on each file
+4. File status updated to `approved` or `rejected`
+
+---
+
+## File Status Lifecycle
+
+```
+pending --> linked --> approved
+                   --> rejected
+        --> (deleted)
+```
+
+| Status | Description |
+|--------|-------------|
+| `pending` | Uploaded, not yet linked to ticket |
+| `linked` | Linked to ticket, awaiting approval |
+| `approved` | Approved by supervisor |
+| `rejected` | Rejected by supervisor |
+
+---
+
+## Supported File Types
+
+| Type | MIME Types | Extension |
+|------|------------|-----------|
+| Images | image/jpeg, image/png, image/gif, image/webp | .jpg, .png, .gif, .webp |
+| Documents | application/pdf | .pdf |
+| Other | Any | .bin (fallback) |
+
+---
+
+## Rate Limiting
+
+- LINE Platform has its own rate limits for sending messages
+- Batch upload detection: Files uploaded within 3 seconds of each other are treated as batch (silent acknowledgment)
+- Reply messages limited to 5 per response (LINE API limit)
+- Pagination: 10 files per page in carousels
+
+---
+
+## Quick Reply Buttons
+
+When pending files exist, users see quick reply options:
+
+| Button | Action |
+|--------|--------|
+| ดูรายการไฟล์ | View file carousel |
+| ลบล่าสุด | Delete most recent file |
+
+---
+
+## Error Messages
+
+Errors during event processing are logged but do not affect the webhook response. Users receive error messages via LINE:
+
+| Error Type | Thai Message |
+|------------|--------------|
+| Account not linked | บัญชี LINE ของคุณยังไม่ได้เชื่อมต่อกับระบบ กรุณาติดต่อผู้ดูแลระบบ |
+| Ticket not found | ไม่พบตั๋วรหัส {code} |
+| No pending files | ไม่พบไฟล์ที่รอเชื่อมต่อ |
+| Upload failed | ไม่สามารถอัพโหลดไฟล์ได้ กรุณาลองใหม่อีกครั้ง |
+| No permission | คุณไม่มีสิทธิ์เข้าถึงไฟล์นี้ |
+| Approver only | คำสั่งนี้สำหรับผู้อนุมัติเท่านั้น |
+
+---
+
+## Deployment
 
 ```bash
-# View Edge Function logs
-npx supabase functions logs api-line-webhook --project-ref ogzyihacqbasolfxymgo
+npx supabase functions deploy api-line-webhook --no-verify-jwt --project-ref ogzyihacqbasolfxymgo
 ```
 
-### Test Webhook Locally
-
-```bash
-# Start local function
-supabase functions serve api-line-webhook --env-file .env.local
-
-# Use ngrok to expose local endpoint
-ngrok http 54321
-```
-
-### Verify Signature Manually
-
-```bash
-echo -n '{"events":[]}' | openssl dgst -sha256 -hmac 'YOUR_CHANNEL_SECRET' -binary | base64
-```
+> Note: `--no-verify-jwt` is required because LINE webhook uses its own signature verification.
 
 ---
 
-## Security Notes
+## LINE Platform Configuration
 
-1. **Signature Verification**: ทุก request ต้องผ่านการ verify signature
-2. **Channel Secret**: เก็บเป็น secret ใน Supabase
-3. **Storage**: ไฟล์เก็บใน private bucket (staging-files)
-4. **Expiry**: ไฟล์ที่ไม่ได้เชื่อมตั๋วจะหมดอายุใน 30 วัน
+Configure the following in LINE Developers Console:
+
+1. **Webhook URL:** `https://ogzyihacqbasolfxymgo.supabase.co/functions/v1/api-line-webhook`
+2. **Use webhook:** Enabled
+3. **Webhook redelivery:** Disabled (handled by code - redelivered events are skipped)
 
 ---
 
 ## Related Documentation
 
-- [API Staging](./api-staging.md) - Staging file management
-- [LINE Messaging API](https://developers.line.biz/en/reference/messaging-api/)
-- [Flex Message Simulator](https://developers.line.biz/flex-simulator/)
+- [LINE Messaging API Reference](https://developers.line.biz/en/reference/messaging-api/)
+- [Supabase Edge Functions](https://supabase.com/docs/guides/functions)

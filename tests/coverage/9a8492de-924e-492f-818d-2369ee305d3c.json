@@ -1,0 +1,93 @@
+{
+  "scriptId": "337",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-employees/handlers/search.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3031,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "search",
+      "ranges": [
+        {
+          "startOffset": 1820,
+          "endOffset": 3030,
+          "count": 2
+        },
+        {
+          "startOffset": 1965,
+          "endOffset": 2191,
+          "count": 1
+        },
+        {
+          "startOffset": 2191,
+          "endOffset": 2203,
+          "count": 0
+        },
+        {
+          "startOffset": 2269,
+          "endOffset": 2281,
+          "count": 1
+        },
+        {
+          "startOffset": 2333,
+          "endOffset": 2345,
+          "count": 1
+        },
+        {
+          "startOffset": 2409,
+          "endOffset": 2421,
+          "count": 1
+        },
+        {
+          "startOffset": 2467,
+          "endOffset": 2479,
+          "count": 1
+        },
+        {
+          "startOffset": 2546,
+          "endOffset": 2552,
+          "count": 0
+        },
+        {
+          "startOffset": 2553,
+          "endOffset": 2620,
+          "count": 1
+        },
+        {
+          "startOffset": 2601,
+          "endOffset": 2608,
+          "count": 0
+        },
+        {
+          "startOffset": 2669,
+          "endOffset": 2712,
+          "count": 0
+        },
+        {
+          "startOffset": 2712,
+          "endOffset": 2734,
+          "count": 1
+        },
+        {
+          "startOffset": 2734,
+          "endOffset": 2789,
+          "count": 0
+        },
+        {
+          "startOffset": 2789,
+          "endOffset": 3029,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

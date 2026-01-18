@@ -1,5 +1,5 @@
 /**
- * Add item to model package handler
+ * Add component model to parent model package handler
  */
 
 import { success } from '../../_shared/response.ts';
@@ -10,7 +10,7 @@ import { HTTP_STATUS } from '../../_shared/constants.ts';
 import type { Employee } from '../../_shared/auth.ts';
 
 export async function addPackageItem(req: Request, employee: Employee, modelId: string) {
-  // Check permissions - Level 1 and above can add items to packages
+  // Check permissions - Level 1 and above can add components to packages
   await requireMinLevel(employee, 1);
 
   // Validate model ID
@@ -20,20 +20,20 @@ export async function addPackageItem(req: Request, employee: Employee, modelId: 
   const body = await parseRequestBody<Record<string, unknown>>(req);
 
   // Validate required fields
-  validateRequired(body.item_id, 'Item ID');
-  validateUUID(body.item_id as string, 'Item ID');
+  validateRequired(body.component_model_id, 'Component Model ID');
+  validateUUID(body.component_model_id as string, 'Component Model ID');
 
   // Prepare data
   const data: Record<string, unknown> = {
     model_id: modelId,
-    item_id: body.item_id,
+    component_model_id: body.component_model_id,
     quantity: body.quantity ?? 1,
     note: body.note ?? null,
     display_order: body.display_order ?? 0,
   };
 
-  // Add item to package
-  const result = await ModelService.addPackageItem(data);
+  // Add component to package
+  const result = await ModelService.addPackageComponent(data);
 
   return success(result, HTTP_STATUS.CREATED);
 }

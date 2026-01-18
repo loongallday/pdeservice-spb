@@ -1,0 +1,105 @@
+{
+  "scriptId": "734",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/buffer-crc32/0.2.13/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 4747,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 4746,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 4740,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "ensureBuffer",
+      "ranges": [
+        {
+          "startOffset": 3543,
+          "endOffset": 4085,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "bufferizeInt",
+      "ranges": [
+        {
+          "startOffset": 4087,
+          "endOffset": 4188,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_crc32",
+      "ranges": [
+        {
+          "startOffset": 4190,
+          "endOffset": 4484,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "crc32",
+      "ranges": [
+        {
+          "startOffset": 4486,
+          "endOffset": 4560,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "crc32.signed",
+      "ranges": [
+        {
+          "startOffset": 4576,
+          "endOffset": 4631,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "crc32.unsigned",
+      "ranges": [
+        {
+          "startOffset": 4650,
+          "endOffset": 4711,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

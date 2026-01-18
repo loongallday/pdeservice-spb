@@ -1,5 +1,44 @@
 /**
- * Ticket helper service - Helper methods for ticket operations
+ * @fileoverview Ticket helper service - Audit logging and merchandise linking
+ * @module api-tickets/services/ticketHelperService
+ *
+ * Provides utility functions for ticket operations:
+ * - logTicketAudit(): Record audit entries and trigger watcher notifications
+ * - linkMerchandiseToTicket(): Link equipment to tickets with validation
+ *
+ * @description
+ * Audit Actions Tracked:
+ * - created: Ticket creation
+ * - updated: Field updates
+ * - deleted: Ticket deletion
+ * - approved: Appointment approved
+ * - unapproved: Appointment un-approved
+ * - technician_confirmed: Technicians confirmed (jct_ticket_employees_cf)
+ * - technician_changed: Confirmed technicians changed
+ * - employee_assigned: Employees assigned (jct_ticket_employees)
+ * - employee_removed: Employees removed from assignment
+ * - work_giver_set: Work giver assigned
+ * - work_giver_changed: Work giver changed
+ * - comment_added: Comment added
+ *
+ * Audit Entry Structure:
+ * - ticket_id: Target ticket
+ * - action: Action type (TicketAuditAction)
+ * - changed_by: Employee who made the change
+ * - old_values: Previous values (JSON)
+ * - new_values: New values (JSON)
+ * - changed_fields: List of changed field names
+ * - metadata: Additional context
+ *
+ * Watcher Notification Flow:
+ * 1. Audit entry is logged to child_ticket_audit
+ * 2. If action != 'created', NotificationService.createWatcherNotifications is called
+ * 3. Notifications are created asynchronously (non-blocking)
+ *
+ * Merchandise Validation:
+ * - All merchandise IDs must exist
+ * - Merchandise must be in the same site as the ticket
+ * - Duplicate IDs are deduplicated
  */
 
 import { createServiceClient } from '../../_shared/supabase.ts';

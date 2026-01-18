@@ -1,0 +1,28 @@
+{
+  "scriptId": "340",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-appointments/handlers/search.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1520,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "search",
+      "ranges": [
+        {
+          "startOffset": 1147,
+          "endOffset": 1519,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

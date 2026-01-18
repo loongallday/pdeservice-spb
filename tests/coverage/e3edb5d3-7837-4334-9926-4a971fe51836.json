@@ -1,0 +1,182 @@
+{
+  "scriptId": "687",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/readdir-glob/1.1.3/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 7074,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 7073,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 7067,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "readdir",
+      "ranges": [
+        {
+          "startOffset": 404,
+          "endOffset": 1211,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "stat",
+      "ranges": [
+        {
+          "startOffset": 1212,
+          "endOffset": 1821,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exploreWalkAsync",
+      "ranges": [
+        {
+          "startOffset": 1823,
+          "endOffset": 2944,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "explore",
+      "ranges": [
+        {
+          "startOffset": 2945,
+          "endOffset": 3095,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "readOptions",
+      "ranges": [
+        {
+          "startOffset": 3098,
+          "endOffset": 3531,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ReaddirGlob",
+      "ranges": [
+        {
+          "startOffset": 3576,
+          "endOffset": 5240,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_shouldSkipDirectory",
+      "ranges": [
+        {
+          "startOffset": 5244,
+          "endOffset": 5416,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_fileMatches",
+      "ranges": [
+        {
+          "startOffset": 5420,
+          "endOffset": 5700,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_next",
+      "ranges": [
+        {
+          "startOffset": 5704,
+          "endOffset": 6722,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "abort",
+      "ranges": [
+        {
+          "startOffset": 6726,
+          "endOffset": 6764,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "pause",
+      "ranges": [
+        {
+          "startOffset": 6768,
+          "endOffset": 6805,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "resume",
+      "ranges": [
+        {
+          "startOffset": 6809,
+          "endOffset": 6927,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "readdirGlob",
+      "ranges": [
+        {
+          "startOffset": 6932,
+          "endOffset": 7026,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,6 +1,30 @@
 /**
- * API AI Summary Edge Function
- * Takes a description and returns a concise summary while preserving key information
+ * @fileoverview AI Summary API Edge Function - Text summarization service
+ * @module api-ai-summary
+ *
+ * @description
+ * Takes a description and returns a concise summary while preserving key information.
+ * Uses OpenAI GPT-4o-mini for cost-efficient summarization.
+ *
+ * Features:
+ * - Configurable max length (default: 200 chars)
+ * - Language auto-detection (Thai/English)
+ * - Context-aware summarization (ticket, site, company)
+ * - Key points extraction
+ * - Short text passthrough (no API call if already short)
+ *
+ * Context Types:
+ * - ticket: Emphasizes problem, equipment, location, urgency
+ * - site: Emphasizes address, contacts, key info
+ * - company: Emphasizes business, size, key info
+ * - general: General text summarization
+ *
+ * @endpoints
+ * ## Summary Operations
+ * - POST   /   - Summarize text with options
+ *
+ * @auth All endpoints require JWT authentication
+ * @env OPENAI_API_KEY - OpenAI API key for GPT-4o-mini
  */
 
 import { handleCORS } from '../_shared/cors.ts';

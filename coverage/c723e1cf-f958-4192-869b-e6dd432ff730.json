@@ -1,0 +1,43 @@
+{
+  "scriptId": "338",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-departments/handlers/delete.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 727,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "deleteDepartment",
+      "ranges": [
+        {
+          "startOffset": 342,
+          "endOffset": 726,
+          "count": 3
+        },
+        {
+          "startOffset": 488,
+          "endOffset": 556,
+          "count": 1
+        },
+        {
+          "startOffset": 556,
+          "endOffset": 671,
+          "count": 2
+        },
+        {
+          "startOffset": 671,
+          "endOffset": 725,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

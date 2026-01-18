@@ -1,0 +1,43 @@
+{
+  "scriptId": "338",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-appointments/handlers/update.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2682,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "update",
+      "ranges": [
+        {
+          "startOffset": 1855,
+          "endOffset": 2681,
+          "count": 3
+        },
+        {
+          "startOffset": 2022,
+          "endOffset": 2152,
+          "count": 2
+        },
+        {
+          "startOffset": 2152,
+          "endOffset": 2263,
+          "count": 1
+        },
+        {
+          "startOffset": 2263,
+          "endOffset": 2680,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

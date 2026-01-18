@@ -1,0 +1,149 @@
+{
+  "scriptId": "385",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/services/notificationService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 19326,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "create",
+      "ranges": [
+        {
+          "startOffset": 1805,
+          "endOffset": 2498,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createBulk",
+      "ranges": [
+        {
+          "startOffset": 2664,
+          "endOffset": 3449,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createBulkWithDedup",
+      "ranges": [
+        {
+          "startOffset": 3591,
+          "endOffset": 5073,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createWatcherNotifications",
+      "ranges": [
+        {
+          "startOffset": 5234,
+          "endOffset": 7193,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getWatcherNotificationMessage",
+      "ranges": [
+        {
+          "startOffset": 7264,
+          "endOffset": 9196,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getByRecipient",
+      "ranges": [
+        {
+          "startOffset": 9267,
+          "endOffset": 11469,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "markAsRead",
+      "ranges": [
+        {
+          "startOffset": 11603,
+          "endOffset": 12211,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createApprovalNotifications",
+      "ranges": [
+        {
+          "startOffset": 12420,
+          "endOffset": 13562,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createTechnicianConfirmationNotifications",
+      "ranges": [
+        {
+          "startOffset": 13682,
+          "endOffset": 14564,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createCommentNotifications",
+      "ranges": [
+        {
+          "startOffset": 14701,
+          "endOffset": 16639,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createUnapprovalNotificationToApprover",
+      "ranges": [
+        {
+          "startOffset": 16831,
+          "endOffset": 18162,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createApprovalRequestNotifications",
+      "ranges": [
+        {
+          "startOffset": 18338,
+          "endOffset": 19323,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

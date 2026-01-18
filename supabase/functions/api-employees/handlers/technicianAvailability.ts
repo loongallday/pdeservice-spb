@@ -1,6 +1,39 @@
 /**
- * Get technician workload handler
- * Returns technicians with their workload status for a given date
+ * @fileoverview Get technician availability/workload handler
+ * @endpoint GET /api-employees/technicians/availability
+ * @auth Required - Level 1+ (Assigner, PM, Sales, Admin, Superadmin)
+ *
+ * @queryParam {string} [date] - Date to check (YYYY-MM-DD format)
+ *
+ * @returns {TechnicianWithWorkload[]} Array of technicians with workload levels
+ * @throws {AuthenticationError} 401 - If not authenticated
+ * @throws {ForbiddenError} 403 - If permission level < 1
+ * @throws {ValidationError} 400 - If date format is invalid
+ * @throws {DatabaseError} 500 - If technical department not found
+ *
+ * @description
+ * Returns all active technicians from the "technical" department with their
+ * workload status for a given date. Used for ticket assignment UI to show
+ * technician availability.
+ *
+ * Workload levels based on appointment count on the date:
+ * - no_work: 0 appointments
+ * - light: 1-2 appointments
+ * - medium: 3-4 appointments
+ * - heavy: 5+ appointments
+ *
+ * If no date is provided, returns all technicians with "no_work" status.
+ *
+ * @example
+ * GET /api-employees/technicians/availability?date=2026-01-20
+ *
+ * Response:
+ * {
+ *   "data": [
+ *     { "id": "uuid", "name": "ช่างสมชาย", "workload": "light" },
+ *     { "id": "uuid", "name": "ช่างสมหญิง", "workload": "heavy" }
+ *   ]
+ * }
  */
 
 import { success } from '../../_shared/response.ts';

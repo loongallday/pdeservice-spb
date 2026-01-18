@@ -1,0 +1,38 @@
+{
+  "scriptId": "339",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-contacts/handlers/delete.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 612,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "deleteContact",
+      "ranges": [
+        {
+          "startOffset": 275,
+          "endOffset": 611,
+          "count": 3
+        },
+        {
+          "startOffset": 445,
+          "endOffset": 551,
+          "count": 2
+        },
+        {
+          "startOffset": 551,
+          "endOffset": 610,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

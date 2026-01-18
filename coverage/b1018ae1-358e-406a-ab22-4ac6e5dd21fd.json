@@ -1,0 +1,33 @@
+{
+  "scriptId": "341",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-contacts/handlers/search.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 671,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "search",
+      "ranges": [
+        {
+          "startOffset": 216,
+          "endOffset": 670,
+          "count": 1
+        },
+        {
+          "startOffset": 485,
+          "endOffset": 490,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

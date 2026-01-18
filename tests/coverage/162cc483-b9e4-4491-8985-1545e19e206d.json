@@ -1,0 +1,193 @@
+{
+  "scriptId": "751",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/stream/xlsx/sheet-rels-writer.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2915,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2914,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2908,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "HyperlinksProxy",
+      "ranges": [
+        {
+          "startOffset": 382,
+          "endOffset": 451,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "push",
+      "ranges": [
+        {
+          "startOffset": 455,
+          "endOffset": 517,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SheetRelsWriter",
+      "ranges": [
+        {
+          "startOffset": 547,
+          "endOffset": 811,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get stream",
+      "ranges": [
+        {
+          "startOffset": 815,
+          "endOffset": 1042,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get length",
+      "ranges": [
+        {
+          "startOffset": 1046,
+          "endOffset": 1100,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "each",
+      "ranges": [
+        {
+          "startOffset": 1104,
+          "endOffset": 1159,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get hyperlinksProxy",
+      "ranges": [
+        {
+          "startOffset": 1163,
+          "endOffset": 1279,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addHyperlink",
+      "ranges": [
+        {
+          "startOffset": 1283,
+          "endOffset": 1634,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addMedia",
+      "ranges": [
+        {
+          "startOffset": 1638,
+          "endOffset": 1702,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addRelationship",
+      "ranges": [
+        {
+          "startOffset": 1706,
+          "endOffset": 1773,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "commit",
+      "ranges": [
+        {
+          "startOffset": 1777,
+          "endOffset": 1920,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_writeOpen",
+      "ranges": [
+        {
+          "startOffset": 2010,
+          "endOffset": 2214,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_writeRelationship",
+      "ranges": [
+        {
+          "startOffset": 2218,
+          "endOffset": 2802,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_writeClose",
+      "ranges": [
+        {
+          "startOffset": 2806,
+          "endOffset": 2868,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

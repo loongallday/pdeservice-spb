@@ -1,0 +1,88 @@
+{
+  "scriptId": "747",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/end-of-stream/1.4.5/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2969,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2968,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2962,
+          "count": 1
+        },
+        {
+          "startOffset": 299,
+          "endOffset": 315,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "noop",
+      "ranges": [
+        {
+          "startOffset": 261,
+          "endOffset": 274,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isRequest",
+      "ranges": [
+        {
+          "startOffset": 367,
+          "endOffset": 451,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isChildProcess",
+      "ranges": [
+        {
+          "startOffset": 475,
+          "endOffset": 576,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "eos",
+      "ranges": [
+        {
+          "startOffset": 589,
+          "endOffset": 2935,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,0 +1,224 @@
+{
+  "scriptId": "648",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/@fast-csv/format/4.3.5/build/src/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3574,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 3573,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 3567,
+          "count": 1
+        },
+        {
+          "startOffset": 460,
+          "endOffset": 541,
+          "count": 0
+        },
+        {
+          "startOffset": 717,
+          "endOffset": 759,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 309,
+          "endOffset": 458,
+          "count": 118
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 425,
+          "endOffset": 452,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 463,
+          "endOffset": 540,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 624,
+          "endOffset": 715,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "__setModuleDefault",
+      "ranges": [
+        {
+          "startOffset": 719,
+          "endOffset": 759,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "__importStar",
+      "ranges": [
+        {
+          "startOffset": 812,
+          "endOffset": 1092,
+          "count": 1
+        },
+        {
+          "startOffset": 860,
+          "endOffset": 871,
+          "count": 0
+        },
+        {
+          "startOffset": 933,
+          "endOffset": 1034,
+          "count": 117
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "__exportStar",
+      "ranges": [
+        {
+          "startOffset": 1144,
+          "endOffset": 1295,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 1960,
+          "endOffset": 2023,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 2160,
+          "endOffset": 2219,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.format",
+      "ranges": [
+        {
+          "startOffset": 2241,
+          "endOffset": 2347,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.write",
+      "ranges": [
+        {
+          "startOffset": 2365,
+          "endOffset": 2761,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.writeToStream",
+      "ranges": [
+        {
+          "startOffset": 2787,
+          "endOffset": 2847,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.writeToBuffer",
+      "ranges": [
+        {
+          "startOffset": 2873,
+          "endOffset": 3238,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.writeToString",
+      "ranges": [
+        {
+          "startOffset": 3264,
+          "endOffset": 3355,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.writeToPath",
+      "ranges": [
+        {
+          "startOffset": 3379,
+          "endOffset": 3530,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

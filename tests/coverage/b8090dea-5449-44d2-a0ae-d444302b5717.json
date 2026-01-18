@@ -1,0 +1,743 @@
+{
+  "scriptId": "406",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/doc/worksheet.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 26704,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 26703,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 26697,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Worksheet",
+      "ranges": [
+        {
+          "startOffset": 888,
+          "endOffset": 3603,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get name",
+      "ranges": [
+        {
+          "startOffset": 3607,
+          "endOffset": 3646,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set name",
+      "ranges": [
+        {
+          "startOffset": 3650,
+          "endOffset": 4932,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get workbook",
+      "ranges": [
+        {
+          "startOffset": 4936,
+          "endOffset": 4983,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "destroy",
+      "ranges": [
+        {
+          "startOffset": 5064,
+          "endOffset": 5123,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get dimensions",
+      "ranges": [
+        {
+          "startOffset": 5186,
+          "endOffset": 5484,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get columns",
+      "ranges": [
+        {
+          "startOffset": 5617,
+          "endOffset": 5662,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set columns",
+      "ranges": [
+        {
+          "startOffset": 5787,
+          "endOffset": 6279,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getColumnKey",
+      "ranges": [
+        {
+          "startOffset": 6283,
+          "endOffset": 6334,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "setColumnKey",
+      "ranges": [
+        {
+          "startOffset": 6338,
+          "endOffset": 6397,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deleteColumnKey",
+      "ranges": [
+        {
+          "startOffset": 6401,
+          "endOffset": 6455,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "eachColumnKey",
+      "ranges": [
+        {
+          "startOffset": 6459,
+          "endOffset": 6508,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getColumn",
+      "ranges": [
+        {
+          "startOffset": 6606,
+          "endOffset": 7091,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "spliceColumns",
+      "ranges": [
+        {
+          "startOffset": 7095,
+          "endOffset": 8530,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get lastColumn",
+      "ranges": [
+        {
+          "startOffset": 8534,
+          "endOffset": 8601,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get columnCount",
+      "ranges": [
+        {
+          "startOffset": 8605,
+          "endOffset": 8757,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get actualColumnCount",
+      "ranges": [
+        {
+          "startOffset": 8761,
+          "endOffset": 9086,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_commitRow",
+      "ranges": [
+        {
+          "startOffset": 9180,
+          "endOffset": 9254,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get _lastRowNumber",
+      "ranges": [
+        {
+          "startOffset": 9258,
+          "endOffset": 9461,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get _nextRow",
+      "ranges": [
+        {
+          "startOffset": 9465,
+          "endOffset": 9521,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get lastRow",
+      "ranges": [
+        {
+          "startOffset": 9525,
+          "endOffset": 9649,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "findRow",
+      "ranges": [
+        {
+          "startOffset": 9695,
+          "endOffset": 9741,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "findRows",
+      "ranges": [
+        {
+          "startOffset": 9795,
+          "endOffset": 9884,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get rowCount",
+      "ranges": [
+        {
+          "startOffset": 9888,
+          "endOffset": 9940,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get actualRowCount",
+      "ranges": [
+        {
+          "startOffset": 9944,
+          "endOffset": 10103,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getRow",
+      "ranges": [
+        {
+          "startOffset": 10137,
+          "endOffset": 10273,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getRows",
+      "ranges": [
+        {
+          "startOffset": 10315,
+          "endOffset": 10509,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addRow",
+      "ranges": [
+        {
+          "startOffset": 10513,
+          "endOffset": 10719,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addRows",
+      "ranges": [
+        {
+          "startOffset": 10723,
+          "endOffset": 10871,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "insertRow",
+      "ranges": [
+        {
+          "startOffset": 10875,
+          "endOffset": 11018,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "insertRows",
+      "ranges": [
+        {
+          "startOffset": 11022,
+          "endOffset": 11583,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_setStyleOption",
+      "ranges": [
+        {
+          "startOffset": 11690,
+          "endOffset": 11986,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_copyStyle",
+      "ranges": [
+        {
+          "startOffset": 11990,
+          "endOffset": 12362,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "duplicateRow",
+      "ranges": [
+        {
+          "startOffset": 12366,
+          "endOffset": 13028,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "spliceRows",
+      "ranges": [
+        {
+          "startOffset": 13032,
+          "endOffset": 15318,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "eachRow",
+      "ranges": [
+        {
+          "startOffset": 15395,
+          "endOffset": 15813,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getSheetValues",
+      "ranges": [
+        {
+          "startOffset": 15854,
+          "endOffset": 16018,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "findCell",
+      "ranges": [
+        {
+          "startOffset": 16198,
+          "endOffset": 16366,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getCell",
+      "ranges": [
+        {
+          "startOffset": 16455,
+          "endOffset": 16598,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "mergeCells",
+      "ranges": [
+        {
+          "startOffset": 16787,
+          "endOffset": 16896,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "mergeCellsWithoutStyle",
+      "ranges": [
+        {
+          "startOffset": 16900,
+          "endOffset": 17027,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_mergeCellsInternal",
+      "ranges": [
+        {
+          "startOffset": 17031,
+          "endOffset": 17740,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_unMergeMaster",
+      "ranges": [
+        {
+          "startOffset": 17744,
+          "endOffset": 18106,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get hasMerges",
+      "ranges": [
+        {
+          "startOffset": 18110,
+          "endOffset": 18227,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "unMergeCells",
+      "ranges": [
+        {
+          "startOffset": 18480,
+          "endOffset": 19107,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "fillFormula",
+      "ranges": [
+        {
+          "startOffset": 19218,
+          "endOffset": 20599,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addImage",
+      "ranges": [
+        {
+          "startOffset": 20694,
+          "endOffset": 20846,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getImages",
+      "ranges": [
+        {
+          "startOffset": 20850,
+          "endOffset": 20923,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addBackgroundImage",
+      "ranges": [
+        {
+          "startOffset": 20927,
+          "endOffset": 21074,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getBackgroundImageId",
+      "ranges": [
+        {
+          "startOffset": 21078,
+          "endOffset": 21207,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "protect",
+      "ranges": [
+        {
+          "startOffset": 21316,
+          "endOffset": 22522,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "unprotect",
+      "ranges": [
+        {
+          "startOffset": 22526,
+          "endOffset": 22576,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addTable",
+      "ranges": [
+        {
+          "startOffset": 22671,
+          "endOffset": 22789,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getTable",
+      "ranges": [
+        {
+          "startOffset": 22793,
+          "endOffset": 22843,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "removeTable",
+      "ranges": [
+        {
+          "startOffset": 22847,
+          "endOffset": 22900,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getTables",
+      "ranges": [
+        {
+          "startOffset": 22904,
+          "endOffset": 22960,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addConditionalFormatting",
+      "ranges": [
+        {
+          "startOffset": 23073,
+          "endOffset": 23149,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "removeConditionalFormatting",
+      "ranges": [
+        {
+          "startOffset": 23153,
+          "endOffset": 23469,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get tabColor",
+      "ranges": [
+        {
+          "startOffset": 23570,
+          "endOffset": 23780,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set tabColor",
+      "ranges": [
+        {
+          "startOffset": 23784,
+          "endOffset": 24000,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get model",
+      "ranges": [
+        {
+          "startOffset": 24097,
+          "endOffset": 25411,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_parseRows",
+      "ranges": [
+        {
+          "startOffset": 25415,
+          "endOffset": 25622,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_parseMergeCells",
+      "ranges": [
+        {
+          "startOffset": 25626,
+          "endOffset": 25869,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set model",
+      "ranges": [
+        {
+          "startOffset": 25873,
+          "endOffset": 26663,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

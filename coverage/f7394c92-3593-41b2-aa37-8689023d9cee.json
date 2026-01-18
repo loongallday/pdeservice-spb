@@ -1,0 +1,105 @@
+{
+  "scriptId": "497",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/readable-stream/3.6.2/lib/internal/streams/destroy.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3339,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 3338,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 3332,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "destroy",
+      "ranges": [
+        {
+          "startOffset": 298,
+          "endOffset": 1813,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "emitErrorAndCloseNT",
+      "ranges": [
+        {
+          "startOffset": 1814,
+          "endOffset": 1904,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "emitCloseNT",
+      "ranges": [
+        {
+          "startOffset": 1905,
+          "endOffset": 2095,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "undestroy",
+      "ranges": [
+        {
+          "startOffset": 2096,
+          "endOffset": 2653,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "emitErrorNT",
+      "ranges": [
+        {
+          "startOffset": 2654,
+          "endOffset": 2716,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "errorOrDestroy",
+      "ranges": [
+        {
+          "startOffset": 2717,
+          "endOffset": 3231,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

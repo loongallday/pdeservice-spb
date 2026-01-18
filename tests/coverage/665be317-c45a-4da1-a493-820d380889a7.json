@@ -1,0 +1,225 @@
+{
+  "scriptId": "506",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/utils/utils.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 4365,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 4364,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 4358,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "inherits",
+      "ranges": [
+        {
+          "startOffset": 281,
+          "endOffset": 984,
+          "count": 3
+        },
+        {
+          "startOffset": 424,
+          "endOffset": 474,
+          "count": 2
+        },
+        {
+          "startOffset": 491,
+          "endOffset": 626,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 526,
+          "endOffset": 620,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 828,
+          "endOffset": 909,
+          "count": 28
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "nop",
+      "ranges": [
+        {
+          "startOffset": 1115,
+          "endOffset": 1123,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "promiseImmediate",
+      "ranges": [
+        {
+          "startOffset": 1127,
+          "endOffset": 1450,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "dateToExcel",
+      "ranges": [
+        {
+          "startOffset": 1466,
+          "endOffset": 1577,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "excelToDate",
+      "ranges": [
+        {
+          "startOffset": 1581,
+          "endOffset": 1757,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parsePath",
+      "ranges": [
+        {
+          "startOffset": 1761,
+          "endOffset": 1933,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getRelsPath",
+      "ranges": [
+        {
+          "startOffset": 1937,
+          "endOffset": 2059,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "xmlEncode",
+      "ranges": [
+        {
+          "startOffset": 2063,
+          "endOffset": 3191,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "xmlDecode",
+      "ranges": [
+        {
+          "startOffset": 3195,
+          "endOffset": 3555,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "validInt",
+      "ranges": [
+        {
+          "startOffset": 3559,
+          "endOffset": 3652,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isDateFmt",
+      "ranges": [
+        {
+          "startOffset": 3657,
+          "endOffset": 3966,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exists",
+      "ranges": [
+        {
+          "startOffset": 3981,
+          "endOffset": 4138,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toIsoDateString",
+      "ranges": [
+        {
+          "startOffset": 4148,
+          "endOffset": 4217,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseBoolean",
+      "ranges": [
+        {
+          "startOffset": 4222,
+          "endOffset": 4326,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

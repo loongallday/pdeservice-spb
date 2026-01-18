@@ -1,0 +1,94 @@
+{
+  "scriptId": "710",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/fs.realpath/1.0.0/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1538,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 1537,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 1531,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "newError",
+      "ranges": [
+        {
+          "startOffset": 607,
+          "endOffset": 769,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "realpath",
+      "ranges": [
+        {
+          "startOffset": 771,
+          "endOffset": 1086,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "realpathSync",
+      "ranges": [
+        {
+          "startOffset": 1088,
+          "endOffset": 1344,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "monkeypatch",
+      "ranges": [
+        {
+          "startOffset": 1346,
+          "endOffset": 1431,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "unmonkeypatch",
+      "ranges": [
+        {
+          "startOffset": 1433,
+          "endOffset": 1528,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "scriptId": "452",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/jszip/3.10.1/lib/stream/StreamHelper.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 7107,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 7106,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 7100,
+          "count": 1
+        },
+        {
+          "startOffset": 641,
+          "endOffset": 675,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "transformZipOutput",
+      "ranges": [
+        {
+          "startOffset": 1147,
+          "endOffset": 1451,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "concat",
+      "ranges": [
+        {
+          "startOffset": 1767,
+          "endOffset": 2481,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "accumulate",
+      "ranges": [
+        {
+          "startOffset": 2833,
+          "endOffset": 3787,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "StreamHelper",
+      "ranges": [
+        {
+          "startOffset": 4051,
+          "endOffset": 4928,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "accumulate",
+      "ranges": [
+        {
+          "startOffset": 5204,
+          "endOffset": 5274,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "on",
+      "ranges": [
+        {
+          "startOffset": 5498,
+          "endOffset": 5863,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "resume",
+      "ranges": [
+        {
+          "startOffset": 5978,
+          "endOffset": 6078,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "pause",
+      "ranges": [
+        {
+          "startOffset": 6191,
+          "endOffset": 6261,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toNodejsStream",
+      "ranges": [
+        {
+          "startOffset": 6464,
+          "endOffset": 7061,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

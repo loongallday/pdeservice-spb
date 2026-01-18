@@ -1,0 +1,61 @@
+{
+  "scriptId": "519",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/xmlchars/2.2.0/xmlns/1.0/ed3.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2483,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2482,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2476,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "isNCNameStartChar",
+      "ranges": [
+        {
+          "startOffset": 1337,
+          "endOffset": 1941,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isNCNameChar",
+      "ranges": [
+        {
+          "startOffset": 2138,
+          "endOffset": 2405,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

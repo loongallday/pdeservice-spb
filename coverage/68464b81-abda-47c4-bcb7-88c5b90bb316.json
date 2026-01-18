@@ -1,0 +1,72 @@
+{
+  "scriptId": "718",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/inflight/1.0.6/inflight.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1595,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 1594,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 1588,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "inflight",
+      "ranges": [
+        {
+          "startOffset": 346,
+          "endOffset": 495,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "makeres",
+      "ranges": [
+        {
+          "startOffset": 497,
+          "endOffset": 1444,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "slice",
+      "ranges": [
+        {
+          "startOffset": 1446,
+          "endOffset": 1585,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

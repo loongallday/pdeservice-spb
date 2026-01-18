@@ -28,9 +28,11 @@ export function createMockEmployee(overrides?: Partial<Employee>): Employee {
 
 /**
  * Create a mock employee with specific level
+ * Note: `level` is added directly to employee for handlers that reference employee.level
+ * (some handlers have a bug where they use employee.level instead of employee.role_data?.level)
  */
-export function createMockEmployeeWithLevel(level: number): Employee {
-  return createMockEmployee({
+export function createMockEmployeeWithLevel(level: number): Employee & { level: number } {
+  const employee = createMockEmployee({
     role_data: {
       id: '123e4567-e89b-12d3-a456-426614174001',
       code: 'TEST_ROLE',
@@ -38,6 +40,8 @@ export function createMockEmployeeWithLevel(level: number): Employee {
       level,
     },
   });
+  // Add level directly to employee for handlers that incorrectly reference employee.level
+  return { ...employee, level };
 }
 
 /**

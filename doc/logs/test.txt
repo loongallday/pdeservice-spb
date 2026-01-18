@@ -1,0 +1,841 @@
+TS2307 [ERROR]: Cannot find module 'file:///Users/loongallday/pdeservice-spb/supabase/functions/api-employees/handlers/departmentCounts.ts'.
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:10:37
+
+TS2307 [ERROR]: Cannot find module 'file:///Users/loongallday/pdeservice-spb/supabase/functions/api-employees/handlers/roleCounts.ts'.
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:11:31
+
+TS2307 [ERROR]: Cannot find module 'file:///Users/loongallday/pdeservice-spb/supabase/functions/api-roles/handlers/list.ts'.
+    at file:///Users/loongallday/pdeservice-spb/tests/api-roles/handlers.test.ts:6:22
+
+TS2307 [ERROR]: Cannot find module 'file:///Users/loongallday/pdeservice-spb/supabase/functions/api-roles/handlers/get.ts'.
+    at file:///Users/loongallday/pdeservice-spb/tests/api-roles/handlers.test.ts:7:21
+
+TS2307 [ERROR]: Cannot find module 'file:///Users/loongallday/pdeservice-spb/supabase/functions/api-sites/handlers/list.ts'.
+    at file:///Users/loongallday/pdeservice-spb/tests/api-sites/handlers.test.ts:6:22
+
+TS2307 [ERROR]: Cannot find module 'file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/handlers/list.ts'.
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:6:22
+
+TS2307 [ERROR]: Cannot find module 'file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/handlers/listMerchandise.ts'.
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:9:33
+
+TS2307 [ERROR]: Cannot find module 'file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/handlers/addMerchandise.ts'.
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:10:32
+
+TS2307 [ERROR]: Cannot find module 'file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/handlers/removeMerchandise.ts'.
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:11:35
+
+TS2820 [ERROR]: Type '"technician_unconfirmed"' is not assignable to type 'TicketAuditAction'. Did you mean '"technician_confirmed"'?
+          action: 'technician_unconfirmed',
+          ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-appointments/services/appointmentService.ts:306:11
+
+    The expected type comes from property 'action' which is declared here on type '{ ticketId: string; action: TicketAuditAction; changedBy: string; oldValues?: Record<string, unknown> | undefined; newValues?: Record<string, unknown> | undefined; changedFields?: string[] | undefined; metadata?: Record<...> | undefined; }'
+      action: TicketAuditAction;
+      ~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/services/ticketHelperService.ts:71:3
+
+TS2345 [ERROR]: Argument of type 'WorkTypeTicketData[]' is not assignable to parameter of type 'TicketDataForReport[]'.
+  Type 'WorkTypeTicketData' is not assignable to type 'TicketDataForReport'.
+    Types of property 'site' are incompatible.
+      Type '{ name: string | null; province_code: number | null; company: { name_th: string | null; name_en: string | null; } | null; } | null' is not assignable to type '{ name?: string | undefined; company?: { name_th?: string | undefined; name_en?: string | undefined; } | null | undefined; } | null | undefined'.
+        Type '{ name: string | null; province_code: number | null; company: { name_th: string | null; name_en: string | null; } | null; }' is not assignable to type '{ name?: string | undefined; company?: { name_th?: string | undefined; name_en?: string | undefined; } | null | undefined; }'.
+          Types of property 'name' are incompatible.
+            Type 'string | null' is not assignable to type 'string | undefined'.
+              Type 'null' is not assignable to type 'string | undefined'.
+  const reportRows = transformToReportRows(tickets);
+                                           ~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-reports/handlers/workTypeExcel.ts:73:44
+
+TS2345 [ERROR]: Argument of type 'Uint8Array<ArrayBufferLike>' is not assignable to parameter of type 'BodyInit | null | undefined'.
+  Type 'Uint8Array<ArrayBufferLike>' is missing the following properties from type 'URLSearchParams': append, delete, getAll, get, and 2 more.
+  return new Response(excelBuffer, {
+                      ~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-reports/handlers/workTypeExcel.ts:83:23
+
+TS2551 [ERROR]: Property 'work_type' does not exist on type '{ site_id: string | null; contact_id: string | null; created_by: string; details_summary: string | null; details?: string | undefined; work_type_id: string; assigner_id: string; status_id: string; additional?: string | undefined; }'. Did you mean 'work_type_id'?
+    ticketData.work_type
+               ~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/services/ticketCrudService.ts:562:16
+
+    'work_type_id' is declared here.
+        work_type_id: string;
+        ~~~~~~~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/services/ticketTypes.ts:69:5
+
+TS2339 [ERROR]: Property 'level' does not exist on type 'Employee'.
+  const { data, total } = await TodoService.list(employee.id, employee.level, params);
+                                                                       ~~~~~
+    at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-todos/handlers/todos.ts:36:72
+
+TS2345 [ERROR]: Argument of type '{ page: number; limit: number; total: number; totalPages: number; }' is not assignable to parameter of type 'PaginationInfo'.
+  Type '{ page: number; limit: number; total: number; totalPages: number; }' is missing the following properties from type 'PaginationInfo': hasNext, hasPrevious
+  return successWithPagination(data, {
+                                     ^
+    at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-todos/handlers/todos.ts:38:38
+
+TS2339 [ERROR]: Property 'level' does not exist on type 'Employee'.
+  const todo = await TodoService.getById(todoId, employee.id, employee.level);
+                                                                       ~~~~~
+    at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-todos/handlers/todos.ts:53:72
+
+TS2339 [ERROR]: Property 'level' does not exist on type 'Employee'.
+  const todo = await TodoService.update(todoId, employee.id, employee.level, input);
+                                                                      ~~~~~
+    at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-todos/handlers/todos.ts:97:71
+
+TS2339 [ERROR]: Property 'level' does not exist on type 'Employee'.
+  await TodoService.delete(todoId, employee.id, employee.level);
+                                                         ~~~~~
+    at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-todos/handlers/todos.ts:109:58
+
+TS2339 [ERROR]: Property 'level' does not exist on type 'Employee'.
+  const todo = await TodoService.complete(todoId, employee.id, employee.level);
+                                                                        ~~~~~
+    at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-todos/handlers/todos.ts:121:73
+
+TS2339 [ERROR]: Property 'level' does not exist on type 'Employee'.
+  const todo = await TodoService.reopen(todoId, employee.id, employee.level);
+                                                                      ~~~~~
+    at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-todos/handlers/todos.ts:133:71
+
+TS2345 [ERROR]: Argument of type 'GenericStringError' is not assignable to parameter of type 'Record<string, unknown>'.
+  Index signature for type 'string' is missing in type '{ error: true; } & String'.
+      data: (data || []).map(row => this.transformToTodoInfo(row)),
+                                                             ~~~
+    at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-todos/services/todoService.ts:220:62
+
+TS2345 [ERROR]: Argument of type 'GenericStringError' is not assignable to parameter of type 'Record<string, unknown>'.
+  Index signature for type 'string' is missing in type '{ error: true; } & String'.
+    const todo = this.transformToTodoInfo(data);
+                                          ~~~~
+    at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-todos/services/todoService.ts:246:43
+
+TS2345 [ERROR]: Argument of type 'GenericStringError' is not assignable to parameter of type 'Record<string, unknown>'.
+  Index signature for type 'string' is missing in type '{ error: true; } & String'.
+    return this.transformToTodoInfo(data);
+                                    ~~~~
+    at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-todos/services/todoService.ts:281:37
+
+TS2345 [ERROR]: Argument of type 'GenericStringError' is not assignable to parameter of type 'Record<string, unknown>'.
+  Index signature for type 'string' is missing in type '{ error: true; } & String'.
+    return this.transformToTodoInfo(data);
+                                    ~~~~
+    at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-todos/services/todoService.ts:331:37
+
+TS2345 [ERROR]: Argument of type 'GenericStringError' is not assignable to parameter of type 'Record<string, unknown>'.
+  Index signature for type 'string' is missing in type '{ error: true; } & String'.
+    return this.transformToTodoInfo(data);
+                                    ~~~~
+    at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-todos/services/todoService.ts:399:37
+
+TS2345 [ERROR]: Argument of type 'GenericStringError' is not assignable to parameter of type 'Record<string, unknown>'.
+  Index signature for type 'string' is missing in type '{ error: true; } & String'.
+    return this.transformToTodoInfo(data);
+                                    ~~~~
+    at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-todos/services/todoService.ts:441:37
+
+TS2322 [ERROR]: Type 'Promise<{ data: { id: string; title: string; content: string; priority: string; target_audience: string; start_date: string; end_date: string; is_active: boolean; created_at: string; }[]; pagination: { page: number; ... 4 more ...; hasPrevious: boolean; }; }>' is not assignable to type 'Promise<Record<string, unknown>[]>'.
+  Type '{ data: { id: string; title: string; content: string; priority: string; target_audience: string; start_date: string; end_date: string; is_active: boolean; created_at: string; }[]; pagination: { page: number; ... 4 more ...; hasPrevious: boolean; }; }' is missing the following properties from type 'Record<string, unknown>[]': length, pop, push, concat, and 35 more.
+  module.AnnouncementService.getAll = async () => ({
+                                                  ^
+    at file:///Users/loongallday/pdeservice-spb/tests/api-announcements/handlers.test.ts:31:51
+
+    The expected type comes from the return type of this signature.
+      static async getAll(): Promise<Record<string, unknown>[]> {
+                   ~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-announcements/services/announcementService.ts:36:16
+
+TS2352 [ERROR]: Conversion of type 'typeof AppointmentService' to type 'Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Index signature for type 'string' is missing in type 'typeof AppointmentService'.
+  (module.AppointmentService as Record<string, unknown>)[methodName] = mockFn;
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-appointments/handlers.test.ts:60:4
+
+TS2352 [ERROR]: Conversion of type 'typeof AppointmentService' to type 'Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Index signature for type 'string' is missing in type 'typeof AppointmentService'.
+    (module.AppointmentService as Record<string, unknown>)[methodName] = original;
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-appointments/handlers.test.ts:64:6
+
+TS2345 [ERROR]: Argument of type '(params: { ticket_id?: string; }) => Promise<{ data: Appointment[]; pagination: { page: number; limit: number; total: number; totalPages: number; hasNext: boolean; hasPrevious: boolean; }; }>' is not assignable to parameter of type '(...args: unknown[]) => Promise<{ data: Appointment[]; pagination: { page: number; limit: number; total: number; totalPages: number; hasNext: boolean; hasPrevious: boolean; }; }>'.
+  Types of parameters 'params' and 'args' are incompatible.
+    Type 'unknown' is not assignable to type '{ ticket_id?: string | undefined; }'.
+    async (params: { ticket_id?: string }) => {
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-appointments/handlers.test.ts:120:5
+
+TS2345 [ERROR]: Argument of type '(data: { ticket_id?: string; }) => Promise<Appointment>' is not assignable to parameter of type '(...args: unknown[]) => Promise<Appointment>'.
+  Types of parameters 'data' and 'args' are incompatible.
+    Type 'unknown' is not assignable to type '{ ticket_id?: string | undefined; }'.
+    async (data: { ticket_id?: string }) => {
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-appointments/handlers.test.ts:284:5
+
+TS2345 [ERROR]: Argument of type '(_id: string, data: { is_approved?: boolean; }) => Promise<{ appointment_date: string; id: string; appointment_time_start: string | null; appointment_time_end: string | null; appointment_type: AppointmentType; is_approved: boolean; created_at: string; updated_at: string; }>' is not assignable to parameter of type '(...args: unknown[]) => Promise<{ appointment_date: string; id: string; appointment_time_start: string | null; appointment_time_end: string | null; appointment_type: AppointmentType; is_approved: boolean; created_at: string; updated_at: string; }>'.
+  Types of parameters '_id' and 'args' are incompatible.
+    Type 'unknown' is not assignable to type 'string'.
+    async (_id: string, data: { is_approved?: boolean }) => {
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-appointments/handlers.test.ts:313:5
+
+TS2345 [ERROR]: Argument of type '(query: string) => Promise<{ appointment_type: string; id: string; appointment_date: string | null; appointment_time_start: string | null; appointment_time_end: string | null; is_approved: boolean; created_at: string; updated_at: string; }[]>' is not assignable to parameter of type '(...args: unknown[]) => Promise<{ appointment_type: string; id: string; appointment_date: string | null; appointment_time_start: string | null; appointment_time_end: string | null; is_approved: boolean; created_at: string; updated_at: string; }[]>'.
+  Types of parameters 'query' and 'args' are incompatible.
+    Type 'unknown' is not assignable to type 'string'.
+    async (query: string) => {
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-appointments/handlers.test.ts:407:5
+
+TS2345 [ERROR]: Argument of type '(query: string) => Promise<never[]>' is not assignable to parameter of type '(...args: unknown[]) => Promise<never[]>'.
+  Types of parameters 'query' and 'args' are incompatible.
+    Type 'unknown' is not assignable to type 'string'.
+    async (query: string) => {
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-appointments/handlers.test.ts:443:5
+
+TS2345 [ERROR]: Argument of type '(_id: string, data: { is_approved?: boolean; }) => Promise<Appointment>' is not assignable to parameter of type '(...args: unknown[]) => Promise<Appointment>'.
+  Types of parameters '_id' and 'args' are incompatible.
+    Type 'unknown' is not assignable to type 'string'.
+    async (_id: string, data: { is_approved?: boolean }) => {
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-appointments/handlers.test.ts:480:5
+
+TS2345 [ERROR]: Argument of type '(_id: string, data: { is_approved?: boolean; }) => Promise<{ is_approved: boolean; id: string; appointment_date: string | null; appointment_time_start: string | null; appointment_time_end: string | null; appointment_type: AppointmentType; created_at: string; updated_at: string; }>' is not assignable to parameter of type '(...args: unknown[]) => Promise<{ is_approved: boolean; id: string; appointment_date: string | null; appointment_time_start: string | null; appointment_time_end: string | null; appointment_type: AppointmentType; created_at: string; updated_at: string; }>'.
+  Types of parameters '_id' and 'args' are incompatible.
+    Type 'unknown' is not assignable to type 'string'.
+    async (_id: string, data: { is_approved?: boolean }) => {
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-appointments/handlers.test.ts:513:5
+
+TS2345 [ERROR]: Argument of type '(_id: string, data: Record<string, unknown>) => Promise<{ appointment_date: string; id: string; appointment_time_start: string | null; appointment_time_end: string | null; appointment_type: AppointmentType; is_approved: boolean; created_at: string; updated_at: string; }>' is not assignable to parameter of type '(...args: unknown[]) => Promise<{ appointment_date: string; id: string; appointment_time_start: string | null; appointment_time_end: string | null; appointment_type: AppointmentType; is_approved: boolean; created_at: string; updated_at: string; }>'.
+  Types of parameters '_id' and 'args' are incompatible.
+    Type 'unknown' is not assignable to type 'string'.
+    async (_id: string, data: Record<string, unknown>) => {
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-appointments/handlers.test.ts:592:5
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof DepartmentService'.
+  const originalGetAll = (await import('../../supabase/functions/api-departments/services/departmentService.ts')).DepartmentService.getAll;
+                                                                                                                                    ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-departments/handlers.test.ts:24:133
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof DepartmentService'.
+  (await import('../../supabase/functions/api-departments/services/departmentService.ts')).DepartmentService.getAll = async () => [mockDepartment];
+                                                                                                             ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-departments/handlers.test.ts:25:110
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof DepartmentService'.
+    (await import('../../supabase/functions/api-departments/services/departmentService.ts')).DepartmentService.getAll = originalGetAll;
+                                                                                                               ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-departments/handlers.test.ts:32:112
+
+TS2322 [ERROR]: Type 'Promise<{ id: string; code: string; name_th: string; name_en: string; is_active: boolean; }[]>' is not assignable to type 'Promise<{ data: Record<string, unknown>[]; pagination: PaginationInfo; }>'.
+  Type '{ id: string; code: string; name_th: string; name_en: string; is_active: boolean; }[]' is missing the following properties from type '{ data: Record<string, unknown>[]; pagination: PaginationInfo; }': data, pagination
+  (await import('../../supabase/functions/api-departments/services/departmentService.ts')).DepartmentService.search = async () => mockSearchResults;
+                                                                                                                                  ~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-departments/handlers.test.ts:66:131
+
+    The expected type comes from the return type of this signature.
+      static async search(
+                   ~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-departments/services/departmentService.ts:30:16
+
+TS2322 [ERROR]: Type 'Promise<never[]>' is not assignable to type 'Promise<{ data: Record<string, unknown>[]; pagination: PaginationInfo; }>'.
+  Type 'never[]' is missing the following properties from type '{ data: Record<string, unknown>[]; pagination: PaginationInfo; }': data, pagination
+  (await import('../../supabase/functions/api-departments/services/departmentService.ts')).DepartmentService.search = async () => [];
+                                                                                                                                  ~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-departments/handlers.test.ts:85:131
+
+    The expected type comes from the return type of this signature.
+      static async search(
+                   ~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-departments/services/departmentService.ts:30:16
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof EmployeeService'.
+  const originalGetAll = (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getAll;
+                                                                                                                              ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:29:127
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof EmployeeService'.
+  (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getAll = async () => ({
+                                                                                                       ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:30:104
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof EmployeeService'.
+    (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getAll = originalGetAll;
+                                                                                                         ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:47:106
+
+TS2339 [ERROR]: Property 'getByCode' does not exist on type 'typeof EmployeeService'.
+  const originalGetByCode = (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getByCode;
+                                                                                                                                 ~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:73:130
+
+TS2339 [ERROR]: Property 'getByCode' does not exist on type 'typeof EmployeeService'.
+  (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getByCode = async () => mockEmployee;
+                                                                                                       ~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:74:104
+
+TS2339 [ERROR]: Property 'getByCode' does not exist on type 'typeof EmployeeService'.
+    (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getByCode = originalGetByCode;
+                                                                                                         ~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:81:106
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof EmployeeService'.
+  const originalGetAll = (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getAll;
+                                                                                                                              ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:118:127
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof EmployeeService'.
+  (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getAll = async () => ({
+                                                                                                       ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:119:104
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof EmployeeService'.
+    (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getAll = originalGetAll;
+                                                                                                         ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:129:106
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof EmployeeService'.
+  const originalGetAll = (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getAll;
+                                                                                                                              ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:138:127
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof EmployeeService'.
+  (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getAll = async () => ({
+                                                                                                       ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:139:104
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof EmployeeService'.
+    (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getAll = originalGetAll;
+                                                                                                         ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:149:106
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof EmployeeService'.
+  const originalGetAll = (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getAll;
+                                                                                                                              ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:158:127
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof EmployeeService'.
+  (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getAll = async () => ({
+                                                                                                       ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:159:104
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof EmployeeService'.
+    (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.getAll = originalGetAll;
+                                                                                                         ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:174:106
+
+TS2339 [ERROR]: Property 'getEmployeeCountsByRole' does not exist on type 'typeof EmployeeService'.
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:257:144
+
+TS2339 [ERROR]: Property 'getEmployeeCountsByRole' does not exist on type 'typeof EmployeeService'.
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:258:104
+
+TS2339 [ERROR]: Property 'getEmployeeCountsByRole' does not exist on type 'typeof EmployeeService'.
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:272:106
+
+TS2322 [ERROR]: Type 'Promise<{ id: string; emp_code: string; name_th: string; name_en: string; nickname: string; level: number; is_active: boolean; }[]>' is not assignable to type 'Promise<{ data: Record<string, unknown>[]; pagination: PaginationInfo; }>'.
+  Type '{ id: string; emp_code: string; name_th: string; name_en: string; nickname: string; level: number; is_active: boolean; }[]' is missing the following properties from type '{ data: Record<string, unknown>[]; pagination: PaginationInfo; }': data, pagination
+  (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.search = async () => mockSearchResults;
+                                                                                                                            ~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:303:125
+
+    The expected type comes from the return type of this signature.
+      static async search(params: {
+                   ~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-employees/services/employeeService.ts:682:16
+
+TS2322 [ERROR]: Type 'Promise<never[]>' is not assignable to type 'Promise<{ data: Record<string, unknown>[]; pagination: PaginationInfo; }>'.
+  Type 'never[]' is missing the following properties from type '{ data: Record<string, unknown>[]; pagination: PaginationInfo; }': data, pagination
+  (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.search = async () => [];
+                                                                                                                            ~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:323:125
+
+    The expected type comes from the return type of this signature.
+      static async search(params: {
+                   ~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-employees/services/employeeService.ts:682:16
+
+TS2322 [ERROR]: Type 'Promise<never[]>' is not assignable to type 'Promise<{ data: Record<string, unknown>[]; pagination: PaginationInfo; }>'.
+  Type 'never[]' is missing the following properties from type '{ data: Record<string, unknown>[]; pagination: PaginationInfo; }': data, pagination
+  (await import('../../supabase/functions/api-employees/services/employeeService.ts')).EmployeeService.search = async () => [];
+                                                                                                                            ~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-employees/handlers.test.ts:341:125
+
+    The expected type comes from the return type of this signature.
+      static async search(params: {
+                   ~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-employees/services/employeeService.ts:682:16
+
+TS2339 [ERROR]: Property 'listVehicles' does not exist on type 'typeof import("file:///Users/loongallday/pdeservice-spb/supabase/functions/api-fleet/handlers/fleet.ts")'.
+  const { listVehicles } = await import('../../supabase/functions/api-fleet/handlers/fleet.ts');
+          ~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-fleet/handlers.test.ts:35:11
+
+TS2339 [ERROR]: Property 'getAllVehicles' does not exist on type 'typeof FleetService'.
+  const originalGetAllVehicles = module.FleetService.getAllVehicles;
+                                                     ~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-fleet/handlers.test.ts:37:54
+
+TS2339 [ERROR]: Property 'getAllVehicles' does not exist on type 'typeof FleetService'.
+  module.FleetService.getAllVehicles = async () => [mockVehicle];
+                      ~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-fleet/handlers.test.ts:38:23
+
+TS2339 [ERROR]: Property 'getAllVehicles' does not exist on type 'typeof FleetService'.
+    module.FleetService.getAllVehicles = originalGetAllVehicles;
+                        ~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-fleet/handlers.test.ts:45:25
+
+TS2339 [ERROR]: Property 'getVehicleById' does not exist on type 'typeof FleetService'.
+  const originalGetVehicleById = module.FleetService.getVehicleById;
+                                                     ~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-fleet/handlers.test.ts:55:54
+
+TS2339 [ERROR]: Property 'getVehicleById' does not exist on type 'typeof FleetService'.
+  module.FleetService.getVehicleById = async () => mockVehicle;
+                      ~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-fleet/handlers.test.ts:56:23
+
+TS2339 [ERROR]: Property 'getVehicleById' does not exist on type 'typeof FleetService'.
+    module.FleetService.getVehicleById = originalGetVehicleById;
+                        ~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-fleet/handlers.test.ts:63:25
+
+TS2339 [ERROR]: Property 'getVehicleHistory' does not exist on type 'typeof import("file:///Users/loongallday/pdeservice-spb/supabase/functions/api-fleet/handlers/fleet.ts")'.
+  const { getVehicleHistory } = await import('../../supabase/functions/api-fleet/handlers/fleet.ts');
+          ~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-fleet/handlers.test.ts:71:11
+
+TS2339 [ERROR]: Property 'getVehicleHistory' does not exist on type 'typeof FleetService'.
+  const originalGetVehicleHistory = module.FleetService.getVehicleHistory;
+                                                        ~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-fleet/handlers.test.ts:73:57
+
+TS2339 [ERROR]: Property 'getVehicleHistory' does not exist on type 'typeof FleetService'.
+  module.FleetService.getVehicleHistory = async () => [
+                      ~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-fleet/handlers.test.ts:74:23
+
+TS2339 [ERROR]: Property 'getVehicleHistory' does not exist on type 'typeof FleetService'.
+    module.FleetService.getVehicleHistory = originalGetVehicleHistory;
+                        ~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-fleet/handlers.test.ts:83:25
+
+TS2339 [ERROR]: Property 'getAllGarages' does not exist on type 'typeof FleetService'.
+  const originalGetAllGarages = module.FleetService.getAllGarages;
+                                                    ~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-fleet/handlers.test.ts:93:53
+
+TS2339 [ERROR]: Property 'getAllGarages' does not exist on type 'typeof FleetService'.
+  module.FleetService.getAllGarages = async () => [mockGarage];
+                      ~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-fleet/handlers.test.ts:94:23
+
+TS2339 [ERROR]: Property 'getAllGarages' does not exist on type 'typeof FleetService'.
+    module.FleetService.getAllGarages = originalGetAllGarages;
+                        ~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-fleet/handlers.test.ts:101:25
+
+TS2322 [ERROR]: Type 'Promise<{ data: { id: string; recipient_id: string; title: string; message: string; type: string; is_read: boolean; created_at: string; }[]; pagination: { page: number; limit: number; total: number; totalPages: number; hasNext: boolean; hasPrevious: boolean; }; unread_count: number; }>' is not assignable to type 'Promise<{ data: Notification[]; pagination: PaginationInfo; unread_count: number; }>'.
+  Type '{ data: { id: string; recipient_id: string; title: string; message: string; type: string; is_read: boolean; created_at: string; }[]; pagination: { page: number; limit: number; total: number; totalPages: number; hasNext: boolean; hasPrevious: boolean; }; unread_count: number; }' is not assignable to type '{ data: Notification[]; pagination: PaginationInfo; unread_count: number; }'.
+    Types of property 'data' are incompatible.
+      Type '{ id: string; recipient_id: string; title: string; message: string; type: string; is_read: boolean; created_at: string; }[]' is not assignable to type 'Notification[]'.
+        Type '{ id: string; recipient_id: string; title: string; message: string; type: string; is_read: boolean; created_at: string; }' is missing the following properties from type 'Notification': ticket_id, comment_id, audit_id, actor_id, and 2 more.
+  module.NotificationService.getByRecipient = async () => mockPaginatedResult;
+                                                          ~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-notifications/handlers.test.ts:33:59
+
+    The expected type comes from the return type of this signature.
+      static async getByRecipient(
+                   ~~~~~~~~~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/services/notificationService.ts:313:16
+
+TS2322 [ERROR]: Type 'Promise<{ data: { id: string; recipient_id: string; title: string; message: string; type: string; is_read: boolean; created_at: string; }[]; pagination: { page: number; limit: number; total: number; totalPages: number; hasNext: boolean; hasPrevious: boolean; }; unread_count: number; }>' is not assignable to type 'Promise<{ data: Notification[]; pagination: PaginationInfo; unread_count: number; }>'.
+  Type '{ data: { id: string; recipient_id: string; title: string; message: string; type: string; is_read: boolean; created_at: string; }[]; pagination: { page: number; limit: number; total: number; totalPages: number; hasNext: boolean; hasPrevious: boolean; }; unread_count: number; }' is not assignable to type '{ data: Notification[]; pagination: PaginationInfo; unread_count: number; }'.
+    Types of property 'data' are incompatible.
+      Type '{ id: string; recipient_id: string; title: string; message: string; type: string; is_read: boolean; created_at: string; }[]' is not assignable to type 'Notification[]'.
+        Type '{ id: string; recipient_id: string; title: string; message: string; type: string; is_read: boolean; created_at: string; }' is missing the following properties from type 'Notification': ticket_id, comment_id, audit_id, actor_id, and 2 more.
+  module.NotificationService.getByRecipient = async () => mockPaginatedResult;
+                                                          ~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-notifications/handlers.test.ts:52:59
+
+    The expected type comes from the return type of this signature.
+      static async getByRecipient(
+                   ~~~~~~~~~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/services/notificationService.ts:313:16
+
+TS2322 [ERROR]: Type 'Promise<{ data: { id: string; recipient_id: string; title: string; message: string; type: string; is_read: boolean; created_at: string; }[]; pagination: { page: number; limit: number; total: number; totalPages: number; hasNext: boolean; hasPrevious: boolean; }; unread_count: number; }>' is not assignable to type 'Promise<{ data: Notification[]; pagination: PaginationInfo; unread_count: number; }>'.
+  Type '{ data: { id: string; recipient_id: string; title: string; message: string; type: string; is_read: boolean; created_at: string; }[]; pagination: { page: number; limit: number; total: number; totalPages: number; hasNext: boolean; hasPrevious: boolean; }; unread_count: number; }' is not assignable to type '{ data: Notification[]; pagination: PaginationInfo; unread_count: number; }'.
+    Types of property 'data' are incompatible.
+      Type '{ id: string; recipient_id: string; title: string; message: string; type: string; is_read: boolean; created_at: string; }[]' is not assignable to type 'Notification[]'.
+        Type '{ id: string; recipient_id: string; title: string; message: string; type: string; is_read: boolean; created_at: string; }' is missing the following properties from type 'Notification': ticket_id, comment_id, audit_id, actor_id, and 2 more.
+  module.NotificationService.getByRecipient = async () => mockPaginatedResult;
+                                                          ~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-notifications/handlers.test.ts:68:59
+
+    The expected type comes from the return type of this signature.
+      static async getByRecipient(
+                   ~~~~~~~~~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/services/notificationService.ts:313:16
+
+TS2322 [ERROR]: Type 'Promise<{ marked_count: number; }>' is not assignable to type 'Promise<{ updated_count: number; }>'.
+  Property 'updated_count' is missing in type '{ marked_count: number; }' but required in type '{ updated_count: number; }'.
+  module.NotificationService.markAsRead = async () => ({ marked_count: 1 });
+                                                      ~~~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-notifications/handlers.test.ts:86:55
+
+    'updated_count' is declared here.
+      ): Promise<{ updated_count: number }> {
+                   ~~~~~~~~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/services/notificationService.ts:415:16    The expected type comes from the return type of this signature.
+      static async markAsRead(
+                   ~~~~~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/services/notificationService.ts:412:16
+
+TS2322 [ERROR]: Type 'Promise<{ marked_count: number; }>' is not assignable to type 'Promise<{ updated_count: number; }>'.
+  Property 'updated_count' is missing in type '{ marked_count: number; }' but required in type '{ updated_count: number; }'.
+  module.NotificationService.markAsRead = async () => ({ marked_count: 5 });
+                                                      ~~~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-notifications/handlers.test.ts:103:55
+
+    'updated_count' is declared here.
+      ): Promise<{ updated_count: number }> {
+                   ~~~~~~~~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/services/notificationService.ts:415:16    The expected type comes from the return type of this signature.
+      static async markAsRead(
+                   ~~~~~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/services/notificationService.ts:412:16
+
+TS2322 [ERROR]: Type 'Promise<{ id: string; name: string; description: string; duration_days: number; price: number; is_active: boolean; created_at: string; }[]>' is not assignable to type 'Promise<{ data: Record<string, unknown>[]; pagination: PaginationInfo; }>'.
+  Type '{ id: string; name: string; description: string; duration_days: number; price: number; is_active: boolean; created_at: string; }[]' is missing the following properties from type '{ data: Record<string, unknown>[]; pagination: PaginationInfo; }': data, pagination
+  module.PackageServiceService.getAll = async () => [mockPackageService];
+                                                    ~~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-package-services/handlers.test.ts:29:53
+
+    The expected type comes from the return type of this signature.
+      static async getAll(params: {
+                   ~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-package-services/services/packageServiceService.ts:40:16
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof RoleService'.
+  const originalGetAll = (await import('../../supabase/functions/api-roles/services/roleService.ts')).RoleService.getAll;
+                                                                                                                  ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-roles/handlers.test.ts:26:115
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof RoleService'.
+  (await import('../../supabase/functions/api-roles/services/roleService.ts')).RoleService.getAll = async () => [mockRole];
+                                                                                           ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-roles/handlers.test.ts:27:92
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof RoleService'.
+    (await import('../../supabase/functions/api-roles/services/roleService.ts')).RoleService.getAll = originalGetAll;
+                                                                                             ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-roles/handlers.test.ts:34:94
+
+TS2322 [ERROR]: Type 'Promise<{ id: string; code: string; name_th: string; name_en: string; level: number; department_id: null; }[]>' is not assignable to type 'Promise<{ data: Record<string, unknown>[]; pagination: PaginationInfo; }>'.
+  Type '{ id: string; code: string; name_th: string; name_en: string; level: number; department_id: null; }[]' is missing the following properties from type '{ data: Record<string, unknown>[]; pagination: PaginationInfo; }': data, pagination
+  (await import('../../supabase/functions/api-roles/services/roleService.ts')).RoleService.search = async () => mockSearchResults;
+                                                                                                                ~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-roles/handlers.test.ts:70:113
+
+    The expected type comes from the return type of this signature.
+      static async search(
+                   ~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-roles/services/roleService.ts:100:16
+
+TS2322 [ERROR]: Type 'Promise<never[]>' is not assignable to type 'Promise<{ data: Record<string, unknown>[]; pagination: PaginationInfo; }>'.
+  Type 'never[]' is missing the following properties from type '{ data: Record<string, unknown>[]; pagination: PaginationInfo; }': data, pagination
+  (await import('../../supabase/functions/api-roles/services/roleService.ts')).RoleService.search = async () => [];
+                                                                                                                ~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-roles/handlers.test.ts:89:113
+
+    The expected type comes from the return type of this signature.
+      static async search(
+                   ~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-roles/services/roleService.ts:100:16
+
+TS2339 [ERROR]: Property 'WorkEstimateService' does not exist on type 'typeof import("file:///Users/loongallday/pdeservice-spb/supabase/functions/api-ticket-work-estimates/services/workEstimateService.ts")'.
+  const originalGetByTicket = module.WorkEstimateService.getByTicket;
+                                     ~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-ticket-work-estimates/handlers.test.ts:36:38
+
+TS2339 [ERROR]: Property 'WorkEstimateService' does not exist on type 'typeof import("file:///Users/loongallday/pdeservice-spb/supabase/functions/api-ticket-work-estimates/services/workEstimateService.ts")'.
+  module.WorkEstimateService.getByTicket = async () => mockEstimate;
+         ~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-ticket-work-estimates/handlers.test.ts:37:10
+
+TS2339 [ERROR]: Property 'WorkEstimateService' does not exist on type 'typeof import("file:///Users/loongallday/pdeservice-spb/supabase/functions/api-ticket-work-estimates/services/workEstimateService.ts")'.
+    module.WorkEstimateService.getByTicket = originalGetByTicket;
+           ~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-ticket-work-estimates/handlers.test.ts:44:12
+
+TS2339 [ERROR]: Property 'WorkEstimateService' does not exist on type 'typeof import("file:///Users/loongallday/pdeservice-spb/supabase/functions/api-ticket-work-estimates/services/workEstimateService.ts")'.
+  const originalGetById = module.WorkEstimateService.getById;
+                                 ~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-ticket-work-estimates/handlers.test.ts:54:34
+
+TS2339 [ERROR]: Property 'WorkEstimateService' does not exist on type 'typeof import("file:///Users/loongallday/pdeservice-spb/supabase/functions/api-ticket-work-estimates/services/workEstimateService.ts")'.
+  module.WorkEstimateService.getById = async () => mockEstimate;
+         ~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-ticket-work-estimates/handlers.test.ts:55:10
+
+TS2339 [ERROR]: Property 'WorkEstimateService' does not exist on type 'typeof import("file:///Users/loongallday/pdeservice-spb/supabase/functions/api-ticket-work-estimates/services/workEstimateService.ts")'.
+    module.WorkEstimateService.getById = originalGetById;
+           ~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-ticket-work-estimates/handlers.test.ts:62:12
+
+TS2339 [ERROR]: Property 'WorkEstimateService' does not exist on type 'typeof import("file:///Users/loongallday/pdeservice-spb/supabase/functions/api-ticket-work-estimates/services/workEstimateService.ts")'.
+  const originalCreate = module.WorkEstimateService.create;
+                                ~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-ticket-work-estimates/handlers.test.ts:91:33
+
+TS2339 [ERROR]: Property 'WorkEstimateService' does not exist on type 'typeof import("file:///Users/loongallday/pdeservice-spb/supabase/functions/api-ticket-work-estimates/services/workEstimateService.ts")'.
+  module.WorkEstimateService.create = async () => mockEstimate;
+         ~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-ticket-work-estimates/handlers.test.ts:92:10
+
+TS2339 [ERROR]: Property 'WorkEstimateService' does not exist on type 'typeof import("file:///Users/loongallday/pdeservice-spb/supabase/functions/api-ticket-work-estimates/services/workEstimateService.ts")'.
+    module.WorkEstimateService.create = originalCreate;
+           ~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-ticket-work-estimates/handlers.test.ts:99:12
+
+TS2339 [ERROR]: Property 'WorkEstimateService' does not exist on type 'typeof import("file:///Users/loongallday/pdeservice-spb/supabase/functions/api-ticket-work-estimates/services/workEstimateService.ts")'.
+  const originalUpsert = module.WorkEstimateService.upsert;
+                                ~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-ticket-work-estimates/handlers.test.ts:112:33
+
+TS2339 [ERROR]: Property 'WorkEstimateService' does not exist on type 'typeof import("file:///Users/loongallday/pdeservice-spb/supabase/functions/api-ticket-work-estimates/services/workEstimateService.ts")'.
+  module.WorkEstimateService.upsert = async () => ({ ...mockEstimate, estimated_duration_minutes: 90 });
+         ~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-ticket-work-estimates/handlers.test.ts:113:10
+
+TS2339 [ERROR]: Property 'WorkEstimateService' does not exist on type 'typeof import("file:///Users/loongallday/pdeservice-spb/supabase/functions/api-ticket-work-estimates/services/workEstimateService.ts")'.
+    module.WorkEstimateService.upsert = originalUpsert;
+           ~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-ticket-work-estimates/handlers.test.ts:120:12
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof TicketService'.
+  const originalGetAll = (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.getAll;
+                                                                                                                        ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:27:121
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof TicketService'.
+  (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.getAll = async () => ({
+                                                                                                 ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:28:98
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof TicketService'.
+    (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.getAll = originalGetAll;
+                                                                                                   ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:38:100
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof TicketService'.
+  const originalGetAll = (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.getAll;
+                                                                                                                        ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:61:121
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof TicketService'.
+  (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.getAll = async () => ({
+                                                                                                 ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:62:98
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof TicketService'.
+    (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.getAll = originalGetAll;
+                                                                                                   ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:72:100
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof TicketService'.
+  const originalGetAll = (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.getAll;
+                                                                                                                        ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:81:121
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof TicketService'.
+  (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.getAll = async () => ({
+                                                                                                 ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:82:98
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof TicketService'.
+    (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.getAll = originalGetAll;
+                                                                                                   ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:92:100
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof TicketService'.
+  const originalGetAll = (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.getAll;
+                                                                                                                        ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:101:121
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof TicketService'.
+  (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.getAll = async () => ({
+                                                                                                 ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:102:98
+
+TS2339 [ERROR]: Property 'getAll' does not exist on type 'typeof TicketService'.
+    (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.getAll = originalGetAll;
+                                                                                                   ~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:112:100
+
+TS2339 [ERROR]: Property 'getMerchandise' does not exist on type 'typeof TicketService'.
+  const originalGetMerchandise = (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.getMerchandise;
+                                                                                                                                ~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:146:129
+
+TS2339 [ERROR]: Property 'getMerchandise' does not exist on type 'typeof TicketService'.
+  (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.getMerchandise = async () => [mockMerchandise];
+                                                                                                 ~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:147:98
+
+TS2339 [ERROR]: Property 'getMerchandise' does not exist on type 'typeof TicketService'.
+    (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.getMerchandise = originalGetMerchandise;
+                                                                                                   ~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:155:100
+
+TS2339 [ERROR]: Property 'getMerchandise' does not exist on type 'typeof TicketService'.
+  const originalGetMerchandise = (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.getMerchandise;
+                                                                                                                                ~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:164:129
+
+TS2339 [ERROR]: Property 'getMerchandise' does not exist on type 'typeof TicketService'.
+  (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.getMerchandise = async () => [];
+                                                                                                 ~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:165:98
+
+TS2339 [ERROR]: Property 'getMerchandise' does not exist on type 'typeof TicketService'.
+    (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.getMerchandise = originalGetMerchandise;
+                                                                                                   ~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:172:100
+
+TS2339 [ERROR]: Property 'addMerchandise' does not exist on type 'typeof TicketService'.
+  const originalAddMerchandise = (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.addMerchandise;
+                                                                                                                                ~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:183:129
+
+TS2339 [ERROR]: Property 'addMerchandise' does not exist on type 'typeof TicketService'.
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:184:98
+
+TS2339 [ERROR]: Property 'addMerchandise' does not exist on type 'typeof TicketService'.
+    (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.addMerchandise = originalAddMerchandise;
+                                                                                                   ~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:191:100
+
+TS2339 [ERROR]: Property 'addMerchandise' does not exist on type 'typeof TicketService'.
+  const originalAddMerchandise = (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.addMerchandise;
+                                                                                                                                ~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:239:129
+
+TS2339 [ERROR]: Property 'addMerchandise' does not exist on type 'typeof TicketService'.
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:240:98
+
+TS2339 [ERROR]: Property 'addMerchandise' does not exist on type 'typeof TicketService'.
+    (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.addMerchandise = originalAddMerchandise;
+                                                                                                   ~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:248:100
+
+TS2339 [ERROR]: Property 'removeMerchandise' does not exist on type 'typeof TicketService'.
+  const originalRemoveMerchandise = (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.removeMerchandise;
+                                                                                                                                   ~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:257:132
+
+TS2339 [ERROR]: Property 'removeMerchandise' does not exist on type 'typeof TicketService'.
+  (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.removeMerchandise = async () => {};
+                                                                                                 ~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:258:98
+
+TS2339 [ERROR]: Property 'removeMerchandise' does not exist on type 'typeof TicketService'.
+    (await import('../../supabase/functions/api-tickets/services/ticketService.ts')).TicketService.removeMerchandise = originalRemoveMerchandise;
+                                                                                                   ~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/handlers.test.ts:265:100
+
+TS2741 [ERROR]: Property 'creator_id' is missing in type '{ site_id: string; status_id: string; work_type_id: string; assigner_id: string; contact_id: string; }' but required in type 'TicketIds'.
+  _ids: {
+  ~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-tickets/search.test.ts:72:3
+
+    'creator_id' is declared here.
+      creator_id: string | null;
+      ~~~~~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/services/ticketDisplayTypes.ts:123:3    The expected type comes from property '_ids' which is declared here on type 'TicketDisplayItem'
+      _ids?: TicketIds;
+      ~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/services/ticketDisplayTypes.ts:180:3
+
+TS2322 [ERROR]: Type 'Promise<{ data: { id: string; title: string; description: string; deadline: string; assignee_id: string; creator_id: string; is_completed: boolean; completed_at: null; priority: string; created_at: string; }[]; total: number; }>' is not assignable to type 'Promise<{ data: TodoInfo[]; total: number; }>'.
+  Type '{ data: { id: string; title: string; description: string; deadline: string; assignee_id: string; creator_id: string; is_completed: boolean; completed_at: null; priority: string; created_at: string; }[]; total: number; }' is not assignable to type '{ data: TodoInfo[]; total: number; }'.
+    Types of property 'data' are incompatible.
+      Type '{ id: string; title: string; description: string; deadline: string; assignee_id: string; creator_id: string; is_completed: boolean; completed_at: null; priority: string; created_at: string; }[]' is not assignable to type 'TodoInfo[]'.
+        Type '{ id: string; title: string; description: string; deadline: string; assignee_id: string; creator_id: string; is_completed: boolean; completed_at: null; priority: string; created_at: string; }' is missing the following properties from type 'TodoInfo': ticket_id, notified_at, creator, assignee, updated_at
+  module.TodoService.list = async () => ({ data: [mockTodo], total: 1 });
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-todos/handlers.test.ts:28:41
+
+    The expected type comes from the return type of this signature.
+      static async list(
+                   ~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-todos/services/todoService.ts:162:16
+
+TS2322 [ERROR]: Type 'Promise<{ data: { id: string; title: string; description: string; deadline: string; assignee_id: string; creator_id: string; is_completed: boolean; completed_at: null; priority: string; created_at: string; }[]; total: number; }>' is not assignable to type 'Promise<{ data: TodoInfo[]; total: number; }>'.
+  Type '{ data: { id: string; title: string; description: string; deadline: string; assignee_id: string; creator_id: string; is_completed: boolean; completed_at: null; priority: string; created_at: string; }[]; total: number; }' is not assignable to type '{ data: TodoInfo[]; total: number; }'.
+    Types of property 'data' are incompatible.
+      Type '{ id: string; title: string; description: string; deadline: string; assignee_id: string; creator_id: string; is_completed: boolean; completed_at: null; priority: string; created_at: string; }[]' is not assignable to type 'TodoInfo[]'.
+        Type '{ id: string; title: string; description: string; deadline: string; assignee_id: string; creator_id: string; is_completed: boolean; completed_at: null; priority: string; created_at: string; }' is missing the following properties from type 'TodoInfo': ticket_id, notified_at, creator, assignee, updated_at
+  module.TodoService.list = async () => ({ data: [mockTodo], total: 1 });
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-todos/handlers.test.ts:46:41
+
+    The expected type comes from the return type of this signature.
+      static async list(
+                   ~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-todos/services/todoService.ts:162:16
+
+TS2322 [ERROR]: Type 'Promise<{ id: string; title: string; description: string; deadline: string; assignee_id: string; creator_id: string; is_completed: boolean; completed_at: null; priority: string; created_at: string; }>' is not assignable to type 'Promise<TodoInfo>'.
+  Type '{ id: string; title: string; description: string; deadline: string; assignee_id: string; creator_id: string; is_completed: boolean; completed_at: null; priority: string; created_at: string; }' is missing the following properties from type 'TodoInfo': ticket_id, notified_at, creator, assignee, updated_at
+  module.TodoService.getById = async () => mockTodo;
+                                           ~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-todos/handlers.test.ts:62:44
+
+    The expected type comes from the return type of this signature.
+      static async getById(
+                   ~~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-todos/services/todoService.ts:228:16
+
+TS2322 [ERROR]: Type 'Promise<{ id: string; title: string; description: string; deadline: string; assignee_id: string; creator_id: string; is_completed: boolean; completed_at: null; priority: string; created_at: string; }>' is not assignable to type 'Promise<TodoInfo>'.
+  Type '{ id: string; title: string; description: string; deadline: string; assignee_id: string; creator_id: string; is_completed: boolean; completed_at: null; priority: string; created_at: string; }' is missing the following properties from type 'TodoInfo': ticket_id, notified_at, creator, assignee, updated_at
+  module.TodoService.create = async () => mockTodo;
+                                          ~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-todos/handlers.test.ts:109:43
+
+    The expected type comes from the return type of this signature.
+      static async create(creatorId: string, input: TodoInput): Promise<TodoInfo> {
+                   ~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-todos/services/todoService.ts:257:16
+
+TS2322 [ERROR]: Type 'Promise<{ is_completed: true; completed_at: string; id: string; title: string; description: string; deadline: string; assignee_id: string; creator_id: string; priority: string; created_at: string; }>' is not assignable to type 'Promise<TodoInfo>'.
+  Type '{ is_completed: true; completed_at: string; id: string; title: string; description: string; deadline: string; assignee_id: string; creator_id: string; priority: string; created_at: string; }' is missing the following properties from type 'TodoInfo': ticket_id, notified_at, creator, assignee, updated_at
+  module.TodoService.complete = async () => ({ ...mockTodo, is_completed: true, completed_at: new Date().toISOString() });
+                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-todos/handlers.test.ts:167:45
+
+    The expected type comes from the return type of this signature.
+      static async complete(
+                   ~~~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-todos/services/todoService.ts:364:16
+
+TS2322 [ERROR]: Type 'Promise<{ is_completed: false; completed_at: null; id: string; title: string; description: string; deadline: string; assignee_id: string; creator_id: string; priority: string; created_at: string; }>' is not assignable to type 'Promise<TodoInfo>'.
+  Type '{ is_completed: false; completed_at: null; id: string; title: string; description: string; deadline: string; assignee_id: string; creator_id: string; priority: string; created_at: string; }' is missing the following properties from type 'TodoInfo': ticket_id, notified_at, creator, assignee, updated_at
+  module.TodoService.reopen = async () => ({ ...mockTodo, is_completed: false, completed_at: null });
+                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at file:///Users/loongallday/pdeservice-spb/tests/api-todos/handlers.test.ts:184:43
+
+    The expected type comes from the return type of this signature.
+      static async reopen(
+                   ~~~~~~
+        at file:///Users/loongallday/pdeservice-spb/supabase/functions/api-todos/services/todoService.ts:405:16
+
+Found 139 errors.
+
+error: Type checking failed.
+
+  info: The program failed type-checking, but it still might work correctly.
+  hint: Re-run with --no-check to skip type-checking.
+loongallday@Chavins-MacBook-Pro pdeservice-spb % 

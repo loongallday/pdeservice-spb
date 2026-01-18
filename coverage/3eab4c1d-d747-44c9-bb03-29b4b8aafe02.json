@@ -1,0 +1,121 @@
+{
+  "scriptId": "464",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/jszip/3.10.1/lib/flate.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2595,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2594,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2588,
+          "count": 1
+        },
+        {
+          "startOffset": 537,
+          "endOffset": 546,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "FlateWorker",
+      "ranges": [
+        {
+          "startOffset": 821,
+          "endOffset": 1133,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "FlateWorker.processChunk",
+      "ranges": [
+        {
+          "startOffset": 1260,
+          "endOffset": 1444,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "FlateWorker.flush",
+      "ranges": [
+        {
+          "startOffset": 1513,
+          "endOffset": 1670,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "FlateWorker.cleanUp",
+      "ranges": [
+        {
+          "startOffset": 1742,
+          "endOffset": 1828,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "FlateWorker._createPako",
+      "ranges": [
+        {
+          "startOffset": 2066,
+          "endOffset": 2377,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.compressWorker",
+      "ranges": [
+        {
+          "startOffset": 2405,
+          "endOffset": 2497,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.uncompressWorker",
+      "ranges": [
+        {
+          "startOffset": 2526,
+          "endOffset": 2584,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

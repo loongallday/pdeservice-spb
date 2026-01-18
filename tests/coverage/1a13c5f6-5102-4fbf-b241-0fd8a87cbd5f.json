@@ -1,0 +1,63 @@
+{
+  "scriptId": "336",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-employee-site-trainings/handlers/create.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 899,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "create",
+      "ranges": [
+        {
+          "startOffset": 314,
+          "endOffset": 898,
+          "count": 2
+        },
+        {
+          "startOffset": 429,
+          "endOffset": 487,
+          "count": 1
+        },
+        {
+          "startOffset": 489,
+          "endOffset": 550,
+          "count": 0
+        },
+        {
+          "startOffset": 550,
+          "endOffset": 571,
+          "count": 1
+        },
+        {
+          "startOffset": 573,
+          "endOffset": 630,
+          "count": 0
+        },
+        {
+          "startOffset": 630,
+          "endOffset": 654,
+          "count": 1
+        },
+        {
+          "startOffset": 654,
+          "endOffset": 800,
+          "count": 0
+        },
+        {
+          "startOffset": 800,
+          "endOffset": 897,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

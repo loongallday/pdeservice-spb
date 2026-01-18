@@ -1,0 +1,171 @@
+{
+  "scriptId": "410",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/utils/col-cache.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 7495,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 7494,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 7488,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "_level",
+      "ranges": [
+        {
+          "startOffset": 688,
+          "endOffset": 804,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_fill",
+      "ranges": [
+        {
+          "startOffset": 808,
+          "endOffset": 1970,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "l2n",
+      "ranges": [
+        {
+          "startOffset": 1974,
+          "endOffset": 2170,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "n2l",
+      "ranges": [
+        {
+          "startOffset": 2174,
+          "endOffset": 2400,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "validateAddress",
+      "ranges": [
+        {
+          "startOffset": 2564,
+          "endOffset": 2704,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "decodeAddress",
+      "ranges": [
+        {
+          "startOffset": 2752,
+          "endOffset": 4332,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getAddress",
+      "ranges": [
+        {
+          "startOffset": 4413,
+          "endOffset": 4569,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "decode",
+      "ranges": [
+        {
+          "startOffset": 4630,
+          "endOffset": 5278,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "decodeEx",
+      "ranges": [
+        {
+          "startOffset": 5368,
+          "endOffset": 6651,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "encodeAddress",
+      "ranges": [
+        {
+          "startOffset": 6697,
+          "endOffset": 6762,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "encode",
+      "ranges": [
+        {
+          "startOffset": 6830,
+          "endOffset": 7214,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "inRange",
+      "ranges": [
+        {
+          "startOffset": 7273,
+          "endOffset": 7453,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

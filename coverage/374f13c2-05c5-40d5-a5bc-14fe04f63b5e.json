@@ -1,0 +1,98 @@
+{
+  "scriptId": "711",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/fs.realpath/1.0.0/old.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 8772,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 8771,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 8765,
+          "count": 1
+        },
+        {
+          "startOffset": 1562,
+          "endOffset": 1598,
+          "count": 0
+        },
+        {
+          "startOffset": 2710,
+          "endOffset": 2755,
+          "count": 0
+        },
+        {
+          "startOffset": 2894,
+          "endOffset": 2975,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "rethrow",
+      "ranges": [
+        {
+          "startOffset": 1601,
+          "endOffset": 2445,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "maybeCallback",
+      "ranges": [
+        {
+          "startOffset": 2447,
+          "endOffset": 2529,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "realpathSync",
+      "ranges": [
+        {
+          "startOffset": 3039,
+          "endOffset": 5581,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "realpath",
+      "ranges": [
+        {
+          "startOffset": 5604,
+          "endOffset": 8761,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

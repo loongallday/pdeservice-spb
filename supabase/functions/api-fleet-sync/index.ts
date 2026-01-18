@@ -1,6 +1,32 @@
 /**
- * Fleet Sync Function - Called by pg_cron every 5 minutes
- * Pulls data from external fleet system and stores in database
+ * @fileoverview Fleet Sync Edge Function - External fleet system synchronization
+ * @module api-fleet-sync
+ *
+ * @description
+ * Background sync function called by pg_cron every 5 minutes.
+ * Pulls vehicle data from external fleet tracking system and stores in database.
+ *
+ * Sync Process:
+ * 1. Login to external fleet system (bgfleet.loginto.me)
+ * 2. Fetch all vehicle data
+ * 3. Parse vehicle names (plate number, driver name)
+ * 4. Calculate distance from garages
+ * 5. Reverse geocode location (Google Maps API)
+ * 6. Upsert fleet_vehicles table
+ * 7. Log history for moving vehicles
+ *
+ * Vehicle Statuses:
+ * - moving: Vehicle is in motion
+ * - stopped: Vehicle stopped but not at base
+ * - parked_at_base: Vehicle within garage radius
+ *
+ * @auth No auth required (internal pg_cron trigger)
+ * @env FLEET_USERNAME - Fleet system username
+ * @env FLEET_PASSWORD - Fleet system password
+ * @env GOOGLE_MAPS_API_KEY - For reverse geocoding
+ * @table fleet_vehicles - Upserted vehicle state
+ * @table fleet_vehicle_history - Route history (moving only)
+ * @table fleet_garages - Garage proximity detection
  */
 
 import { handleCORS } from '../_shared/cors.ts';
@@ -8,6 +34,16 @@ import { success, error as errorResponse } from '../_shared/response.ts';
 import { createServiceClient } from '../_shared/supabase.ts';
 import { crypto } from 'jsr:@std/crypto';
 import { encodeHex } from 'jsr:@std/encoding/hex';
+import { APIError } from '../_shared/error.ts';
+
+/**
+ * Custom error for configuration issues (503 Service Unavailable)
+ */
+class ConfigurationError extends APIError {
+  constructor(message: string) {
+    super(message, 503, 'SERVICE_UNAVAILABLE');
+  }
+}
 
 const FLEET_BASE_URL = 'http://bgfleet.loginto.me/Tracking/mobile';
 const FLEET_LOGIN_URL = `${FLEET_BASE_URL}/main.php`;
@@ -34,6 +70,9 @@ Deno.serve(async (req) => {
     return success(result);
   } catch (err) {
     console.error('[fleet-sync] Error:', err);
+    if (err instanceof APIError) {
+      return errorResponse(err.message, err.statusCode, err.code);
+    }
     return errorResponse(err instanceof Error ? err.message : 'Sync failed', 500);
   }
 });
@@ -156,7 +195,7 @@ async function login(): Promise<string> {
   const password = Deno.env.get('FLEET_PASSWORD');
 
   if (!username || !password) {
-    throw new Error('Fleet credentials not configured');
+    throw new ConfigurationError('Fleet credentials not configured');
   }
 
   // Get initial session

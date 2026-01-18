@@ -1,0 +1,83 @@
+{
+  "scriptId": "366",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-search/services/globalSearchService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 8152,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "search",
+      "ranges": [
+        {
+          "startOffset": 307,
+          "endOffset": 1813,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "searchCompanies",
+      "ranges": [
+        {
+          "startOffset": 1925,
+          "endOffset": 2934,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "searchSites",
+      "ranges": [
+        {
+          "startOffset": 3073,
+          "endOffset": 4125,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "searchTickets",
+      "ranges": [
+        {
+          "startOffset": 4299,
+          "endOffset": 5610,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "searchMerchandise",
+      "ranges": [
+        {
+          "startOffset": 5767,
+          "endOffset": 6842,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "searchEmployees",
+      "ranges": [
+        {
+          "startOffset": 7041,
+          "endOffset": 8149,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

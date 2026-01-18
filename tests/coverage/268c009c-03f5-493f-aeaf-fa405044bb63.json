@@ -1,0 +1,60 @@
+{
+  "scriptId": "432",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/process-nextick-args/2.0.1/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1313,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 1312,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 1306,
+          "count": 1
+        },
+        {
+          "startOffset": 383,
+          "endOffset": 424,
+          "count": 0
+        },
+        {
+          "startOffset": 426,
+          "endOffset": 472,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "nextTick",
+      "ranges": [
+        {
+          "startOffset": 510,
+          "endOffset": 1302,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,8 +1,48 @@
 /**
- * Location resolver service - Resolves location codes to display names
- * 
- * Loads location data from JSON files and provides efficient lookup functions.
- * Data is cached in memory for optimal performance.
+ * @fileoverview Location resolver service - Thai administrative location lookup
+ * @module api-tickets/services/locationResolver
+ *
+ * Provides efficient location code to name resolution for Thai administrative
+ * divisions (provinces, districts, sub-districts).
+ *
+ * Public Functions:
+ * - getProvinceName(code): Get province name by code (sync)
+ * - getProvince(code): Get full province object (sync)
+ * - getDistrictName(code): Get district name (async)
+ * - getDistrict(code): Get full district object (async)
+ * - getSubDistrictName(code): Get sub-district name (async)
+ * - getSubDistrict(code): Get full sub-district object (async)
+ * - resolveLocation(...codes): Resolve full location with display string
+ * - batchResolveLocations(locations): Batch resolve for performance
+ * - clearCache(): Clear cached data
+ *
+ * @description
+ * Data Sources:
+ * - Provinces: Embedded in code (77 Thai provinces)
+ * - Districts: Loaded from ref_districts table (cached)
+ * - Sub-districts: Loaded from ref_sub_districts table (cached)
+ *
+ * Performance Optimization:
+ * - Province data is embedded (no DB call needed)
+ * - Districts and sub-districts are lazily loaded and cached in memory
+ * - batchResolveLocations() pre-loads all data before processing
+ *
+ * Display Format:
+ * - Short format for cards: "พระนคร, กทม."
+ * - Bangkok abbreviated: "กทม." instead of "กรุงเทพมหานคร"
+ * - District prefixes removed: "เขต", "อ.", "อำเภอ"
+ *
+ * @example
+ * // Single location resolution
+ * const location = await resolveLocation(1, 101, 10101, 'ถนนราชดำเนิน');
+ * console.log(location.display); // "พระนคร, กทม."
+ *
+ * @example
+ * // Batch resolution for search results
+ * const resolved = await batchResolveLocations([
+ *   { provinceCode: 1, districtCode: 101, subdistrictCode: 10101, addressDetail: null },
+ *   { provinceCode: 2, districtCode: 201, subdistrictCode: 20101, addressDetail: null },
+ * ]);
  */
 
 // Location data types

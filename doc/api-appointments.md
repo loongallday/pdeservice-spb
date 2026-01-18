@@ -25,7 +25,7 @@ Appointments API for managing scheduled visits linked to tickets.
 | created_at | timestamptz | YES | Created timestamp |
 | updated_at | timestamptz | YES | Updated timestamp |
 
-**Relationship:** `main_tickets.appointment_id` → `main_appointments.id`
+**Relationship:** `main_tickets.appointment_id` -> `main_appointments.id`
 
 ### Appointment Types
 
@@ -52,8 +52,8 @@ GET /api-appointments
 | Param | Type | Default | Description |
 |-------|------|---------|-------------|
 | page | number | 1 | Page number |
-| limit | number | 50 | Items per page |
-| ticket_id | uuid | - | Filter by ticket |
+| limit | number | 50 | Items per page (max 100) |
+| ticket_id | uuid | - | Filter by ticket (returns appointment linked to that ticket) |
 
 **Response:** `200 OK`
 ```json
@@ -123,14 +123,17 @@ GET /api-appointments/ticket/:ticketId
 
 **Auth:** Level 0+
 
-Gets the appointment linked to a specific ticket.
+Gets the appointment linked to a specific ticket via `main_tickets.appointment_id`.
 
 **Response:** `200 OK`
 ```json
 {
-  "data": { ... } // Appointment object or null
+  "data": { ... } // Appointment object or null if no linked appointment
 }
 ```
+
+**Errors:**
+- `400` - Invalid UUID for ticketId
 
 ---
 
@@ -142,19 +145,25 @@ GET /api-appointments/search?q=:query
 
 **Auth:** Level 0+
 
-Searches appointments by `appointment_type`. Returns max 20 results.
+Searches appointments by `appointment_type`. Search is case-insensitive and matches partial strings. Returns max 20 results sorted by appointment date descending.
 
 **Query Parameters:**
 
 | Param | Type | Required | Description |
 |-------|------|----------|-------------|
-| q | string | Yes | Search query |
+| q | string | Yes | Search query (min 1 character) |
 
 **Response:** `200 OK`
 ```json
 {
   "data": [ ... ] // Array of appointments
 }
+```
+
+**Examples:**
+```
+GET /api-appointments/search?q=morning
+GET /api-appointments/search?q=call
 ```
 
 ---
@@ -194,6 +203,10 @@ POST /api-appointments
 - If `ticket_id` provided, updates `main_tickets.appointment_id`
 - New appointments are created with `is_approved: false`
 
+**Errors:**
+- `400` - ประเภทการนัดหมาย is required
+- `400` - Invalid UUID for ticket_id
+
 ---
 
 ### Update Appointment
@@ -204,14 +217,38 @@ PUT /api-appointments/:id
 
 **Auth:** Level 1+
 
-**Request Body:** Same fields as create (all optional)
+**Request Body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| appointment_date | string | No | Date (YYYY-MM-DD) |
+| appointment_time_start | string | No | Start time (HH:MM) |
+| appointment_time_end | string | No | End time (HH:MM) |
+| appointment_type | enum | No | Type of scheduling |
+| ticket_id | uuid | No | Link to ticket |
+
+**Example:**
+```json
+{
+  "appointment_date": "2026-01-26",
+  "appointment_time_start": "14:00",
+  "appointment_time_end": "17:00"
+}
+```
 
 **Response:** `200 OK`
 
 **Important:** If a non-approver edits an appointment:
 - `is_approved` automatically set to `false`
-- Confirmed technicians are removed from the ticket
+- Confirmed technicians are removed from the ticket (`jct_ticket_employees_cf`)
 - Ticket requires re-approval
+- Audit log entry created for technician removal
+
+Approvers can edit without losing approval status.
+
+**Errors:**
+- `400` - Invalid UUID
+- `404` - ไม่พบข้อมูลการนัดหมาย
 
 ---
 
@@ -236,6 +273,9 @@ DELETE /api-appointments/:id
 - Clears `appointment_id` from linked ticket
 - Hard delete - cannot be recovered
 
+**Errors:**
+- `400` - Invalid UUID
+
 ---
 
 ### Approve/Unapprove Appointment
@@ -244,7 +284,7 @@ DELETE /api-appointments/:id
 POST /api-appointments/approve
 ```
 
-**Auth:** Appointment approver role only
+**Auth:** Appointment approver role only (checked via `canApproveAppointments`)
 
 **Request Body:**
 
@@ -284,8 +324,14 @@ POST /api-appointments/approve
 **Response:** `200 OK`
 
 **Side Effects:**
-- Creates audit log on linked ticket
+- Creates audit log on linked ticket (action: 'approved' or 'unapproved')
 - Sends notifications to confirmed technicians
+
+**Errors:**
+- `400` - ID การนัดหมาย is required
+- `400` - Invalid UUID
+- `403` - User cannot approve appointments
+- `404` - ไม่พบข้อมูลการนัดหมาย
 
 ---
 
@@ -293,9 +339,11 @@ POST /api-appointments/approve
 
 | Level | Role | Permissions |
 |-------|------|-------------|
-| 0 | Technician L1 | Read only |
+| 0 | Technician L1 | Read only (list, get, search) |
 | 1 | Assigner, PM, Sales | Create, Update, Delete |
-| 2+ | Admin, Superadmin | All + Approve |
+| Approver | Specific role flag | Approve/Unapprove |
+
+**Note:** Approval permission is checked via `canApproveAppointments()` function, not just by level.
 
 ## Error Responses
 
@@ -308,8 +356,8 @@ All errors return:
 
 | Status | Description |
 |--------|-------------|
-| 400 | Validation error |
+| 400 | Validation error (invalid UUID, missing required field) |
 | 401 | Not authenticated |
 | 403 | Insufficient permissions |
 | 404 | Resource not found |
-| 500 | Server error |
+| 500 | Server error (database error) |

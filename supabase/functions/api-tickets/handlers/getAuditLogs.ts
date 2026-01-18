@@ -1,8 +1,25 @@
 /**
- * Get audit logs for a ticket handler
+ * @fileoverview Ticket audit log handlers
+ * @module api-tickets/handlers/getAuditLogs
+ *
+ * Provides audit trail functionality:
+ * - GET /:id/audit - Get audit logs for specific ticket (Level 0+)
+ * - GET /audit - Get recent audit logs across all tickets (Level 2+)
+ *
+ * @queryParam {number} [page=1] - Page number
+ * @queryParam {number} [limit=50] - Items per page (max 100)
+ *
+ * @description
+ * Audit logs track all changes to tickets including:
+ * - Status changes
+ * - Field updates
+ * - Employee assignments
+ * - Comments and attachments
+ *
+ * Each log entry includes: action, old_value, new_value, changed_by, timestamp.
  */
 
-import { success } from '../../_shared/response.ts';
+import { successWithPagination, calculatePagination } from '../../_shared/response.ts';
 import { requireMinLevel } from '../../_shared/auth.ts';
 import { validateUUID } from '../../_shared/validation.ts';
 import { TicketAuditService } from '../services/ticketAuditService.ts';
@@ -27,7 +44,8 @@ export async function getAuditLogs(req: Request, employee: Employee, ticketId: s
     limit: Math.min(100, Math.max(1, limit)),
   });
 
-  return success(result);
+  const pagination = calculatePagination(result.pagination.page, result.pagination.limit, result.pagination.total);
+  return successWithPagination(result.data, pagination);
 }
 
 /**
@@ -48,5 +66,6 @@ export async function getRecentAuditLogs(req: Request, employee: Employee) {
     limit: Math.min(100, Math.max(1, limit)),
   });
 
-  return success(result);
+  const pagination = calculatePagination(result.pagination.page, result.pagination.limit, result.pagination.total);
+  return successWithPagination(result.data, pagination);
 }

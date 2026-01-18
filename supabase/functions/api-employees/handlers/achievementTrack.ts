@@ -1,6 +1,43 @@
 /**
- * Track achievement action handler
- * Called when employee performs an action that should be tracked
+ * @fileoverview Track achievement action handler
+ * @endpoint POST /api-employees/achievements/track
+ * @auth Required - Level 0+ (all authenticated users)
+ *
+ * @bodyParam {string} action_type - Required: Type of action (currently only "ticket_create")
+ *
+ * @returns {TrackActionResponse} Updated progress with goals_updated, coupons_earned, and progress array
+ * @throws {AuthenticationError} 401 - If not authenticated
+ * @throws {ValidationError} 400 - If action_type is missing or invalid
+ *
+ * @description
+ * Called when an employee performs a trackable action (e.g., creates a ticket).
+ * Updates achievement progress for all active goals matching the action type.
+ *
+ * Currently supported action types:
+ * - ticket_create: Tracked when creating tickets
+ *
+ * For each matching goal:
+ * - Counts actual tickets created in the current period
+ * - Updates or creates achievement progress record
+ * - Issues coupon if goal is completed
+ *
+ * Period types:
+ * - daily: Resets every day
+ * - weekly: Monday to Sunday
+ * - monthly: First to last day of month
+ *
+ * @example
+ * POST /api-employees/achievements/track
+ * { "action_type": "ticket_create" }
+ *
+ * Response:
+ * {
+ *   "data": {
+ *     "goals_updated": 2,
+ *     "coupons_earned": 1,
+ *     "progress": [...]
+ *   }
+ * }
  */
 
 import { success } from '../../_shared/response.ts';

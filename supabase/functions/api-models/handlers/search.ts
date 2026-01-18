@@ -15,11 +15,26 @@ export async function search(req: Request, employee: Employee) {
   const url = new URL(req.url);
   const description = url.searchParams.get('description') || undefined;
   const code = url.searchParams.get('code') || undefined;
+  const category = url.searchParams.get('category') || undefined;
+  const is_active = url.searchParams.get('is_active');
+  const has_serial = url.searchParams.get('has_serial');
   const page = parseInt(url.searchParams.get('page') || '1', 10);
   const limit = parseInt(url.searchParams.get('limit') || '20', 10);
 
+  // Parse boolean filters (null = all, true/false = specific)
+  const isActiveFilter = is_active === 'true' ? true : is_active === 'false' ? false : undefined;
+  const hasSerialFilter = has_serial === 'true' ? true : has_serial === 'false' ? false : undefined;
+
   // Search models with pagination
-  const results = await ModelService.search({ description, code, page, limit });
+  const results = await ModelService.search({
+    description,
+    code,
+    category,
+    is_active: isActiveFilter,
+    has_serial: hasSerialFilter,
+    page,
+    limit
+  });
 
   return successWithPagination(results.data, results.pagination);
 }

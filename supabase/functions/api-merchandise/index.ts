@@ -1,12 +1,43 @@
 /**
- * Merchandise API Edge Function
- * Handles merchandise CRUD operations and search
+ * @fileoverview Merchandise API Edge Function - Equipment/UPS inventory management
+ * @module api-merchandise
+ *
+ * @description
+ * Manages merchandise (equipment/UPS units) inventory including serial numbers,
+ * models, locations, and replacement chains for tracking equipment history.
+ *
+ * @endpoints
+ * ## Merchandise Operations
+ * - GET    /                           - List merchandise (paginated)
+ * - GET    /search                     - Search merchandise
+ * - GET    /hint                       - Quick search (up to 5 results)
+ * - GET    /check-duplicate            - Check for duplicate serial number
+ * - GET    /model/:modelId             - Get merchandise by model
+ * - GET    /site/:siteId               - Get merchandise by site
+ * - GET    /:id                        - Get merchandise by ID
+ * - POST   /                           - Create new merchandise
+ * - PUT    /:id                        - Update merchandise
+ * - DELETE /:id                        - Delete merchandise
+ *
+ * ## Location Management
+ * - GET    /:id/location               - Get merchandise location
+ * - POST   /:id/location               - Create/upsert location
+ * - PUT    /:id/location               - Update location
+ * - DELETE /:id/location               - Delete location
+ *
+ * ## Replacement Chain
+ * - GET    /:id/replacement-chain      - Get equipment replacement history
+ *
+ * @auth All endpoints require JWT authentication
+ * @table main_merchandise - Primary merchandise data
+ * @table ext_merchandise_locations - Equipment location tracking
  */
 
 import { handleCORS } from '../_shared/cors.ts';
 import { error } from '../_shared/response.ts';
 import { authenticate } from '../_shared/auth.ts';
 import { handleError } from '../_shared/error.ts';
+import { list } from './handlers/list.ts';
 import { get } from './handlers/get.ts';
 import { create } from './handlers/create.ts';
 import { update } from './handlers/update.ts';
@@ -16,6 +47,8 @@ import { hint } from './handlers/hint.ts';
 import { checkDuplicate } from './handlers/checkDuplicate.ts';
 import { getLocation, upsertLocation, updateLocation, deleteLocation } from './handlers/location.ts';
 import { getReplacementChain } from './handlers/replacementChain.ts';
+import { getByModel } from './handlers/getByModel.ts';
+import { getBySite } from './handlers/getBySite.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -49,6 +82,20 @@ Deno.serve(async (req) => {
         if (relativePath.length === 1 && relativePath[0] === 'search') {
           return await search(req, employee);
         }
+        // GET / - List merchandise with pagination
+        if (relativePath.length === 0) {
+          return await list(req, employee);
+        }
+        // GET /model/:modelId - Get merchandise by model
+        if (relativePath.length === 2 && relativePath[0] === 'model') {
+          const modelId = relativePath[1];
+          return await getByModel(req, employee, modelId);
+        }
+        // GET /site/:siteId - Get merchandise by site
+        if (relativePath.length === 2 && relativePath[0] === 'site') {
+          const siteId = relativePath[1];
+          return await getBySite(req, employee, siteId);
+        }
         // GET /:id/location - Get location for merchandise
         if (relativePath.length === 2 && relativePath[1] === 'location') {
           const merchandiseId = relativePath[0];
@@ -63,7 +110,7 @@ Deno.serve(async (req) => {
         if (relativePath.length === 1) {
           const id = relativePath[0];
           // Prevent special keywords from being treated as IDs
-          if (['hint', 'search', 'check-duplicate'].includes(id)) {
+          if (['hint', 'search', 'check-duplicate', 'model', 'site'].includes(id)) {
             return error('Not found', 404);
           }
           return await get(req, employee, id);

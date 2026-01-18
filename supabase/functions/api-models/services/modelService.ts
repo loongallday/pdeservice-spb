@@ -1,5 +1,39 @@
 /**
- * Model service - Business logic for model operations
+ * @fileoverview Model service - Business logic for equipment model catalog
+ * @module api-models/services/modelService
+ *
+ * Provides CRUD operations for equipment models:
+ * - getAll(): List models with pagination and search
+ * - getById(): Get single model by ID
+ * - getByModel(): Get model by model code
+ * - create(): Create new model
+ * - update(): Update model
+ * - delete(): Delete model (checks merchandise references)
+ * - search(): Search by description, code, category, is_active
+ *
+ * Package Management (model components + services):
+ * - getPackage(): Get model with components and services
+ * - addPackageComponent(): Add component model to package
+ * - removePackageComponent(): Remove component from package
+ * - addPackageService(): Add service to model package
+ * - removePackageService(): Remove service from package
+ *
+ * @description
+ * Models represent equipment types (UPS, batteries, etc.) in the catalog.
+ *
+ * Schema Fields (main_models):
+ * - id, model (unique code), name, name_th, name_en
+ * - description, category, unit
+ * - is_active, has_serial, website_url
+ *
+ * Package Structure:
+ * - Components: Child models that make up a parent model
+ * - Services: Package services included with the model
+ *
+ * @table main_models - Model catalog
+ * @table jct_model_components - Model-to-component relationships (M:N)
+ * @table jct_model_package_services - Model-to-service relationships (M:N)
+ * @table package_services - Service catalog
  */
 
 import { createServiceClient } from '../../_shared/supabase.ts';
@@ -22,6 +56,13 @@ export class ModelService {
     const validFields = [
       'model',
       'name',
+      'name_th',
+      'name_en',
+      'description',
+      'category',
+      'unit',
+      'is_active',
+      'has_serial',
       'website_url',
     ];
     return sanitizeData(data, validFields);
@@ -89,11 +130,15 @@ export class ModelService {
       .single();
 
     if (error) {
+      // Supabase returns PGRST116 when .single() finds no rows
+      if (error.code === 'PGRST116' || error.message?.includes('0 rows')) {
+        throw new NotFoundError('ไม่พบข้อมูล Model');
+      }
       throw new DatabaseError();
     }
 
     if (!data) {
-      throw new NotFoundError('ไม่พบข้อมูล');
+      throw new NotFoundError('ไม่พบข้อมูล Model');
     }
 
     return data;
@@ -204,24 +249,29 @@ export class ModelService {
   }
 
   /**
-   * Search models by description and/or code with pagination
+   * Search models by description, code, category, and is_active with pagination
    */
   static async search(params: {
     description?: string;
     code?: string;
+    category?: string;
+    is_active?: boolean;
+    has_serial?: boolean;
     page?: number;
     limit?: number;
   }): Promise<{ data: Record<string, unknown>[]; pagination: PaginationInfo }> {
     const supabase = createServiceClient();
-    const { description, code, page = 1, limit = 20 } = params;
+    const { description, code, category, is_active, has_serial, page = 1, limit = 20 } = params;
 
-    // Build filter conditions
-    const conditions: string[] = [];
+    // Build filter conditions for OR clause (text search)
+    const orConditions: string[] = [];
     if (description) {
-      conditions.push(`name.ilike.%${description}%`);
+      orConditions.push(`name.ilike.%${description}%`);
+      orConditions.push(`name_th.ilike.%${description}%`);
+      orConditions.push(`name_en.ilike.%${description}%`);
     }
     if (code) {
-      conditions.push(`model.ilike.%${code}%`);
+      orConditions.push(`model.ilike.%${code}%`);
     }
 
     // Count query
@@ -229,8 +279,20 @@ export class ModelService {
       .from('main_models')
       .select('*', { count: 'exact', head: true });
 
-    if (conditions.length > 0) {
-      countQuery = countQuery.or(conditions.join(','));
+    // Apply exact filters (AND)
+    if (category) {
+      countQuery = countQuery.eq('category', category);
+    }
+    if (is_active !== undefined) {
+      countQuery = countQuery.eq('is_active', is_active);
+    }
+    if (has_serial !== undefined) {
+      countQuery = countQuery.eq('has_serial', has_serial);
+    }
+
+    // Apply text search filters (OR)
+    if (orConditions.length > 0) {
+      countQuery = countQuery.or(orConditions.join(','));
     }
 
     const { count, error: countError } = await countQuery;
@@ -245,8 +307,20 @@ export class ModelService {
       .from('main_models')
       .select('*');
 
-    if (conditions.length > 0) {
-      dataQuery = dataQuery.or(conditions.join(','));
+    // Apply exact filters (AND)
+    if (category) {
+      dataQuery = dataQuery.eq('category', category);
+    }
+    if (is_active !== undefined) {
+      dataQuery = dataQuery.eq('is_active', is_active);
+    }
+    if (has_serial !== undefined) {
+      dataQuery = dataQuery.eq('has_serial', has_serial);
+    }
+
+    // Apply text search filters (OR)
+    if (orConditions.length > 0) {
+      dataQuery = dataQuery.or(orConditions.join(','));
     }
 
     const { data, error } = await dataQuery
@@ -266,11 +340,11 @@ export class ModelService {
   // ============================================================================
 
   /**
-   * Get model package (items + services)
+   * Get model package (component models + services)
    */
   static async getPackage(modelId: string): Promise<{
     model: Record<string, unknown>;
-    items: Record<string, unknown>[];
+    components: Record<string, unknown>[];
     services: Record<string, unknown>[];
   }> {
     const supabase = createServiceClient();
@@ -278,18 +352,19 @@ export class ModelService {
     // Verify model exists
     const model = await this.getById(modelId);
 
-    // Get package items with item details
-    const { data: items, error: itemsError } = await supabase
-      .from('jct_model_package_items')
+    // Get component models with details
+    const { data: components, error: componentsError } = await supabase
+      .from('jct_model_components')
       .select(`
         id,
         quantity,
         note,
         display_order,
         created_at,
-        item:package_items (
+        component:main_models!jct_model_components_component_model_id_fkey (
           id,
-          code,
+          model,
+          name,
           name_th,
           name_en,
           description,
@@ -301,7 +376,7 @@ export class ModelService {
       .eq('model_id', modelId)
       .order('display_order');
 
-    if (itemsError) throw new DatabaseError(itemsError.message);
+    if (componentsError) throw new DatabaseError(componentsError.message);
 
     // Get package services with service details
     const { data: services, error: servicesError } = await supabase
@@ -330,22 +405,25 @@ export class ModelService {
 
     return {
       model,
-      items: items || [],
+      components: components || [],
       services: services || [],
     };
   }
 
   /**
-   * Add item to model package
+   * Add component model to parent model package
    */
-  static async addPackageItem(data: Record<string, unknown>): Promise<Record<string, unknown>> {
+  static async addPackageComponent(data: Record<string, unknown>): Promise<Record<string, unknown>> {
     const supabase = createServiceClient();
 
-    // Verify model exists
+    // Verify parent model exists
     await this.getById(data.model_id as string);
 
+    // Verify component model exists
+    await this.getById(data.component_model_id as string);
+
     const { data: result, error } = await supabase
-      .from('jct_model_package_items')
+      .from('jct_model_components')
       .insert([data])
       .select(`
         id,
@@ -353,9 +431,10 @@ export class ModelService {
         note,
         display_order,
         created_at,
-        item:package_items (
+        component:main_models!jct_model_components_component_model_id_fkey (
           id,
-          code,
+          model,
+          name,
           name_th,
           name_en,
           description,
@@ -379,16 +458,16 @@ export class ModelService {
   }
 
   /**
-   * Remove item from model package
+   * Remove component model from parent model package
    */
-  static async removePackageItem(modelId: string, itemId: string): Promise<void> {
+  static async removePackageComponent(modelId: string, componentModelId: string): Promise<void> {
     const supabase = createServiceClient();
 
     const { error } = await supabase
-      .from('jct_model_package_items')
+      .from('jct_model_components')
       .delete()
       .eq('model_id', modelId)
-      .eq('item_id', itemId);
+      .eq('component_model_id', componentModelId);
 
     if (error) throw new DatabaseError(error.message);
   }
@@ -451,131 +530,5 @@ export class ModelService {
     if (error) throw new DatabaseError(error.message);
   }
 
-  // ============================================================================
-  // SPECIFICATION METHODS
-  // ============================================================================
-
-  /**
-   * Valid fields for specification sanitization
-   */
-  private static readonly SPEC_VALID_FIELDS = [
-    'capacity_va',
-    'capacity_watts',
-    'power_factor',
-    'input_voltage_nominal',
-    'input_voltage_range',
-    'input_frequency',
-    'input_phase',
-    'input_port_types',
-    'output_voltage_nominal',
-    'output_voltage_regulation',
-    'output_frequency',
-    'output_waveform',
-    'output_port_types',
-    'battery_type',
-    'battery_voltage',
-    'battery_quantity',
-    'battery_ah',
-    'typical_recharge_time',
-    'runtime_half_load_minutes',
-    'runtime_full_load_minutes',
-    'transfer_time_ms',
-    'efficiency_percent',
-    'dimensions_wxdxh',
-    'weight_kg',
-    'operating_temperature',
-    'operating_humidity',
-    'noise_level_db',
-    'communication_ports',
-    'outlets_iec',
-    'outlets_nema',
-    'has_lcd_display',
-    'has_avr',
-    'has_surge_protection',
-    'certifications',
-    'additional_specs',
-  ];
-
-  /**
-   * Sanitize specification data
-   */
-  private static sanitizeSpecData(data: Record<string, unknown>): Record<string, unknown> {
-    const sanitized: Record<string, unknown> = {};
-    for (const field of this.SPEC_VALID_FIELDS) {
-      if (data[field] !== undefined) {
-        sanitized[field] = data[field];
-      }
-    }
-    return sanitized;
-  }
-
-  /**
-   * Get model specification
-   */
-  static async getSpecification(modelId: string): Promise<Record<string, unknown> | null> {
-    const supabase = createServiceClient();
-
-    // Verify model exists
-    await this.getById(modelId);
-
-    const { data, error } = await supabase
-      .from('ext_model_specifications')
-      .select('*')
-      .eq('model_id', modelId)
-      .single();
-
-    if (error) {
-      if (error.code === 'PGRST116') {
-        // No specification found - return null
-        return null;
-      }
-      throw new DatabaseError(error.message);
-    }
-
-    return data;
-  }
-
-  /**
-   * Create or update model specification (upsert)
-   */
-  static async upsertSpecification(
-    modelId: string,
-    specData: Record<string, unknown>
-  ): Promise<{ data: Record<string, unknown>; created: boolean }> {
-    const supabase = createServiceClient();
-
-    // Verify model exists
-    await this.getById(modelId);
-
-    const sanitized = this.sanitizeSpecData(specData);
-
-    // Check if specification already exists
-    const existing = await this.getSpecification(modelId);
-
-    if (existing) {
-      // Update existing
-      const { data, error } = await supabase
-        .from('ext_model_specifications')
-        .update(sanitized)
-        .eq('model_id', modelId)
-        .select()
-        .single();
-
-      if (error) throw new DatabaseError(error.message);
-
-      return { data, created: false };
-    } else {
-      // Create new
-      const { data, error } = await supabase
-        .from('ext_model_specifications')
-        .insert([{ model_id: modelId, ...sanitized }])
-        .select()
-        .single();
-
-      if (error) throw new DatabaseError(error.message);
-
-      return { data, created: true };
-    }
-  }
 }
 

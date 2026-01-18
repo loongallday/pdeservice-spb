@@ -1,0 +1,28 @@
+{
+  "scriptId": "340",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-contacts/handlers/getBySite.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 631,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getBySite",
+      "ranges": [
+        {
+          "startOffset": 281,
+          "endOffset": 630,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

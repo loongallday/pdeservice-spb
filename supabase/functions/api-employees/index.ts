@@ -1,6 +1,37 @@
 /**
- * Employees API Edge Function
- * Handles all employee CRUD operations
+ * @fileoverview Employees API Edge Function
+ * @module api-employees
+ *
+ * Handles all employee CRUD operations, authentication linking, search,
+ * and gamification features (achievements) for the Field Service Management system.
+ *
+ * @endpoints
+ * GET:
+ * - GET    /                              - Search/list employees (paginated, admin-level)
+ * - GET    /:id                           - Get single employee by ID
+ * - GET    /network-search                - Network search (for user management UI)
+ * - GET    /employee-summary              - Lightweight list for dropdowns
+ * - GET    /technicians/availability      - Get technician workload for a date
+ * - GET    /achievements/progress         - Get current user's achievement progress
+ * - GET    /achievements/coupons          - Get current user's earned coupons
+ *
+ * POST:
+ * - POST   /                              - Create new employee
+ * - POST   /:id/link-auth                 - Create and link new auth account
+ * - POST   /:id/link-existing-auth        - Link existing auth account
+ * - POST   /:id/unlink-auth               - Unlink auth account
+ * - POST   /achievements/track            - Track an achievement action
+ *
+ * PUT:
+ * - PUT    /:id                           - Update employee
+ *
+ * DELETE:
+ * - DELETE /:id                           - Soft delete employee (set is_active=false)
+ *
+ * @auth All endpoints require JWT authentication
+ * @see types.ts for TypeScript interfaces
+ * @see services/employeeService.ts for employee business logic
+ * @see services/achievementService.ts for gamification logic
  */
 
 import { handleCORS } from '../_shared/cors.ts';
@@ -14,6 +45,7 @@ import { deleteEmployee } from './handlers/delete.ts';
 import { linkAuth } from './handlers/linkAuth.ts';
 import { linkExistingAuth } from './handlers/linkExistingAuth.ts';
 import { unlinkAuth } from './handlers/unlinkAuth.ts';
+import { search } from './handlers/search.ts';
 import { networkSearch } from './handlers/networkSearch.ts';
 import { getEmployeeSummary } from './handlers/employeeSummary.ts';
 import { getTechnicianAvailability } from './handlers/technicianAvailability.ts';
@@ -64,6 +96,11 @@ Deno.serve(async (req) => {
         // GET /employee-summary - Get employee summary
         if (relativePath.length === 1 && relativePath[0] === "employee-summary") {
           return await getEmployeeSummary(req, employee);
+        }
+
+        // GET / - Search/list employees with full filters (admin-level search)
+        if (relativePath.length === 0) {
+          return await search(req, employee);
         }
 
         // GET /:id - Get single employee

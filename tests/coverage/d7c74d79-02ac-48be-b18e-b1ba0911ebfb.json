@@ -1,0 +1,171 @@
+{
+  "scriptId": "832",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/stream/xlsx/worksheet-reader.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 10767,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 10766,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 10760,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "WorksheetReader",
+      "ranges": [
+        {
+          "startOffset": 633,
+          "endOffset": 1016,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "destroy",
+      "ranges": [
+        {
+          "startOffset": 1147,
+          "endOffset": 1213,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get dimensions",
+      "ranges": [
+        {
+          "startOffset": 1266,
+          "endOffset": 1317,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get columns",
+      "ranges": [
+        {
+          "startOffset": 1450,
+          "endOffset": 1495,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getColumn",
+      "ranges": [
+        {
+          "startOffset": 1604,
+          "endOffset": 2106,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getColumnKey",
+      "ranges": [
+        {
+          "startOffset": 2110,
+          "endOffset": 2161,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "setColumnKey",
+      "ranges": [
+        {
+          "startOffset": 2165,
+          "endOffset": 2224,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deleteColumnKey",
+      "ranges": [
+        {
+          "startOffset": 2228,
+          "endOffset": 2282,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "eachColumnKey",
+      "ranges": [
+        {
+          "startOffset": 2286,
+          "endOffset": 2335,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "read",
+      "ranges": [
+        {
+          "startOffset": 2339,
+          "endOffset": 2614,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 2618,
+          "endOffset": 2833,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parse",
+      "ranges": [
+        {
+          "startOffset": 2837,
+          "endOffset": 10720,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

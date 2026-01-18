@@ -1,0 +1,83 @@
+{
+  "scriptId": "375",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/services/watcherService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 6573,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "addWatcher",
+      "ranges": [
+        {
+          "startOffset": 1253,
+          "endOffset": 2084,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "removeWatcher",
+      "ranges": [
+        {
+          "startOffset": 2140,
+          "endOffset": 2528,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getWatchers",
+      "ranges": [
+        {
+          "startOffset": 2602,
+          "endOffset": 3542,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getWatcherIds",
+      "ranges": [
+        {
+          "startOffset": 3624,
+          "endOffset": 3980,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isWatching",
+      "ranges": [
+        {
+          "startOffset": 4047,
+          "endOffset": 4426,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addAutoWatchers",
+      "ranges": [
+        {
+          "startOffset": 4586,
+          "endOffset": 6570,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

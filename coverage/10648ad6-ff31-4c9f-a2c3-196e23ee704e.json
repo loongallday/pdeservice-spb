@@ -1,0 +1,66 @@
+{
+  "scriptId": "606",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/uuid/8.3.2/dist/sha1.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 783,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 782,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 776,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "_interopRequireDefault",
+      "ranges": [
+        {
+          "startOffset": 386,
+          "endOffset": 481,
+          "count": 1
+        },
+        {
+          "startOffset": 454,
+          "endOffset": 459,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "sha1",
+      "ranges": [
+        {
+          "startOffset": 483,
+          "endOffset": 724,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

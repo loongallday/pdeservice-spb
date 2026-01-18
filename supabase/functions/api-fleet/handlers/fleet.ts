@@ -35,6 +35,7 @@ export async function listFleet(req: Request, employee: Employee) {
  */
 export async function getVehicle(_req: Request, employee: Employee, vehicleId: string) {
   await requireMinLevel(employee, 1);
+  // Note: vehicleId is a string from external GPS system, not UUID
 
   const vehicle = await FleetService.getById(vehicleId);
 
@@ -50,6 +51,7 @@ export async function getVehicle(_req: Request, employee: Employee, vehicleId: s
  */
 export async function updateVehicle(req: Request, employee: Employee, vehicleId: string) {
   await requireMinLevel(employee, 2);
+  // Note: vehicleId is a string from external GPS system, not UUID
 
   const body = await parseRequestBody<Record<string, unknown>>(req);
 
@@ -66,6 +68,7 @@ export async function updateVehicle(req: Request, employee: Employee, vehicleId:
  */
 export async function setVehicleEmployees(req: Request, employee: Employee, vehicleId: string) {
   await requireMinLevel(employee, 2);
+  // Note: vehicleId is a string from external GPS system, not UUID
 
   const body = await parseRequestBody<Record<string, unknown>>(req);
 
@@ -83,6 +86,7 @@ export async function setVehicleEmployees(req: Request, employee: Employee, vehi
  */
 export async function addVehicleEmployee(req: Request, employee: Employee, vehicleId: string) {
   await requireMinLevel(employee, 2);
+  // Note: vehicleId is a string from external GPS system, not UUID
 
   const body = await parseRequestBody<Record<string, unknown>>(req);
 
@@ -112,6 +116,7 @@ export async function removeVehicleEmployee(_req: Request, employee: Employee, v
  */
 export async function getVehicleRoute(req: Request, employee: Employee, vehicleId: string) {
   await requireMinLevel(employee, 1);
+  // Note: vehicleId is a string from external GPS system, not UUID
 
   const url = new URL(req.url);
 
@@ -132,6 +137,7 @@ export async function getVehicleRoute(req: Request, employee: Employee, vehicleI
  */
 export async function getWorkLocations(req: Request, employee: Employee, vehicleId: string) {
   await requireMinLevel(employee, 1);
+  // Note: vehicleId is a string from external GPS system, not UUID
 
   const url = new URL(req.url);
   const date = url.searchParams.get('date') || undefined;

@@ -1,0 +1,39 @@
+{
+  "scriptId": "382",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/services/ticketDisplayTypes.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2875,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "formatAppointmentTypeDisplay",
+      "ranges": [
+        {
+          "startOffset": 1687,
+          "endOffset": 2426,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "normalizeAppointmentType",
+      "ranges": [
+        {
+          "startOffset": 2495,
+          "endOffset": 2874,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

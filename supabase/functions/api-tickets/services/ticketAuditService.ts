@@ -1,6 +1,29 @@
 /**
- * Ticket Audit Service
- * Handles fetching natural language audit logs for tickets
+ * @fileoverview Ticket audit service - Change tracking and history
+ * @module api-tickets/services/ticketAuditService
+ *
+ * Provides audit log retrieval for tickets:
+ * - getByTicketId(): Get audit logs for a specific ticket
+ * - getRecent(): Get recent logs across all tickets (admin dashboard)
+ *
+ * @description
+ * Uses v_ticket_audit_readable view which provides:
+ * - Human-readable summary of each change
+ * - Changed field names and old/new values
+ * - Related context (work_type_name, site_name, company_name)
+ * - Changed by employee name and nickname
+ *
+ * Actions Tracked:
+ * - created: Ticket creation with all initial data
+ * - updated: Field updates with old/new value comparison
+ * - deleted: Ticket deletion with full data snapshot
+ * - comment_added: Comment creation
+ * - unapproved: Appointment auto-unapproval
+ *
+ * Pagination:
+ * - Default 50 items per page
+ * - Max 100 items per page
+ * - Sorted by created_at descending (newest first)
  */
 
 import { createServiceClient } from '../../_shared/supabase.ts';

@@ -43,14 +43,24 @@ export class DatabaseError extends APIError {
   }
 }
 
+export class IdempotencyError extends APIError {
+  constructor(
+    message: string,
+    public idempotencyCode: 'DUPLICATE_KEY_DIFFERENT_PAYLOAD' | 'DUPLICATE_KEY_DIFFERENT_USER' | 'REQUEST_IN_PROGRESS'
+  ) {
+    super(message, 409, `IDEMPOTENCY_${idempotencyCode}`);
+  }
+}
+
 /**
- * Handle errors and return appropriate status code and message
+ * Handle errors and return appropriate status code, message, and code
  */
-export function handleError(err: unknown): { message: string; statusCode: number } {
+export function handleError(err: unknown): { message: string; statusCode: number; code?: string } {
   if (err instanceof APIError) {
     return {
       message: err.message,
       statusCode: err.statusCode,
+      code: err.code,
     };
   }
   
@@ -70,10 +80,25 @@ export function handleError(err: unknown): { message: string; statusCode: number
       };
     }
     
-    if (err.message.includes('foreign key')) {
+    if (err.message.includes('foreign key') ||
+        err.message.includes('violates foreign key constraint') ||
+        err.message.includes('is still referenced') ||
+        err.message.includes('FK_') ||
+        err.message.includes('fkey')) {
       return {
         message: 'มีข้อมูลอ้างอิงที่ใช้งานอยู่ ไม่สามารถลบได้',
         statusCode: 409,
+        code: 'FOREIGN_KEY_VIOLATION',
+      };
+    }
+
+    // Handle null constraint violations
+    if (err.message.includes('null value in column') ||
+        err.message.includes('violates not-null constraint')) {
+      return {
+        message: 'กรุณากรอกข้อมูลที่จำเป็นให้ครบ',
+        statusCode: 400,
+        code: 'VALIDATION_ERROR',
       };
     }
     

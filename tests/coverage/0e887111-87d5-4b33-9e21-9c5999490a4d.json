@@ -1,0 +1,171 @@
+{
+  "scriptId": "504",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/utils/zip-stream.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2181,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2180,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2174,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "ZipWriter",
+      "ranges": [
+        {
+          "startOffset": 594,
+          "endOffset": 829,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "append",
+      "ranges": [
+        {
+          "startOffset": 833,
+          "endOffset": 1226,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "finalize",
+      "ranges": [
+        {
+          "startOffset": 1230,
+          "endOffset": 1371,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "read",
+      "ranges": [
+        {
+          "startOffset": 1486,
+          "endOffset": 1537,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "setEncoding",
+      "ranges": [
+        {
+          "startOffset": 1541,
+          "endOffset": 1614,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "pause",
+      "ranges": [
+        {
+          "startOffset": 1618,
+          "endOffset": 1663,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "resume",
+      "ranges": [
+        {
+          "startOffset": 1667,
+          "endOffset": 1714,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isPaused",
+      "ranges": [
+        {
+          "startOffset": 1718,
+          "endOffset": 1769,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "pipe",
+      "ranges": [
+        {
+          "startOffset": 1773,
+          "endOffset": 1856,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "unpipe",
+      "ranges": [
+        {
+          "startOffset": 1860,
+          "endOffset": 1929,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "unshift",
+      "ranges": [
+        {
+          "startOffset": 1933,
+          "endOffset": 1992,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "wrap",
+      "ranges": [
+        {
+          "startOffset": 1996,
+          "endOffset": 2051,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

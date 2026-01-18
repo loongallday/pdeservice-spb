@@ -1,0 +1,171 @@
+{
+  "scriptId": "368",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-fleet/services/fleetService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 16659,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "validateDateFormat",
+      "ranges": [
+        {
+          "startOffset": 307,
+          "endOffset": 769,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "calculateDistance",
+      "ranges": [
+        {
+          "startOffset": 852,
+          "endOffset": 1340,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "list",
+      "ranges": [
+        {
+          "startOffset": 1397,
+          "endOffset": 3587,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getById",
+      "ranges": [
+        {
+          "startOffset": 3637,
+          "endOffset": 5648,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getWorkLocations",
+      "ranges": [
+        {
+          "startOffset": 5822,
+          "endOffset": 9245,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getRouteHistory",
+      "ranges": [
+        {
+          "startOffset": 9302,
+          "endOffset": 10830,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "listGarages",
+      "ranges": [
+        {
+          "startOffset": 10871,
+          "endOffset": 11157,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createGarage",
+      "ranges": [
+        {
+          "startOffset": 11202,
+          "endOffset": 11686,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "updateGarage",
+      "ranges": [
+        {
+          "startOffset": 11727,
+          "endOffset": 12529,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deleteGarage",
+      "ranges": [
+        {
+          "startOffset": 12570,
+          "endOffset": 12831,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "updateVehicle",
+      "ranges": [
+        {
+          "startOffset": 12909,
+          "endOffset": 13644,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "setVehicleEmployees",
+      "ranges": [
+        {
+          "startOffset": 13733,
+          "endOffset": 15156,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addVehicleEmployee",
+      "ranges": [
+        {
+          "startOffset": 15210,
+          "endOffset": 16259,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "removeVehicleEmployee",
+      "ranges": [
+        {
+          "startOffset": 16318,
+          "endOffset": 16656,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

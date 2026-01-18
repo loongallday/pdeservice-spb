@@ -1,0 +1,142 @@
+{
+  "scriptId": "442",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/readable-stream/2.3.8/lib/_stream_duplex.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 4245,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 4244,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 4238,
+          "count": 1
+        },
+        {
+          "startOffset": 1722,
+          "endOffset": 1821,
+          "count": 0
+        },
+        {
+          "startOffset": 2270,
+          "endOffset": 2391,
+          "count": 11
+        },
+        {
+          "startOffset": 2333,
+          "endOffset": 2387,
+          "count": 7
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "objectKeys",
+      "ranges": [
+        {
+          "startOffset": 1725,
+          "endOffset": 1821,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Duplex",
+      "ranges": [
+        {
+          "startOffset": 2395,
+          "endOffset": 2823,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 3054,
+          "endOffset": 3117,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "onend",
+      "ranges": [
+        {
+          "startOffset": 3152,
+          "endOffset": 3437,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "onEndNT",
+      "ranges": [
+        {
+          "startOffset": 3439,
+          "endOffset": 3479,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 3543,
+          "endOffset": 3743,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set",
+      "ranges": [
+        {
+          "startOffset": 3752,
+          "endOffset": 4120,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Duplex._destroy",
+      "ranges": [
+        {
+          "startOffset": 4154,
+          "endOffset": 4235,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

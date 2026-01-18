@@ -1,5 +1,27 @@
 /**
- * Delete ticket handler - Comprehensive ticket deletion with cleanup of related data
+ * @fileoverview Delete ticket handler with configurable cleanup options
+ * @endpoint DELETE /api-tickets/:id
+ * @auth Required - Level 1+ (Assigner, PM, Sales, Admin, Superadmin)
+ *
+ * @param {string} id - Ticket UUID (path parameter)
+ *
+ * @queryParam {boolean} [delete_appointment=false] - Also delete associated appointment
+ * @queryParam {boolean} [delete_contact=false] - Also delete associated contact
+ *
+ * @returns {object} { message: "ลบตั๋วงานสำเร็จ" }
+ * @throws {ValidationError} 400 - Invalid UUID format
+ * @throws {AuthenticationError} 401 - If not authenticated
+ * @throws {ForbiddenError} 403 - Insufficient permissions (Level < 1)
+ * @throws {NotFoundError} 404 - Ticket not found
+ *
+ * @description
+ * Deletes a ticket and cleans up all directly related data:
+ * - Always deleted: employee assignments, watchers, attachments, comments
+ * - Optional: appointment (delete_appointment=true)
+ * - Optional: contact (delete_contact=true)
+ *
+ * Note: This is a hard delete, not a soft delete. The ticket and selected
+ * related data are permanently removed from the database.
  */
 
 import { success } from '../../_shared/response.ts';

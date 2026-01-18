@@ -1,0 +1,116 @@
+{
+  "scriptId": "370",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-reference-data/services/referenceService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3315,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getWorkTypes",
+      "ranges": [
+        {
+          "startOffset": 271,
+          "endOffset": 519,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getTicketStatuses",
+      "ranges": [
+        {
+          "startOffset": 568,
+          "endOffset": 819,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getLeaveTypes",
+      "ranges": [
+        {
+          "startOffset": 871,
+          "endOffset": 1186,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getProvinces",
+      "ranges": [
+        {
+          "startOffset": 1282,
+          "endOffset": 1382,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getRoles",
+      "ranges": [
+        {
+          "startOffset": 1428,
+          "endOffset": 1690,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getDepartments",
+      "ranges": [
+        {
+          "startOffset": 1742,
+          "endOffset": 2016,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getWorkGivers",
+      "ranges": [
+        {
+          "startOffset": 2068,
+          "endOffset": 2333,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getAllConstants",
+      "ranges": [
+        {
+          "startOffset": 2452,
+          "endOffset": 2940,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getWorkGiversByLevel",
+      "ranges": [
+        {
+          "startOffset": 3107,
+          "endOffset": 3312,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

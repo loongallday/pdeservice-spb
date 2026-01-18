@@ -1,0 +1,149 @@
+{
+  "scriptId": "690",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/brace-expansion/2.0.2/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 5227,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 5226,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 5220,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "numeric",
+      "ranges": [
+        {
+          "startOffset": 519,
+          "endOffset": 627,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "escapeBraces",
+      "ranges": [
+        {
+          "startOffset": 629,
+          "endOffset": 866,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "unescapeBraces",
+      "ranges": [
+        {
+          "startOffset": 868,
+          "endOffset": 1097,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseCommaParts",
+      "ranges": [
+        {
+          "startOffset": 1261,
+          "endOffset": 1727,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "expandTop",
+      "ranges": [
+        {
+          "startOffset": 1729,
+          "endOffset": 2306,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "embrace",
+      "ranges": [
+        {
+          "startOffset": 2308,
+          "endOffset": 2359,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isPadded",
+      "ranges": [
+        {
+          "startOffset": 2360,
+          "endOffset": 2413,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "lte",
+      "ranges": [
+        {
+          "startOffset": 2415,
+          "endOffset": 2454,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "gte",
+      "ranges": [
+        {
+          "startOffset": 2455,
+          "endOffset": 2494,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "expand",
+      "ranges": [
+        {
+          "startOffset": 2496,
+          "endOffset": 5216,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

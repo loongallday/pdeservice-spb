@@ -1,0 +1,242 @@
+{
+  "scriptId": "793",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bluebird/3.4.7/js/release/promisify.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 12412,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 12411,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 12405,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 252,
+          "endOffset": 12400,
+          "count": 1
+        },
+        {
+          "startOffset": 9443,
+          "endOffset": 9468,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "defaultFilter",
+      "ranges": [
+        {
+          "startOffset": 867,
+          "endOffset": 989,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "propsFilter",
+      "ranges": [
+        {
+          "startOffset": 992,
+          "endOffset": 1063,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isPromisified",
+      "ranges": [
+        {
+          "startOffset": 1065,
+          "endOffset": 1201,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "hasPromisified",
+      "ranges": [
+        {
+          "startOffset": 1203,
+          "endOffset": 1421,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "checkValid",
+      "ranges": [
+        {
+          "startOffset": 1422,
+          "endOffset": 2013,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "promisifiableMethods",
+      "ranges": [
+        {
+          "startOffset": 2015,
+          "endOffset": 2656,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "escapeIdentRegex",
+      "ranges": [
+        {
+          "startOffset": 2681,
+          "endOffset": 2738,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "switchCaseArgumentOrder",
+      "ranges": [
+        {
+          "startOffset": 2814,
+          "endOffset": 3124,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "argumentSequence",
+      "ranges": [
+        {
+          "startOffset": 3150,
+          "endOffset": 3233,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parameterDeclaration",
+      "ranges": [
+        {
+          "startOffset": 3263,
+          "endOffset": 3370,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parameterCount",
+      "ranges": [
+        {
+          "startOffset": 3394,
+          "endOffset": 3530,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "makeNodePromisifiedEval",
+      "ranges": [
+        {
+          "startOffset": 3559,
+          "endOffset": 8439,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "makeNodePromisifiedClosure",
+      "ranges": [
+        {
+          "startOffset": 8444,
+          "endOffset": 9399,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "promisifyAll",
+      "ranges": [
+        {
+          "startOffset": 9504,
+          "endOffset": 10455,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "promisify",
+      "ranges": [
+        {
+          "startOffset": 10457,
+          "endOffset": 10632,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.promisify",
+      "ranges": [
+        {
+          "startOffset": 10654,
+          "endOffset": 11122,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.promisifyAll",
+      "ranges": [
+        {
+          "startOffset": 11148,
+          "endOffset": 12397,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -141,5 +141,15 @@ export class ReferenceService {
       work_givers: workGivers,
     };
   }
+
+  /**
+   * Get work givers with filtering (compatibility method)
+   * Note: This method is added for API consistency even though get is only level-based
+   */
+  static async getWorkGiversByLevel(minLevel: number): Promise<Record<string, unknown>[]> {
+    // Work givers don't have level-based restrictions in current schema
+    // Return all active work givers regardless of level
+    return this.getWorkGivers();
+  }
 }
 

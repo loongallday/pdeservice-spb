@@ -1,0 +1,138 @@
+{
+  "scriptId": "780",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bluebird/3.4.7/js/release/bind.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2200,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2199,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2193,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 252,
+          "endOffset": 2189,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "rejectThis",
+      "ranges": [
+        {
+          "startOffset": 351,
+          "endOffset": 390,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "targetRejected",
+      "ranges": [
+        {
+          "startOffset": 414,
+          "endOffset": 554,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "bindingResolved",
+      "ranges": [
+        {
+          "startOffset": 579,
+          "endOffset": 709,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "bindingRejected",
+      "ranges": [
+        {
+          "startOffset": 734,
+          "endOffset": 816,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.bind",
+      "ranges": [
+        {
+          "startOffset": 844,
+          "endOffset": 1757,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._setBoundTo",
+      "ranges": [
+        {
+          "startOffset": 1792,
+          "endOffset": 1992,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._isBound",
+      "ranges": [
+        {
+          "startOffset": 2024,
+          "endOffset": 2090,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.bind",
+      "ranges": [
+        {
+          "startOffset": 2108,
+          "endOffset": 2186,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

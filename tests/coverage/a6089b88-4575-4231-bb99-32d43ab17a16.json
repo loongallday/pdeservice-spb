@@ -1,0 +1,152 @@
+{
+  "scriptId": "464",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/pako/1.0.11/lib/utils/common.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2674,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2673,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2667,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "_has",
+      "ranges": [
+        {
+          "startOffset": 402,
+          "endOffset": 486,
+          "count": 37
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "exports.assign",
+      "ranges": [
+        {
+          "startOffset": 505,
+          "endOffset": 924,
+          "count": 2
+        },
+        {
+          "startOffset": 634,
+          "endOffset": 907,
+          "count": 4
+        },
+        {
+          "startOffset": 687,
+          "endOffset": 700,
+          "count": 0
+        },
+        {
+          "startOffset": 738,
+          "endOffset": 803,
+          "count": 0
+        },
+        {
+          "startOffset": 831,
+          "endOffset": 903,
+          "count": 37
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "exports.shrinkBuf",
+      "ranges": [
+        {
+          "startOffset": 989,
+          "endOffset": 1145,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "arraySet",
+      "ranges": [
+        {
+          "startOffset": 1177,
+          "endOffset": 1480,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "flattenChunks",
+      "ranges": [
+        {
+          "startOffset": 1542,
+          "endOffset": 1957,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "arraySet",
+      "ranges": [
+        {
+          "startOffset": 1992,
+          "endOffset": 2133,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "flattenChunks",
+      "ranges": [
+        {
+          "startOffset": 2195,
+          "endOffset": 2258,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.setTyped",
+      "ranges": [
+        {
+          "startOffset": 2334,
+          "endOffset": 2634,
+          "count": 1
+        },
+        {
+          "startOffset": 2500,
+          "endOffset": 2632,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

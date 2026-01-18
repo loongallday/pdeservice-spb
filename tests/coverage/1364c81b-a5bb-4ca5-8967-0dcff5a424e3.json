@@ -1,0 +1,160 @@
+{
+  "scriptId": "438",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/readable-stream/2.3.8/lib/internal/streams/BufferList.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2239,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2238,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2232,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "_classCallCheck",
+      "ranges": [
+        {
+          "startOffset": 236,
+          "endOffset": 389,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "copyBuffer",
+      "ranges": [
+        {
+          "startOffset": 464,
+          "endOffset": 536,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 555,
+          "endOffset": 2005,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "BufferList",
+      "ranges": [
+        {
+          "startOffset": 571,
+          "endOffset": 703,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "push",
+      "ranges": [
+        {
+          "startOffset": 735,
+          "endOffset": 912,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "unshift",
+      "ranges": [
+        {
+          "startOffset": 948,
+          "endOffset": 1107,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "shift",
+      "ranges": [
+        {
+          "startOffset": 1141,
+          "endOffset": 1352,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "clear",
+      "ranges": [
+        {
+          "startOffset": 1386,
+          "endOffset": 1463,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "join",
+      "ranges": [
+        {
+          "startOffset": 1496,
+          "endOffset": 1673,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "concat",
+      "ranges": [
+        {
+          "startOffset": 1708,
+          "endOffset": 1980,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "module.exports.<computed>",
+      "ranges": [
+        {
+          "startOffset": 2111,
+          "endOffset": 2227,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

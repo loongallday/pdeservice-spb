@@ -13,6 +13,19 @@ export interface InitializeData {
   features: Record<string, unknown>[];
 }
 
+export interface Constants {
+  work_types: Record<string, unknown>[];
+  ticket_statuses: Record<string, unknown>[];
+  roles: Record<string, unknown>[];
+  departments: Record<string, unknown>[];
+  work_givers: Record<string, unknown>[];
+}
+
+export interface MeResponse extends Employee {
+  constants: Constants;
+  quotation_url: string;
+}
+
 export class InitializeService {
   /**
    * Get enabled features for the current employee
@@ -80,46 +93,64 @@ export class InitializeService {
 
   /**
    * Get current user information (employee with role and department)
+   * Now includes constants for optimized bootstrap (reduces 3 API calls to 1)
    */
-  static async getCurrentUserInfo(employee: Employee): Promise<Employee> {
+  static async getCurrentUserInfo(employee: Employee): Promise<MeResponse> {
     const supabase = createServiceClient();
 
-    // Get full employee details with role data
-    const { data: employeeResult, error: employeeError } = await supabase
-      .from('main_employees')
-      .select(`
-        *,
-        role_data:main_org_roles!role_id(
-          id,
-          code,
-          name_th,
-          name_en,
-          description,
-          level,
-          department_id,
-          is_active,
-          requires_auth,
-          department:main_org_departments!main_org_roles_department_id_fkey(
+    // Fetch employee data and all constants in parallel for speed
+    const [
+      employeeResult,
+      workTypesResult,
+      ticketStatusesResult,
+      rolesResult,
+      departmentsResult,
+      workGiversResult,
+    ] = await Promise.all([
+      // Employee with role and department
+      supabase
+        .from('main_employees')
+        .select(`
+          *,
+          role_data:main_org_roles!role_id(
             id,
             code,
             name_th,
             name_en,
             description,
-            is_active
+            level,
+            department_id,
+            is_active,
+            requires_auth,
+            department:main_org_departments!main_org_roles_department_id_fkey(
+              id,
+              code,
+              name_th,
+              name_en,
+              description,
+              is_active
+            )
           )
-        )
-      `)
-      .eq('id', employee.id)
-      .single();
+        `)
+        .eq('id', employee.id)
+        .single(),
 
-    if (employeeError || !employeeResult) {
+      // Constants - all fetched in parallel
+      supabase.from('ref_ticket_work_types').select('*').order('name'),
+      supabase.from('ref_ticket_statuses').select('*').order('name'),
+      supabase.from('main_org_roles').select('*').eq('is_active', true).order('name_th'),
+      supabase.from('main_org_departments').select('*').eq('is_active', true).order('name_th'),
+      supabase.from('ref_work_givers').select('*').eq('is_active', true).order('name'),
+    ]);
+
+    if (employeeResult.error || !employeeResult.data) {
       throw new DatabaseError('ไม่สามารถดึงข้อมูลพนักงานได้');
     }
 
     // Check if the employee can approve appointments (user-based)
-    const employeeId = employeeResult.id as string;
+    const employeeId = employeeResult.data.id as string;
     let canApprove = false;
-    
+
     if (employeeId) {
       const { data: approvalUser, error: approvalError } = await supabase
         .from('jct_appointment_approvers')
@@ -132,12 +163,26 @@ export class InitializeService {
     }
 
     // Add can_approve to role_data
-    const employeeData = employeeResult as Employee;
+    const employeeData = employeeResult.data as Employee;
     if (employeeData.role_data && typeof employeeData.role_data === 'object') {
       (employeeData.role_data as Record<string, unknown>).can_approve = canApprove;
     }
 
-    return employeeData;
+    // Build constants object
+    const constants: Constants = {
+      work_types: workTypesResult.data || [],
+      ticket_statuses: ticketStatusesResult.data || [],
+      roles: rolesResult.data || [],
+      departments: departmentsResult.data || [],
+      work_givers: workGiversResult.data || [],
+    };
+
+    // Return employee data with constants and external links
+    return {
+      ...employeeData,
+      constants,
+      quotation_url: 'https://parchment-pen.lovable.app',
+    };
   }
 
   /**

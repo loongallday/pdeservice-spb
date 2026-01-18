@@ -1,0 +1,66 @@
+{
+  "scriptId": "715",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/path-is-absolute/1.0.1/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 841,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 840,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 834,
+          "count": 1
+        },
+        {
+          "startOffset": 755,
+          "endOffset": 762,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "posix",
+      "ranges": [
+        {
+          "startOffset": 236,
+          "endOffset": 292,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "win32",
+      "ranges": [
+        {
+          "startOffset": 294,
+          "endOffset": 707,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

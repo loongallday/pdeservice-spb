@@ -1,0 +1,76 @@
+{
+  "scriptId": "758",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/buffer-indexof-polyfill/1.0.2/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2295,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2294,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2288,
+          "count": 1
+        },
+        {
+          "startOffset": 310,
+          "endOffset": 1201,
+          "count": 0
+        },
+        {
+          "startOffset": 2171,
+          "endOffset": 2220,
+          "count": 0
+        },
+        {
+          "startOffset": 2222,
+          "endOffset": 2285,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Buffer.indexOf",
+      "ranges": [
+        {
+          "startOffset": 343,
+          "endOffset": 1198,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "bufferLastIndexOf",
+      "ranges": [
+        {
+          "startOffset": 1203,
+          "endOffset": 1984,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

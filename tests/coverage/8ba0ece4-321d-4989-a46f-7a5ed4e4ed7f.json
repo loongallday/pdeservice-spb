@@ -1,0 +1,105 @@
+{
+  "scriptId": "821",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/fstream/1.0.12/lib/proxy-writer.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2676,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2675,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2669,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "ProxyWriter",
+      "ranges": [
+        {
+          "startOffset": 672,
+          "endOffset": 908,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ProxyWriter._stat",
+      "ranges": [
+        {
+          "startOffset": 940,
+          "endOffset": 1384,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ProxyWriter._addProxy",
+      "ranges": [
+        {
+          "startOffset": 1420,
+          "endOffset": 2010,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ProxyWriter.add",
+      "ranges": [
+        {
+          "startOffset": 2040,
+          "endOffset": 2255,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ProxyWriter.write",
+      "ranges": [
+        {
+          "startOffset": 2287,
+          "endOffset": 2478,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ProxyWriter.end",
+      "ranges": [
+        {
+          "startOffset": 2508,
+          "endOffset": 2666,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

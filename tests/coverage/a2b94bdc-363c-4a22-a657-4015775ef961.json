@@ -1,0 +1,116 @@
+{
+  "scriptId": "742",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bl/4.1.0/bl.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2273,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2272,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2266,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "BufferListStream",
+      "ranges": [
+        {
+          "startOffset": 371,
+          "endOffset": 995,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_new",
+      "ranges": [
+        {
+          "startOffset": 1137,
+          "endOffset": 1205,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_write",
+      "ranges": [
+        {
+          "startOffset": 1243,
+          "endOffset": 1374,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_read",
+      "ranges": [
+        {
+          "startOffset": 1411,
+          "endOffset": 1581,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "end",
+      "ranges": [
+        {
+          "startOffset": 1616,
+          "endOffset": 1781,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_destroy",
+      "ranges": [
+        {
+          "startOffset": 1821,
+          "endOffset": 1904,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_isBufferList",
+      "ranges": [
+        {
+          "startOffset": 1949,
+          "endOffset": 2081,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,5 +1,33 @@
 /**
- * Company service - Business logic for company operations
+ * @fileoverview Company service - Business logic for company operations
+ * @module api-companies/services/companyService
+ *
+ * Provides CRUD operations for companies:
+ * - getAll(): List companies with pagination
+ * - getById(): Get company by ID or tax_id with sites list
+ * - globalSearch(): Paginated search with trigram indexes
+ * - search(): Legacy non-paginated search (deprecated)
+ * - hint(): Quick search (up to 5 results)
+ * - create(): Create new company (upsert by tax_id)
+ * - update(): Update existing company
+ * - delete(): Delete company
+ * - createOrUpdate(): Explicit upsert operation
+ *
+ * @description
+ * Key Features:
+ * - Tax ID (13-digit Thai tax ID) as natural key
+ * - Supports both UUID and tax_id for lookups
+ * - Returns sites list (main-site + regular sites) when getting by ID
+ * - Uses GIN trigram indexes for efficient ILIKE searches
+ * - Sanitizes input to valid schema fields
+ *
+ * Schema Fields (main_companies):
+ * - tax_id (PK), name_th, name_en, type, status
+ * - objective, objective_code, register_date, register_capital
+ * - branch_name, address_* fields (full Thai address breakdown)
+ *
+ * @table main_companies - Primary company data
+ * @table main_sites - Sites linked by company_id
  */
 
 import { createServiceClient } from '../../_shared/supabase.ts';

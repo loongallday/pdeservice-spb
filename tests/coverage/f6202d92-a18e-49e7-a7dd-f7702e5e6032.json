@@ -1,0 +1,115 @@
+{
+  "scriptId": "369",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/_shared/auth.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3818,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "authenticate",
+      "ranges": [
+        {
+          "startOffset": 351,
+          "endOffset": 1556,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "requireMinLevel",
+      "ranges": [
+        {
+          "startOffset": 1863,
+          "endOffset": 2069,
+          "count": 13
+        },
+        {
+          "startOffset": 1958,
+          "endOffset": 1962,
+          "count": 0
+        },
+        {
+          "startOffset": 1988,
+          "endOffset": 2067,
+          "count": 3
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "requireLevelGreaterThanZero",
+      "ranges": [
+        {
+          "startOffset": 2211,
+          "endOffset": 2395,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getEmployeeLevel",
+      "ranges": [
+        {
+          "startOffset": 2438,
+          "endOffset": 2518,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isAdmin",
+      "ranges": [
+        {
+          "startOffset": 2587,
+          "endOffset": 2686,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isSuperAdmin",
+      "ranges": [
+        {
+          "startOffset": 2750,
+          "endOffset": 2854,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "requireCanApproveAppointments",
+      "ranges": [
+        {
+          "startOffset": 3096,
+          "endOffset": 3416,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "canApproveAppointments",
+      "ranges": [
+        {
+          "startOffset": 3556,
+          "endOffset": 3817,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

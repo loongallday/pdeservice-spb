@@ -1,5 +1,29 @@
 /**
- * Attachment Service - Business logic for ticket file/photo attachments
+ * @fileoverview Ticket attachment service - Photo and file management
+ * @module api-tickets/services/attachmentService
+ *
+ * Provides attachment management for tickets:
+ * - getByTicketId(): Get all photos and files for a ticket
+ * - addPhotos(): Add photo attachments
+ * - addFiles(): Add file attachments
+ * - deletePhoto(): Delete a photo (uploader or admin)
+ * - deleteFile(): Delete a file (uploader or admin)
+ *
+ * @description
+ * Attachments are separated into photos (images) and files (documents).
+ *
+ * Photo Features:
+ * - Ordered display with display_order field
+ * - Optional captions
+ * - Auto-incrementing order for new uploads
+ *
+ * File Features:
+ * - Metadata: file_name, file_size, mime_type
+ * - Sorted by created_at (newest first)
+ *
+ * Permissions:
+ * - Add: Any authenticated user (Level 0+)
+ * - Delete: Uploader or Admin (Level 2+)
  */
 
 import { createServiceClient } from '../../_shared/supabase.ts';

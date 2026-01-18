@@ -6,6 +6,7 @@ import { success, successWithPagination } from '../../_shared/response.ts';
 import { requireMinLevel, isAdmin } from '../../_shared/auth.ts';
 import { validateUUID, parsePaginationParams, parseRequestBody } from '../../_shared/validation.ts';
 import { CommentService, CommentCreateInput, CommentUpdateInput } from '../services/commentService.ts';
+import { HTTP_STATUS } from '../../_shared/constants.ts';
 import type { Employee } from '../../_shared/auth.ts';
 
 /**
@@ -36,7 +37,7 @@ export async function createComment(req: Request, employee: Employee, companyId:
 
   const comment = await CommentService.create(companyId, body, employee.id);
 
-  return success(comment, 201);
+  return success(comment, HTTP_STATUS.CREATED);
 }
 
 /**

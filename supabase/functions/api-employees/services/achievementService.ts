@@ -1,6 +1,21 @@
 /**
- * Achievement service - Business logic for employee achievement tracking
- * Temporary gamification add-on
+ * @fileoverview Achievement service - Business logic for employee achievement tracking
+ * @module api-employees/services/achievementService
+ *
+ * Handles gamification features including:
+ * - Tracking employee actions (e.g., ticket creation)
+ * - Calculating achievement progress toward goals
+ * - Issuing and managing reward coupons
+ *
+ * @description
+ * This is a temporary gamification add-on to incentivize ticket creation.
+ * Goals have period types (daily/weekly/monthly) and target counts.
+ * When employees complete goals, they earn coupons that can be redeemed.
+ *
+ * @tables
+ * - addon_achievement_goals: Goal definitions
+ * - addon_employee_achievements: Employee progress records
+ * - addon_employee_coupons: Earned reward coupons
  */
 
 import { createServiceClient } from '../../_shared/supabase.ts';
@@ -61,7 +76,16 @@ interface ProgressItem {
 }
 
 /**
- * Calculate period boundaries based on period_type
+ * Calculate period boundaries based on period type.
+ *
+ * @param {PeriodType} periodType - 'daily', 'weekly', or 'monthly'
+ * @returns {{start: string, end: string}} Period start and end dates in YYYY-MM-DD format
+ *
+ * @description
+ * Period boundaries:
+ * - daily: Current day (00:00 to 23:59)
+ * - weekly: Monday to Sunday of current week
+ * - monthly: First to last day of current month
  */
 function calculatePeriod(periodType: 'daily' | 'weekly' | 'monthly'): { start: string; end: string } {
   const now = new Date();
@@ -92,10 +116,29 @@ function calculatePeriod(periodType: 'daily' | 'weekly' | 'monthly'): { start: s
   };
 }
 
+/**
+ * Service class for achievement-related operations.
+ * All methods are static - no instance required.
+ */
 export class AchievementService {
   /**
-   * Track an action and update achievement progress
-   * Called when employee performs an action (e.g., creates a ticket)
+   * Track an action and update achievement progress.
+   * Called when an employee performs a trackable action.
+   *
+   * @param {string} employeeId - Employee UUID
+   * @param {string} actionType - Type of action (e.g., 'ticket_create')
+   * @returns {Promise<{goals_updated: number, coupons_earned: number, progress: ProgressItem[]}>}
+   * @throws {DatabaseError} If goal lookup fails
+   *
+   * @description
+   * For each active goal matching the action type:
+   * 1. Calculates the current period (daily/weekly/monthly)
+   * 2. Counts actual tickets from main_tickets for this period
+   * 3. Updates or creates achievement progress record
+   * 4. Issues coupon if goal is newly completed
+   *
+   * Note: Progress is always calculated from actual ticket count, not incremented.
+   * This ensures accuracy even if tracking calls are missed.
    */
   static async trackAction(
     employeeId: string,
@@ -243,7 +286,19 @@ export class AchievementService {
   }
 
   /**
-   * Issue a coupon for completing a goal
+   * Issue a coupon for completing a goal.
+   *
+   * @param {string} employeeId - Employee UUID
+   * @param {string} achievementId - Achievement record UUID
+   * @param {AchievementGoal} goal - The completed goal
+   * @returns {Promise<boolean>} True if coupon was issued successfully
+   *
+   * @description
+   * Creates a coupon record with:
+   * - coupon_type and coupon_description from goal's reward settings
+   * - status: 'available'
+   * - expires_at: 30 days from issuance
+   * @private
    */
   private static async issueCoupon(
     employeeId: string,
@@ -275,7 +330,21 @@ export class AchievementService {
   }
 
   /**
-   * Get current employee's achievement progress for all active goals
+   * Get current employee's achievement progress for all active goals.
+   *
+   * @param {string} employeeId - Employee UUID
+   * @returns {Promise<ProgressItem[]>} Array of progress items for all active goals
+   * @throws {DatabaseError} If goal lookup fails
+   *
+   * @description
+   * Returns progress for each active goal including:
+   * - Goal details (name, description, target_count, reward info)
+   * - Current count (from achievement record or counted directly)
+   * - Period boundaries
+   * - Status and percentage
+   *
+   * If no achievement record exists for a period, counts tickets directly
+   * for accurate real-time progress display.
    */
   static async getProgress(employeeId: string): Promise<ProgressItem[]> {
     const supabase = createServiceClient();
@@ -358,7 +427,17 @@ export class AchievementService {
   }
 
   /**
-   * Get employee's coupons
+   * Get employee's coupons with optional status filter.
+   *
+   * @param {string} employeeId - Employee UUID
+   * @param {CouponStatus} [status] - Filter by status: 'available', 'redeemed', 'expired'
+   * @returns {Promise<EmployeeCoupon[]>} Array of coupon records
+   * @throws {DatabaseError} If query fails
+   *
+   * @description
+   * Returns coupons sorted by issued_at (newest first).
+   * Automatically updates expired coupons: if a coupon's expires_at has passed
+   * and status is 'available', it's updated to 'expired' before returning.
    */
   static async getCoupons(
     employeeId: string,

@@ -1,0 +1,215 @@
+{
+  "scriptId": "481",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/jszip/3.10.1/lib/generate/ZipFileWorker.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 18184,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 18183,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 18177,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "decToHex",
+      "ranges": [
+        {
+          "startOffset": 657,
+          "endOffset": 831,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "generateUnixExternalFileAttr",
+      "ranges": [
+        {
+          "startOffset": 1607,
+          "endOffset": 1917,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "generateDosExternalFileAttr",
+      "ranges": [
+        {
+          "startOffset": 2334,
+          "endOffset": 2458,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "generateZipParts",
+      "ranges": [
+        {
+          "startOffset": 3070,
+          "endOffset": 9106,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "generateCentralDirectoryEnd",
+      "ranges": [
+        {
+          "startOffset": 9580,
+          "endOffset": 10570,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "generateDataDescriptors",
+      "ranges": [
+        {
+          "startOffset": 10807,
+          "endOffset": 11227,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipFileWorker",
+      "ranges": [
+        {
+          "startOffset": 11603,
+          "endOffset": 13033,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipFileWorker.push",
+      "ranges": [
+        {
+          "startOffset": 13147,
+          "endOffset": 13749,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipFileWorker.openedSource",
+      "ranges": [
+        {
+          "startOffset": 13926,
+          "endOffset": 14576,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipFileWorker.closedSource",
+      "ranges": [
+        {
+          "startOffset": 14755,
+          "endOffset": 15642,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipFileWorker.flush",
+      "ranges": [
+        {
+          "startOffset": 15713,
+          "endOffset": 16220,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipFileWorker.prepareNextSource",
+      "ranges": [
+        {
+          "startOffset": 16314,
+          "endOffset": 16528,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipFileWorker.registerPrevious",
+      "ranges": [
+        {
+          "startOffset": 16621,
+          "endOffset": 17095,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipFileWorker.resume",
+      "ranges": [
+        {
+          "startOffset": 17168,
+          "endOffset": 17498,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipFileWorker.error",
+      "ranges": [
+        {
+          "startOffset": 17569,
+          "endOffset": 17899,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipFileWorker.lock",
+      "ranges": [
+        {
+          "startOffset": 17968,
+          "endOffset": 18140,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

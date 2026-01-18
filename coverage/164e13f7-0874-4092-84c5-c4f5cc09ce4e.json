@@ -1,0 +1,132 @@
+{
+  "scriptId": "760",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/unzipper/0.10.14/lib/parse.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 8818,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 8817,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 8811,
+          "count": 1
+        },
+        {
+          "startOffset": 752,
+          "endOffset": 788,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Parse",
+      "ranges": [
+        {
+          "startOffset": 888,
+          "endOffset": 1296,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Parse._readRecord",
+      "ranges": [
+        {
+          "startOffset": 1363,
+          "endOffset": 2333,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Parse._readCrxHeader",
+      "ranges": [
+        {
+          "startOffset": 2369,
+          "endOffset": 2932,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Parse._readFile",
+      "ranges": [
+        {
+          "startOffset": 2963,
+          "endOffset": 6519,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Parse._processDataDescriptor",
+      "ranges": [
+        {
+          "startOffset": 6563,
+          "endOffset": 6910,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Parse._readCentralDirectoryFileHeader",
+      "ranges": [
+        {
+          "startOffset": 6963,
+          "endOffset": 8000,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Parse._readEndOfCentralDirectoryRecord",
+      "ranges": [
+        {
+          "startOffset": 8054,
+          "endOffset": 8606,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Parse.promise",
+      "ranges": [
+        {
+          "startOffset": 8635,
+          "endOffset": 8782,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

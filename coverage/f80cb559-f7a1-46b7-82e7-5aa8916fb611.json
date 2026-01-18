@@ -1,0 +1,237 @@
+{
+  "scriptId": "584",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/xlsx/xform/sheet/cf/cf-rule-xform.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 8141,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 8140,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 8134,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getTextFormula",
+      "ranges": [
+        {
+          "startOffset": 739,
+          "endOffset": 1296,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getTimePeriodFormula",
+      "ranges": [
+        {
+          "startOffset": 1328,
+          "endOffset": 2573,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "opType",
+      "ranges": [
+        {
+          "startOffset": 2591,
+          "endOffset": 2931,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "CfRuleXform",
+      "ranges": [
+        {
+          "startOffset": 2979,
+          "endOffset": 3333,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "get tag",
+      "ranges": [
+        {
+          "startOffset": 3337,
+          "endOffset": 3373,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isPrimitive",
+      "ranges": [
+        {
+          "startOffset": 3384,
+          "endOffset": 3577,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "render",
+      "ranges": [
+        {
+          "startOffset": 3581,
+          "endOffset": 4414,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "renderExpression",
+      "ranges": [
+        {
+          "startOffset": 4418,
+          "endOffset": 4674,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "renderCellIs",
+      "ranges": [
+        {
+          "startOffset": 4678,
+          "endOffset": 4998,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "renderTop10",
+      "ranges": [
+        {
+          "startOffset": 5002,
+          "endOffset": 5341,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "renderAboveAverage",
+      "ranges": [
+        {
+          "startOffset": 5345,
+          "endOffset": 5589,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "renderDataBar",
+      "ranges": [
+        {
+          "startOffset": 5593,
+          "endOffset": 5855,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "renderColorScale",
+      "ranges": [
+        {
+          "startOffset": 5859,
+          "endOffset": 6080,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "renderIconSet",
+      "ranges": [
+        {
+          "startOffset": 6084,
+          "endOffset": 6406,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "renderText",
+      "ranges": [
+        {
+          "startOffset": 6410,
+          "endOffset": 6799,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "renderTimePeriod",
+      "ranges": [
+        {
+          "startOffset": 6803,
+          "endOffset": 7161,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createNewModel",
+      "ranges": [
+        {
+          "startOffset": 7165,
+          "endOffset": 7634,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "onParserClose",
+      "ranges": [
+        {
+          "startOffset": 7638,
+          "endOffset": 8098,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "scriptId": "655",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/@fast-csv/format/4.3.5/build/src/formatter/FieldFormatter.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2712,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2711,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2705,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "__importDefault",
+      "ranges": [
+        {
+          "startOffset": 291,
+          "endOffset": 372,
+          "count": 3
+        },
+        {
+          "startOffset": 343,
+          "endOffset": 348,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "FieldFormatter",
+      "ranges": [
+        {
+          "startOffset": 714,
+          "endOffset": 1204,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set headers",
+      "ranges": [
+        {
+          "startOffset": 1209,
+          "endOffset": 1270,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "shouldQuote",
+      "ranges": [
+        {
+          "startOffset": 1275,
+          "endOffset": 1750,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "format",
+      "ranges": [
+        {
+          "startOffset": 1755,
+          "endOffset": 2495,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "quoteField",
+      "ranges": [
+        {
+          "startOffset": 2500,
+          "endOffset": 2617,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

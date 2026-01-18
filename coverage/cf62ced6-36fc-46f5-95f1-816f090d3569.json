@@ -1,0 +1,330 @@
+{
+  "scriptId": "703",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/lodash.defaults/4.2.0/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 18137,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 18136,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 18130,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "apply",
+      "ranges": [
+        {
+          "startOffset": 1326,
+          "endOffset": 1640,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "baseTimes",
+      "ranges": [
+        {
+          "startOffset": 1955,
+          "endOffset": 2116,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "arrayLikeKeys",
+      "ranges": [
+        {
+          "startOffset": 2967,
+          "endOffset": 3516,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "assignInDefaults",
+      "ranges": [
+        {
+          "startOffset": 3849,
+          "endOffset": 4066,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "assignValue",
+      "ranges": [
+        {
+          "startOffset": 4437,
+          "endOffset": 4659,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "baseKeysIn",
+      "ranges": [
+        {
+          "startOffset": 4873,
+          "endOffset": 5189,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "baseRest",
+      "ranges": [
+        {
+          "startOffset": 5498,
+          "endOffset": 6040,
+          "count": 2
+        },
+        {
+          "startOffset": 5591,
+          "endOffset": 5598,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 5613,
+          "endOffset": 6037,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "copyObject",
+      "ranges": [
+        {
+          "startOffset": 6410,
+          "endOffset": 6818,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createAssigner",
+      "ranges": [
+        {
+          "startOffset": 7001,
+          "endOffset": 7736,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 7055,
+          "endOffset": 7732,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isIndex",
+      "ranges": [
+        {
+          "startOffset": 8011,
+          "endOffset": 8234,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isIterateeCall",
+      "ranges": [
+        {
+          "startOffset": 8604,
+          "endOffset": 8932,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isPrototype",
+      "ranges": [
+        {
+          "startOffset": 9126,
+          "endOffset": 9301,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "nativeKeysIn",
+      "ranges": [
+        {
+          "startOffset": 9595,
+          "endOffset": 9760,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "eq",
+      "ranges": [
+        {
+          "startOffset": 10443,
+          "endOffset": 10538,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isArguments",
+      "ranges": [
+        {
+          "startOffset": 10927,
+          "endOffset": 11195,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isArrayLike",
+      "ranges": [
+        {
+          "startOffset": 12273,
+          "endOffset": 12376,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isArrayLikeObject",
+      "ranges": [
+        {
+          "startOffset": 12902,
+          "endOffset": 12991,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isFunction",
+      "ranges": [
+        {
+          "startOffset": 13331,
+          "endOffset": 13623,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isLength",
+      "ranges": [
+        {
+          "startOffset": 14170,
+          "endOffset": 14298,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isObject",
+      "ranges": [
+        {
+          "startOffset": 14881,
+          "endOffset": 14998,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isObjectLike",
+      "ranges": [
+        {
+          "startOffset": 15497,
+          "endOffset": 15575,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 16561,
+          "endOffset": 16669,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 17374,
+          "endOffset": 17481,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "keysIn",
+      "ranges": [
+        {
+          "startOffset": 17991,
+          "endOffset": 18099,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

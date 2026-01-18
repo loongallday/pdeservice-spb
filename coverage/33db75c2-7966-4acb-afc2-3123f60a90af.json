@@ -1,0 +1,270 @@
+{
+  "scriptId": "785",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bluebird/3.4.7/js/release/synchronous_inspection.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3043,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 3042,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 3036,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 252,
+          "endOffset": 3032,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "PromiseInspection",
+      "ranges": [
+        {
+          "startOffset": 272,
+          "endOffset": 630,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PromiseInspection._settledValue",
+      "ranges": [
+        {
+          "startOffset": 676,
+          "endOffset": 726,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PromiseInspection.value",
+      "ranges": [
+        {
+          "startOffset": 777,
+          "endOffset": 996,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PromiseInspection.error.PromiseInspection.reason",
+      "ranges": [
+        {
+          "startOffset": 1085,
+          "endOffset": 1301,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PromiseInspection.isFulfilled",
+      "ranges": [
+        {
+          "startOffset": 1364,
+          "endOffset": 1424,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PromiseInspection.isRejected",
+      "ranges": [
+        {
+          "startOffset": 1485,
+          "endOffset": 1546,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PromiseInspection.isPending",
+      "ranges": [
+        {
+          "startOffset": 1605,
+          "endOffset": 1666,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PromiseInspection.isResolved",
+      "ranges": [
+        {
+          "startOffset": 1727,
+          "endOffset": 1788,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PromiseInspection.isCancelled",
+      "ranges": [
+        {
+          "startOffset": 1833,
+          "endOffset": 1892,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.__isCancelled",
+      "ranges": [
+        {
+          "startOffset": 1929,
+          "endOffset": 1990,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._isCancelled",
+      "ranges": [
+        {
+          "startOffset": 2026,
+          "endOffset": 2083,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.isCancelled",
+      "ranges": [
+        {
+          "startOffset": 2118,
+          "endOffset": 2187,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.isPending",
+      "ranges": [
+        {
+          "startOffset": 2220,
+          "endOffset": 2277,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.isRejected",
+      "ranges": [
+        {
+          "startOffset": 2311,
+          "endOffset": 2369,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.isFulfilled",
+      "ranges": [
+        {
+          "startOffset": 2404,
+          "endOffset": 2463,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.isResolved",
+      "ranges": [
+        {
+          "startOffset": 2497,
+          "endOffset": 2555,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.value",
+      "ranges": [
+        {
+          "startOffset": 2584,
+          "endOffset": 2637,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.reason",
+      "ranges": [
+        {
+          "startOffset": 2667,
+          "endOffset": 2787,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._value",
+      "ranges": [
+        {
+          "startOffset": 2817,
+          "endOffset": 2864,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._reason",
+      "ranges": [
+        {
+          "startOffset": 2895,
+          "endOffset": 2981,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

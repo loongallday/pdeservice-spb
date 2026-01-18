@@ -1,0 +1,138 @@
+{
+  "scriptId": "772",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bluebird/3.4.7/js/release/queue.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2103,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2102,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2096,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "arrayMove",
+      "ranges": [
+        {
+          "startOffset": 235,
+          "endOffset": 417,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Queue",
+      "ranges": [
+        {
+          "startOffset": 419,
+          "endOffset": 521,
+          "count": 2
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Queue._willBeOverCapacity",
+      "ranges": [
+        {
+          "startOffset": 561,
+          "endOffset": 614,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Queue._pushOne",
+      "ranges": [
+        {
+          "startOffset": 644,
+          "endOffset": 840,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Queue.push",
+      "ranges": [
+        {
+          "startOffset": 866,
+          "endOffset": 1337,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Queue.shift",
+      "ranges": [
+        {
+          "startOffset": 1364,
+          "endOffset": 1555,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Queue.length",
+      "ranges": [
+        {
+          "startOffset": 1583,
+          "endOffset": 1623,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Queue._checkCapacity",
+      "ranges": [
+        {
+          "startOffset": 1659,
+          "endOffset": 1762,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Queue._resizeTo",
+      "ranges": [
+        {
+          "startOffset": 1793,
+          "endOffset": 2067,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

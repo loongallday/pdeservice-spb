@@ -1,0 +1,72 @@
+{
+  "scriptId": "379",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/services/ticketCrudService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 50009,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "normalizeEmployeeIds",
+      "ranges": [
+        {
+          "startOffset": 1926,
+          "endOffset": 2350,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "create",
+      "ranges": [
+        {
+          "startOffset": 2421,
+          "endOffset": 16710,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "update",
+      "ranges": [
+        {
+          "startOffset": 16781,
+          "endOffset": 46309,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "removeTicketEmployee",
+      "ranges": [
+        {
+          "startOffset": 46472,
+          "endOffset": 47678,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deleteTicket",
+      "ranges": [
+        {
+          "startOffset": 47686,
+          "endOffset": 50008,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+{
+  "scriptId": "753",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/stream/xlsx/workbook-reader.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 10446,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 10445,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 10439,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "WorkbookReader",
+      "ranges": [
+        {
+          "startOffset": 969,
+          "endOffset": 1288,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_getStream",
+      "ranges": [
+        {
+          "startOffset": 1292,
+          "endOffset": 1562,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "read",
+      "ranges": [
+        {
+          "startOffset": 1566,
+          "endOffset": 2146,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 2150,
+          "endOffset": 2320,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parse",
+      "ranges": [
+        {
+          "startOffset": 2324,
+          "endOffset": 4997,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_emitEntry",
+      "ranges": [
+        {
+          "startOffset": 5001,
+          "endOffset": 5110,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_parseRels",
+      "ranges": [
+        {
+          "startOffset": 5114,
+          "endOffset": 5258,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_parseWorkbook",
+      "ranges": [
+        {
+          "startOffset": 5262,
+          "endOffset": 5514,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_parseSharedStrings",
+      "ranges": [
+        {
+          "startOffset": 5518,
+          "endOffset": 8782,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_parseStyles",
+      "ranges": [
+        {
+          "startOffset": 8786,
+          "endOffset": 9004,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_parseWorksheet",
+      "ranges": [
+        {
+          "startOffset": 9008,
+          "endOffset": 9763,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_parseHyperlinks",
+      "ranges": [
+        {
+          "startOffset": 9767,
+          "endOffset": 10126,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

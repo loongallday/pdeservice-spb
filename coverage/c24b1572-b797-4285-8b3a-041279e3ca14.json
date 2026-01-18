@@ -1,0 +1,55 @@
+{
+  "scriptId": "757",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/listenercount/1.0.1/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 657,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 656,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 650,
+          "count": 1
+        },
+        {
+          "startOffset": 381,
+          "endOffset": 615,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "listenerCount",
+      "ranges": [
+        {
+          "startOffset": 384,
+          "endOffset": 615,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

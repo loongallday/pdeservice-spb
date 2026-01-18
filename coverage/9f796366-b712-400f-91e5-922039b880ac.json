@@ -1,0 +1,143 @@
+{
+  "scriptId": "666",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/@fast-csv/parse/4.3.6/build/src/transforms/RowTransformerValidator.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3683,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 3682,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 3676,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "__importDefault",
+      "ranges": [
+        {
+          "startOffset": 291,
+          "endOffset": 372,
+          "count": 1
+        },
+        {
+          "startOffset": 343,
+          "endOffset": 348,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "RowTransformerValidator",
+      "ranges": [
+        {
+          "startOffset": 627,
+          "endOffset": 718,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createTransform",
+      "ranges": [
+        {
+          "startOffset": 791,
+          "endOffset": 1248,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createValidator",
+      "ranges": [
+        {
+          "startOffset": 1260,
+          "endOffset": 1861,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set rowTransform",
+      "ranges": [
+        {
+          "startOffset": 1866,
+          "endOffset": 2142,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set rowValidator",
+      "ranges": [
+        {
+          "startOffset": 2147,
+          "endOffset": 2419,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "transformAndValidate",
+      "ranges": [
+        {
+          "startOffset": 2424,
+          "endOffset": 3224,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "callTransformer",
+      "ranges": [
+        {
+          "startOffset": 3229,
+          "endOffset": 3384,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "callValidator",
+      "ranges": [
+        {
+          "startOffset": 3389,
+          "endOffset": 3561,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

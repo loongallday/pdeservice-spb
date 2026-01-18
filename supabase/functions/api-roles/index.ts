@@ -1,6 +1,29 @@
 /**
- * Roles API Edge Function
- * Handles all role CRUD operations
+ * @fileoverview Roles API Edge Function - Permission role management
+ * @module api-roles
+ *
+ * @description
+ * Manages organizational roles with permission levels for access control.
+ * Roles define what actions employees can perform in the system.
+ *
+ * Permission Levels:
+ * - 0: Technician L1 (Read-only)
+ * - 1: Assigner, PM, Sales (Create/Update)
+ * - 2: Admin (User management)
+ * - 3: Superadmin (Full access)
+ *
+ * @endpoints
+ * ## Role Operations
+ * - GET    /search        - Search roles
+ * - GET    /role-summary  - Get all roles with employee counts
+ * - GET    /:id           - Get role by ID
+ * - POST   /              - Create new role
+ * - PUT    /:id           - Update role
+ * - DELETE /:id           - Delete role
+ *
+ * @auth All endpoints require JWT authentication
+ * @table main_org_roles - Role data with permission levels
+ * @table main_employees - Employee assignments (role_id)
  */
 
 import { handleCORS } from '../_shared/cors.ts';

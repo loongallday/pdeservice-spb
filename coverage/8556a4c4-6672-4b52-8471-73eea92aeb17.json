@@ -1,0 +1,149 @@
+{
+  "scriptId": "419",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/doc/anchor.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2801,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2800,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2794,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Anchor",
+      "ranges": [
+        {
+          "startOffset": 302,
+          "endOffset": 1264,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "asInstance",
+      "ranges": [
+        {
+          "startOffset": 1275,
+          "endOffset": 1379,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get col",
+      "ranges": [
+        {
+          "startOffset": 1383,
+          "endOffset": 1492,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set col",
+      "ranges": [
+        {
+          "startOffset": 1496,
+          "endOffset": 1622,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get row",
+      "ranges": [
+        {
+          "startOffset": 1626,
+          "endOffset": 1737,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set row",
+      "ranges": [
+        {
+          "startOffset": 1741,
+          "endOffset": 1868,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get colWidth",
+      "ranges": [
+        {
+          "startOffset": 1872,
+          "endOffset": 2135,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get rowHeight",
+      "ranges": [
+        {
+          "startOffset": 2139,
+          "endOffset": 2388,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get model",
+      "ranges": [
+        {
+          "startOffset": 2392,
+          "endOffset": 2573,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set model",
+      "ranges": [
+        {
+          "startOffset": 2577,
+          "endOffset": 2763,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

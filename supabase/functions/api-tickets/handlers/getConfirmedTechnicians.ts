@@ -1,5 +1,24 @@
 /**
- * Get confirmed technicians handler
+ * @fileoverview Get confirmed technicians for a ticket handler
+ * @endpoint GET /api-tickets/:id/confirmed-technicians
+ * @auth Required - Level 0+ (all authenticated users)
+ *
+ * @param {string} id - Ticket UUID (path parameter)
+ * @queryParam {string} [date] - Optional: Filter by specific date (YYYY-MM-DD)
+ *
+ * @returns {ConfirmedTechnician[]} List of confirmed technicians
+ * @throws {ValidationError} 400 - Invalid UUID format
+ * @throws {AuthenticationError} 401 - If not authenticated
+ *
+ * @description
+ * Returns the list of technicians who have been confirmed for a ticket's
+ * appointment. Each technician record includes:
+ * - Employee details (id, name, code)
+ * - is_key flag (primary technician)
+ * - Confirmation metadata (confirmed_by, confirmed_at)
+ *
+ * When date parameter is provided, filters to confirmations for that
+ * specific appointment date.
  */
 
 import { success } from '../../_shared/response.ts';

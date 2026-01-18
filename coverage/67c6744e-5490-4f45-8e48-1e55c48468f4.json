@@ -1,0 +1,83 @@
+{
+  "scriptId": "762",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/chainsaw/0.1.0/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3935,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 3934,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 3928,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Chainsaw",
+      "ranges": [
+        {
+          "startOffset": 336,
+          "endOffset": 538,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ChainsawLight",
+      "ranges": [
+        {
+          "startOffset": 558,
+          "endOffset": 747,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Chainsaw.saw",
+      "ranges": [
+        {
+          "startOffset": 765,
+          "endOffset": 2879,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "upgradeChainsaw",
+      "ranges": [
+        {
+          "startOffset": 2882,
+          "endOffset": 3924,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

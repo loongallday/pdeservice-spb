@@ -1,0 +1,109 @@
+{
+  "scriptId": "368",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/_shared/validation.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1791,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "validateUUID",
+      "ranges": [
+        {
+          "startOffset": 125,
+          "endOffset": 356,
+          "count": 2
+        },
+        {
+          "startOffset": 291,
+          "endOffset": 354,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "validateRequired",
+      "ranges": [
+        {
+          "startOffset": 399,
+          "endOffset": 575,
+          "count": 2
+        },
+        {
+          "startOffset": 506,
+          "endOffset": 573,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "validateEmail",
+      "ranges": [
+        {
+          "startOffset": 616,
+          "endOffset": 787,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "validateNumberRange",
+      "ranges": [
+        {
+          "startOffset": 828,
+          "endOffset": 1009,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "validateStringLength",
+      "ranges": [
+        {
+          "startOffset": 1051,
+          "endOffset": 1261,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parsePaginationParams",
+      "ranges": [
+        {
+          "startOffset": 1317,
+          "endOffset": 1560,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseRequestBody",
+      "ranges": [
+        {
+          "startOffset": 1606,
+          "endOffset": 1790,
+          "count": 1
+        },
+        {
+          "startOffset": 1709,
+          "endOffset": 1788,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

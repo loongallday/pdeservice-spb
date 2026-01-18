@@ -1,0 +1,182 @@
+{
+  "scriptId": "476",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/pako/1.0.11/lib/zlib/inflate.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 50514,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 50513,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 50507,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "zswap32",
+      "ranges": [
+        {
+          "startOffset": 5105,
+          "endOffset": 5257,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "InflateState",
+      "ranges": [
+        {
+          "startOffset": 5260,
+          "endOffset": 8164,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "inflateResetKeep",
+      "ranges": [
+        {
+          "startOffset": 8166,
+          "endOffset": 8919,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "inflateReset",
+      "ranges": [
+        {
+          "startOffset": 8921,
+          "endOffset": 9134,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "inflateReset2",
+      "ranges": [
+        {
+          "startOffset": 9136,
+          "endOffset": 9903,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "inflateInit2",
+      "ranges": [
+        {
+          "startOffset": 9905,
+          "endOffset": 10378,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "inflateInit",
+      "ranges": [
+        {
+          "startOffset": 10380,
+          "endOffset": 10450,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "fixedtables",
+      "ranges": [
+        {
+          "startOffset": 11100,
+          "endOffset": 11954,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "updatewindow",
+      "ranges": [
+        {
+          "startOffset": 12742,
+          "endOffset": 13913,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "inflate",
+      "ranges": [
+        {
+          "startOffset": 13915,
+          "endOffset": 48262,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "inflateEnd",
+      "ranges": [
+        {
+          "startOffset": 48264,
+          "endOffset": 48504,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "inflateGetHeader",
+      "ranges": [
+        {
+          "startOffset": 48506,
+          "endOffset": 48803,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "inflateSetDictionary",
+      "ranges": [
+        {
+          "startOffset": 48805,
+          "endOffset": 49784,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,0 +1,358 @@
+{
+  "scriptId": "688",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/archiver/5.3.2/lib/core.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 24323,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 24322,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 24316,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Archiver",
+      "ranges": [
+        {
+          "startOffset": 940,
+          "endOffset": 1926,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver._abort",
+      "ranges": [
+        {
+          "startOffset": 2059,
+          "endOffset": 2206,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver._append",
+      "ranges": [
+        {
+          "startOffset": 2411,
+          "endOffset": 2955,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver._finalize",
+      "ranges": [
+        {
+          "startOffset": 3062,
+          "endOffset": 3300,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver._maybeFinalize",
+      "ranges": [
+        {
+          "startOffset": 3456,
+          "endOffset": 3734,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver._moduleAppend",
+      "ranges": [
+        {
+          "startOffset": 3967,
+          "endOffset": 5032,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver._moduleFinalize",
+      "ranges": [
+        {
+          "startOffset": 5136,
+          "endOffset": 5384,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver._modulePipe",
+      "ranges": [
+        {
+          "startOffset": 5523,
+          "endOffset": 5658,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver._moduleSupports",
+      "ranges": [
+        {
+          "startOffset": 5830,
+          "endOffset": 5970,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver._moduleUnpipe",
+      "ranges": [
+        {
+          "startOffset": 6095,
+          "endOffset": 6173,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver._normalizeEntryData",
+      "ranges": [
+        {
+          "startOffset": 6373,
+          "endOffset": 7746,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver._onModuleError",
+      "ranges": [
+        {
+          "startOffset": 7912,
+          "endOffset": 8018,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver._onQueueDrain",
+      "ranges": [
+        {
+          "startOffset": 8199,
+          "endOffset": 8437,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver._onQueueTask",
+      "ranges": [
+        {
+          "startOffset": 8611,
+          "endOffset": 8950,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver._onStatQueueTask",
+      "ranges": [
+        {
+          "startOffset": 9154,
+          "endOffset": 9871,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver._shutdown",
+      "ranges": [
+        {
+          "startOffset": 9996,
+          "endOffset": 10048,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver._transform",
+      "ranges": [
+        {
+          "startOffset": 10260,
+          "endOffset": 10379,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver._updateQueueTaskWithStats",
+      "ranges": [
+        {
+          "startOffset": 10582,
+          "endOffset": 11857,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver.abort",
+      "ranges": [
+        {
+          "startOffset": 12205,
+          "endOffset": 12328,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver.append",
+      "ranges": [
+        {
+          "startOffset": 12739,
+          "endOffset": 13684,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver.directory",
+      "ranges": [
+        {
+          "startOffset": 14068,
+          "endOffset": 15872,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver.file",
+      "ranges": [
+        {
+          "startOffset": 16365,
+          "endOffset": 16726,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver.glob",
+      "ranges": [
+        {
+          "startOffset": 17162,
+          "endOffset": 17919,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver.finalize",
+      "ranges": [
+        {
+          "startOffset": 18298,
+          "endOffset": 19075,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver.setFormat",
+      "ranges": [
+        {
+          "startOffset": 19239,
+          "endOffset": 19400,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver.setModule",
+      "ranges": [
+        {
+          "startOffset": 19574,
+          "endOffset": 19868,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver.symlink",
+      "ranges": [
+        {
+          "startOffset": 20242,
+          "endOffset": 21230,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver.pointer",
+      "ranges": [
+        {
+          "startOffset": 21357,
+          "endOffset": 21395,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Archiver.use",
+      "ranges": [
+        {
+          "startOffset": 21557,
+          "endOffset": 21622,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

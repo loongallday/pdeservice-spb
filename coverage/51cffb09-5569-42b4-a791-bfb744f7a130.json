@@ -1,0 +1,66 @@
+{
+  "scriptId": "608",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/uuid/8.3.2/dist/version.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 704,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 703,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 697,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "_interopRequireDefault",
+      "ranges": [
+        {
+          "startOffset": 395,
+          "endOffset": 490,
+          "count": 1
+        },
+        {
+          "startOffset": 469,
+          "endOffset": 487,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "version",
+      "ranges": [
+        {
+          "startOffset": 492,
+          "endOffset": 642,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

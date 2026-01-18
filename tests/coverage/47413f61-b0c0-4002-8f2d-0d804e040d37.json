@@ -1,0 +1,118 @@
+{
+  "scriptId": "337",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-analytics/handlers/trends.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2031,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getTrends",
+      "ranges": [
+        {
+          "startOffset": 523,
+          "endOffset": 2030,
+          "count": 8
+        },
+        {
+          "startOffset": 763,
+          "endOffset": 773,
+          "count": 3
+        },
+        {
+          "startOffset": 792,
+          "endOffset": 803,
+          "count": 7
+        },
+        {
+          "startOffset": 805,
+          "endOffset": 878,
+          "count": 1
+        },
+        {
+          "startOffset": 878,
+          "endOffset": 981,
+          "count": 7
+        },
+        {
+          "startOffset": 981,
+          "endOffset": 1008,
+          "count": 6
+        },
+        {
+          "startOffset": 1010,
+          "endOffset": 1094,
+          "count": 1
+        },
+        {
+          "startOffset": 1094,
+          "endOffset": 1147,
+          "count": 6
+        },
+        {
+          "startOffset": 1147,
+          "endOffset": 1230,
+          "count": 1
+        },
+        {
+          "startOffset": 1230,
+          "endOffset": 1286,
+          "count": 5
+        },
+        {
+          "startOffset": 1286,
+          "endOffset": 1315,
+          "count": 3
+        },
+        {
+          "startOffset": 1317,
+          "endOffset": 1396,
+          "count": 1
+        },
+        {
+          "startOffset": 1396,
+          "endOffset": 1623,
+          "count": 4
+        },
+        {
+          "startOffset": 1623,
+          "endOffset": 1639,
+          "count": 2
+        },
+        {
+          "startOffset": 1641,
+          "endOffset": 1720,
+          "count": 1
+        },
+        {
+          "startOffset": 1720,
+          "endOffset": 1754,
+          "count": 3
+        },
+        {
+          "startOffset": 1754,
+          "endOffset": 1771,
+          "count": 2
+        },
+        {
+          "startOffset": 1773,
+          "endOffset": 1854,
+          "count": 1
+        },
+        {
+          "startOffset": 1854,
+          "endOffset": 2029,
+          "count": 2
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

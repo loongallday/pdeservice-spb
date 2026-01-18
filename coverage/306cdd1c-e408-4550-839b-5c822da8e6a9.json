@@ -1,0 +1,88 @@
+{
+  "scriptId": "448",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/jszip/3.10.1/lib/nodejsUtils.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2116,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2115,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2109,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "newBufferFrom",
+      "ranges": [
+        {
+          "startOffset": 758,
+          "endOffset": 1266,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "allocBuffer",
+      "ranges": [
+        {
+          "startOffset": 1451,
+          "endOffset": 1657,
+          "count": 1
+        },
+        {
+          "startOffset": 1545,
+          "endOffset": 1651,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "isBuffer",
+      "ranges": [
+        {
+          "startOffset": 1851,
+          "endOffset": 1904,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isStream",
+      "ranges": [
+        {
+          "startOffset": 1922,
+          "endOffset": 2103,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

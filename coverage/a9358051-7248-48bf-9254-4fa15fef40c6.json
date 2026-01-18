@@ -1,0 +1,94 @@
+{
+  "scriptId": "736",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/crc32-stream/4.0.3/lib/crc32-stream.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1230,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 1229,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 1223,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "CRC32Stream",
+      "ranges": [
+        {
+          "startOffset": 557,
+          "endOffset": 707,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_transform",
+      "ranges": [
+        {
+          "startOffset": 711,
+          "endOffset": 902,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "digest",
+      "ranges": [
+        {
+          "startOffset": 906,
+          "endOffset": 1086,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "hex",
+      "ranges": [
+        {
+          "startOffset": 1090,
+          "endOffset": 1146,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "size",
+      "ranges": [
+        {
+          "startOffset": 1150,
+          "endOffset": 1187,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

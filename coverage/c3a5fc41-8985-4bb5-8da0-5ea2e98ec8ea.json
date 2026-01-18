@@ -1,0 +1,44 @@
+{
+  "scriptId": "691",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/minimatch/5.1.6/lib/path.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 381,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 380,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 374,
+          "count": 1
+        },
+        {
+          "startOffset": 341,
+          "endOffset": 356,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

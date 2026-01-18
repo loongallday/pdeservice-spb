@@ -1,0 +1,127 @@
+{
+  "scriptId": "373",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/_shared/error.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2120,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "<instance_members_initializer>",
+      "ranges": [
+        {
+          "startOffset": 104,
+          "endOffset": 122,
+          "count": 9
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "APIError",
+      "ranges": [
+        {
+          "startOffset": 126,
+          "endOffset": 271,
+          "count": 9
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "AuthenticationError",
+      "ranges": [
+        {
+          "startOffset": 328,
+          "endOffset": 414,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "AuthorizationError",
+      "ranges": [
+        {
+          "startOffset": 470,
+          "endOffset": 556,
+          "count": 3
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "NotFoundError",
+      "ranges": [
+        {
+          "startOffset": 607,
+          "endOffset": 686,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ValidationError",
+      "ranges": [
+        {
+          "startOffset": 739,
+          "endOffset": 809,
+          "count": 6
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "DatabaseError",
+      "ranges": [
+        {
+          "startOffset": 860,
+          "endOffset": 965,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "<instance_members_initializer>",
+      "ranges": [
+        {
+          "startOffset": 1019,
+          "endOffset": 1034,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "IdempotencyError",
+      "ranges": [
+        {
+          "startOffset": 1038,
+          "endOffset": 1179,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "handleError",
+      "ranges": [
+        {
+          "startOffset": 1268,
+          "endOffset": 2119,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

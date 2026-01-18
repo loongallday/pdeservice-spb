@@ -1,0 +1,93 @@
+{
+  "scriptId": "771",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bluebird/3.4.7/js/release/errors.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3947,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 3946,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 3940,
+          "count": 1
+        },
+        {
+          "startOffset": 1290,
+          "endOffset": 1413,
+          "count": 0
+        },
+        {
+          "startOffset": 1612,
+          "endOffset": 1758,
+          "count": 17
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "subError",
+      "ranges": [
+        {
+          "startOffset": 403,
+          "endOffset": 940,
+          "count": 4
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "SubError",
+      "ranges": [
+        {
+          "startOffset": 457,
+          "endOffset": 886,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "AggregateError.toString",
+      "ranges": [
+        {
+          "startOffset": 2002,
+          "endOffset": 2539,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "OperationalError",
+      "ranges": [
+        {
+          "startOffset": 2542,
+          "endOffset": 3098,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

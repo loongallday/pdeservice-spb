@@ -1,0 +1,87 @@
+{
+  "scriptId": "699",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/graceful-fs/4.2.11/clone.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 726,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 725,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 719,
+          "count": 1
+        },
+        {
+          "startOffset": 302,
+          "endOffset": 346,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getPrototypeOf",
+      "ranges": [
+        {
+          "startOffset": 305,
+          "endOffset": 346,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "clone",
+      "ranges": [
+        {
+          "startOffset": 348,
+          "endOffset": 716,
+          "count": 1
+        },
+        {
+          "startOffset": 422,
+          "endOffset": 432,
+          "count": 0
+        },
+        {
+          "startOffset": 512,
+          "endOffset": 554,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 598,
+          "endOffset": 698,
+          "count": 117
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

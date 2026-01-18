@@ -1,0 +1,50 @@
+{
+  "scriptId": "371",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-analytics/services/trendAnalyticsService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 13946,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getTrends",
+      "ranges": [
+        {
+          "startOffset": 407,
+          "endOffset": 7842,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getTechnicianDetail",
+      "ranges": [
+        {
+          "startOffset": 7917,
+          "endOffset": 13524,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "formatThaiDate",
+      "ranges": [
+        {
+          "startOffset": 13575,
+          "endOffset": 13943,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

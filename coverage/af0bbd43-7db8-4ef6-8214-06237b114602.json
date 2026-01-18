@@ -1,0 +1,113 @@
+{
+  "scriptId": "338",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-package-services/handlers/update.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1509,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "update",
+      "ranges": [
+        {
+          "startOffset": 373,
+          "endOffset": 1508,
+          "count": 4
+        },
+        {
+          "startOffset": 524,
+          "endOffset": 651,
+          "count": 3
+        },
+        {
+          "startOffset": 651,
+          "endOffset": 738,
+          "count": 2
+        },
+        {
+          "startOffset": 738,
+          "endOffset": 766,
+          "count": 0
+        },
+        {
+          "startOffset": 766,
+          "endOffset": 801,
+          "count": 2
+        },
+        {
+          "startOffset": 801,
+          "endOffset": 835,
+          "count": 1
+        },
+        {
+          "startOffset": 835,
+          "endOffset": 870,
+          "count": 2
+        },
+        {
+          "startOffset": 870,
+          "endOffset": 904,
+          "count": 0
+        },
+        {
+          "startOffset": 904,
+          "endOffset": 943,
+          "count": 2
+        },
+        {
+          "startOffset": 943,
+          "endOffset": 985,
+          "count": 0
+        },
+        {
+          "startOffset": 985,
+          "endOffset": 1021,
+          "count": 2
+        },
+        {
+          "startOffset": 1021,
+          "endOffset": 1057,
+          "count": 0
+        },
+        {
+          "startOffset": 1057,
+          "endOffset": 1100,
+          "count": 2
+        },
+        {
+          "startOffset": 1100,
+          "endOffset": 1150,
+          "count": 0
+        },
+        {
+          "startOffset": 1150,
+          "endOffset": 1187,
+          "count": 2
+        },
+        {
+          "startOffset": 1187,
+          "endOffset": 1225,
+          "count": 0
+        },
+        {
+          "startOffset": 1225,
+          "endOffset": 1319,
+          "count": 2
+        },
+        {
+          "startOffset": 1319,
+          "endOffset": 1507,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

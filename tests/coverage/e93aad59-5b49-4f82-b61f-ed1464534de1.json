@@ -1,0 +1,171 @@
+{
+  "scriptId": "776",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bluebird/3.4.7/js/release/finally.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3626,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 3625,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 3619,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 252,
+          "endOffset": 3615,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "PassThroughHandlerContext",
+      "ranges": [
+        {
+          "startOffset": 405,
+          "endOffset": 601,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PassThroughHandlerContext.isFinallyHandler",
+      "ranges": [
+        {
+          "startOffset": 658,
+          "endOffset": 700,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "FinallyHandlerCancelReaction",
+      "ranges": [
+        {
+          "startOffset": 703,
+          "endOffset": 802,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "FinallyHandlerCancelReaction._resultCancelled",
+      "ranges": [
+        {
+          "startOffset": 862,
+          "endOffset": 914,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "checkCancel",
+      "ranges": [
+        {
+          "startOffset": 917,
+          "endOffset": 1221,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "succeed",
+      "ranges": [
+        {
+          "startOffset": 1223,
+          "endOffset": 1323,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "fail",
+      "ranges": [
+        {
+          "startOffset": 1324,
+          "endOffset": 1438,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "finallyHandler",
+      "ranges": [
+        {
+          "startOffset": 1439,
+          "endOffset": 2890,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._passThrough",
+      "ranges": [
+        {
+          "startOffset": 2925,
+          "endOffset": 3226,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.lastly.Promise.finally",
+      "ranges": [
+        {
+          "startOffset": 3287,
+          "endOffset": 3470,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.tap",
+      "ranges": [
+        {
+          "startOffset": 3497,
+          "endOffset": 3577,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

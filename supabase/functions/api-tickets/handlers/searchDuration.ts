@@ -1,9 +1,32 @@
 /**
- * Search tickets by duration handler
- * Filters tickets by date range with selectable date type (create, update, appointed)
- * 
- * Enhanced to return display-ready data with pre-resolved location names,
- * employee details, and pre-formatted appointment strings.
+ * @fileoverview Search tickets by date range handler
+ * @endpoint GET /api-tickets/search-duration
+ * @auth Required - Level 0+ (all authenticated users)
+ *
+ * @queryParam {string} startDate - Required: Start date (YYYY-MM-DD)
+ * @queryParam {string} endDate - Required: End date (YYYY-MM-DD)
+ * @queryParam {string} [date_type=create] - Date field: create|update|appointed
+ * @queryParam {number} [page=1] - Page number
+ * @queryParam {number} [limit=50] - Items per page
+ * @queryParam {string} [include=full] - Data mode: minimal|full
+ * @queryParam {string} [sort] - Sort field
+ * @queryParam {string} [order=desc] - Sort order: asc|desc
+ *
+ * @returns {PaginatedResponse<Ticket[]>} Tickets within date range
+ * @throws {ValidationError} 400 - Missing startDate or endDate
+ * @throws {ValidationError} 400 - Invalid date_type value
+ * @throws {AuthenticationError} 401 - If not authenticated
+ *
+ * @description
+ * Searches tickets within a specific date range. The date field used for
+ * filtering is configurable via date_type parameter:
+ *
+ * - create: Filter by ticket creation date (created_at)
+ * - update: Filter by last update date (updated_at)
+ * - appointed: Filter by appointment date (default)
+ *
+ * Returns display-ready data with pre-resolved location names, employee
+ * details, and pre-formatted appointment strings.
  */
 
 import { successWithPagination } from '../../_shared/response.ts';

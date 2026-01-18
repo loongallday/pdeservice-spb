@@ -1,0 +1,81 @@
+{
+  "scriptId": "471",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/pako/1.0.11/lib/zlib/crc32.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1980,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 1979,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 1973,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "makeTable",
+      "ranges": [
+        {
+          "startOffset": 1399,
+          "endOffset": 1629,
+          "count": 1
+        },
+        {
+          "startOffset": 1476,
+          "endOffset": 1610,
+          "count": 256
+        },
+        {
+          "startOffset": 1521,
+          "endOffset": 1588,
+          "count": 2048
+        },
+        {
+          "startOffset": 1542,
+          "endOffset": 1568,
+          "count": 1024
+        },
+        {
+          "startOffset": 1569,
+          "endOffset": 1580,
+          "count": 1024
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "crc32",
+      "ranges": [
+        {
+          "startOffset": 1724,
+          "endOffset": 1944,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

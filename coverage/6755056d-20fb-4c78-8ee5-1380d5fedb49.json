@@ -1,0 +1,248 @@
+{
+  "scriptId": "747",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/tar-stream/2.2.0/pack.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 5856,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 5855,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 5849,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "noop",
+      "ranges": [
+        {
+          "startOffset": 660,
+          "endOffset": 674,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "overflow",
+      "ranges": [
+        {
+          "startOffset": 691,
+          "endOffset": 785,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "modeToType",
+      "ranges": [
+        {
+          "startOffset": 787,
+          "endOffset": 1113,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Sink",
+      "ranges": [
+        {
+          "startOffset": 1126,
+          "endOffset": 1226,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Sink._write",
+      "ranges": [
+        {
+          "startOffset": 1278,
+          "endOffset": 1398,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Sink.destroy",
+      "ranges": [
+        {
+          "startOffset": 1425,
+          "endOffset": 1516,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "LinkSink",
+      "ranges": [
+        {
+          "startOffset": 1533,
+          "endOffset": 1662,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "LinkSink._write",
+      "ranges": [
+        {
+          "startOffset": 1722,
+          "endOffset": 1802,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "LinkSink.destroy",
+      "ranges": [
+        {
+          "startOffset": 1833,
+          "endOffset": 1924,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Void",
+      "ranges": [
+        {
+          "startOffset": 1937,
+          "endOffset": 2000,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Void._write",
+      "ranges": [
+        {
+          "startOffset": 2052,
+          "endOffset": 2130,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Void.destroy",
+      "ranges": [
+        {
+          "startOffset": 2157,
+          "endOffset": 2248,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Pack",
+      "ranges": [
+        {
+          "startOffset": 2261,
+          "endOffset": 2484,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Pack.entry",
+      "ranges": [
+        {
+          "startOffset": 2535,
+          "endOffset": 4389,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Pack.finalize",
+      "ranges": [
+        {
+          "startOffset": 4417,
+          "endOffset": 4595,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Pack.destroy",
+      "ranges": [
+        {
+          "startOffset": 4622,
+          "endOffset": 4819,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Pack._encode",
+      "ranges": [
+        {
+          "startOffset": 4846,
+          "endOffset": 5010,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Pack._encodePax",
+      "ranges": [
+        {
+          "startOffset": 5040,
+          "endOffset": 5725,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Pack._read",
+      "ranges": [
+        {
+          "startOffset": 5750,
+          "endOffset": 5823,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

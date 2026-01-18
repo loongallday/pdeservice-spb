@@ -1,6 +1,18 @@
 /**
- * Ticket watchers handlers
- * Handles watch/unwatch functionality for tickets
+ * @fileoverview Ticket watcher subscription handlers
+ * @module api-tickets/handlers/watchers
+ *
+ * Provides watch/unwatch functionality for tickets:
+ * - GET /:id/watchers - Get all watchers and current user's watch status
+ * - POST /:id/watch - Subscribe current user to ticket notifications
+ * - DELETE /:id/watch - Unsubscribe current user from ticket
+ *
+ * @auth All operations require Level 0+ authentication
+ *
+ * @description
+ * Watchers receive notifications when ticket changes occur (comments,
+ * status updates, etc.). Users can manually watch tickets, and may be
+ * automatically added as watchers when assigned or commenting.
  */
 
 import { success } from '../../_shared/response.ts';

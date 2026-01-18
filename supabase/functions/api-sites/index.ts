@@ -1,6 +1,32 @@
 /**
- * Sites API Edge Function
- * Handles all site CRUD operations
+ * @fileoverview Sites API Edge Function - Customer location management
+ * @module api-sites
+ *
+ * @description
+ * Manages customer sites (locations) including CRUD operations, search, and comments.
+ * Sites are linked to companies and contain Thai administrative location data
+ * (province, district, sub-district codes).
+ *
+ * @endpoints
+ * ## Site Operations
+ * - GET    /global-search              - Search sites (paginated)
+ * - GET    /hint                       - Quick search (up to 5 results)
+ * - GET    /:id                        - Get site by ID
+ * - POST   /                           - Create new site
+ * - POST   /create-or-replace          - Upsert site
+ * - PUT    /:id                        - Update site
+ * - DELETE /:id                        - Delete site
+ *
+ * ## Comments
+ * - GET    /:id/comments               - Get site comments
+ * - POST   /:id/comments               - Add comment
+ * - PUT    /:id/comments/:commentId    - Update comment
+ * - DELETE /:id/comments/:commentId    - Delete comment
+ *
+ * @auth All endpoints require JWT authentication
+ * @table main_sites - Primary site data
+ * @table child_site_comments - Site comments (1:N)
+ * @table child_site_contacts - Site contacts (1:N)
  */
 
 import { handleCORS } from '../_shared/cors.ts';

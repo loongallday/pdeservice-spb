@@ -1,206 +1,371 @@
-# Todo/Reminder API - Frontend Integration Guide
+# Todos API Documentation
 
 ## Overview
 
-ระบบ Todo/Reminder สำหรับสร้างงานพร้อมกำหนดเวลา สามารถมอบหมายให้ตัวเองหรือพนักงานคนอื่นได้ ระบบจะส่ง Notification อัตโนมัติเมื่อถึงกำหนด
+The Todos API provides endpoints for managing todo items and reminders in the Field Service Management system. Todos can be assigned to employees, linked to tickets, and tracked with priorities and deadlines. This API supports creating, reading, updating, deleting, completing, and reopening todos.
 
-## Features
-- สร้าง Todo พร้อมกำหนดเวลา (deadline)
-- มอบหมายให้ตัวเองหรือพนักงานคนอื่น
-- เชื่อมโยงกับตั๋วงาน (optional)
-- ระบบแจ้งเตือนอัตโนมัติเมื่อถึงกำหนด
-- 4 ระดับความสำคัญ: low, normal, high, urgent
+**Key Features:**
+- Create and assign todos to employees
+- Link todos to specific tickets for context
+- Set priorities (low, normal, high, urgent)
+- Track completion status with timestamps
+- Filter and search todos by various criteria
+- Automatic deadline-based notifications
 
 ---
 
-## API Endpoints
+## Base URL
 
-### Base URL
 ```
 /api-todos
 ```
 
 ---
 
-### 1. GET List Todos
+## Authentication
 
-ดึงรายการ Todo (แสดงเฉพาะที่ตัวเองสร้างหรือได้รับมอบหมาย, Admin เห็นทั้งหมด)
+All endpoints require JWT authentication via Bearer token in the Authorization header:
 
-```http
-GET /api-todos?page=1&limit=20
-Authorization: Bearer {token}
+```
+Authorization: Bearer <jwt_token>
 ```
 
-**Query Parameters:**
+---
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `page` | number | หน้าที่ต้องการ (default: 1) |
-| `limit` | number | จำนวนต่อหน้า (default: 20) |
-| `assignee_id` | uuid | กรองตามผู้รับมอบหมาย |
-| `creator_id` | uuid | กรองตามผู้สร้าง |
-| `is_completed` | boolean | กรองตามสถานะ (true/false) |
-| `priority` | string | กรองตามความสำคัญ (low/normal/high/urgent) |
-| `ticket_id` | uuid | กรองตามตั๋วงานที่เชื่อมโยง |
-| `from_date` | ISO date | กำหนดเวลาตั้งแต่ |
-| `to_date` | ISO date | กำหนดเวลาถึง |
+## Authorization Levels
 
-**Response:**
+| Level | Role | Capabilities |
+|-------|------|--------------|
+| 0 | Technician L1 | View own todos (created by or assigned to), complete/reopen own todos |
+| 1 | Assigner, PM, Sales, Technician L2 | Create, update, delete own todos |
+| 2+ | Admin, Superadmin | Full access to all todos |
+
+**Access Rules:**
+- **View**: Level 0-1 users can only view todos they created or are assigned to. Level 2+ can view all todos.
+- **Create**: Requires Level 1 or higher.
+- **Update/Delete**: Level 0-1 users can only modify todos they created. Level 2+ can modify all todos.
+- **Complete/Reopen**: Creator or assignee can complete/reopen. Level 2+ can complete/reopen any todo.
+
+---
+
+## Endpoints
+
+### 1. List Todos
+
+Retrieves a paginated list of todos with optional filters.
+
+**Endpoint:** `GET /api-todos`
+
+**Permission Level:** 0 (Technician L1 or higher)
+
+#### Query Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `page` | integer | No | 1 | Page number (minimum: 1) |
+| `limit` | integer | No | 50 | Items per page (1-100) |
+| `assignee_id` | UUID | No | - | Filter by assignee employee ID |
+| `creator_id` | UUID | No | - | Filter by creator employee ID |
+| `is_completed` | boolean | No | - | Filter by completion status (`true` or `false`) |
+| `priority` | string | No | - | Filter by priority: `low`, `normal`, `high`, `urgent` |
+| `ticket_id` | UUID | No | - | Filter by linked ticket ID |
+| `from_date` | ISO datetime | No | - | Filter todos with deadline >= this date |
+| `to_date` | ISO datetime | No | - | Filter todos with deadline <= this date |
+| `own` | boolean | No | false | If `true`, show only user's own todos (created by or assigned to) |
+| `p` | string | No | - | Search term to filter by title or description |
+
+#### Response
+
 ```json
 {
-  "data": {
-    "data": [
-      {
-        "id": "uuid",
-        "title": "โทรติดตามลูกค้า",
-        "description": "ติดตามงาน PM ที่ค้างอยู่",
-        "deadline": "2026-01-15T09:00:00.000Z",
-        "ticketId": "uuid or null",
-        "isCompleted": false,
-        "completedAt": null,
-        "notifiedAt": null,
-        "priority": "high",
-        "creator": {
-          "id": "uuid",
-          "code": "EMP001",
-          "name": "สมชาย ใจดี",
-          "nickname": "ชาย"
-        },
-        "assignee": {
-          "id": "uuid",
-          "code": "EMP002",
-          "name": "สมหญิง รักงาน",
-          "nickname": "หญิง"
-        },
-        "ticket": {
-          "id": "uuid",
-          "code": "TK-2026-0001"
-        },
-        "createdAt": "2026-01-12T10:00:00.000Z",
-        "updatedAt": "2026-01-12T10:00:00.000Z"
-      }
-    ],
-    "pagination": {
-      "page": 1,
-      "limit": 20,
-      "total": 45,
-      "totalPages": 3
+  "data": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "title": "Follow up with customer",
+      "description": "Call customer to confirm installation date",
+      "deadline": "2026-01-20T09:00:00.000Z",
+      "ticket_id": "660e8400-e29b-41d4-a716-446655440001",
+      "is_completed": false,
+      "completed_at": null,
+      "notified_at": null,
+      "priority": "high",
+      "creator": {
+        "id": "770e8400-e29b-41d4-a716-446655440002",
+        "code": "EMP001",
+        "name": "Somchai Jaidee",
+        "nickname": "Chai"
+      },
+      "assignee": {
+        "id": "880e8400-e29b-41d4-a716-446655440003",
+        "code": "EMP002",
+        "name": "Somying Rakthai",
+        "nickname": "Ying"
+      },
+      "ticket": {
+        "id": "660e8400-e29b-41d4-a716-446655440001",
+        "code": "TKT-2026-001234"
+      },
+      "created_at": "2026-01-15T08:30:00.000Z",
+      "updated_at": "2026-01-15T08:30:00.000Z"
     }
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 50,
+    "total": 25,
+    "totalPages": 1,
+    "hasNext": false,
+    "hasPrevious": false
   }
 }
 ```
 
----
+#### Example Requests
 
-### 2. GET Single Todo
-
-```http
-GET /api-todos/{todoId}
-Authorization: Bearer {token}
+**Get all incomplete todos assigned to a specific employee:**
+```
+GET /api-todos?assignee_id=880e8400-e29b-41d4-a716-446655440003&is_completed=false
 ```
 
-**Response:**
+**Get high priority todos due this week:**
+```
+GET /api-todos?priority=high&from_date=2026-01-13&to_date=2026-01-19
+```
+
+**Search todos by keyword:**
+```
+GET /api-todos?p=customer%20callback
+```
+
+**Get only my own todos:**
+```
+GET /api-todos?own=true
+```
+
+---
+
+### 2. Get Todo by ID
+
+Retrieves a single todo by its ID.
+
+**Endpoint:** `GET /api-todos/:id`
+
+**Permission Level:** 0 (Technician L1 or higher)
+
+#### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | UUID | Yes | The todo ID |
+
+#### Response
+
 ```json
 {
   "data": {
-    "id": "uuid",
-    "title": "โทรติดตามลูกค้า",
-    "description": "ติดตามงาน PM",
-    "deadline": "2026-01-15T09:00:00.000Z",
-    "ticketId": "uuid",
-    "isCompleted": false,
-    "completedAt": null,
-    "notifiedAt": null,
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "title": "Follow up with customer",
+    "description": "Call customer to confirm installation date",
+    "deadline": "2026-01-20T09:00:00.000Z",
+    "ticket_id": "660e8400-e29b-41d4-a716-446655440001",
+    "is_completed": false,
+    "completed_at": null,
+    "notified_at": null,
     "priority": "high",
-    "creator": { ... },
-    "assignee": { ... },
-    "ticket": { ... },
-    "createdAt": "...",
-    "updatedAt": "..."
+    "creator": {
+      "id": "770e8400-e29b-41d4-a716-446655440002",
+      "code": "EMP001",
+      "name": "Somchai Jaidee",
+      "nickname": "Chai"
+    },
+    "assignee": {
+      "id": "880e8400-e29b-41d4-a716-446655440003",
+      "code": "EMP002",
+      "name": "Somying Rakthai",
+      "nickname": "Ying"
+    },
+    "ticket": {
+      "id": "660e8400-e29b-41d4-a716-446655440001",
+      "code": "TKT-2026-001234"
+    },
+    "created_at": "2026-01-15T08:30:00.000Z",
+    "updated_at": "2026-01-15T08:30:00.000Z"
   }
 }
 ```
 
----
+#### Example Request
 
-### 3. POST Create Todo
-
-```http
-POST /api-todos
-Authorization: Bearer {token}
-Content-Type: application/json
+```
+GET /api-todos/550e8400-e29b-41d4-a716-446655440000
 ```
 
-**Request Body:**
+---
+
+### 3. Create Todo
+
+Creates a new todo item.
+
+**Endpoint:** `POST /api-todos`
+
+**Permission Level:** 1 (Assigner, PM, Sales, or higher)
+
+#### Request Body
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `title` | string | Yes | Todo title/subject |
+| `description` | string | No | Detailed description |
+| `deadline` | ISO datetime | Yes | Due date and time |
+| `assignee_id` | UUID | Yes | Employee ID of the assignee |
+| `ticket_id` | UUID | No | Optional linked ticket ID |
+| `priority` | string | No | Priority level: `low`, `normal` (default), `high`, `urgent` |
+
+#### Request Example
+
 ```json
 {
-  "title": "โทรติดตามลูกค้า",
-  "description": "ติดตามงาน PM ที่ค้างอยู่",
-  "deadline": "2026-01-15T09:00:00Z",
-  "assigneeId": "uuid",
-  "ticketId": "uuid (optional)",
+  "title": "Follow up with customer",
+  "description": "Call customer to confirm installation date",
+  "deadline": "2026-01-20T09:00:00.000Z",
+  "assignee_id": "880e8400-e29b-41d4-a716-446655440003",
+  "ticket_id": "660e8400-e29b-41d4-a716-446655440001",
   "priority": "high"
 }
 ```
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `title` | string | ✅ | หัวข้องาน |
-| `description` | string | ❌ | รายละเอียด |
-| `deadline` | ISO datetime | ✅ | กำหนดเวลา |
-| `assigneeId` | uuid | ✅ | ผู้รับมอบหมาย |
-| `ticketId` | uuid | ❌ | ตั๋วงานที่เชื่อมโยง |
-| `priority` | string | ❌ | ความสำคัญ (default: normal) |
+#### Response (HTTP 201 Created)
 
-**Response (201 Created):**
 ```json
 {
   "data": {
-    "id": "uuid",
-    "title": "โทรติดตามลูกค้า",
-    ...
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "title": "Follow up with customer",
+    "description": "Call customer to confirm installation date",
+    "deadline": "2026-01-20T09:00:00.000Z",
+    "ticket_id": "660e8400-e29b-41d4-a716-446655440001",
+    "is_completed": false,
+    "completed_at": null,
+    "notified_at": null,
+    "priority": "high",
+    "creator": {
+      "id": "770e8400-e29b-41d4-a716-446655440002",
+      "code": "EMP001",
+      "name": "Somchai Jaidee",
+      "nickname": "Chai"
+    },
+    "assignee": {
+      "id": "880e8400-e29b-41d4-a716-446655440003",
+      "code": "EMP002",
+      "name": "Somying Rakthai",
+      "nickname": "Ying"
+    },
+    "ticket": {
+      "id": "660e8400-e29b-41d4-a716-446655440001",
+      "code": "TKT-2026-001234"
+    },
+    "created_at": "2026-01-15T08:30:00.000Z",
+    "updated_at": "2026-01-15T08:30:00.000Z"
   }
 }
 ```
 
 ---
 
-### 4. PUT Update Todo
+### 4. Update Todo
 
-```http
-PUT /api-todos/{todoId}
-Authorization: Bearer {token}
-Content-Type: application/json
-```
+Updates an existing todo item.
 
-**Request Body:** (ส่งเฉพาะ field ที่ต้องการแก้ไข)
+**Endpoint:** `PUT /api-todos/:id`
+
+**Permission Level:** 1 (Assigner, PM, Sales, or higher)
+
+**Note:** Level 0-1 users can only update todos they created. Level 2+ can update any todo.
+
+#### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | UUID | Yes | The todo ID |
+
+#### Request Body
+
+All fields are optional. Only include fields you want to update.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `title` | string | Todo title/subject |
+| `description` | string | Detailed description |
+| `deadline` | ISO datetime | Due date and time (resets notification status) |
+| `assignee_id` | UUID | Employee ID of the assignee |
+| `ticket_id` | UUID | Linked ticket ID (set to `null` to remove link) |
+| `priority` | string | Priority level: `low`, `normal`, `high`, `urgent` |
+
+#### Request Example
+
 ```json
 {
-  "title": "โทรติดตามลูกค้า (แก้ไข)",
-  "deadline": "2026-01-16T14:00:00Z",
+  "deadline": "2026-01-22T14:00:00.000Z",
   "priority": "urgent"
 }
 ```
 
-> **Note:** หากแก้ไข deadline จะ reset การแจ้งเตือน (notifiedAt = null) เพื่อให้แจ้งเตือนใหม่ตามเวลาที่กำหนด
+#### Response
 
-**Response:**
 ```json
 {
-  "data": { ... }
+  "data": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "title": "Follow up with customer",
+    "description": "Call customer to confirm installation date",
+    "deadline": "2026-01-22T14:00:00.000Z",
+    "ticket_id": "660e8400-e29b-41d4-a716-446655440001",
+    "is_completed": false,
+    "completed_at": null,
+    "notified_at": null,
+    "priority": "urgent",
+    "creator": {
+      "id": "770e8400-e29b-41d4-a716-446655440002",
+      "code": "EMP001",
+      "name": "Somchai Jaidee",
+      "nickname": "Chai"
+    },
+    "assignee": {
+      "id": "880e8400-e29b-41d4-a716-446655440003",
+      "code": "EMP002",
+      "name": "Somying Rakthai",
+      "nickname": "Ying"
+    },
+    "ticket": {
+      "id": "660e8400-e29b-41d4-a716-446655440001",
+      "code": "TKT-2026-001234"
+    },
+    "created_at": "2026-01-15T08:30:00.000Z",
+    "updated_at": "2026-01-16T10:15:00.000Z"
+  }
 }
 ```
 
 ---
 
-### 5. DELETE Todo
+### 5. Delete Todo
 
-```http
-DELETE /api-todos/{todoId}
-Authorization: Bearer {token}
-```
+Deletes a todo item permanently.
 
-**Response:**
+**Endpoint:** `DELETE /api-todos/:id`
+
+**Permission Level:** 1 (Assigner, PM, Sales, or higher)
+
+**Note:** Level 0-1 users can only delete todos they created. Level 2+ can delete any todo.
+
+#### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | UUID | Yes | The todo ID |
+
+#### Response
+
 ```json
 {
   "data": {
@@ -211,325 +376,361 @@ Authorization: Bearer {token}
 
 ---
 
-### 6. POST Mark as Completed
+### 6. Complete Todo
 
-```http
-POST /api-todos/{todoId}/complete
-Authorization: Bearer {token}
-```
+Marks a todo as completed.
 
-**Response:**
+**Endpoint:** `POST /api-todos/:id/complete` or `PUT /api-todos/:id/complete`
+
+**Permission Level:** 0 (Technician L1 or higher)
+
+**Note:** Only the creator, assignee, or Level 2+ users can complete a todo.
+
+#### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | UUID | Yes | The todo ID |
+
+#### Response
+
 ```json
 {
   "data": {
-    "id": "uuid",
-    "isCompleted": true,
-    "completedAt": "2026-01-12T15:30:00.000Z",
-    ...
-  }
-}
-```
-
----
-
-### 7. POST Reopen Todo
-
-เปิดงานที่เสร็จแล้วอีกครั้ง
-
-```http
-POST /api-todos/{todoId}/reopen
-Authorization: Bearer {token}
-```
-
-**Response:**
-```json
-{
-  "data": {
-    "id": "uuid",
-    "isCompleted": false,
-    "completedAt": null,
-    "notifiedAt": null,
-    ...
-  }
-}
-```
-
----
-
-## Authorization Levels
-
-| Action | Required Level | Notes |
-|--------|---------------|-------|
-| View Todos | Level 0+ | เห็นเฉพาะที่ตัวเองสร้าง/ได้รับมอบหมาย |
-| View All Todos | Level 2+ | Admin เห็นทั้งหมด |
-| Create Todo | Level 1+ | |
-| Update Todo | Level 1+ | เฉพาะผู้สร้าง หรือ Admin |
-| Delete Todo | Level 1+ | เฉพาะผู้สร้าง หรือ Admin |
-| Complete/Reopen | Level 0+ | ผู้สร้าง หรือ ผู้รับมอบหมาย |
-
----
-
-## Deadline Notifications
-
-### How it works
-- ระบบตรวจสอบ deadline ทุก **5 นาที** (pg_cron)
-- เมื่อถึงกำหนด → สร้าง Notification ให้ผู้รับมอบหมาย
-- Notification type: `todo_reminder`
-
-### Notification Format
-```json
-{
-  "type": "todo_reminder",
-  "title": "ถึงกำหนดงาน: โทรติดตามลูกค้า",
-  "message": "งานจาก สมชาย ใจดี ถึงกำหนดแล้ว",
-  "metadata": {
-    "todo_id": "uuid",
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "title": "Follow up with customer",
+    "description": "Call customer to confirm installation date",
+    "deadline": "2026-01-20T09:00:00.000Z",
+    "ticket_id": "660e8400-e29b-41d4-a716-446655440001",
+    "is_completed": true,
+    "completed_at": "2026-01-18T15:30:00.000Z",
+    "notified_at": null,
     "priority": "high",
-    "deadline": "2026-01-15T09:00:00Z"
-  }
-}
-```
-
-### Important Notes
-- แต่ละ Todo จะแจ้งเตือน **1 ครั้ง** เท่านั้น (tracked by `notifiedAt`)
-- หาก reopen Todo → reset `notifiedAt` → แจ้งเตือนใหม่ได้ถ้ายังเลยกำหนด
-- หากแก้ไข deadline → reset `notifiedAt` → รอแจ้งเตือนตามเวลาใหม่
-
----
-
-## Frontend Implementation Guide
-
-### 1. TypeScript Interfaces
-
-```typescript
-type TodoPriority = 'low' | 'normal' | 'high' | 'urgent';
-
-interface TodoEmployee {
-  id: string;
-  code: string;
-  name: string;
-  nickname: string | null;
-}
-
-interface TodoTicket {
-  id: string;
-  code: string;
-}
-
-interface Todo {
-  id: string;
-  title: string;
-  description: string | null;
-  deadline: string;
-  ticketId: string | null;
-  isCompleted: boolean;
-  completedAt: string | null;
-  notifiedAt: string | null;
-  priority: TodoPriority;
-  creator: TodoEmployee;
-  assignee: TodoEmployee;
-  ticket: TodoTicket | null;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface TodoInput {
-  title: string;
-  description?: string;
-  deadline: string;
-  assigneeId: string;
-  ticketId?: string;
-  priority?: TodoPriority;
-}
-
-interface TodoListResponse {
-  data: {
-    data: Todo[];
-    pagination: {
-      page: number;
-      limit: number;
-      total: number;
-      totalPages: number;
-    };
-  };
-}
-```
-
-### 2. Priority Display
-
-```typescript
-const priorityConfig = {
-  low: { label: 'ต่ำ', color: 'gray', icon: '○' },
-  normal: { label: 'ปกติ', color: 'blue', icon: '●' },
-  high: { label: 'สูง', color: 'orange', icon: '●●' },
-  urgent: { label: 'ด่วนมาก', color: 'red', icon: '🔥' },
-};
-```
-
-### 3. Deadline Status Helper
-
-```typescript
-const getDeadlineStatus = (deadline: string, isCompleted: boolean) => {
-  if (isCompleted) return { status: 'completed', color: 'green' };
-
-  const now = new Date();
-  const deadlineDate = new Date(deadline);
-  const diffHours = (deadlineDate.getTime() - now.getTime()) / (1000 * 60 * 60);
-
-  if (diffHours < 0) return { status: 'overdue', color: 'red', label: 'เลยกำหนด' };
-  if (diffHours < 24) return { status: 'due_soon', color: 'orange', label: 'ใกล้ถึงกำหนด' };
-  return { status: 'on_track', color: 'green', label: 'ปกติ' };
-};
-```
-
-### 4. UI Components Needed
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│  📋 รายการงาน                          [+ สร้างงานใหม่]     │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─ Filters ──────────────────────────────────────────────┐ │
-│  │ สถานะ: [ทั้งหมด ▾]  ความสำคัญ: [ทั้งหมด ▾]            │ │
-│  │ ผู้รับมอบหมาย: [ทั้งหมด ▾]  กำหนด: [__ ถึง __]        │ │
-│  └────────────────────────────────────────────────────────┘ │
-│                                                             │
-│  ┌─ Todo Item ────────────────────────────────────────────┐ │
-│  │ ☐ โทรติดตามลูกค้า                        🔥 ด่วนมาก   │ │
-│  │   📅 15 ม.ค. 09:00  👤 สมหญิง  🎫 TK-2026-0001        │ │
-│  │   ⚠️ เลยกำหนด 2 ชม.                      [✓] [✏️] [🗑] │ │
-│  └────────────────────────────────────────────────────────┘ │
-│                                                             │
-│  ┌─ Todo Item ────────────────────────────────────────────┐ │
-│  │ ☑ ส่งใบเสนอราคา                          ● ปกติ       │ │
-│  │   📅 14 ม.ค. 17:00  👤 ตัวเอง                          │ │
-│  │   ✅ เสร็จแล้ว                            [↩️] [🗑]    │ │
-│  └────────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### 5. Create/Edit Form
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│  สร้างงานใหม่                                      [✕]     │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  หัวข้องาน *                                                │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │ โทรติดตามลูกค้า                                      │   │
-│  └─────────────────────────────────────────────────────┘   │
-│                                                             │
-│  รายละเอียด                                                 │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │ ติดตามงาน PM ที่ค้างอยู่                              │   │
-│  └─────────────────────────────────────────────────────┘   │
-│                                                             │
-│  กำหนดเวลา *                     ความสำคัญ                  │
-│  ┌───────────────────────┐      ┌───────────────────┐      │
-│  │ 15/01/2026 09:00     │      │ 🔥 ด่วนมาก    ▾   │      │
-│  └───────────────────────┘      └───────────────────┘      │
-│                                                             │
-│  มอบหมายให้ *                                               │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │ 🔍 ค้นหาพนักงาน...                                   │   │
-│  └─────────────────────────────────────────────────────┘   │
-│                                                             │
-│  เชื่อมโยงตั๋วงาน (optional)                                 │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │ 🔍 ค้นหาตั๋วงาน...                                   │   │
-│  └─────────────────────────────────────────────────────┘   │
-│                                                             │
-│                              [ ยกเลิก ]  [ 💾 บันทึก ]     │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### 6. API Helper Functions
-
-```typescript
-// List todos
-const getTodos = async (params: {
-  page?: number;
-  limit?: number;
-  assigneeId?: string;
-  isCompleted?: boolean;
-  priority?: TodoPriority;
-}): Promise<TodoListResponse> => {
-  const searchParams = new URLSearchParams();
-  if (params.page) searchParams.set('page', String(params.page));
-  if (params.limit) searchParams.set('limit', String(params.limit));
-  if (params.assigneeId) searchParams.set('assignee_id', params.assigneeId);
-  if (params.isCompleted !== undefined) searchParams.set('is_completed', String(params.isCompleted));
-  if (params.priority) searchParams.set('priority', params.priority);
-
-  const res = await fetch(`/api-todos?${searchParams}`, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  return res.json();
-};
-
-// Create todo
-const createTodo = async (input: TodoInput): Promise<{ data: Todo }> => {
-  const res = await fetch('/api-todos', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
+    "creator": {
+      "id": "770e8400-e29b-41d4-a716-446655440002",
+      "code": "EMP001",
+      "name": "Somchai Jaidee",
+      "nickname": "Chai"
     },
-    body: JSON.stringify(input)
-  });
-  return res.json();
-};
-
-// Complete todo
-const completeTodo = async (todoId: string): Promise<{ data: Todo }> => {
-  const res = await fetch(`/api-todos/${todoId}/complete`, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  return res.json();
-};
-
-// Reopen todo
-const reopenTodo = async (todoId: string): Promise<{ data: Todo }> => {
-  const res = await fetch(`/api-todos/${todoId}/reopen`, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  return res.json();
-};
-```
-
-### 7. Handling Notification Click
-
-เมื่อ user คลิก notification ประเภท `todo_reminder`:
-
-```typescript
-const handleNotificationClick = (notification: Notification) => {
-  if (notification.type === 'todo_reminder') {
-    const todoId = notification.metadata?.todo_id;
-    if (todoId) {
-      // Navigate to todo detail or open todo modal
-      router.push(`/todos/${todoId}`);
-      // or
-      openTodoModal(todoId);
-    }
+    "assignee": {
+      "id": "880e8400-e29b-41d4-a716-446655440003",
+      "code": "EMP002",
+      "name": "Somying Rakthai",
+      "nickname": "Ying"
+    },
+    "ticket": {
+      "id": "660e8400-e29b-41d4-a716-446655440001",
+      "code": "TKT-2026-001234"
+    },
+    "created_at": "2026-01-15T08:30:00.000Z",
+    "updated_at": "2026-01-18T15:30:00.000Z"
   }
-};
+}
 ```
 
 ---
 
-## Error Handling
+### 7. Reopen Todo
 
-| Error | Status | Message |
-|-------|--------|---------|
-| Missing title | 400 | `กรุณาระบุหัวข้องาน` |
-| Missing deadline | 400 | `กรุณาระบุกำหนดเวลา` |
-| Invalid date | 400 | `รูปแบบวันที่ไม่ถูกต้อง` |
-| Missing assignee | 400 | `กรุณาระบุผู้รับผิดชอบ` |
-| Invalid priority | 400 | `ความสำคัญไม่ถูกต้อง` |
-| Todo not found | 404 | `ไม่พบงานที่ต้องการ` |
-| No permission to view | 403 | `ไม่มีสิทธิ์ดูงานนี้` |
-| No permission to edit | 403 | `ไม่มีสิทธิ์แก้ไขงานนี้` |
-| Already completed | 400 | `งานนี้เสร็จสิ้นแล้ว` |
-| Not yet completed | 400 | `งานนี้ยังไม่เสร็จสิ้น` |
+Reopens a completed todo, marking it as incomplete.
+
+**Endpoint:** `POST /api-todos/:id/reopen` or `PUT /api-todos/:id/reopen`
+
+**Permission Level:** 0 (Technician L1 or higher)
+
+**Note:** Only the creator, assignee, or Level 2+ users can reopen a todo. Reopening resets the `notified_at` field so the system can send notifications again if the deadline passes.
+
+#### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | UUID | Yes | The todo ID |
+
+#### Response
+
+```json
+{
+  "data": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "title": "Follow up with customer",
+    "description": "Call customer to confirm installation date",
+    "deadline": "2026-01-20T09:00:00.000Z",
+    "ticket_id": "660e8400-e29b-41d4-a716-446655440001",
+    "is_completed": false,
+    "completed_at": null,
+    "notified_at": null,
+    "priority": "high",
+    "creator": {
+      "id": "770e8400-e29b-41d4-a716-446655440002",
+      "code": "EMP001",
+      "name": "Somchai Jaidee",
+      "nickname": "Chai"
+    },
+    "assignee": {
+      "id": "880e8400-e29b-41d4-a716-446655440003",
+      "code": "EMP002",
+      "name": "Somying Rakthai",
+      "nickname": "Ying"
+    },
+    "ticket": {
+      "id": "660e8400-e29b-41d4-a716-446655440001",
+      "code": "TKT-2026-001234"
+    },
+    "created_at": "2026-01-15T08:30:00.000Z",
+    "updated_at": "2026-01-19T09:00:00.000Z"
+  }
+}
+```
+
+---
+
+## Data Types
+
+### Todo Object
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | UUID | Unique identifier |
+| `title` | string | Todo title/subject |
+| `description` | string or null | Detailed description |
+| `deadline` | ISO datetime | Due date and time |
+| `ticket_id` | UUID or null | Linked ticket ID |
+| `is_completed` | boolean | Completion status |
+| `completed_at` | ISO datetime or null | When the todo was completed |
+| `notified_at` | ISO datetime or null | When the notification was sent |
+| `priority` | string | Priority: `low`, `normal`, `high`, `urgent` |
+| `creator` | Employee | Employee who created the todo |
+| `assignee` | Employee | Employee responsible for the todo |
+| `ticket` | Ticket or null | Linked ticket info |
+| `created_at` | ISO datetime | Creation timestamp |
+| `updated_at` | ISO datetime | Last update timestamp |
+
+### Employee (Embedded)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | UUID | Employee ID |
+| `code` | string | Employee code (e.g., "EMP001") |
+| `name` | string | Full name |
+| `nickname` | string or null | Nickname |
+
+### Ticket (Embedded)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | UUID | Ticket ID |
+| `code` | string | Ticket code (e.g., "TKT-2026-001234") |
+
+### Priority Values
+
+| Value | Description (Thai) |
+|-------|-------------------|
+| `low` | Low priority |
+| `normal` | Normal priority (default) |
+| `high` | High priority |
+| `urgent` | Urgent priority |
+
+---
+
+## Error Responses
+
+### Authentication Errors (HTTP 401)
+
+```json
+{
+  "error": "ไม่พบข้อมูลการยืนยันตัวตน"
+}
+```
+
+```json
+{
+  "error": "Session หมดอายุกรุณาเข้าใช้งานใหม่"
+}
+```
+
+### Authorization Errors (HTTP 403)
+
+```json
+{
+  "error": "ไม่มีสิทธิ์ดูงานนี้"
+}
+```
+
+```json
+{
+  "error": "ไม่มีสิทธิ์แก้ไขงานนี้"
+}
+```
+
+```json
+{
+  "error": "ไม่มีสิทธิ์ลบงานนี้"
+}
+```
+
+```json
+{
+  "error": "ไม่มีสิทธิ์ทำเครื่องหมายงานนี้"
+}
+```
+
+```json
+{
+  "error": "ไม่มีสิทธิ์เปิดงานนี้อีกครั้ง"
+}
+```
+
+```json
+{
+  "error": "ต้องมีสิทธิ์ระดับ 1 ขึ้นไป"
+}
+```
+
+### Not Found Errors (HTTP 404)
+
+```json
+{
+  "error": "ไม่พบงานที่ต้องการ"
+}
+```
+
+### Validation Errors (HTTP 400)
+
+```json
+{
+  "error": "กรุณาระบุหัวข้องาน"
+}
+```
+
+```json
+{
+  "error": "กรุณาระบุกำหนดเวลา"
+}
+```
+
+```json
+{
+  "error": "รูปแบบวันที่ไม่ถูกต้อง"
+}
+```
+
+```json
+{
+  "error": "กรุณาระบุผู้รับผิดชอบ"
+}
+```
+
+```json
+{
+  "error": "ความสำคัญไม่ถูกต้อง"
+}
+```
+
+```json
+{
+  "error": "Todo ID ไม่ถูกต้อง"
+}
+```
+
+```json
+{
+  "error": "งานนี้เสร็จสิ้นแล้ว"
+}
+```
+
+```json
+{
+  "error": "งานนี้ยังไม่เสร็จสิ้น"
+}
+```
+
+### Database Errors (HTTP 500)
+
+```json
+{
+  "error": "ไม่สามารถดึงรายการงานได้: <details>"
+}
+```
+
+```json
+{
+  "error": "ไม่สามารถสร้างงานได้: <details>"
+}
+```
+
+```json
+{
+  "error": "ไม่สามารถแก้ไขงานได้: <details>"
+}
+```
+
+```json
+{
+  "error": "ไม่สามารถลบงานได้: <details>"
+}
+```
+
+---
+
+## Usage Examples
+
+### Create a Todo for Ticket Follow-up
+
+```bash
+curl -X POST "https://your-project.supabase.co/functions/v1/api-todos" \
+  -H "Authorization: Bearer <jwt_token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Call customer for feedback",
+    "description": "Follow up on installation satisfaction",
+    "deadline": "2026-01-20T10:00:00.000Z",
+    "assignee_id": "880e8400-e29b-41d4-a716-446655440003",
+    "ticket_id": "660e8400-e29b-41d4-a716-446655440001",
+    "priority": "normal"
+  }'
+```
+
+### Get My Incomplete Todos
+
+```bash
+curl -X GET "https://your-project.supabase.co/functions/v1/api-todos?own=true&is_completed=false" \
+  -H "Authorization: Bearer <jwt_token>"
+```
+
+### Complete a Todo
+
+```bash
+curl -X POST "https://your-project.supabase.co/functions/v1/api-todos/550e8400-e29b-41d4-a716-446655440000/complete" \
+  -H "Authorization: Bearer <jwt_token>"
+```
+
+### Update Todo Priority
+
+```bash
+curl -X PUT "https://your-project.supabase.co/functions/v1/api-todos/550e8400-e29b-41d4-a716-446655440000" \
+  -H "Authorization: Bearer <jwt_token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "priority": "urgent"
+  }'
+```
+
+---
+
+## Notes for Frontend Developers
+
+1. **Sorting**: The list endpoint returns todos sorted by deadline in ascending order (earliest first).
+
+2. **Deadline Updates**: When updating the deadline, the `notified_at` field is automatically reset to `null`, allowing the notification system to send reminders again.
+
+3. **Reopening Todos**: When a completed todo is reopened, both `completed_at` and `notified_at` are reset to `null`.
+
+4. **Permission Checks**: The API performs permission checks on the server side. Frontend should handle 403 errors gracefully with appropriate user messaging.
+
+5. **Pagination Defaults**: If not specified, `page` defaults to 1 and `limit` defaults to 50. Maximum limit is 100.
+
+6. **Date Format**: All dates should be sent and received in ISO 8601 format (e.g., `2026-01-20T09:00:00.000Z`).
+
+7. **Own Filter**: Use `own=true` to get only the current user's todos regardless of their permission level. This is useful for personal todo dashboards.
+
+8. **Search**: The `p` parameter searches in both `title` and `description` fields using case-insensitive matching.

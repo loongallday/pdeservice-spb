@@ -1,0 +1,226 @@
+{
+  "scriptId": "451",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/jszip/3.10.1/lib/stream/GenericWorker.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 8436,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 8435,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 8429,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "GenericWorker",
+      "ranges": [
+        {
+          "startOffset": 919,
+          "endOffset": 1835,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "push",
+      "ranges": [
+        {
+          "startOffset": 1980,
+          "endOffset": 2038,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "end",
+      "ranges": [
+        {
+          "startOffset": 2167,
+          "endOffset": 2472,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "error",
+      "ranges": [
+        {
+          "startOffset": 2697,
+          "endOffset": 3294,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "on",
+      "ranges": [
+        {
+          "startOffset": 3575,
+          "endOffset": 3675,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "cleanUp",
+      "ranges": [
+        {
+          "startOffset": 3760,
+          "endOffset": 3886,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "emit",
+      "ranges": [
+        {
+          "startOffset": 4134,
+          "endOffset": 4349,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "pipe",
+      "ranges": [
+        {
+          "startOffset": 4550,
+          "endOffset": 4617,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "registerPrevious",
+      "ranges": [
+        {
+          "startOffset": 5025,
+          "endOffset": 5666,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "pause",
+      "ranges": [
+        {
+          "startOffset": 5834,
+          "endOffset": 6061,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "resume",
+      "ranges": [
+        {
+          "startOffset": 6203,
+          "endOffset": 6648,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "flush",
+      "ranges": [
+        {
+          "startOffset": 6736,
+          "endOffset": 6750,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "processChunk",
+      "ranges": [
+        {
+          "startOffset": 6901,
+          "endOffset": 6950,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "withStreamInfo",
+      "ranges": [
+        {
+          "startOffset": 7224,
+          "endOffset": 7349,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "mergeStreamInfo",
+      "ranges": [
+        {
+          "startOffset": 7456,
+          "endOffset": 7718,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "lock",
+      "ranges": [
+        {
+          "startOffset": 7882,
+          "endOffset": 8124,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toString",
+      "ranges": [
+        {
+          "startOffset": 8204,
+          "endOffset": 8390,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

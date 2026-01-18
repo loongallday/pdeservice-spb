@@ -1,0 +1,83 @@
+{
+  "scriptId": "809",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/duplexer2/0.1.4/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1906,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 1905,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 1899,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "DuplexWrapper",
+      "ranges": [
+        {
+          "startOffset": 278,
+          "endOffset": 1270,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_write",
+      "ranges": [
+        {
+          "startOffset": 1411,
+          "endOffset": 1500,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_read",
+      "ranges": [
+        {
+          "startOffset": 1535,
+          "endOffset": 1722,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "duplex2",
+      "ranges": [
+        {
+          "startOffset": 1742,
+          "endOffset": 1848,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "scriptId": "335",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/_shared/auth.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3818,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "authenticate",
+      "ranges": [
+        {
+          "startOffset": 351,
+          "endOffset": 1556,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "requireMinLevel",
+      "ranges": [
+        {
+          "startOffset": 1863,
+          "endOffset": 2069,
+          "count": 14
+        },
+        {
+          "startOffset": 1950,
+          "endOffset": 1957,
+          "count": 12
+        },
+        {
+          "startOffset": 1958,
+          "endOffset": 1962,
+          "count": 4
+        },
+        {
+          "startOffset": 1988,
+          "endOffset": 2067,
+          "count": 5
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "requireLevelGreaterThanZero",
+      "ranges": [
+        {
+          "startOffset": 2211,
+          "endOffset": 2395,
+          "count": 6
+        },
+        {
+          "startOffset": 2300,
+          "endOffset": 2307,
+          "count": 5
+        },
+        {
+          "startOffset": 2308,
+          "endOffset": 2312,
+          "count": 2
+        },
+        {
+          "startOffset": 2332,
+          "endOffset": 2393,
+          "count": 3
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getEmployeeLevel",
+      "ranges": [
+        {
+          "startOffset": 2438,
+          "endOffset": 2518,
+          "count": 6
+        },
+        {
+          "startOffset": 2503,
+          "endOffset": 2510,
+          "count": 5
+        },
+        {
+          "startOffset": 2511,
+          "endOffset": 2515,
+          "count": 2
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "isAdmin",
+      "ranges": [
+        {
+          "startOffset": 2587,
+          "endOffset": 2686,
+          "count": 6
+        },
+        {
+          "startOffset": 2650,
+          "endOffset": 2657,
+          "count": 5
+        },
+        {
+          "startOffset": 2658,
+          "endOffset": 2662,
+          "count": 2
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "isSuperAdmin",
+      "ranges": [
+        {
+          "startOffset": 2750,
+          "endOffset": 2854,
+          "count": 6
+        },
+        {
+          "startOffset": 2818,
+          "endOffset": 2825,
+          "count": 5
+        },
+        {
+          "startOffset": 2826,
+          "endOffset": 2830,
+          "count": 2
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "requireCanApproveAppointments",
+      "ranges": [
+        {
+          "startOffset": 3096,
+          "endOffset": 3416,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "canApproveAppointments",
+      "ranges": [
+        {
+          "startOffset": 3556,
+          "endOffset": 3817,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

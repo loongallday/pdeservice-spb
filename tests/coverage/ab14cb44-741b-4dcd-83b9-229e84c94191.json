@@ -1,0 +1,125 @@
+{
+  "scriptId": "337",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-reports/handlers/workTypeExcel.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3334,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getWorkTypeExcel",
+      "ranges": [
+        {
+          "startOffset": 562,
+          "endOffset": 3050,
+          "count": 3
+        },
+        {
+          "startOffset": 852,
+          "endOffset": 881,
+          "count": 0
+        },
+        {
+          "startOffset": 935,
+          "endOffset": 1011,
+          "count": 1
+        },
+        {
+          "startOffset": 1011,
+          "endOffset": 1028,
+          "count": 2
+        },
+        {
+          "startOffset": 1028,
+          "endOffset": 1218,
+          "count": 1
+        },
+        {
+          "startOffset": 1218,
+          "endOffset": 1308,
+          "count": 0
+        },
+        {
+          "startOffset": 1308,
+          "endOffset": 1341,
+          "count": 1
+        },
+        {
+          "startOffset": 1341,
+          "endOffset": 1430,
+          "count": 0
+        },
+        {
+          "startOffset": 1430,
+          "endOffset": 1582,
+          "count": 1
+        },
+        {
+          "startOffset": 1582,
+          "endOffset": 1646,
+          "count": 0
+        },
+        {
+          "startOffset": 1646,
+          "endOffset": 1682,
+          "count": 1
+        },
+        {
+          "startOffset": 1682,
+          "endOffset": 1745,
+          "count": 0
+        },
+        {
+          "startOffset": 1745,
+          "endOffset": 1816,
+          "count": 1
+        },
+        {
+          "startOffset": 1816,
+          "endOffset": 1897,
+          "count": 0
+        },
+        {
+          "startOffset": 1897,
+          "endOffset": 2138,
+          "count": 1
+        },
+        {
+          "startOffset": 2138,
+          "endOffset": 3049,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getPmExcel",
+      "ranges": [
+        {
+          "startOffset": 3095,
+          "endOffset": 3187,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getSalesExcel",
+      "ranges": [
+        {
+          "startOffset": 3235,
+          "endOffset": 3333,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

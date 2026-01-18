@@ -1,0 +1,116 @@
+{
+  "scriptId": "795",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bluebird/3.4.7/js/release/settle.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1493,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 1492,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 1486,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 256,
+          "endOffset": 1482,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "SettledPromiseArray",
+      "ranges": [
+        {
+          "startOffset": 379,
+          "endOffset": 450,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SettledPromiseArray._promiseResolved",
+      "ranges": [
+        {
+          "startOffset": 551,
+          "endOffset": 791,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SettledPromiseArray._promiseFulfilled",
+      "ranges": [
+        {
+          "startOffset": 844,
+          "endOffset": 1022,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SettledPromiseArray._promiseRejected",
+      "ranges": [
+        {
+          "startOffset": 1073,
+          "endOffset": 1253,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.settle",
+      "ranges": [
+        {
+          "startOffset": 1273,
+          "endOffset": 1401,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.settle",
+      "ranges": [
+        {
+          "startOffset": 1431,
+          "endOffset": 1479,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,0 +1,435 @@
+{
+  "scriptId": "726",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/compress-commons/4.1.2/lib/archivers/zip/zip-archive-entry.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 8756,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 8755,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 8749,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 773,
+          "endOffset": 1287,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.getCentralDirectoryExtra",
+      "ranges": [
+        {
+          "startOffset": 1467,
+          "endOffset": 1507,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.getComment",
+      "ranges": [
+        {
+          "startOffset": 1623,
+          "endOffset": 1689,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.getCompressedSize",
+      "ranges": [
+        {
+          "startOffset": 1815,
+          "endOffset": 1850,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.getCrc",
+      "ranges": [
+        {
+          "startOffset": 1963,
+          "endOffset": 1996,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.getExternalAttributes",
+      "ranges": [
+        {
+          "startOffset": 2136,
+          "endOffset": 2172,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.getExtra",
+      "ranges": [
+        {
+          "startOffset": 2294,
+          "endOffset": 2369,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.getGeneralPurposeBit",
+      "ranges": [
+        {
+          "startOffset": 2522,
+          "endOffset": 2555,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.getInternalAttributes",
+      "ranges": [
+        {
+          "startOffset": 2695,
+          "endOffset": 2731,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.getLastModifiedDate",
+      "ranges": [
+        {
+          "startOffset": 2862,
+          "endOffset": 2901,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.getLocalFileDataExtra",
+      "ranges": [
+        {
+          "startOffset": 3036,
+          "endOffset": 3076,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.getMethod",
+      "ranges": [
+        {
+          "startOffset": 3202,
+          "endOffset": 3238,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.getName",
+      "ranges": [
+        {
+          "startOffset": 3347,
+          "endOffset": 3381,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.getPlatform",
+      "ranges": [
+        {
+          "startOffset": 3509,
+          "endOffset": 3547,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.getSize",
+      "ranges": [
+        {
+          "startOffset": 3652,
+          "endOffset": 3686,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.getTime",
+      "ranges": [
+        {
+          "startOffset": 3837,
+          "endOffset": 3914,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.getTimeDos",
+      "ranges": [
+        {
+          "startOffset": 4032,
+          "endOffset": 4089,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.getUnixMode",
+      "ranges": [
+        {
+          "startOffset": 4216,
+          "endOffset": 4369,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.getVersionNeededToExtract",
+      "ranges": [
+        {
+          "startOffset": 4517,
+          "endOffset": 4553,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.setComment",
+      "ranges": [
+        {
+          "startOffset": 4658,
+          "endOffset": 4820,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.setCompressedSize",
+      "ranges": [
+        {
+          "startOffset": 4937,
+          "endOffset": 5053,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.setCrc",
+      "ranges": [
+        {
+          "startOffset": 5151,
+          "endOffset": 5252,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.setExternalAttributes",
+      "ranges": [
+        {
+          "startOffset": 5382,
+          "endOffset": 5428,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.setExtra",
+      "ranges": [
+        {
+          "startOffset": 5542,
+          "endOffset": 5583,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.setGeneralPurposeBit",
+      "ranges": [
+        {
+          "startOffset": 5715,
+          "endOffset": 5856,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.setInternalAttributes",
+      "ranges": [
+        {
+          "startOffset": 5986,
+          "endOffset": 6026,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.setMethod",
+      "ranges": [
+        {
+          "startOffset": 6140,
+          "endOffset": 6266,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.setName",
+      "ranges": [
+        {
+          "startOffset": 6385,
+          "endOffset": 6702,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.setPlatform",
+      "ranges": [
+        {
+          "startOffset": 6825,
+          "endOffset": 6875,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.setSize",
+      "ranges": [
+        {
+          "startOffset": 6971,
+          "endOffset": 7075,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.setTime",
+      "ranges": [
+        {
+          "startOffset": 7196,
+          "endOffset": 7366,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.setUnixMode",
+      "ranges": [
+        {
+          "startOffset": 7484,
+          "endOffset": 7826,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.setVersionNeededToExtract",
+      "ranges": [
+        {
+          "startOffset": 7968,
+          "endOffset": 8012,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.isDirectory",
+      "ranges": [
+        {
+          "startOffset": 8142,
+          "endOffset": 8199,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.isUnixSymlink",
+      "ranges": [
+        {
+          "startOffset": 8416,
+          "endOffset": 8510,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveEntry.isZip64",
+      "ranges": [
+        {
+          "startOffset": 8649,
+          "endOffset": 8745,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

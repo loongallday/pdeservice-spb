@@ -1,0 +1,127 @@
+{
+  "scriptId": "503",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/readable-stream/3.6.2/lib/internal/streams/pipeline.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2646,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2645,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2639,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "once",
+      "ranges": [
+        {
+          "startOffset": 358,
+          "endOffset": 517,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "noop",
+      "ranges": [
+        {
+          "startOffset": 689,
+          "endOffset": 792,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isRequest",
+      "ranges": [
+        {
+          "startOffset": 793,
+          "endOffset": 888,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "destroyer",
+      "ranges": [
+        {
+          "startOffset": 889,
+          "endOffset": 1643,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "call",
+      "ranges": [
+        {
+          "startOffset": 1644,
+          "endOffset": 1673,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "pipe",
+      "ranges": [
+        {
+          "startOffset": 1674,
+          "endOffset": 1725,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "popCallback",
+      "ranges": [
+        {
+          "startOffset": 1726,
+          "endOffset": 1889,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "pipeline",
+      "ranges": [
+        {
+          "startOffset": 1890,
+          "endOffset": 2610,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

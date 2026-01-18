@@ -1,5 +1,38 @@
 /**
- * Ticket CRUD service - Business logic for creating, updating, and deleting tickets
+ * @fileoverview Ticket CRUD service - Core ticket lifecycle operations
+ * @module api-tickets/services/ticketCrudService
+ *
+ * Handles the complete lifecycle of tickets including:
+ * - create(): Comprehensive ticket creation with all related data
+ * - update(): Ticket updates with partial data support
+ * - deleteTicket(): Ticket deletion with cleanup options
+ * - removeTicketEmployee(): Remove specific employee assignment
+ *
+ * @description
+ * Each operation manages multiple related entities in a consistent manner:
+ *
+ * Create Flow:
+ * 1. Handle Company (find or create)
+ * 2. Handle Site (find or create)
+ * 3. Handle Contact (find or create)
+ * 4. Create Ticket with AI summary generation (if requested)
+ * 5. Create Appointment
+ * 6. Link Employees (technicians)
+ * 7. Link Merchandise (UPS equipment)
+ * 8. Link Work Giver
+ * 9. Log audit entry
+ * 10. Add auto-watchers
+ * 11. Notify approvers
+ *
+ * Update Flow:
+ * - Supports partial updates (only provided fields are modified)
+ * - Handles auto-unapproval when appointment changed by non-approver
+ * - Full audit logging with old/new values
+ *
+ * Delete Flow:
+ * - Cascade deletes related data (employees, merchandise)
+ * - Optional deletion of appointment and contact
+ * - Full audit logging before deletion
  */
 
 import { createServiceClient } from '../../_shared/supabase.ts';

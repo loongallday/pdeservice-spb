@@ -1,0 +1,226 @@
+{
+  "scriptId": "422",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/doc/defined-names.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 5234,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 5233,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 5227,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "DefinedNames",
+      "ranges": [
+        {
+          "startOffset": 497,
+          "endOffset": 541,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getMatrix",
+      "ranges": [
+        {
+          "startOffset": 545,
+          "endOffset": 671,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "add",
+      "ranges": [
+        {
+          "startOffset": 768,
+          "endOffset": 871,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addEx",
+      "ranges": [
+        {
+          "startOffset": 875,
+          "endOffset": 1378,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "remove",
+      "ranges": [
+        {
+          "startOffset": 1382,
+          "endOffset": 1491,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "removeEx",
+      "ranges": [
+        {
+          "startOffset": 1495,
+          "endOffset": 1601,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "removeAllNames",
+      "ranges": [
+        {
+          "startOffset": 1605,
+          "endOffset": 1719,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "forEach",
+      "ranges": [
+        {
+          "startOffset": 1723,
+          "endOffset": 1872,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getNames",
+      "ranges": [
+        {
+          "startOffset": 1909,
+          "endOffset": 1994,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getNamesEx",
+      "ranges": [
+        {
+          "startOffset": 1998,
+          "endOffset": 2139,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_explore",
+      "ranges": [
+        {
+          "startOffset": 2143,
+          "endOffset": 3282,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getRanges",
+      "ranges": [
+        {
+          "startOffset": 3286,
+          "endOffset": 3701,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "normaliseMatrix",
+      "ranges": [
+        {
+          "startOffset": 3705,
+          "endOffset": 4100,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "spliceRows",
+      "ranges": [
+        {
+          "startOffset": 4104,
+          "endOffset": 4319,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "spliceColumns",
+      "ranges": [
+        {
+          "startOffset": 4323,
+          "endOffset": 4544,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get model",
+      "ranges": [
+        {
+          "startOffset": 4548,
+          "endOffset": 4795,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set model",
+      "ranges": [
+        {
+          "startOffset": 4799,
+          "endOffset": 5190,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

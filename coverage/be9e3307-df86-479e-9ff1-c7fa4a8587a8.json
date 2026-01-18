@@ -1,0 +1,270 @@
+{
+  "scriptId": "513",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/xlsx/xform/style/styles-xform.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 15564,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 15563,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 15557,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "StylesXform",
+      "ranges": [
+        {
+          "startOffset": 1084,
+          "endOffset": 2429,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "initIndex",
+      "ranges": [
+        {
+          "startOffset": 2433,
+          "endOffset": 2618,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "init",
+      "ranges": [
+        {
+          "startOffset": 2622,
+          "endOffset": 3172,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "render",
+      "ranges": [
+        {
+          "startOffset": 3176,
+          "endOffset": 5519,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseOpen",
+      "ranges": [
+        {
+          "startOffset": 5523,
+          "endOffset": 5885,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseText",
+      "ranges": [
+        {
+          "startOffset": 5889,
+          "endOffset": 5974,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseClose",
+      "ranges": [
+        {
+          "startOffset": 5978,
+          "endOffset": 7037,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addStyleModel",
+      "ranges": [
+        {
+          "startOffset": 7231,
+          "endOffset": 8695,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getStyleModel",
+      "ranges": [
+        {
+          "startOffset": 8801,
+          "endOffset": 10092,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addDxfStyle",
+      "ranges": [
+        {
+          "startOffset": 10096,
+          "endOffset": 10344,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getDxfStyle",
+      "ranges": [
+        {
+          "startOffset": 10348,
+          "endOffset": 10401,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_addStyle",
+      "ranges": [
+        {
+          "startOffset": 10507,
+          "endOffset": 10767,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_addNumFmtStr",
+      "ranges": [
+        {
+          "startOffset": 10870,
+          "endOffset": 11348,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_addFont",
+      "ranges": [
+        {
+          "startOffset": 11442,
+          "endOffset": 11694,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_addBorder",
+      "ranges": [
+        {
+          "startOffset": 11790,
+          "endOffset": 12058,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_addFill",
+      "ranges": [
+        {
+          "startOffset": 12152,
+          "endOffset": 12404,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "StylesXformMock",
+      "ranges": [
+        {
+          "startOffset": 14070,
+          "endOffset": 14450,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseStream",
+      "ranges": [
+        {
+          "startOffset": 14616,
+          "endOffset": 14695,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addStyleModel",
+      "ranges": [
+        {
+          "startOffset": 14889,
+          "endOffset": 15054,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get dateStyleId",
+      "ranges": [
+        {
+          "startOffset": 15058,
+          "endOffset": 15334,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getStyleModel",
+      "ranges": [
+        {
+          "startOffset": 15440,
+          "endOffset": 15484,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

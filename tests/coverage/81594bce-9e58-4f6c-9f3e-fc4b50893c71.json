@@ -1,0 +1,270 @@
+{
+  "scriptId": "796",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bluebird/3.4.7/js/release/some.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 4189,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 4188,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 4182,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 252,
+          "endOffset": 4178,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "SomePromiseArray",
+      "ranges": [
+        {
+          "startOffset": 489,
+          "endOffset": 637,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SomePromiseArray._init",
+      "ranges": [
+        {
+          "startOffset": 721,
+          "endOffset": 1125,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SomePromiseArray.init",
+      "ranges": [
+        {
+          "startOffset": 1162,
+          "endOffset": 1225,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SomePromiseArray.setUnwrap",
+      "ranges": [
+        {
+          "startOffset": 1267,
+          "endOffset": 1307,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SomePromiseArray.howMany",
+      "ranges": [
+        {
+          "startOffset": 1347,
+          "endOffset": 1388,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SomePromiseArray.setHowMany",
+      "ranges": [
+        {
+          "startOffset": 1431,
+          "endOffset": 1478,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SomePromiseArray._promiseFulfilled",
+      "ranges": [
+        {
+          "startOffset": 1528,
+          "endOffset": 1883,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SomePromiseArray._promiseRejected",
+      "ranges": [
+        {
+          "startOffset": 1931,
+          "endOffset": 2016,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SomePromiseArray._promiseCancelled",
+      "ranges": [
+        {
+          "startOffset": 2066,
+          "endOffset": 2255,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SomePromiseArray._checkOutcome",
+      "ranges": [
+        {
+          "startOffset": 2301,
+          "endOffset": 2750,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SomePromiseArray._fulfilled",
+      "ranges": [
+        {
+          "startOffset": 2793,
+          "endOffset": 2840,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SomePromiseArray._rejected",
+      "ranges": [
+        {
+          "startOffset": 2882,
+          "endOffset": 2945,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SomePromiseArray._addRejected",
+      "ranges": [
+        {
+          "startOffset": 2990,
+          "endOffset": 3042,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SomePromiseArray._addFulfilled",
+      "ranges": [
+        {
+          "startOffset": 3088,
+          "endOffset": 3157,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SomePromiseArray._canPossiblyFulfill",
+      "ranges": [
+        {
+          "startOffset": 3209,
+          "endOffset": 3269,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SomePromiseArray._getRangeError",
+      "ranges": [
+        {
+          "startOffset": 3316,
+          "endOffset": 3505,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "SomePromiseArray._resolveEmptyArray",
+      "ranges": [
+        {
+          "startOffset": 3556,
+          "endOffset": 3613,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "some",
+      "ranges": [
+        {
+          "startOffset": 3616,
+          "endOffset": 3961,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.some",
+      "ranges": [
+        {
+          "startOffset": 3978,
+          "endOffset": 4046,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.some",
+      "ranges": [
+        {
+          "startOffset": 4074,
+          "endOffset": 4128,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

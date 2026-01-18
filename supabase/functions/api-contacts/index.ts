@@ -1,6 +1,24 @@
 /**
- * Contacts API Edge Function
- * Handles all contact CRUD operations
+ * @fileoverview Contacts API Edge Function - Customer contact management
+ * @module api-contacts
+ *
+ * @description
+ * Manages customer contacts linked to sites. Contacts store person information
+ * including name, phone numbers, emails, and LINE ID.
+ *
+ * @endpoints
+ * ## Contact Operations
+ * - GET    /                           - List contacts (paginated)
+ * - GET    /list                       - List contacts (explicit path)
+ * - GET    /search                     - Search contacts
+ * - GET    /site/:siteId               - Get contacts by site
+ * - GET    /:id                        - Get contact by ID
+ * - POST   /                           - Create new contact
+ * - PUT    /:id                        - Update contact
+ * - DELETE /:id                        - Delete contact
+ *
+ * @auth All endpoints require JWT authentication
+ * @table child_site_contacts - Contact data (linked to main_sites)
  */
 
 import { handleCORS } from '../_shared/cors.ts';

@@ -1,7 +1,37 @@
 /**
- * Network search employees handler
- * Network user search API for employee management
- * Supports text search and network-relevant filters with pagination
+ * @fileoverview Network search employees handler
+ * @endpoint GET /api-employees/network-search
+ * @auth Required - Level 0+ (all authenticated users)
+ *
+ * @queryParam {number} [page=1] - Page number (1-based)
+ * @queryParam {number} [limit=50] - Items per page
+ * @queryParam {string} [q] - Text search (searches name and email only)
+ * @queryParam {string} [department_id] - Filter by department UUID(s) - supports multiple via % or , separator
+ * @queryParam {string} [role] - Filter by role code
+ * @queryParam {string} [role_id] - Filter by role UUID
+ * @queryParam {boolean} [is_active] - Filter by active status ("true"/"false")
+ *
+ * @returns {PaginatedResponse<EmployeeSearchResult[]>} Paginated list of employees
+ * @throws {AuthenticationError} 401 - If not authenticated
+ * @throws {ValidationError} 400 - If UUIDs are invalid
+ *
+ * @description
+ * Network search endpoint optimized for user management UI (e.g., employee pickers).
+ * Simpler than master search - focuses on name/email and network-relevant filters.
+ *
+ * Key differences from master search (/api-employees):
+ * - Lower permission level (Level 0 vs Level 1)
+ * - Text search only on name and email (not code/nickname)
+ * - Supports multiple department_id values (array filter)
+ * - Includes auth_user_id in response
+ *
+ * Department ID array formats:
+ * - Percent-separated (new): ?department_id=uuid1%uuid2
+ * - Comma-separated (legacy): ?department_id=uuid1,uuid2
+ *
+ * @example
+ * GET /api-employees/network-search?q=john&is_active=true
+ * GET /api-employees/network-search?department_id=uuid1%uuid2
  */
 
 import { successWithPagination } from '../../_shared/response.ts';
@@ -45,10 +75,10 @@ export async function networkSearch(req: Request, employee: Employee) {
   
   const role = url.searchParams.get('role') || undefined;
   const role_id = url.searchParams.get('role_id') || undefined;
-  const is_active = url.searchParams.get('is_active') === 'true' ? true : 
+  const is_active = url.searchParams.get('is_active') === 'true' ? true :
                     url.searchParams.get('is_active') === 'false' ? false : undefined;
 
-  // Validate role_id if provided
+  // Validate department IDs and role_id if provided
   if (role_id) {
     validateUUID(role_id, 'Role ID');
   }

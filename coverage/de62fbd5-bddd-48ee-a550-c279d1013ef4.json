@@ -1,0 +1,83 @@
+{
+  "scriptId": "376",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-reports/services/ticketAggregationService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 6636,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getTicketsByDate",
+      "ranges": [
+        {
+          "startOffset": 339,
+          "endOffset": 1420,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getStatusAggregation",
+      "ranges": [
+        {
+          "startOffset": 1490,
+          "endOffset": 2394,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getWorkTypeAggregation",
+      "ranges": [
+        {
+          "startOffset": 2467,
+          "endOffset": 3412,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getWeekTrend",
+      "ranges": [
+        {
+          "startOffset": 3505,
+          "endOffset": 4733,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getTicketsCreatedOnDate",
+      "ranges": [
+        {
+          "startOffset": 4799,
+          "endOffset": 5371,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getTicketsCompletedOnDate",
+      "ranges": [
+        {
+          "startOffset": 5513,
+          "endOffset": 6633,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

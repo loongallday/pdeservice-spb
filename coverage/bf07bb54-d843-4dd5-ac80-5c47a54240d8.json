@@ -1,0 +1,237 @@
+{
+  "scriptId": "511",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/exceljs/4.4.0/lib/utils/xml-stream.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3726,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 3725,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 3719,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "pushAttribute",
+      "ranges": [
+        {
+          "startOffset": 418,
+          "endOffset": 525,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "pushAttributes",
+      "ranges": [
+        {
+          "startOffset": 526,
+          "endOffset": 774,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "XmlStream",
+      "ranges": [
+        {
+          "startOffset": 796,
+          "endOffset": 883,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get tos",
+      "ranges": [
+        {
+          "startOffset": 887,
+          "endOffset": 983,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get cursor",
+      "ranges": [
+        {
+          "startOffset": 987,
+          "endOffset": 1092,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "openXml",
+      "ranges": [
+        {
+          "startOffset": 1096,
+          "endOffset": 1299,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "openNode",
+      "ranges": [
+        {
+          "startOffset": 1303,
+          "endOffset": 1642,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addAttribute",
+      "ranges": [
+        {
+          "startOffset": 1646,
+          "endOffset": 1863,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addAttributes",
+      "ranges": [
+        {
+          "startOffset": 1867,
+          "endOffset": 2035,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "writeText",
+      "ranges": [
+        {
+          "startOffset": 2039,
+          "endOffset": 2239,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "writeXml",
+      "ranges": [
+        {
+          "startOffset": 2243,
+          "endOffset": 2397,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "closeNode",
+      "ranges": [
+        {
+          "startOffset": 2401,
+          "endOffset": 2687,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "leafNode",
+      "ranges": [
+        {
+          "startOffset": 2691,
+          "endOffset": 2886,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "closeAll",
+      "ranges": [
+        {
+          "startOffset": 2890,
+          "endOffset": 2969,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addRollback",
+      "ranges": [
+        {
+          "startOffset": 2973,
+          "endOffset": 3159,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "commit",
+      "ranges": [
+        {
+          "startOffset": 3163,
+          "endOffset": 3204,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "rollback",
+      "ranges": [
+        {
+          "startOffset": 3208,
+          "endOffset": 3519,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get xml",
+      "ranges": [
+        {
+          "startOffset": 3523,
+          "endOffset": 3590,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

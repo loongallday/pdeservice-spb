@@ -1,32 +1,206 @@
 # Fleet Management API
 
 ## Overview
-Real-time vehicle tracking API that fetches GPS data from external fleet management system, stores in database, and provides garage/base detection.
+
+The Fleet API (`api-fleet`) provides real-time vehicle tracking and fleet management capabilities for field service operations. This API enables:
+
+- Real-time vehicle location tracking with status monitoring
+- Vehicle-employee assignment management
+- Override capabilities for driver name and plate number
+- Route history viewing for historical tracking analysis
+- Work location mapping based on assigned tickets
+- Garage/base location management with proximity detection
+
+Vehicle data is synchronized from an external GPS system and stored locally in the database. The API reads from this cached data to provide fast, reliable access without external API latency.
+
+---
 
 ## Base URL
+
 ```
 https://ogzyihacqbasolfxymgo.supabase.co/functions/v1/api-fleet
 ```
 
+---
+
 ## Authentication
-Requires valid JWT token in Authorization header.
+
+All endpoints require JWT authentication via the `Authorization` header:
+
 ```
-Authorization: Bearer <token>
+Authorization: Bearer <jwt_token>
 ```
+
+The authenticated user must be an active employee in the system.
+
+---
+
+## Permission Levels
+
+| Level | Roles | Access |
+|-------|-------|--------|
+| 1 | Assigner, PM, Sales, Technician L2 | Read access (list, view vehicles, routes, work locations, garages) |
+| 2 | Admin | Full access (update vehicles, manage employees, manage garages) |
+| 3 | Superadmin | Full access |
+
+---
+
+## Data Types
+
+### VehicleStatus
+
+```typescript
+type VehicleStatus = 'moving' | 'stopped' | 'parked_at_base';
+```
+
+| Status | Thai | Description |
+|--------|------|-------------|
+| `moving` | กำลังวิ่ง | Vehicle is currently in motion (speed > 0) |
+| `stopped` | จอดนิ่ง | Vehicle is stopped, not at any garage |
+| `parked_at_base` | จอดที่โรงรถ | Vehicle is parked within a garage radius |
+
+### VehicleInfo
+
+```typescript
+interface VehicleInfo {
+  id: string;                    // Vehicle ID from GPS system (string, not UUID)
+  name: string;                  // Vehicle name/label
+  plate_number: string | null;   // License plate (override or original)
+  driver_name: string | null;    // Driver name (override or original)
+  employees: EmployeeInfo[];     // Assigned employees
+  status: VehicleStatus;         // Current vehicle status
+  speed: number;                 // Current speed (km/h)
+  latitude: number;              // Current GPS latitude
+  longitude: number;             // Current GPS longitude
+  heading: number;               // Direction in degrees (0-360)
+  signal_strength: number;       // GPS signal strength (0-100)
+  address: string | null;        // Reverse-geocoded address (Thai)
+  garage: GarageInfo | null;     // Current garage info (if parked at base)
+  last_sync_at: string;          // Last GPS data sync timestamp (ISO 8601)
+}
+```
+
+### EmployeeInfo
+
+```typescript
+interface EmployeeInfo {
+  id: string;    // Employee UUID
+  name: string;  // Employee name
+}
+```
+
+### GarageInfo
+
+```typescript
+interface GarageInfo {
+  id: string;              // Garage UUID
+  name: string;            // Garage name
+  distance_meters: number; // Distance from vehicle to garage center
+}
+```
+
+### GarageDetail
+
+```typescript
+interface GarageDetail {
+  id: string;
+  name: string;
+  description: string | null;
+  latitude: number;
+  longitude: number;
+  radius_meters: number;   // Detection radius (default: 100m)
+  is_active: boolean;
+}
+```
+
+### WorkLocation
+
+```typescript
+interface WorkLocation {
+  ticket_id: string;                      // Ticket UUID
+  ticket_code: string | null;             // Ticket code (e.g., TK-2026-0001)
+  site_id: string;                        // Site UUID
+  site_name: string;                      // Site/customer name
+  latitude: number | null;                // Site GPS latitude
+  longitude: number | null;               // Site GPS longitude
+  address_detail: string | null;          // Site address
+  appointment_date: string | null;        // Appointment date (YYYY-MM-DD)
+  appointment_time_start: string | null;  // Start time (HH:mm)
+  appointment_time_end: string | null;    // End time (HH:mm)
+  work_type_code: string | null;          // Work type code
+  work_type_name: string | null;          // Work type name (Thai)
+  status_code: string | null;             // Ticket status code
+  status_name: string | null;             // Ticket status name (Thai)
+}
+```
+
+### VehicleHistoryPoint
+
+```typescript
+interface VehicleHistoryPoint {
+  latitude: number;
+  longitude: number;
+  speed: number;
+  heading: number;
+  status: VehicleStatus;
+  address: string | null;
+  recorded_at: string;  // ISO 8601 timestamp
+}
+```
+
+---
 
 ## Endpoints
 
-### Vehicles
+### Utility
 
-#### GET /api-fleet
-List all vehicles with real-time GPS data.
+#### Keep Function Warm
 
-**Query Parameters:**
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `group` | string | `-1` | Vehicle group ID. Use `-1` for all groups |
+Returns a simple status response to keep the Edge Function warm. This endpoint does not require authentication.
+
+```
+GET /api-fleet/warmup
+```
+
+**Permission Level:** None (no authentication required)
 
 **Response:**
+
+```json
+{
+  "status": "warm",
+  "timestamp": "2026-01-15T08:00:00.000Z"
+}
+```
+
+**Example Request:**
+
+```bash
+curl "https://api.example.com/api-fleet/warmup"
+```
+
+---
+
+### Vehicles
+
+#### List All Vehicles
+
+Retrieve all tracked vehicles with current status and location.
+
+```
+GET /api-fleet
+```
+
+**Permission Level:** 1
+
+**Query Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `status` | string | No | Filter by status: `moving`, `stopped`, or `parked_at_base` |
+
+**Response:**
+
 ```json
 {
   "data": [
@@ -36,51 +210,275 @@ List all vehicles with real-time GPS data.
       "plate_number": "1กฮ-6591",
       "driver_name": "คุณณรงค์ชัย",
       "employees": [
-        { "id": "uuid", "name": "สมชาย ใจดี" },
-        { "id": "uuid", "name": "สมหญิง ดีใจ" }
+        { "id": "550e8400-e29b-41d4-a716-446655440001", "name": "สมชาย ใจดี" },
+        { "id": "550e8400-e29b-41d4-a716-446655440002", "name": "สมหญิง ดีใจ" }
       ],
       "status": "parked_at_base",
+      "speed": 0,
       "latitude": 13.7325,
       "longitude": 100.7309,
-      "speed": 0,
       "heading": 140,
       "signal_strength": 100,
       "address": "123 ถนนสุขุมวิท แขวงบางจาก เขตพระโขนง กรุงเทพมหานคร 10260",
       "garage": {
-        "id": "uuid",
+        "id": "550e8400-e29b-41d4-a716-446655440000",
         "name": "สำนักงานใหญ่ PDE",
         "distance_meters": 15
       },
-      "last_sync_at": "2026-01-12T08:00:00Z"
+      "last_sync_at": "2026-01-15T08:00:00Z"
     }
   ]
 }
 ```
 
-#### GET /api-fleet/:id
-Get single vehicle by ID.
+**Example Request:**
 
-#### PUT /api-fleet/:id
-Update vehicle (Level 2+). Currently supports updating driver name override.
+```bash
+# List all vehicles
+curl -H "Authorization: Bearer <token>" \
+  "https://api.example.com/api-fleet"
 
-**Request Body:**
+# List only moving vehicles
+curl -H "Authorization: Bearer <token>" \
+  "https://api.example.com/api-fleet?status=moving"
+```
+
+---
+
+#### Get Single Vehicle
+
+Retrieve detailed information for a specific vehicle.
+
+```
+GET /api-fleet/:id
+```
+
+**Permission Level:** 1
+
+**Path Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes | Vehicle ID from GPS system (not UUID) |
+
+**Response:**
+
+Same format as single item in List All Vehicles.
+
+**Error Response (404):**
+
 ```json
 {
-  "driver_name_override": "คุณสมชาย ใจดี"
+  "error": "ไม่พบข้อมูลรถ"
 }
 ```
 
-#### GET /api-fleet/:id/route
-Get route history for a vehicle. Data is logged every 5 minutes (288 points/day).
+---
 
-**Query Parameters:**
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `date` | string | today | Single date in YYYY-MM-DD format |
-| `start_date` | string | - | Start datetime for range query |
-| `end_date` | string | - | End datetime for range query |
+#### Update Vehicle
+
+Update vehicle override information (driver name or plate number).
+
+```
+PUT /api-fleet/:id
+```
+
+**Permission Level:** 2 (Admin)
+
+**Path Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes | Vehicle ID from GPS system |
+
+**Request Body:**
+
+```json
+{
+  "driver_name_override": "คุณสมชาย ใจดี",
+  "plate_number_override": "2ขก-1234"
+}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `driver_name_override` | string | No | Override for driver name (shown instead of GPS data) |
+| `plate_number_override` | string | No | Override for plate number (shown instead of GPS data) |
 
 **Response:**
+
+Returns the updated vehicle object.
+
+---
+
+### Vehicle Employees
+
+#### Set Vehicle Employees (Replace All)
+
+Replace all employee assignments for a vehicle with a new list.
+
+```
+PUT /api-fleet/:id/employees
+```
+
+**Permission Level:** 2 (Admin)
+
+**Path Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes | Vehicle ID from GPS system |
+
+**Request Body:**
+
+```json
+{
+  "employee_ids": [
+    "550e8400-e29b-41d4-a716-446655440001",
+    "550e8400-e29b-41d4-a716-446655440002"
+  ]
+}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `employee_ids` | string[] | Yes | Array of employee UUIDs to assign (empty array clears all) |
+
+**Response:**
+
+```json
+{
+  "data": {
+    "employees": [
+      { "id": "550e8400-e29b-41d4-a716-446655440001", "name": "สมชาย ใจดี" },
+      { "id": "550e8400-e29b-41d4-a716-446655440002", "name": "สมหญิง ดีใจ" }
+    ]
+  }
+}
+```
+
+**Error Response (400):**
+
+```json
+{
+  "error": "กรุณาระบุ employee_ids เป็น array"
+}
+```
+
+---
+
+#### Add Employee to Vehicle
+
+Add a single employee to a vehicle without removing existing assignments.
+
+```
+POST /api-fleet/:id/employees
+```
+
+**Permission Level:** 2 (Admin)
+
+**Path Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes | Vehicle ID from GPS system |
+
+**Request Body:**
+
+```json
+{
+  "employee_id": "550e8400-e29b-41d4-a716-446655440003"
+}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `employee_id` | string | Yes | Employee UUID to add |
+
+**Response:**
+
+```json
+{
+  "data": {
+    "employees": [
+      { "id": "550e8400-e29b-41d4-a716-446655440001", "name": "สมชาย ใจดี" },
+      { "id": "550e8400-e29b-41d4-a716-446655440003", "name": "สมศักดิ์ มั่นคง" }
+    ]
+  }
+}
+```
+
+**Note:** If the employee is already assigned, the operation succeeds silently (no error, duplicate ignored).
+
+**Error Response (400):**
+
+```json
+{
+  "error": "กรุณาระบุ employee_id"
+}
+```
+
+---
+
+#### Remove Employee from Vehicle
+
+Remove an employee from a vehicle assignment.
+
+```
+DELETE /api-fleet/:id/employees/:employeeId
+```
+
+**Permission Level:** 2 (Admin)
+
+**Path Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes | Vehicle ID from GPS system |
+| `employeeId` | string | Yes | Employee UUID to remove |
+
+**Response:**
+
+```json
+{
+  "data": {
+    "message": "ลบพนักงานออกจากรถสำเร็จ"
+  }
+}
+```
+
+---
+
+### Route History
+
+#### Get Vehicle Route History
+
+Retrieve GPS tracking history for a vehicle. Data is typically logged every 5 minutes.
+
+```
+GET /api-fleet/:id/route
+```
+
+**Permission Level:** 1
+
+**Path Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes | Vehicle ID from GPS system |
+
+**Query Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `date` | string | No | Single date (YYYY-MM-DD). Defaults to today. |
+| `start_date` | string | No | Start of date range (YYYY-MM-DD) |
+| `end_date` | string | No | End of date range (YYYY-MM-DD) |
+
+**Note:** If both `start_date` and `end_date` are provided, they override the `date` parameter.
+
+**Response:**
+
 ```json
 {
   "data": [
@@ -91,7 +489,7 @@ Get route history for a vehicle. Data is logged every 5 minutes (288 points/day)
       "heading": 180,
       "status": "moving",
       "address": "ถนนสุขุมวิท แขวงบางจาก กรุงเทพมหานคร",
-      "recorded_at": "2026-01-12T08:00:00Z"
+      "recorded_at": "2026-01-15T08:00:00Z"
     },
     {
       "latitude": 13.7350,
@@ -100,33 +498,68 @@ Get route history for a vehicle. Data is logged every 5 minutes (288 points/day)
       "heading": 180,
       "status": "stopped",
       "address": "ซอยสุขุมวิท 77 กรุงเทพมหานคร",
-      "recorded_at": "2026-01-12T08:05:00Z"
+      "recorded_at": "2026-01-15T08:05:00Z"
     }
   ]
 }
 ```
 
-#### GET /api-fleet/:id/work-locations
-Get work locations for a vehicle based on assigned tickets. Returns site coordinates for all employees assigned to this vehicle.
+**Example Request:**
+
+```bash
+# Today's route (default)
+curl -H "Authorization: Bearer <token>" \
+  "https://api.example.com/api-fleet/vehicle-001/route"
+
+# Specific date
+curl -H "Authorization: Bearer <token>" \
+  "https://api.example.com/api-fleet/vehicle-001/route?date=2026-01-10"
+
+# Date range
+curl -H "Authorization: Bearer <token>" \
+  "https://api.example.com/api-fleet/vehicle-001/route?start_date=2026-01-01&end_date=2026-01-15"
+```
+
+---
+
+### Work Locations
+
+#### Get Work Locations for Vehicle
+
+Retrieve scheduled work locations (ticket sites) for all employees assigned to this vehicle.
+
+```
+GET /api-fleet/:id/work-locations
+```
+
+**Permission Level:** 1
+
+**Path Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes | Vehicle ID from GPS system |
 
 **Query Parameters:**
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `date` | string | today | Date in YYYY-MM-DD format |
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `date` | string | No | Date to check (YYYY-MM-DD). Defaults to today. |
 
 **Response:**
+
 ```json
 {
   "data": [
     {
-      "ticket_id": "uuid",
+      "ticket_id": "550e8400-e29b-41d4-a716-446655440010",
       "ticket_code": "TK-2026-0001",
-      "site_id": "uuid",
+      "site_id": "550e8400-e29b-41d4-a716-446655440020",
       "site_name": "บริษัท ABC จำกัด",
       "latitude": 13.7500,
       "longitude": 100.5000,
-      "address_detail": "123 ถนนสุขุมวิท",
-      "appointment_date": "2026-01-14",
+      "address_detail": "123 ถนนสุขุมวิท เขตวัฒนา กรุงเทพฯ",
+      "appointment_date": "2026-01-15",
       "appointment_time_start": "09:00",
       "appointment_time_end": "12:00",
       "work_type_code": "pm",
@@ -138,76 +571,32 @@ Get work locations for a vehicle based on assigned tickets. Returns site coordin
 }
 ```
 
-### Vehicle Employees
+**Notes:**
+- Returns tickets only for employees confirmed on `jct_ticket_employees_cf` table
+- Only includes tickets with valid site coordinates and appointment dates
+- Useful for displaying planned work stops on a map overlay
 
-#### PUT /api-fleet/:id/employees
-Set all employees for a vehicle (replaces existing assignments). Level 2+ required.
-
-**Request Body:**
-```json
-{
-  "employee_ids": ["uuid-1", "uuid-2", "uuid-3"]
-}
-```
-
-**Response:**
-```json
-{
-  "data": {
-    "employees": [
-      { "id": "uuid-1", "name": "สมชาย ใจดี" },
-      { "id": "uuid-2", "name": "สมหญิง ดีใจ" },
-      { "id": "uuid-3", "name": "ณรงค์ชัย ฤทธิ์เรือง" }
-    ]
-  }
-}
-```
-
-#### POST /api-fleet/:id/employees
-Add a single employee to a vehicle. Level 2+ required.
-
-**Request Body:**
-```json
-{
-  "employee_id": "uuid"
-}
-```
-
-**Response:**
-```json
-{
-  "data": {
-    "employees": [
-      { "id": "uuid-1", "name": "สมชาย ใจดี" },
-      { "id": "uuid-2", "name": "สมหญิง ดีใจ" }
-    ]
-  }
-}
-```
-
-#### DELETE /api-fleet/:id/employees/:employeeId
-Remove an employee from a vehicle. Level 2+ required.
-
-**Response:**
-```json
-{
-  "data": {
-    "message": "ลบพนักงานออกจากรถสำเร็จ"
-  }
-}
-```
+---
 
 ### Garages
 
-#### GET /api-fleet/garages
-List all garages/bases.
+#### List All Garages
+
+Retrieve all configured garage/base locations.
+
+```
+GET /api-fleet/garages
+```
+
+**Permission Level:** 1
 
 **Response:**
+
 ```json
 {
   "data": [
     {
-      "id": "uuid",
+      "id": "550e8400-e29b-41d4-a716-446655440000",
       "name": "สำนักงานใหญ่ PDE",
       "description": "สำนักงานใหญ่ พีดีอี เซอร์วิส",
       "latitude": 13.7325,
@@ -219,10 +608,20 @@ List all garages/bases.
 }
 ```
 
-#### POST /api-fleet/garages
-Create a new garage (Level 2+).
+---
+
+#### Create Garage
+
+Create a new garage/base location.
+
+```
+POST /api-fleet/garages
+```
+
+**Permission Level:** 2 (Admin)
 
 **Request Body:**
+
 ```json
 {
   "name": "โรงรถสาขา 2",
@@ -233,83 +632,169 @@ Create a new garage (Level 2+).
 }
 ```
 
-#### PUT /api-fleet/garages/:id
-Update a garage (Level 2+).
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `name` | string | Yes | Garage name |
+| `description` | string | No | Optional description |
+| `latitude` | number | Yes | GPS latitude |
+| `longitude` | number | Yes | GPS longitude |
+| `radius_meters` | number | No | Detection radius in meters (default: 100) |
 
-#### DELETE /api-fleet/garages/:id
-Delete a garage (Level 2+).
+**Response (201):**
 
-## Data Types
+```json
+{
+  "data": {
+    "id": "550e8400-e29b-41d4-a716-446655440099",
+    "name": "โรงรถสาขา 2"
+  }
+}
+```
 
-### VehicleInfo
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | string | Unique vehicle identifier |
-| `name` | string | Full name (plate + driver) |
-| `plate_number` | string \| null | Vehicle plate number |
-| `driver_name` | string \| null | Driver name |
-| `employees` | EmployeeInfo[] | Employees assigned to this vehicle |
-| `status` | `"moving"` \| `"stopped"` \| `"parked_at_base"` | Current status |
-| `latitude` | number | GPS latitude |
-| `longitude` | number | GPS longitude |
-| `speed` | number | Current speed (km/h) |
-| `heading` | number | Direction (0-360 degrees) |
-| `signal_strength` | number | GPS signal (0-100%) |
-| `address` | string \| null | Reverse geocoded address (Thai) |
-| `garage` | GarageInfo \| null | Garage info if parked at base |
-| `last_sync_at` | string | Last sync timestamp |
+**Error Responses (400):**
 
-### EmployeeInfo
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | string | Employee UUID |
-| `name` | string | Employee name |
+```json
+{
+  "error": "กรุณาระบุชื่อโรงรถ"
+}
+```
 
-### GarageInfo
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | string | Garage UUID |
-| `name` | string | Garage name |
-| `distance_meters` | number | Distance from vehicle to garage |
+```json
+{
+  "error": "กรุณาระบุพิกัด"
+}
+```
 
-### WorkLocation
-| Field | Type | Description |
-|-------|------|-------------|
-| `ticket_id` | string | Ticket UUID |
-| `ticket_code` | string \| null | Ticket code (e.g., TK-2026-0001) |
-| `site_id` | string | Site UUID |
-| `site_name` | string | Site/customer name |
-| `latitude` | number \| null | Site latitude |
-| `longitude` | number \| null | Site longitude |
-| `address_detail` | string \| null | Site address |
-| `appointment_date` | string \| null | Appointment date (YYYY-MM-DD) |
-| `appointment_time_start` | string \| null | Start time (HH:MM) |
-| `appointment_time_end` | string \| null | End time (HH:MM) |
-| `work_type_code` | string \| null | Work type code |
-| `work_type_name` | string \| null | Work type name (Thai) |
-| `status_code` | string \| null | Ticket status code |
-| `status_name` | string \| null | Ticket status name (Thai) |
+---
 
-### Status Values
-| Status | Thai | Description |
-|--------|------|-------------|
-| `moving` | กำลังวิ่ง | Vehicle is moving (speed > 0) |
-| `stopped` | จอดนิ่ง | Vehicle stopped, not at any garage |
-| `parked_at_base` | จอดที่โรงรถ | Vehicle parked within garage radius |
+#### Update Garage
+
+Update an existing garage location.
+
+```
+PUT /api-fleet/garages/:id
+```
+
+**Permission Level:** 2 (Admin)
+
+**Path Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes | Garage UUID |
+
+**Request Body:**
+
+```json
+{
+  "name": "โรงรถสาขา 2 (อัพเดท)",
+  "description": "รายละเอียดใหม่",
+  "latitude": 13.7210,
+  "longitude": 100.4810,
+  "radius_meters": 120
+}
+```
+
+All fields are optional. Only provided fields will be updated.
+
+**Response:**
+
+```json
+{
+  "data": {
+    "id": "550e8400-e29b-41d4-a716-446655440099",
+    "name": "โรงรถสาขา 2 (อัพเดท)"
+  }
+}
+```
+
+---
+
+#### Delete Garage
+
+Delete a garage location.
+
+```
+DELETE /api-fleet/garages/:id
+```
+
+**Permission Level:** 2 (Admin)
+
+**Path Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes | Garage UUID |
+
+**Response:**
+
+```json
+{
+  "data": {
+    "message": "ลบโรงรถสำเร็จ"
+  }
+}
+```
+
+---
+
+## Error Responses
+
+### Standard Error Format
+
+All errors return:
+
+```json
+{
+  "error": "Error message (typically in Thai)"
+}
+```
+
+### HTTP Status Codes
+
+| Code | Description |
+|------|-------------|
+| 400 | Bad Request - Invalid parameters or validation error |
+| 401 | Unauthorized - Missing or invalid authentication token |
+| 403 | Forbidden - Insufficient permission level |
+| 404 | Not Found - Resource does not exist |
+| 500 | Internal Server Error - Database or server error |
+
+### Common Error Messages
+
+| Error Message (Thai) | English Meaning |
+|---------------------|-----------------|
+| `ไม่พบข้อมูลการยืนยันตัวตน` | Missing Authorization header |
+| `Session หมดอายุกรุณาเข้าใช้งานใหม่` | JWT token expired |
+| `ไม่พบข้อมูลพนักงาน` | Employee not found |
+| `ต้องมีสิทธิ์ระดับ 2 ขึ้นไป` | Requires level 2+ permission |
+| `ไม่พบข้อมูลรถ` | Vehicle not found |
+| `กรุณาระบุชื่อโรงรถ` | Garage name required |
+| `กรุณาระบุพิกัด` | Coordinates required |
+| `กรุณาระบุ employee_ids เป็น array` | employee_ids must be array |
+| `กรุณาระบุ employee_id` | employee_id required |
+| `ลบพนักงานออกจากรถสำเร็จ` | Employee removed from vehicle successfully |
+| `ลบโรงรถสำเร็จ` | Garage deleted successfully |
+
+---
 
 ## Database Tables
 
 ### fleet_vehicles
+
 Stores synced vehicle data from external GPS system.
 
 ### fleet_garages
+
 Stores garage/base locations with detection radius.
 
 ### fleet_vehicle_history
-Stores historical tracking data (optional).
+
+Stores historical tracking data for route history.
 
 ### jct_fleet_vehicle_employees
-Junction table for many-to-many relationship between vehicles and employees.
+
+Junction table for vehicle-employee assignments.
 
 | Column | Type | Description |
 |--------|------|-------------|
@@ -317,117 +802,16 @@ Junction table for many-to-many relationship between vehicles and employees.
 | `employee_id` | UUID | Employee ID (FK to main_employees) |
 | `created_at` | TIMESTAMPTZ | Assignment timestamp |
 
-**Composite Primary Key**: (vehicle_id, employee_id)
+**Composite Primary Key:** (vehicle_id, employee_id)
 
-## Configuration
+---
 
-### Required Secrets
-```bash
-# Fleet GPS system credentials
-npx supabase secrets set FLEET_USERNAME=xxx FLEET_PASSWORD=xxx
-
-# Google Maps API key for reverse geocoding (optional)
-npx supabase secrets set GOOGLE_MAPS_API_KEY=xxx
-```
-
-## TypeScript Interface
-
-```typescript
-type VehicleStatus = 'moving' | 'stopped' | 'parked_at_base';
-
-interface EmployeeInfo {
-  id: string;
-  name: string;
-}
-
-interface GarageInfo {
-  id: string;
-  name: string;
-  distance_meters: number;
-}
-
-interface VehicleInfo {
-  id: string;
-  name: string;
-  plate_number: string | null;
-  driver_name: string | null;
-  employees: EmployeeInfo[];
-  status: VehicleStatus;
-  latitude: number;
-  longitude: number;
-  speed: number;
-  heading: number;
-  signal_strength: number;
-  address: string | null;
-  garage: GarageInfo | null;
-  last_sync_at: string;
-}
-
-interface WorkLocation {
-  ticket_id: string;
-  ticket_code: string | null;
-  site_id: string;
-  site_name: string;
-  latitude: number | null;
-  longitude: number | null;
-  address_detail: string | null;
-  appointment_date: string | null;
-  appointment_time_start: string | null;
-  appointment_time_end: string | null;
-  work_type_code: string | null;
-  work_type_name: string | null;
-  status_code: string | null;
-  status_name: string | null;
-}
-```
-
-## Usage Examples
-
-### React Query Hook
-```typescript
-export function useFleet(group = '-1') {
-  return useQuery({
-    queryKey: ['fleet', group],
-    queryFn: async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      const res = await fetch(
-        `${SUPABASE_URL}/functions/v1/api-fleet?group=${group}`,
-        { headers: { 'Authorization': `Bearer ${session?.access_token}` } }
-      );
-      const json = await res.json();
-      return json.data as VehicleInfo[];
-    },
-    refetchInterval: 30000,
-  });
-}
-```
-
-### Vehicle Status Badge
-```typescript
-function StatusBadge({ status }: { status: VehicleStatus }) {
-  const config = {
-    moving: { label: 'กำลังวิ่ง', color: 'green' },
-    stopped: { label: 'จอดนิ่ง', color: 'gray' },
-    parked_at_base: { label: 'จอดที่โรงรถ', color: 'blue' },
-  };
-  const { label, color } = config[status];
-  return <Badge color={color}>{label}</Badge>;
-}
-```
-
-### Filter Vehicles at Base
-```typescript
-const vehiclesAtBase = vehicles.filter(v => v.status === 'parked_at_base');
-const vehiclesOnRoad = vehicles.filter(v => v.status !== 'parked_at_base');
-```
-
-## Frontend Implementation Guide
+## Frontend Integration Examples
 
 ### API Service
+
 ```typescript
 // services/fleetService.ts
-import { supabase } from '@/lib/supabase';
-
 const API_URL = import.meta.env.VITE_SUPABASE_URL;
 
 async function getAuthHeader() {
@@ -436,9 +820,11 @@ async function getAuthHeader() {
 }
 
 export const fleetService = {
-  // Get all vehicles
-  async getVehicles(group = '-1'): Promise<VehicleInfo[]> {
-    const res = await fetch(`${API_URL}/functions/v1/api-fleet?group=${group}`, {
+  async getVehicles(status?: VehicleStatus): Promise<VehicleInfo[]> {
+    const params = new URLSearchParams();
+    if (status) params.set('status', status);
+
+    const res = await fetch(`${API_URL}/functions/v1/api-fleet?${params}`, {
       headers: await getAuthHeader(),
     });
     const json = await res.json();
@@ -446,9 +832,8 @@ export const fleetService = {
     return json.data;
   },
 
-  // Get all garages
-  async getGarages(): Promise<GarageDetail[]> {
-    const res = await fetch(`${API_URL}/functions/v1/api-fleet/garages`, {
+  async getVehicle(id: string): Promise<VehicleInfo> {
+    const res = await fetch(`${API_URL}/functions/v1/api-fleet/${id}`, {
       headers: await getAuthHeader(),
     });
     const json = await res.json();
@@ -456,43 +841,6 @@ export const fleetService = {
     return json.data;
   },
 
-  // Create garage
-  async createGarage(input: GarageInput): Promise<{ id: string; name: string }> {
-    const res = await fetch(`${API_URL}/functions/v1/api-fleet/garages`, {
-      method: 'POST',
-      headers: { ...await getAuthHeader(), 'Content-Type': 'application/json' },
-      body: JSON.stringify(input),
-    });
-    const json = await res.json();
-    if (!res.ok) throw new Error(json.error);
-    return json.data;
-  },
-
-  // Update garage
-  async updateGarage(id: string, input: Partial<GarageInput>): Promise<{ id: string; name: string }> {
-    const res = await fetch(`${API_URL}/functions/v1/api-fleet/garages/${id}`, {
-      method: 'PUT',
-      headers: { ...await getAuthHeader(), 'Content-Type': 'application/json' },
-      body: JSON.stringify(input),
-    });
-    const json = await res.json();
-    if (!res.ok) throw new Error(json.error);
-    return json.data;
-  },
-
-  // Delete garage
-  async deleteGarage(id: string): Promise<void> {
-    const res = await fetch(`${API_URL}/functions/v1/api-fleet/garages/${id}`, {
-      method: 'DELETE',
-      headers: await getAuthHeader(),
-    });
-    if (!res.ok) {
-      const json = await res.json();
-      throw new Error(json.error);
-    }
-  },
-
-  // Get work locations for a vehicle
   async getWorkLocations(vehicleId: string, date?: string): Promise<WorkLocation[]> {
     const params = new URLSearchParams();
     if (date) params.set('date', date);
@@ -506,7 +854,25 @@ export const fleetService = {
     return json.data;
   },
 
-  // Set employees for a vehicle (replaces all)
+  async getVehicleRoute(vehicleId: string, params: {
+    date?: string;
+    start_date?: string;
+    end_date?: string;
+  }): Promise<VehicleHistoryPoint[]> {
+    const urlParams = new URLSearchParams();
+    if (params.date) urlParams.set('date', params.date);
+    if (params.start_date) urlParams.set('start_date', params.start_date);
+    if (params.end_date) urlParams.set('end_date', params.end_date);
+
+    const res = await fetch(
+      `${API_URL}/functions/v1/api-fleet/${vehicleId}/route?${urlParams}`,
+      { headers: await getAuthHeader() }
+    );
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error);
+    return json.data;
+  },
+
   async setVehicleEmployees(vehicleId: string, employeeIds: string[]): Promise<EmployeeInfo[]> {
     const res = await fetch(`${API_URL}/functions/v1/api-fleet/${vehicleId}/employees`, {
       method: 'PUT',
@@ -518,7 +884,6 @@ export const fleetService = {
     return json.data.employees;
   },
 
-  // Add employee to a vehicle
   async addVehicleEmployee(vehicleId: string, employeeId: string): Promise<EmployeeInfo[]> {
     const res = await fetch(`${API_URL}/functions/v1/api-fleet/${vehicleId}/employees`, {
       method: 'POST',
@@ -530,12 +895,11 @@ export const fleetService = {
     return json.data.employees;
   },
 
-  // Remove employee from a vehicle
   async removeVehicleEmployee(vehicleId: string, employeeId: string): Promise<void> {
-    const res = await fetch(`${API_URL}/functions/v1/api-fleet/${vehicleId}/employees/${employeeId}`, {
-      method: 'DELETE',
-      headers: await getAuthHeader(),
-    });
+    const res = await fetch(
+      `${API_URL}/functions/v1/api-fleet/${vehicleId}/employees/${employeeId}`,
+      { method: 'DELETE', headers: await getAuthHeader() }
+    );
     if (!res.ok) {
       const json = await res.json();
       throw new Error(json.error);
@@ -544,56 +908,19 @@ export const fleetService = {
 };
 ```
 
-### React Query Hooks
+### React Query Hook
+
 ```typescript
 // hooks/useFleet.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fleetService } from '@/services/fleetService';
 
-export function useFleet(group = '-1') {
+export function useFleet(status?: VehicleStatus) {
   return useQuery({
-    queryKey: ['fleet', 'vehicles', group],
-    queryFn: () => fleetService.getVehicles(group),
+    queryKey: ['fleet', 'vehicles', status],
+    queryFn: () => fleetService.getVehicles(status),
     refetchInterval: 30000, // Auto-refresh every 30 seconds
     staleTime: 10000,
-  });
-}
-
-export function useGarages() {
-  return useQuery({
-    queryKey: ['fleet', 'garages'],
-    queryFn: () => fleetService.getGarages(),
-  });
-}
-
-export function useCreateGarage() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: fleetService.createGarage,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['fleet'] });
-    },
-  });
-}
-
-export function useUpdateGarage() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({ id, input }: { id: string; input: Partial<GarageInput> }) =>
-      fleetService.updateGarage(id, input),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['fleet'] });
-    },
-  });
-}
-
-export function useDeleteGarage() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: fleetService.deleteGarage,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['fleet'] });
-    },
   });
 }
 
@@ -605,709 +932,86 @@ export function useWorkLocations(vehicleId: string, date?: string) {
   });
 }
 
-export function useSetVehicleEmployees() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({ vehicleId, employeeIds }: { vehicleId: string; employeeIds: string[] }) =>
-      fleetService.setVehicleEmployees(vehicleId, employeeIds),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['fleet'] });
-    },
-  });
-}
-
-export function useAddVehicleEmployee() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({ vehicleId, employeeId }: { vehicleId: string; employeeId: string }) =>
-      fleetService.addVehicleEmployee(vehicleId, employeeId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['fleet'] });
-    },
-  });
-}
-
-export function useRemoveVehicleEmployee() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({ vehicleId, employeeId }: { vehicleId: string; employeeId: string }) =>
-      fleetService.removeVehicleEmployee(vehicleId, employeeId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['fleet'] });
-    },
-  });
-}
-```
-
-### Vehicle List Component
-```typescript
-// components/fleet/VehicleList.tsx
-import { useFleet } from '@/hooks/useFleet';
-
-const STATUS_CONFIG = {
-  moving: { label: 'กำลังวิ่ง', color: 'bg-green-100 text-green-800', icon: '🚗' },
-  stopped: { label: 'จอดนิ่ง', color: 'bg-gray-100 text-gray-800', icon: '🅿️' },
-  parked_at_base: { label: 'จอดที่โรงรถ', color: 'bg-blue-100 text-blue-800', icon: '🏠' },
-};
-
-export function VehicleList() {
-  const { data: vehicles, isLoading, error } = useFleet();
-
-  if (isLoading) return <div>กำลังโหลด...</div>;
-  if (error) return <div>เกิดข้อผิดพลาด: {error.message}</div>;
-
-  const atBase = vehicles?.filter(v => v.status === 'parked_at_base') || [];
-  const onRoad = vehicles?.filter(v => v.status !== 'parked_at_base') || [];
-
-  return (
-    <div className="space-y-6">
-      {/* Summary Cards */}
-      <div className="grid grid-cols-3 gap-4">
-        <SummaryCard
-          title="รถทั้งหมด"
-          count={vehicles?.length || 0}
-          color="blue"
-        />
-        <SummaryCard
-          title="กำลังวิ่ง"
-          count={vehicles?.filter(v => v.status === 'moving').length || 0}
-          color="green"
-        />
-        <SummaryCard
-          title="จอดที่โรงรถ"
-          count={atBase.length}
-          color="purple"
-        />
-      </div>
-
-      {/* Vehicle List */}
-      <div className="bg-white rounded-lg shadow">
-        <div className="p-4 border-b">
-          <h2 className="text-lg font-semibold">รายการรถ</h2>
-        </div>
-        <div className="divide-y">
-          {vehicles?.map((vehicle) => (
-            <VehicleRow key={vehicle.id} vehicle={vehicle} />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function VehicleRow({ vehicle }: { vehicle: VehicleInfo }) {
-  const status = STATUS_CONFIG[vehicle.status];
-
-  return (
-    <div className="p-4 flex items-center justify-between hover:bg-gray-50">
-      <div className="flex items-center space-x-4">
-        <span className="text-2xl">{status.icon}</span>
-        <div>
-          <div className="font-medium">{vehicle.plate_number || vehicle.name}</div>
-          <div className="text-sm text-gray-500">{vehicle.driver_name}</div>
-          {vehicle.address && (
-            <div className="text-xs text-gray-400 mt-1">{vehicle.address}</div>
-          )}
-        </div>
-      </div>
-      <div className="text-right">
-        <span className={`px-2 py-1 rounded-full text-xs font-medium ${status.color}`}>
-          {status.label}
-        </span>
-        {vehicle.garage && (
-          <div className="text-xs text-blue-600 mt-1">
-            📍 {vehicle.garage.name} ({vehicle.garage.distance_meters}m)
-          </div>
-        )}
-        <div className="text-xs text-gray-400 mt-1">
-          {vehicle.speed} km/h
-        </div>
-      </div>
-    </div>
-  );
-}
-```
-
-### Google Maps Integration
-```typescript
-// components/fleet/FleetMap.tsx
-import { GoogleMap, Marker, Circle, InfoWindow } from '@react-google-maps/api';
-import { useFleet, useGarages } from '@/hooks/useFleet';
-import { useState } from 'react';
-
-const mapContainerStyle = { width: '100%', height: '500px' };
-const defaultCenter = { lat: 13.7563, lng: 100.5018 }; // Bangkok
-
-const VEHICLE_ICONS = {
-  moving: '/icons/truck-green.png',
-  stopped: '/icons/truck-gray.png',
-  parked_at_base: '/icons/truck-blue.png',
-};
-
-export function FleetMap() {
-  const { data: vehicles } = useFleet();
-  const { data: garages } = useGarages();
-  const [selectedVehicle, setSelectedVehicle] = useState<VehicleInfo | null>(null);
-
-  return (
-    <GoogleMap
-      mapContainerStyle={mapContainerStyle}
-      center={defaultCenter}
-      zoom={11}
-    >
-      {/* Garage circles */}
-      {garages?.map((garage) => (
-        <Circle
-          key={garage.id}
-          center={{ lat: garage.latitude, lng: garage.longitude }}
-          radius={garage.radius_meters}
-          options={{
-            fillColor: '#3B82F6',
-            fillOpacity: 0.1,
-            strokeColor: '#3B82F6',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-          }}
-        />
-      ))}
-
-      {/* Garage markers */}
-      {garages?.map((garage) => (
-        <Marker
-          key={`garage-${garage.id}`}
-          position={{ lat: garage.latitude, lng: garage.longitude }}
-          icon={{
-            url: '/icons/garage.png',
-            scaledSize: new google.maps.Size(32, 32),
-          }}
-          title={garage.name}
-        />
-      ))}
-
-      {/* Vehicle markers */}
-      {vehicles?.map((vehicle) => (
-        <Marker
-          key={vehicle.id}
-          position={{ lat: vehicle.latitude, lng: vehicle.longitude }}
-          icon={{
-            url: VEHICLE_ICONS[vehicle.status],
-            scaledSize: new google.maps.Size(40, 40),
-            rotation: vehicle.heading,
-          }}
-          onClick={() => setSelectedVehicle(vehicle)}
-        />
-      ))}
-
-      {/* Info window */}
-      {selectedVehicle && (
-        <InfoWindow
-          position={{ lat: selectedVehicle.latitude, lng: selectedVehicle.longitude }}
-          onCloseClick={() => setSelectedVehicle(null)}
-        >
-          <div className="p-2">
-            <div className="font-bold">{selectedVehicle.plate_number}</div>
-            <div className="text-sm">{selectedVehicle.driver_name}</div>
-            <div className="text-sm text-gray-500">
-              {selectedVehicle.speed} km/h
-            </div>
-            {selectedVehicle.address && (
-              <div className="text-xs text-gray-400 mt-1">
-                {selectedVehicle.address}
-              </div>
-            )}
-            {selectedVehicle.garage && (
-              <div className="text-xs text-blue-600 mt-1">
-                🏠 {selectedVehicle.garage.name}
-              </div>
-            )}
-          </div>
-        </InfoWindow>
-      )}
-    </GoogleMap>
-  );
-}
-```
-
-### Garage Management Component
-```typescript
-// components/fleet/GarageManager.tsx
-import { useGarages, useCreateGarage, useDeleteGarage } from '@/hooks/useFleet';
-import { useState } from 'react';
-
-export function GarageManager() {
-  const { data: garages, isLoading } = useGarages();
-  const createGarage = useCreateGarage();
-  const deleteGarage = useDeleteGarage();
-  const [isAdding, setIsAdding] = useState(false);
-
-  const handleCreate = async (input: GarageInput) => {
-    await createGarage.mutateAsync(input);
-    setIsAdding(false);
-  };
-
-  const handleDelete = async (id: string) => {
-    if (confirm('ต้องการลบโรงรถนี้?')) {
-      await deleteGarage.mutateAsync(id);
-    }
-  };
-
-  if (isLoading) return <div>กำลังโหลด...</div>;
-
-  return (
-    <div className="bg-white rounded-lg shadow">
-      <div className="p-4 border-b flex justify-between items-center">
-        <h2 className="text-lg font-semibold">จัดการโรงรถ</h2>
-        <button
-          onClick={() => setIsAdding(true)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg"
-        >
-          + เพิ่มโรงรถ
-        </button>
-      </div>
-
-      <div className="divide-y">
-        {garages?.map((garage) => (
-          <div key={garage.id} className="p-4 flex justify-between items-center">
-            <div>
-              <div className="font-medium">{garage.name}</div>
-              <div className="text-sm text-gray-500">{garage.description}</div>
-              <div className="text-xs text-gray-400">
-                พิกัด: {garage.latitude}, {garage.longitude} |
-                รัศมี: {garage.radius_meters}m
-              </div>
-            </div>
-            <button
-              onClick={() => handleDelete(garage.id)}
-              className="text-red-600 hover:text-red-800"
-            >
-              ลบ
-            </button>
-          </div>
-        ))}
-      </div>
-
-      {isAdding && (
-        <GarageForm
-          onSubmit={handleCreate}
-          onCancel={() => setIsAdding(false)}
-          isLoading={createGarage.isPending}
-        />
-      )}
-    </div>
-  );
-}
-
-function GarageForm({ onSubmit, onCancel, isLoading }: {
-  onSubmit: (input: GarageInput) => void;
-  onCancel: () => void;
-  isLoading: boolean;
-}) {
-  const [form, setForm] = useState({
-    name: '',
-    description: '',
-    latitude: 13.7325,
-    longitude: 100.7309,
-    radius_meters: 100,
-  });
-
-  return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md">
-        <h3 className="text-lg font-semibold mb-4">เพิ่มโรงรถใหม่</h3>
-        <div className="space-y-4">
-          <input
-            type="text"
-            placeholder="ชื่อโรงรถ"
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            className="w-full border rounded-lg px-3 py-2"
-          />
-          <input
-            type="text"
-            placeholder="รายละเอียด"
-            value={form.description}
-            onChange={(e) => setForm({ ...form, description: e.target.value })}
-            className="w-full border rounded-lg px-3 py-2"
-          />
-          <div className="grid grid-cols-2 gap-4">
-            <input
-              type="number"
-              step="any"
-              placeholder="Latitude"
-              value={form.latitude}
-              onChange={(e) => setForm({ ...form, latitude: parseFloat(e.target.value) })}
-              className="border rounded-lg px-3 py-2"
-            />
-            <input
-              type="number"
-              step="any"
-              placeholder="Longitude"
-              value={form.longitude}
-              onChange={(e) => setForm({ ...form, longitude: parseFloat(e.target.value) })}
-              className="border rounded-lg px-3 py-2"
-            />
-          </div>
-          <input
-            type="number"
-            placeholder="รัศมี (เมตร)"
-            value={form.radius_meters}
-            onChange={(e) => setForm({ ...form, radius_meters: parseInt(e.target.value) })}
-            className="w-full border rounded-lg px-3 py-2"
-          />
-        </div>
-        <div className="flex justify-end space-x-2 mt-6">
-          <button onClick={onCancel} className="px-4 py-2 border rounded-lg">
-            ยกเลิก
-          </button>
-          <button
-            onClick={() => onSubmit(form)}
-            disabled={isLoading || !form.name}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50"
-          >
-            {isLoading ? 'กำลังบันทึก...' : 'บันทึก'}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-```
-
-### Types Definition
-```typescript
-// types/fleet.ts
-export type VehicleStatus = 'moving' | 'stopped' | 'parked_at_base';
-
-export interface EmployeeInfo {
-  id: string;
-  name: string;
-}
-
-export interface GarageInfo {
-  id: string;
-  name: string;
-  distance_meters: number;
-}
-
-export interface VehicleInfo {
-  id: string;
-  name: string;
-  plate_number: string | null;
-  driver_name: string | null;
-  employees: EmployeeInfo[];
-  status: VehicleStatus;
-  latitude: number;
-  longitude: number;
-  speed: number;
-  heading: number;
-  signal_strength: number;
-  address: string | null;
-  garage: GarageInfo | null;
-  last_sync_at: string;
-}
-
-export interface WorkLocation {
-  ticket_id: string;
-  ticket_code: string | null;
-  site_id: string;
-  site_name: string;
-  latitude: number | null;
-  longitude: number | null;
-  address_detail: string | null;
-  appointment_date: string | null;
-  appointment_time_start: string | null;
-  appointment_time_end: string | null;
-  work_type_code: string | null;
-  work_type_name: string | null;
-  status_code: string | null;
-  status_name: string | null;
-}
-
-export interface GarageDetail {
-  id: string;
-  name: string;
-  description: string | null;
-  latitude: number;
-  longitude: number;
-  radius_meters: number;
-  is_active: boolean;
-}
-
-export interface GarageInput {
-  name: string;
-  description?: string;
-  latitude: number;
-  longitude: number;
-  radius_meters?: number;
-}
-
-export interface VehicleHistoryPoint {
-  latitude: number;
-  longitude: number;
-  speed: number;
-  heading: number;
-  status: VehicleStatus;
-  address: string | null;
-  recorded_at: string;
-}
-```
-
-### Route History Hook
-```typescript
-// hooks/useVehicleRoute.ts
-import { useQuery } from '@tanstack/react-query';
-import { fleetService } from '@/services/fleetService';
-
 export function useVehicleRoute(vehicleId: string, date?: string) {
   return useQuery({
     queryKey: ['fleet', 'route', vehicleId, date],
-    queryFn: () => fleetService.getVehicleRoute(vehicleId, date),
+    queryFn: () => fleetService.getVehicleRoute(vehicleId, { date }),
     enabled: !!vehicleId,
   });
 }
-
-// Add to fleetService.ts
-async getVehicleRoute(vehicleId: string, date?: string): Promise<VehicleHistoryPoint[]> {
-  const params = new URLSearchParams();
-  if (date) params.set('date', date);
-
-  const res = await fetch(
-    `${API_URL}/functions/v1/api-fleet/${vehicleId}/route?${params}`,
-    { headers: await getAuthHeader() }
-  );
-  const json = await res.json();
-  if (!res.ok) throw new Error(json.error);
-  return json.data;
-}
 ```
 
-### Route Map Component
+### Status Badge Component
+
 ```typescript
-// components/fleet/VehicleRouteMap.tsx
-import { GoogleMap, Polyline, Marker, InfoWindow } from '@react-google-maps/api';
-import { useVehicleRoute } from '@/hooks/useVehicleRoute';
-import { useState } from 'react';
+// components/fleet/StatusBadge.tsx
+const STATUS_CONFIG = {
+  moving: { label: 'กำลังวิ่ง', color: 'bg-green-100 text-green-800' },
+  stopped: { label: 'จอดนิ่ง', color: 'bg-gray-100 text-gray-800' },
+  parked_at_base: { label: 'จอดที่โรงรถ', color: 'bg-blue-100 text-blue-800' },
+};
 
-interface Props {
-  vehicleId: string;
-  vehicleName: string;
-  date: string; // YYYY-MM-DD
-}
-
-export function VehicleRouteMap({ vehicleId, vehicleName, date }: Props) {
-  const { data: route, isLoading } = useVehicleRoute(vehicleId, date);
-  const [selectedPoint, setSelectedPoint] = useState<VehicleHistoryPoint | null>(null);
-
-  if (isLoading) return <div>กำลังโหลดเส้นทาง...</div>;
-  if (!route?.length) return <div>ไม่พบข้อมูลเส้นทาง</div>;
-
-  // Create path from route points
-  const path = route.map(p => ({ lat: p.latitude, lng: p.longitude }));
-
-  // Center on first point
-  const center = path[0];
-
+export function StatusBadge({ status }: { status: VehicleStatus }) {
+  const { label, color } = STATUS_CONFIG[status];
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold">
-          เส้นทาง {vehicleName} - {date}
-        </h3>
-        <div className="text-sm text-gray-500">
-          {route.length} จุด (ทุก 5 นาที)
-        </div>
-      </div>
-
-      <GoogleMap
-        mapContainerStyle={{ width: '100%', height: '500px' }}
-        center={center}
-        zoom={13}
-      >
-        {/* Route polyline */}
-        <Polyline
-          path={path}
-          options={{
-            strokeColor: '#3B82F6',
-            strokeOpacity: 0.8,
-            strokeWeight: 4,
-          }}
-        />
-
-        {/* Start marker (green) */}
-        <Marker
-          position={path[0]}
-          icon={{
-            url: '/icons/marker-start.png',
-            scaledSize: new google.maps.Size(32, 32),
-          }}
-          title="จุดเริ่มต้น"
-          onClick={() => setSelectedPoint(route[0])}
-        />
-
-        {/* End marker (red) */}
-        <Marker
-          position={path[path.length - 1]}
-          icon={{
-            url: '/icons/marker-end.png',
-            scaledSize: new google.maps.Size(32, 32),
-          }}
-          title="จุดสิ้นสุด"
-          onClick={() => setSelectedPoint(route[route.length - 1])}
-        />
-
-        {/* Stop markers (gray) - only show stopped points */}
-        {route
-          .filter((p, i) => p.status === 'stopped' && i > 0 && i < route.length - 1)
-          .map((point, i) => (
-            <Marker
-              key={i}
-              position={{ lat: point.latitude, lng: point.longitude }}
-              icon={{
-                url: '/icons/marker-stop.png',
-                scaledSize: new google.maps.Size(24, 24),
-              }}
-              onClick={() => setSelectedPoint(point)}
-            />
-          ))}
-
-        {/* Info window */}
-        {selectedPoint && (
-          <InfoWindow
-            position={{ lat: selectedPoint.latitude, lng: selectedPoint.longitude }}
-            onCloseClick={() => setSelectedPoint(null)}
-          >
-            <div className="p-2 min-w-[200px]">
-              <div className="font-semibold">
-                {new Date(selectedPoint.recorded_at).toLocaleTimeString('th-TH')}
-              </div>
-              <div className="text-sm text-gray-600">
-                {selectedPoint.speed} km/h | {getStatusLabel(selectedPoint.status)}
-              </div>
-              {selectedPoint.address && (
-                <div className="text-xs text-gray-500 mt-1">
-                  {selectedPoint.address}
-                </div>
-              )}
-            </div>
-          </InfoWindow>
-        )}
-      </GoogleMap>
-
-      {/* Route timeline */}
-      <RouteTimeline route={route} />
-    </div>
-  );
-}
-
-function RouteTimeline({ route }: { route: VehicleHistoryPoint[] }) {
-  // Group by hour
-  const hourlyGroups = route.reduce((acc, point) => {
-    const hour = new Date(point.recorded_at).getHours();
-    if (!acc[hour]) acc[hour] = [];
-    acc[hour].push(point);
-    return acc;
-  }, {} as Record<number, VehicleHistoryPoint[]>);
-
-  return (
-    <div className="bg-white rounded-lg p-4 shadow">
-      <h4 className="font-semibold mb-3">สรุปเส้นทางรายชั่วโมง</h4>
-      <div className="space-y-2">
-        {Object.entries(hourlyGroups).map(([hour, points]) => {
-          const moving = points.filter(p => p.status === 'moving').length;
-          const stopped = points.filter(p => p.status !== 'moving').length;
-          const avgSpeed = points.reduce((sum, p) => sum + p.speed, 0) / points.length;
-
-          return (
-            <div key={hour} className="flex items-center text-sm">
-              <div className="w-16 font-medium">{hour}:00</div>
-              <div className="flex-1 flex items-center space-x-4">
-                <span className="text-green-600">{moving} วิ่ง</span>
-                <span className="text-gray-600">{stopped} จอด</span>
-                <span className="text-blue-600">เฉลี่ย {avgSpeed.toFixed(0)} km/h</span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-function getStatusLabel(status: VehicleStatus): string {
-  const labels = {
-    moving: 'กำลังวิ่ง',
-    stopped: 'จอดนิ่ง',
-    parked_at_base: 'จอดที่โรงรถ',
-  };
-  return labels[status];
-}
-```
-
-### Route Date Picker Component
-```typescript
-// components/fleet/RouteDatePicker.tsx
-import { useState } from 'react';
-
-interface Props {
-  vehicleId: string;
-  vehicleName: string;
-}
-
-export function RouteDatePicker({ vehicleId, vehicleName }: Props) {
-  const [date, setDate] = useState(() => {
-    return new Date().toISOString().split('T')[0];
-  });
-
-  return (
-    <div className="space-y-4">
-      <div className="flex items-center space-x-4">
-        <label className="font-medium">เลือกวันที่:</label>
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          className="border rounded-lg px-3 py-2"
-        />
-      </div>
-
-      <VehicleRouteMap
-        vehicleId={vehicleId}
-        vehicleName={vehicleName}
-        date={date}
-      />
-    </div>
+    <span className={`px-2 py-1 rounded-full text-xs font-medium ${color}`}>
+      {label}
+    </span>
   );
 }
 ```
 
-## Architecture
+---
+
+## Architecture Notes
 
 ### Data Flow
+
 ```
 pg_cron (every 5 min)
-       ↓
+       |
+       v
    pg_net HTTP POST
-       ↓
+       |
+       v
 api-fleet-sync (Edge Function)
-       ↓
-External GPS API (bgfleet.loginto.me)
-       ↓
-┌──────────────────────────────┐
-│  fleet_vehicles (current)    │ ← api-fleet reads from here
-│  fleet_vehicle_history       │ ← route data stored here
-└──────────────────────────────┘
+       |
+       v
+External GPS API
+       |
+       v
++----------------------------+
+| fleet_vehicles (current)   | <-- api-fleet reads from here
+| fleet_vehicle_history      | <-- route history stored here
++----------------------------+
 ```
 
 ### Sync Schedule
-- **Frequency**: Every 5 minutes
-- **Data points per day**: 288 per vehicle
-- **History retention**: Configurable (recommend 30-90 days)
 
-## Notes
-- Data syncs automatically every 5 minutes via pg_cron
-- Vehicle data is stored in database for fast reads
-- Route history logged every 5 minutes for route mapping
-- Address geocoding only runs for stopped vehicles (to save API costs)
-- Address is cached if vehicle hasn't moved >50 meters
-- Garage detection uses configurable radius (default 100m)
-- Auto-refresh recommended every 30 seconds for real-time tracking
+- **Frequency:** Every 5 minutes via pg_cron
+- **Data points per day:** ~288 per vehicle (24 hours * 12 points/hour)
+- **History retention:** Configurable (recommended: 30-90 days)
+
+### Garage Detection
+
+Vehicles are marked as `parked_at_base` when they are within the configured radius of any garage location. The distance is calculated using the Haversine formula.
+
+---
+
+## Related APIs
+
+- **api-employees** - Employee management (for employee assignments)
+- **api-tickets** - Ticket management (work order data for work locations)
+- **api-sites** - Site management (work location coordinates)
+- **api-fleet-sync** - Internal function that syncs GPS data (not user-facing)
+
+---
+
+## Changelog
+
+| Date | Changes |
+|------|---------|
+| 2026-01-18 | Documented warmup endpoint (GET /warmup) |
+| 2026-01-15 | Added vehicle employee management endpoints (PUT/POST/DELETE employees) |
+| 2026-01-14 | Added work-locations endpoint |
+| 2026-01-12 | Initial release with vehicle tracking and garage management |

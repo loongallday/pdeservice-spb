@@ -1,0 +1,28 @@
+{
+  "scriptId": "375",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/_shared/cors.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 592,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "handleCORS",
+      "ranges": [
+        {
+          "startOffset": 443,
+          "endOffset": 591,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "scriptId": "812",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/fstream/1.0.12/lib/abstract.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2262,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2261,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2255,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Abstract",
+      "ranges": [
+        {
+          "startOffset": 361,
+          "endOffset": 405,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Abstract.on",
+      "ranges": [
+        {
+          "startOffset": 459,
+          "endOffset": 626,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Abstract.abort",
+      "ranges": [
+        {
+          "startOffset": 655,
+          "endOffset": 714,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Abstract.destroy",
+      "ranges": [
+        {
+          "startOffset": 745,
+          "endOffset": 759,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Abstract.warn",
+      "ranges": [
+        {
+          "startOffset": 787,
+          "endOffset": 1365,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Abstract.info",
+      "ranges": [
+        {
+          "startOffset": 1393,
+          "endOffset": 1448,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Abstract.error",
+      "ranges": [
+        {
+          "startOffset": 1477,
+          "endOffset": 1591,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "decorate",
+      "ranges": [
+        {
+          "startOffset": 1593,
+          "endOffset": 2252,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

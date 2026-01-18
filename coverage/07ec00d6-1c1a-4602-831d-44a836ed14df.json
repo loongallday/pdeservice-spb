@@ -1,0 +1,325 @@
+{
+  "scriptId": "468",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/pako/1.0.11/lib/zlib/deflate.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 61414,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 61413,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 61407,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "err",
+      "ranges": [
+        {
+          "startOffset": 4180,
+          "endOffset": 4262,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "rank",
+      "ranges": [
+        {
+          "startOffset": 4264,
+          "endOffset": 4325,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "zero",
+      "ranges": [
+        {
+          "startOffset": 4327,
+          "endOffset": 4408,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "flush_pending",
+      "ranges": [
+        {
+          "startOffset": 4729,
+          "endOffset": 5171,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "flush_block_only",
+      "ranges": [
+        {
+          "startOffset": 5174,
+          "endOffset": 5372,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "put_byte",
+      "ranges": [
+        {
+          "startOffset": 5375,
+          "endOffset": 5436,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "putShortMSB",
+      "ranges": [
+        {
+          "startOffset": 5685,
+          "endOffset": 5873,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "read_buf",
+      "ranges": [
+        {
+          "startOffset": 6261,
+          "endOffset": 6772,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "longest_match",
+      "ranges": [
+        {
+          "startOffset": 7311,
+          "endOffset": 11109,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "fill_window",
+      "ranges": [
+        {
+          "startOffset": 11572,
+          "endOffset": 16822,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deflate_stored",
+      "ranges": [
+        {
+          "startOffset": 17292,
+          "endOffset": 19667,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deflate_fast",
+      "ranges": [
+        {
+          "startOffset": 20050,
+          "endOffset": 24394,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deflate_slow",
+      "ranges": [
+        {
+          "startOffset": 24663,
+          "endOffset": 30028,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deflate_rle",
+      "ranges": [
+        {
+          "startOffset": 30310,
+          "endOffset": 33207,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deflate_huff",
+      "ranges": [
+        {
+          "startOffset": 33450,
+          "endOffset": 34705,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Config",
+      "ranges": [
+        {
+          "startOffset": 34971,
+          "endOffset": 35189,
+          "count": 10
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "lm_init",
+      "ranges": [
+        {
+          "startOffset": 36086,
+          "endOffset": 36669,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "DeflateState",
+      "ranges": [
+        {
+          "startOffset": 36672,
+          "endOffset": 44625,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deflateResetKeep",
+      "ranges": [
+        {
+          "startOffset": 44628,
+          "endOffset": 45185,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deflateReset",
+      "ranges": [
+        {
+          "startOffset": 45188,
+          "endOffset": 45320,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deflateSetHeader",
+      "ranges": [
+        {
+          "startOffset": 45323,
+          "endOffset": 45518,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deflateInit2",
+      "ranges": [
+        {
+          "startOffset": 45521,
+          "endOffset": 47469,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deflateInit",
+      "ranges": [
+        {
+          "startOffset": 47471,
+          "endOffset": 47602,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deflate",
+      "ranges": [
+        {
+          "startOffset": 47605,
+          "endOffset": 57866,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deflateEnd",
+      "ranges": [
+        {
+          "startOffset": 57868,
+          "endOffset": 58374,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deflateSetDictionary",
+      "ranges": [
+        {
+          "startOffset": 58573,
+          "endOffset": 60783,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

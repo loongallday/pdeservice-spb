@@ -1,0 +1,33 @@
+{
+  "scriptId": "335",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-features/handlers/getEnabled.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 737,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getEnabled",
+      "ranges": [
+        {
+          "startOffset": 239,
+          "endOffset": 736,
+          "count": 3
+        },
+        {
+          "startOffset": 548,
+          "endOffset": 555,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

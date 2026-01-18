@@ -1,5 +1,37 @@
 /**
- * Site service - Business logic for site operations
+ * @fileoverview Site service - Business logic for site operations
+ * @module api-sites/services/siteService
+ *
+ * Provides CRUD operations for customer sites (locations):
+ * - getAll(): List sites with pagination and company filter
+ * - getById(): Get site with tickets, merchandise, contacts
+ * - globalSearch(): Paginated search with ticket count filtering
+ * - hint(): Quick search (up to 5 results)
+ * - search(): Legacy non-paginated search (deprecated)
+ * - create(): Create new site
+ * - createOrReplace(): Upsert by site ID
+ * - update(): Update existing site
+ * - delete(): Delete site
+ * - findOrCreate(): Find by name/company or create new
+ *
+ * @description
+ * Key Features:
+ * - Thai administrative location codes (province, district, sub-district)
+ * - Links to company via company_id
+ * - Parallel queries for performance (Promise.all)
+ * - Searches by company name via subquery
+ * - RPC function for ticket count filtering
+ *
+ * Schema Fields (main_sites):
+ * - id, name, address_detail
+ * - subdistrict_code, district_code, province_code, postal_code
+ * - map_url, map_embed_url, latitude, longitude
+ * - company_id, contact_ids, is_main_branch, safety_standard
+ *
+ * @table main_sites - Primary site data
+ * @table child_site_contacts - Site contacts (1:N)
+ * @table main_tickets - Related tickets
+ * @table main_merchandise - Related equipment
  */
 
 import { createServiceClient } from '../../_shared/supabase.ts';

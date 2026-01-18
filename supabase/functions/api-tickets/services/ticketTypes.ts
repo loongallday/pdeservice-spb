@@ -1,5 +1,52 @@
 /**
- * Ticket service types and interfaces
+ * @fileoverview Ticket service types - Input/query parameter interfaces
+ * @module api-tickets/services/ticketTypes
+ *
+ * Defines TypeScript interfaces for ticket API operations:
+ * - TicketQueryParams: Search/list query parameters
+ * - MasterTicketCreateInput: Comprehensive ticket creation input
+ * - MasterTicketUpdateInput: Partial ticket update input
+ * - DateType: Date filter type enumeration
+ *
+ * @description
+ * MasterTicketCreateInput supports the "master" ticket creation pattern where
+ * a single API call can:
+ * - Create or find a company by tax_id
+ * - Create or use existing site
+ * - Create or use existing contact
+ * - Create appointment
+ * - Assign employees (technicians)
+ * - Link merchandise
+ * - Optionally summarize details using AI
+ *
+ * Employee ID Formats (backward compatible):
+ * - Old format: string[] (e.g., ["uuid1", "uuid2"])
+ * - New format: Array<{id: string, is_key?: boolean}> with key technician flag
+ *
+ * Appointment Types:
+ * - 'scheduled': Has specific date/time
+ * - 'call_to_schedule': Needs to call customer for scheduling
+ * - 'backlog': No appointment needed (queue work)
+ *
+ * @example
+ * // Query params for search
+ * const params: TicketQueryParams = {
+ *   page: 1,
+ *   limit: 20,
+ *   status_id: 'uuid',
+ *   work_type_id: 'uuid',
+ *   exclude_backlog: true
+ * };
+ *
+ * @example
+ * // Create input with new employee format
+ * const input: MasterTicketCreateInput = {
+ *   ticket: { work_type_id: 'uuid', assigner_id: 'uuid', status_id: 'uuid' },
+ *   employee_ids: [
+ *     { id: 'tech1-uuid', is_key: true },
+ *     { id: 'tech2-uuid', is_key: false }
+ *   ]
+ * };
  */
 
 export interface TicketQueryParams {

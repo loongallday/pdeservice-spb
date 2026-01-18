@@ -1,0 +1,171 @@
+{
+  "scriptId": "786",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bluebird/3.4.7/js/release/call_get.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 4585,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 4584,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 4578,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 406,
+          "endOffset": 4574,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "makeMethodCaller",
+      "ranges": [
+        {
+          "startOffset": 604,
+          "endOffset": 1824,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "makeGetter",
+      "ranges": [
+        {
+          "startOffset": 1844,
+          "endOffset": 2164,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getCompiled",
+      "ranges": [
+        {
+          "startOffset": 2185,
+          "endOffset": 2661,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getMethodCaller",
+      "ranges": [
+        {
+          "startOffset": 2682,
+          "endOffset": 2761,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getGetter",
+      "ranges": [
+        {
+          "startOffset": 2776,
+          "endOffset": 2849,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ensureMethod",
+      "ranges": [
+        {
+          "startOffset": 2854,
+          "endOffset": 3178,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "caller",
+      "ranges": [
+        {
+          "startOffset": 3180,
+          "endOffset": 3313,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.call",
+      "ranges": [
+        {
+          "startOffset": 3339,
+          "endOffset": 3894,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "namedGetter",
+      "ranges": [
+        {
+          "startOffset": 3897,
+          "endOffset": 3948,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "indexedGetter",
+      "ranges": [
+        {
+          "startOffset": 3949,
+          "endOffset": 4086,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.get",
+      "ranges": [
+        {
+          "startOffset": 4111,
+          "endOffset": 4571,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

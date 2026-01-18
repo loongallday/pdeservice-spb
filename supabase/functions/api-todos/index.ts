@@ -1,6 +1,32 @@
 /**
- * Todos API Edge Function
- * Handles todo/reminder CRUD operations
+ * @fileoverview Todos API Edge Function - Personal task/reminder management
+ * @module api-todos
+ *
+ * @description
+ * Handles todo/reminder CRUD operations for employees.
+ * Each todo belongs to the employee who created it.
+ *
+ * Todo Features:
+ * - Title and optional description
+ * - Due date for reminders
+ * - Priority levels (low, medium, high)
+ * - Complete/reopen workflow
+ * - Optional link to ticket or site
+ *
+ * @endpoints
+ * ## Todo Operations
+ * - GET    /               - List todos for current user
+ * - GET    /:id            - Get single todo
+ * - POST   /               - Create todo
+ * - PUT    /:id            - Update todo
+ * - POST   /:id/complete   - Mark todo as completed
+ * - PUT    /:id/complete   - Mark todo as completed (alias)
+ * - POST   /:id/reopen     - Reopen completed todo
+ * - PUT    /:id/reopen     - Reopen completed todo (alias)
+ * - DELETE /:id            - Delete todo
+ *
+ * @auth All endpoints require JWT authentication
+ * @table main_todos - Todo items
  */
 
 import { handleCORS } from '../_shared/cors.ts';

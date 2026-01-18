@@ -1,13 +1,34 @@
 /**
- * Handler for backfilling ticket summaries
- * POST /api-tickets/backfill-summaries
- * GET /api-tickets/backfill-summaries?job_id=xxx
+ * @fileoverview Background job handler for AI summary generation
+ * @module api-tickets/handlers/backfillSummaries
  *
- * Regenerates AI summaries for existing tickets that don't have one
- * or optionally for all tickets (force refresh)
+ * Endpoints:
+ * - POST /api-tickets/backfill-summaries - Start new backfill job
+ * - GET /api-tickets/backfill-summaries?job_id=xxx - Check job status
  *
- * This handler is ASYNC - it returns immediately and processes in background
- * Job status is stored in main_background_jobs table
+ * @auth Required - Level 2+ (Admin, Superadmin)
+ *
+ * @description
+ * Regenerates AI summaries for existing tickets. Operates as a background job
+ * to avoid timeout issues when processing many tickets.
+ *
+ * POST Request Body:
+ * - limit: Max tickets to process (default: 50, max: 500)
+ * - forceRefresh: Regenerate even if summary exists (default: false)
+ * - ticketIds: Specific ticket IDs or codes (UUID or PDE-123 format)
+ *
+ * Job Status:
+ * - Job ID is returned immediately after starting
+ * - Use GET with job_id to check progress
+ * - Status includes: processed, succeeded, failed, skipped counts
+ *
+ * The AI summary is generated from comprehensive ticket data including:
+ * - Ticket details and work type
+ * - Site and company information
+ * - Contact details
+ * - Appointment schedule
+ * - Assigned and confirmed technicians
+ * - Merchandise/equipment details
  */
 
 import { success, error } from '../../_shared/response.ts';
@@ -453,7 +474,7 @@ export async function backfillSummaries(
   employee: Employee
 ): Promise<Response> {
   // Require admin level (level 2+)
-  requireMinLevel(employee, 2);
+  await requireMinLevel(employee, 2);
 
   const supabase = createServiceClient();
   const url = new URL(req.url);

@@ -1,0 +1,83 @@
+{
+  "scriptId": "723",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/zip-stream/4.1.1/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 5474,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 5473,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 5467,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 1252,
+          "endOffset": 1906,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipStream._normalizeFileData",
+      "ranges": [
+        {
+          "startOffset": 2124,
+          "endOffset": 2791,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipStream.entry",
+      "ranges": [
+        {
+          "startOffset": 3521,
+          "endOffset": 4963,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipStream.finalize",
+      "ranges": [
+        {
+          "startOffset": 5144,
+          "endOffset": 5175,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

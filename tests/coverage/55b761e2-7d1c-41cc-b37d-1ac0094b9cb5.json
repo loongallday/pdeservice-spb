@@ -1,0 +1,215 @@
+{
+  "scriptId": "731",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/compress-commons/4.1.2/lib/archivers/zip/zip-archive-output-stream.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 11945,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 11944,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 11938,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 931,
+          "endOffset": 1425,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveOutputStream._afterAppend",
+      "ranges": [
+        {
+          "startOffset": 1532,
+          "endOffset": 1811,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveOutputStream._appendBuffer",
+      "ranges": [
+        {
+          "startOffset": 1863,
+          "endOffset": 2551,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveOutputStream._appendStream",
+      "ranges": [
+        {
+          "startOffset": 2603,
+          "endOffset": 2957,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveOutputStream._defaults",
+      "ranges": [
+        {
+          "startOffset": 3005,
+          "endOffset": 3306,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveOutputStream._finish",
+      "ranges": [
+        {
+          "startOffset": 3352,
+          "endOffset": 3803,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveOutputStream._normalizeEntry",
+      "ranges": [
+        {
+          "startOffset": 3857,
+          "endOffset": 4299,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveOutputStream._smartStream",
+      "ranges": [
+        {
+          "startOffset": 4350,
+          "endOffset": 4952,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveOutputStream._writeCentralDirectoryEnd",
+      "ranges": [
+        {
+          "startOffset": 5016,
+          "endOffset": 5875,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveOutputStream._writeCentralDirectoryZip64",
+      "ranges": [
+        {
+          "startOffset": 5941,
+          "endOffset": 7144,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveOutputStream._writeCentralFileHeader",
+      "ranges": [
+        {
+          "startOffset": 7206,
+          "endOffset": 9513,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveOutputStream._writeDataDescriptor",
+      "ranges": [
+        {
+          "startOffset": 9572,
+          "endOffset": 10006,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveOutputStream._writeLocalFileHeader",
+      "ranges": [
+        {
+          "startOffset": 10066,
+          "endOffset": 11430,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveOutputStream.getComment",
+      "ranges": [
+        {
+          "startOffset": 11479,
+          "endOffset": 11570,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveOutputStream.isZip64",
+      "ranges": [
+        {
+          "startOffset": 11616,
+          "endOffset": 11829,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipArchiveOutputStream.setComment",
+      "ranges": [
+        {
+          "startOffset": 11878,
+          "endOffset": 11934,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

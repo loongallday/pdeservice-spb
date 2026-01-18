@@ -1,0 +1,121 @@
+{
+  "scriptId": "666",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/@fast-csv/parse/4.3.6/build/src/transforms/HeaderTransformer.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 4849,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 4848,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 4842,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "__importDefault",
+      "ranges": [
+        {
+          "startOffset": 291,
+          "endOffset": 372,
+          "count": 4
+        },
+        {
+          "startOffset": 343,
+          "endOffset": 348,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "HeaderTransformer",
+      "ranges": [
+        {
+          "startOffset": 787,
+          "endOffset": 1402,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "transform",
+      "ranges": [
+        {
+          "startOffset": 1407,
+          "endOffset": 1588,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "shouldMapRow",
+      "ranges": [
+        {
+          "startOffset": 1593,
+          "endOffset": 2498,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "processRow",
+      "ranges": [
+        {
+          "startOffset": 2503,
+          "endOffset": 3518,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "mapHeaders",
+      "ranges": [
+        {
+          "startOffset": 3523,
+          "endOffset": 4115,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "setHeaders",
+      "ranges": [
+        {
+          "startOffset": 4120,
+          "endOffset": 4745,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

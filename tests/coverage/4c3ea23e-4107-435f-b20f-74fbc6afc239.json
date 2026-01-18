@@ -1,0 +1,209 @@
+{
+  "scriptId": "335",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-todos/handlers/todos.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3829,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "listTodos",
+      "ranges": [
+        {
+          "startOffset": 400,
+          "endOffset": 1411,
+          "count": 1
+        },
+        {
+          "startOffset": 790,
+          "endOffset": 839,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getTodo",
+      "ranges": [
+        {
+          "startOffset": 1463,
+          "endOffset": 1688,
+          "count": 2
+        },
+        {
+          "startOffset": 1662,
+          "endOffset": 1687,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "createTodo",
+      "ranges": [
+        {
+          "startOffset": 1737,
+          "endOffset": 2182,
+          "count": 2
+        },
+        {
+          "startOffset": 1817,
+          "endOffset": 1902,
+          "count": 1
+        },
+        {
+          "startOffset": 1902,
+          "endOffset": 1907,
+          "count": 0
+        },
+        {
+          "startOffset": 1972,
+          "endOffset": 1977,
+          "count": 0
+        },
+        {
+          "startOffset": 2073,
+          "endOffset": 2085,
+          "count": 1
+        },
+        {
+          "startOffset": 2151,
+          "endOffset": 2181,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "updateTodo",
+      "ranges": [
+        {
+          "startOffset": 2230,
+          "endOffset": 2942,
+          "count": 3
+        },
+        {
+          "startOffset": 2318,
+          "endOffset": 2397,
+          "count": 2
+        },
+        {
+          "startOffset": 2397,
+          "endOffset": 2514,
+          "count": 1
+        },
+        {
+          "startOffset": 2514,
+          "endOffset": 2551,
+          "count": 0
+        },
+        {
+          "startOffset": 2551,
+          "endOffset": 2587,
+          "count": 1
+        },
+        {
+          "startOffset": 2587,
+          "endOffset": 2618,
+          "count": 0
+        },
+        {
+          "startOffset": 2618,
+          "endOffset": 2657,
+          "count": 1
+        },
+        {
+          "startOffset": 2657,
+          "endOffset": 2694,
+          "count": 0
+        },
+        {
+          "startOffset": 2694,
+          "endOffset": 2731,
+          "count": 1
+        },
+        {
+          "startOffset": 2731,
+          "endOffset": 2764,
+          "count": 0
+        },
+        {
+          "startOffset": 2764,
+          "endOffset": 2800,
+          "count": 1
+        },
+        {
+          "startOffset": 2800,
+          "endOffset": 2831,
+          "count": 0
+        },
+        {
+          "startOffset": 2831,
+          "endOffset": 2941,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "deleteTodo",
+      "ranges": [
+        {
+          "startOffset": 2993,
+          "endOffset": 3235,
+          "count": 3
+        },
+        {
+          "startOffset": 3081,
+          "endOffset": 3181,
+          "count": 2
+        },
+        {
+          "startOffset": 3181,
+          "endOffset": 3234,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "completeTodo",
+      "ranges": [
+        {
+          "startOffset": 3304,
+          "endOffset": 3535,
+          "count": 2
+        },
+        {
+          "startOffset": 3509,
+          "endOffset": 3534,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "reopenTodo",
+      "ranges": [
+        {
+          "startOffset": 3601,
+          "endOffset": 3828,
+          "count": 2
+        },
+        {
+          "startOffset": 3802,
+          "endOffset": 3827,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

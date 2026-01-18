@@ -1,5 +1,24 @@
 /**
- * Remove ticket-employee assignment handler
+ * @fileoverview Remove technician assignment from ticket handler
+ * @endpoint DELETE /api-tickets/employees
+ * @auth Required - Level 2+ (Admin, Superadmin)
+ *
+ * @bodyParam {string} ticket_id - Required: Ticket UUID
+ * @bodyParam {string} employee_id - Required: Employee UUID to remove
+ * @bodyParam {string} date - Required: Assignment date (YYYY-MM-DD)
+ *
+ * @returns {object} { message: "ลบการมอบหมายพนักงานสำเร็จ" }
+ * @throws {ValidationError} 400 - Missing required fields
+ * @throws {AuthenticationError} 401 - If not authenticated
+ * @throws {ForbiddenError} 403 - Insufficient permissions (Level < 2)
+ *
+ * @description
+ * Removes a specific technician assignment from a ticket for a given date.
+ * This is an admin-only operation used to correct scheduling mistakes
+ * or reassign work.
+ *
+ * Note: This endpoint uses DELETE method but accepts a body with the
+ * assignment details to identify the specific record to remove.
  */
 
 import { success } from '../../_shared/response.ts';

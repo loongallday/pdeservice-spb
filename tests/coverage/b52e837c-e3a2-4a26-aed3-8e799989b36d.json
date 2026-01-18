@@ -1,0 +1,182 @@
+{
+  "scriptId": "369",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-employees/services/employeeService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 33424,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getRoleIdByCode",
+      "ranges": [
+        {
+          "startOffset": 1981,
+          "endOffset": 2627,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getDepartmentIdByCode",
+      "ranges": [
+        {
+          "startOffset": 2948,
+          "endOffset": 3624,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getById",
+      "ranges": [
+        {
+          "startOffset": 4074,
+          "endOffset": 4692,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "create",
+      "ranges": [
+        {
+          "startOffset": 5282,
+          "endOffset": 6895,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createInitialLeaveBalances",
+      "ranges": [
+        {
+          "startOffset": 7547,
+          "endOffset": 9142,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "update",
+      "ranges": [
+        {
+          "startOffset": 9741,
+          "endOffset": 13679,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "delete",
+      "ranges": [
+        {
+          "startOffset": 14023,
+          "endOffset": 14257,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "linkAuth",
+      "ranges": [
+        {
+          "startOffset": 14843,
+          "endOffset": 15897,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "linkExistingAuth",
+      "ranges": [
+        {
+          "startOffset": 16516,
+          "endOffset": 17989,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "unlinkAuth",
+      "ranges": [
+        {
+          "startOffset": 18424,
+          "endOffset": 19073,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getEmployeeCountsByDepartment",
+      "ranges": [
+        {
+          "startOffset": 19579,
+          "endOffset": 21287,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "search",
+      "ranges": [
+        {
+          "startOffset": 22173,
+          "endOffset": 24625,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "networkSearch",
+      "ranges": [
+        {
+          "startOffset": 25723,
+          "endOffset": 28372,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getEmployeeSummary",
+      "ranges": [
+        {
+          "startOffset": 28848,
+          "endOffset": 29689,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getTechniciansWithWorkload",
+      "ranges": [
+        {
+          "startOffset": 30449,
+          "endOffset": 33421,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

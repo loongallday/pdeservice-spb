@@ -1,0 +1,1124 @@
+{
+  "scriptId": "775",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bluebird/3.4.7/js/release/debuggability.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 29749,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 29748,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 29742,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 252,
+          "endOffset": 29738,
+          "count": 1
+        },
+        {
+          "startOffset": 28440,
+          "endOffset": 28630,
+          "count": 0
+        },
+        {
+          "startOffset": 28653,
+          "endOffset": 28695,
+          "count": 0
+        },
+        {
+          "startOffset": 28697,
+          "endOffset": 28877,
+          "count": 0
+        },
+        {
+          "startOffset": 29020,
+          "endOffset": 29046,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Promise.suppressUnhandledRejections",
+      "ranges": [
+        {
+          "startOffset": 1461,
+          "endOffset": 1597,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._ensurePossibleRejectionHandled",
+      "ranges": [
+        {
+          "startOffset": 1652,
+          "endOffset": 1825,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._notifyUnhandledRejectionIsHandled",
+      "ranges": [
+        {
+          "startOffset": 1883,
+          "endOffset": 2020,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._setReturnedNonUndefined",
+      "ranges": [
+        {
+          "startOffset": 2068,
+          "endOffset": 2131,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._returnedNonUndefined",
+      "ranges": [
+        {
+          "startOffset": 2176,
+          "endOffset": 2237,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._notifyUnhandledRejection",
+      "ranges": [
+        {
+          "startOffset": 2286,
+          "endOffset": 2569,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._setUnhandledRejectionIsNotified",
+      "ranges": [
+        {
+          "startOffset": 2625,
+          "endOffset": 2686,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._unsetUnhandledRejectionIsNotified",
+      "ranges": [
+        {
+          "startOffset": 2744,
+          "endOffset": 2808,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._isUnhandledRejectionNotified",
+      "ranges": [
+        {
+          "startOffset": 2861,
+          "endOffset": 2918,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._setRejectionIsUnhandled",
+      "ranges": [
+        {
+          "startOffset": 2966,
+          "endOffset": 3028,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._unsetRejectionIsUnhandled",
+      "ranges": [
+        {
+          "startOffset": 3078,
+          "endOffset": 3299,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._isRejectionUnhandled",
+      "ranges": [
+        {
+          "startOffset": 3344,
+          "endOffset": 3402,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._warn",
+      "ranges": [
+        {
+          "startOffset": 3431,
+          "endOffset": 3542,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.onPossiblyUnhandledRejection",
+      "ranges": [
+        {
+          "startOffset": 3584,
+          "endOffset": 3842,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.onUnhandledRejectionHandled",
+      "ranges": [
+        {
+          "startOffset": 3883,
+          "endOffset": 4140,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "disableLongStackTraces",
+      "ranges": [
+        {
+          "startOffset": 4172,
+          "endOffset": 4185,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.longStackTraces",
+      "ranges": [
+        {
+          "startOffset": 4213,
+          "endOffset": 5523,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.hasLongStackTraces",
+      "ranges": [
+        {
+          "startOffset": 5555,
+          "endOffset": 5637,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 5660,
+          "endOffset": 7107,
+          "count": 1
+        },
+        {
+          "startOffset": 6123,
+          "endOffset": 7033,
+          "count": 0
+        },
+        {
+          "startOffset": 7040,
+          "endOffset": 7106,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 5853,
+          "endOffset": 6112,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 6279,
+          "endOffset": 6538,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "eventToObjectGenerator.promiseCreated",
+      "ranges": [
+        {
+          "startOffset": 6754,
+          "endOffset": 7022,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 7064,
+          "endOffset": 7104,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 7136,
+          "endOffset": 7686,
+          "count": 1
+        },
+        {
+          "startOffset": 7275,
+          "endOffset": 7684,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "eventToObjectGenerator.promiseCreated",
+      "ranges": [
+        {
+          "startOffset": 7187,
+          "endOffset": 7268,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "eventToObjectGenerator.promiseCreated",
+      "ranges": [
+        {
+          "startOffset": 7330,
+          "endOffset": 7386,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 7413,
+          "endOffset": 7677,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "generatePromiseLifecycleEventObject",
+      "ranges": [
+        {
+          "startOffset": 7692,
+          "endOffset": 7786,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "promiseChained",
+      "ranges": [
+        {
+          "startOffset": 8130,
+          "endOffset": 8217,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "warning",
+      "ranges": [
+        {
+          "startOffset": 8232,
+          "endOffset": 8298,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "unhandledRejection",
+      "ranges": [
+        {
+          "startOffset": 8324,
+          "endOffset": 8415,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "activeFireEvent",
+      "ranges": [
+        {
+          "startOffset": 8501,
+          "endOffset": 9006,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.config",
+      "ranges": [
+        {
+          "startOffset": 9026,
+          "endOffset": 10845,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "defaultFireEvent",
+      "ranges": [
+        {
+          "startOffset": 10848,
+          "endOffset": 10893,
+          "count": 9
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Promise._execute",
+      "ranges": [
+        {
+          "startOffset": 10973,
+          "endOffset": 11099,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._onCancel",
+      "ranges": [
+        {
+          "startOffset": 11131,
+          "endOffset": 11145,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._setOnCancel",
+      "ranges": [
+        {
+          "startOffset": 11180,
+          "endOffset": 11204,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._attachCancellationCallback",
+      "ranges": [
+        {
+          "startOffset": 11254,
+          "endOffset": 11282,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._captureStackTrace",
+      "ranges": [
+        {
+          "startOffset": 11323,
+          "endOffset": 11337,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._attachExtraTrace",
+      "ranges": [
+        {
+          "startOffset": 11377,
+          "endOffset": 11391,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._clearCancellationData",
+      "ranges": [
+        {
+          "startOffset": 11436,
+          "endOffset": 11449,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise._propagateFrom",
+      "ranges": [
+        {
+          "startOffset": 11486,
+          "endOffset": 11526,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "cancellationExecute",
+      "ranges": [
+        {
+          "startOffset": 11529,
+          "endOffset": 11991,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "cancellationAttachCancellationCallback",
+      "ranges": [
+        {
+          "startOffset": 11993,
+          "endOffset": 12422,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "cancellationOnCancel",
+      "ranges": [
+        {
+          "startOffset": 12424,
+          "endOffset": 12491,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "cancellationSetOnCancel",
+      "ranges": [
+        {
+          "startOffset": 12493,
+          "endOffset": 12575,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "cancellationClearCancellationData",
+      "ranges": [
+        {
+          "startOffset": 12577,
+          "endOffset": 12704,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "cancellationPropagateFrom",
+      "ranges": [
+        {
+          "startOffset": 12706,
+          "endOffset": 13194,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "bindingPropagateFrom",
+      "ranges": [
+        {
+          "startOffset": 13196,
+          "endOffset": 13343,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "boundValueFunction",
+      "ranges": [
+        {
+          "startOffset": 13395,
+          "endOffset": 13698,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "longStackTracesCaptureStackTrace",
+      "ranges": [
+        {
+          "startOffset": 13700,
+          "endOffset": 13805,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "longStackTracesAttachExtraTrace",
+      "ranges": [
+        {
+          "startOffset": 13807,
+          "endOffset": 14412,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "checkForgottenReturns",
+      "ranges": [
+        {
+          "startOffset": 14414,
+          "endOffset": 16170,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "deprecated",
+      "ranges": [
+        {
+          "startOffset": 16172,
+          "endOffset": 16401,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "warn",
+      "ranges": [
+        {
+          "startOffset": 16403,
+          "endOffset": 16976,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "reconstructStack",
+      "ranges": [
+        {
+          "startOffset": 16978,
+          "endOffset": 17294,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "removeDuplicateOrEmptyJumps",
+      "ranges": [
+        {
+          "startOffset": 17296,
+          "endOffset": 17570,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "removeCommonRoots",
+      "ranges": [
+        {
+          "startOffset": 17572,
+          "endOffset": 18359,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "cleanStack",
+      "ranges": [
+        {
+          "startOffset": 18361,
+          "endOffset": 18873,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "stackFramesAsArray",
+      "ranges": [
+        {
+          "startOffset": 18875,
+          "endOffset": 19267,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseStackAndMessage",
+      "ranges": [
+        {
+          "startOffset": 19269,
+          "endOffset": 19621,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "formatAndLogError",
+      "ranges": [
+        {
+          "startOffset": 19623,
+          "endOffset": 20186,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "fireRejectionEvent",
+      "ranges": [
+        {
+          "startOffset": 20188,
+          "endOffset": 20865,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "formatNonError",
+      "ranges": [
+        {
+          "startOffset": 20867,
+          "endOffset": 21554,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "snip",
+      "ranges": [
+        {
+          "startOffset": 21556,
+          "endOffset": 21708,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "longStackTracesIsSupported",
+      "ranges": [
+        {
+          "startOffset": 21710,
+          "endOffset": 21803,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "shouldIgnore",
+      "ranges": [
+        {
+          "startOffset": 21824,
+          "endOffset": 21852,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseLineInfo",
+      "ranges": [
+        {
+          "startOffset": 21920,
+          "endOffset": 22132,
+          "count": 4
+        },
+        {
+          "startOffset": 22018,
+          "endOffset": 22130,
+          "count": 2
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "setBounds",
+      "ranges": [
+        {
+          "startOffset": 22134,
+          "endOffset": 23472,
+          "count": 1
+        },
+        {
+          "startOffset": 22225,
+          "endOffset": 22232,
+          "count": 0
+        },
+        {
+          "startOffset": 22498,
+          "endOffset": 22695,
+          "count": 2
+        },
+        {
+          "startOffset": 22576,
+          "endOffset": 22689,
+          "count": 1
+        },
+        {
+          "startOffset": 22748,
+          "endOffset": 22942,
+          "count": 2
+        },
+        {
+          "startOffset": 22825,
+          "endOffset": 22936,
+          "count": 1
+        },
+        {
+          "startOffset": 23060,
+          "endOffset": 23086,
+          "count": 0
+        },
+        {
+          "startOffset": 23111,
+          "endOffset": 23471,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "shouldIgnore",
+      "ranges": [
+        {
+          "startOffset": 23132,
+          "endOffset": 23469,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "CapturedTrace",
+      "ranges": [
+        {
+          "startOffset": 23474,
+          "endOffset": 23728,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "CapturedTrace.uncycle",
+      "ranges": [
+        {
+          "startOffset": 23840,
+          "endOffset": 25379,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "CapturedTrace.attachExtraTrace",
+      "ranges": [
+        {
+          "startOffset": 25425,
+          "endOffset": 25981,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "stackDetection",
+      "ranges": [
+        {
+          "startOffset": 26009,
+          "endOffset": 28232,
+          "count": 1
+        },
+        {
+          "startOffset": 26957,
+          "endOffset": 27091,
+          "count": 0
+        },
+        {
+          "startOffset": 27093,
+          "endOffset": 27480,
+          "count": 0
+        },
+        {
+          "startOffset": 27481,
+          "endOffset": 27533,
+          "count": 0
+        },
+        {
+          "startOffset": 27535,
+          "endOffset": 28231,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "v8stackFormatter",
+      "ranges": [
+        {
+          "startOffset": 26107,
+          "endOffset": 26359,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "shouldIgnore",
+      "ranges": [
+        {
+          "startOffset": 26678,
+          "endOffset": 26756,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 26773,
+          "endOffset": 26950,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "captureStackTrace",
+      "ranges": [
+        {
+          "startOffset": 27217,
+          "endOffset": 27299,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "captureStackTrace",
+      "ranges": [
+        {
+          "startOffset": 27641,
+          "endOffset": 27845,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "formatStack",
+      "ranges": [
+        {
+          "startOffset": 27872,
+          "endOffset": 28210,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "printWarning",
+      "ranges": [
+        {
+          "startOffset": 28336,
+          "endOffset": 28393,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "printWarning",
+      "ranges": [
+        {
+          "startOffset": 28465,
+          "endOffset": 28623,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "printWarning",
+      "ranges": [
+        {
+          "startOffset": 28722,
+          "endOffset": 28870,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "longStackTraces",
+      "ranges": [
+        {
+          "startOffset": 29078,
+          "endOffset": 29135,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "warnings",
+      "ranges": [
+        {
+          "startOffset": 29151,
+          "endOffset": 29201,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "cancellation",
+      "ranges": [
+        {
+          "startOffset": 29221,
+          "endOffset": 29275,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "monitoring",
+      "ranges": [
+        {
+          "startOffset": 29293,
+          "endOffset": 29345,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "propagateFromFunction",
+      "ranges": [
+        {
+          "startOffset": 29374,
+          "endOffset": 29430,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "boundValueFunction",
+      "ranges": [
+        {
+          "startOffset": 29456,
+          "endOffset": 29509,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

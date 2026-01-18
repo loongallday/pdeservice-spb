@@ -1,0 +1,296 @@
+{
+  "scriptId": "743",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bl/4.1.0/BufferList.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 9754,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 9753,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 9747,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "BufferList",
+      "ranges": [
+        {
+          "startOffset": 313,
+          "endOffset": 452,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_init",
+      "ranges": [
+        {
+          "startOffset": 473,
+          "endOffset": 628,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_new",
+      "ranges": [
+        {
+          "startOffset": 658,
+          "endOffset": 710,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_offset",
+      "ranges": [
+        {
+          "startOffset": 743,
+          "endOffset": 1030,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BufferList._reverseOffset",
+      "ranges": [
+        {
+          "startOffset": 1070,
+          "endOffset": 1247,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 1276,
+          "endOffset": 1448,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "slice",
+      "ranges": [
+        {
+          "startOffset": 1479,
+          "endOffset": 1700,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "copy",
+      "ranges": [
+        {
+          "startOffset": 1730,
+          "endOffset": 3551,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "shallowSlice",
+      "ranges": [
+        {
+          "startOffset": 3589,
+          "endOffset": 4256,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toString",
+      "ranges": [
+        {
+          "startOffset": 4290,
+          "endOffset": 4385,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "consume",
+      "ranges": [
+        {
+          "startOffset": 4418,
+          "endOffset": 4943,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "duplicate",
+      "ranges": [
+        {
+          "startOffset": 4978,
+          "endOffset": 5129,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "append",
+      "ranges": [
+        {
+          "startOffset": 5161,
+          "endOffset": 5915,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "appendBuffer",
+      "ranges": [
+        {
+          "startOffset": 5954,
+          "endOffset": 6036,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BufferList.indexOf",
+      "ranges": [
+        {
+          "startOffset": 6069,
+          "endOffset": 8066,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BufferList._match",
+      "ranges": [
+        {
+          "startOffset": 8098,
+          "endOffset": 8383,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 8387,
+          "endOffset": 9194,
+          "count": 1
+        },
+        {
+          "startOffset": 8819,
+          "endOffset": 9192,
+          "count": 18
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 8826,
+          "endOffset": 9184,
+          "count": 18
+        },
+        {
+          "startOffset": 8872,
+          "endOffset": 9032,
+          "count": 4
+        },
+        {
+          "startOffset": 9032,
+          "endOffset": 9178,
+          "count": 14
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "BufferList.<computed>",
+      "ranges": [
+        {
+          "startOffset": 8908,
+          "endOffset": 9024,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "BufferList.<computed>",
+      "ranges": [
+        {
+          "startOffset": 9074,
+          "endOffset": 9170,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "_isBufferList",
+      "ranges": [
+        {
+          "startOffset": 9533,
+          "endOffset": 9626,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isBufferList",
+      "ranges": [
+        {
+          "startOffset": 9654,
+          "endOffset": 9715,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

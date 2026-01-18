@@ -1,5 +1,28 @@
 /**
- * Confirm technicians handler
+ * @fileoverview Confirm technicians for ticket appointment handler
+ * @endpoint POST /api-tickets/:id/confirm-technicians
+ * @auth Required - Appointment approvers only
+ *
+ * @param {string} id - Ticket UUID (path parameter)
+ *
+ * @bodyParam {Array<string|{id: string, is_key?: boolean}>} employee_ids - Required: Technicians to confirm
+ * @bodyParam {string} [notes] - Optional notes for the confirmation
+ *
+ * @returns {ConfirmationResult} Confirmation record (HTTP 201)
+ * @throws {ValidationError} 400 - Invalid UUID or empty employee list
+ * @throws {AuthenticationError} 401 - If not authenticated
+ * @throws {ForbiddenError} 403 - User cannot approve appointments
+ *
+ * @description
+ * Confirms which technicians will actually work on a ticket's appointment.
+ * This is separate from initial assignment and represents the final
+ * approved technician list for scheduling.
+ *
+ * Employee IDs Format:
+ * - Simple string array: ["uuid1", "uuid2"]
+ * - Object array with key technician flag: [{id: "uuid1", is_key: true}, {id: "uuid2"}]
+ *
+ * The is_key flag indicates the primary/lead technician for the job.
  */
 
 import { success } from '../../_shared/response.ts';

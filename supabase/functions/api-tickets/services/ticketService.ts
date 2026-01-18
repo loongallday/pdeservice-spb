@@ -1,10 +1,26 @@
 /**
- * Ticket service - Main service class that aggregates all ticket operations
- * 
- * This file re-exports methods from specialized service files:
+ * @fileoverview Ticket service aggregator - Unified interface for all ticket operations
+ * @module api-tickets/services/ticketService
+ *
+ * This is the main entry point for ticket operations, aggregating functionality
+ * from specialized service files:
  * - ticketSearchService.ts: Search operations (search, searchByDuration, getById)
  * - ticketCrudService.ts: CRUD operations (create, update, deleteTicket)
- * - ticketHelperService.ts: Helper methods (findOrCreateCompany, etc.)
+ * - ticketHelperService.ts: Helper methods (linkMerchandiseToTicket, etc.)
+ *
+ * @description
+ * The TicketService class provides a unified static interface for all ticket
+ * operations while delegating to specialized services internally. This maintains
+ * backward compatibility with handlers while allowing internal refactoring.
+ *
+ * Public Methods:
+ * - getById(id): Get single ticket with all related data
+ * - search(params): Search tickets with filters and pagination
+ * - searchByDuration(params): Search tickets by date range
+ * - create(input, employeeId): Create comprehensive ticket
+ * - update(ticketId, input, employeeId): Update ticket and related data
+ * - deleteTicket(ticketId, employeeId, options): Delete ticket with cleanup
+ * - removeTicketEmployee(ticketId, employeeId, date, changedBy): Remove assignment
  */
 
 import type {

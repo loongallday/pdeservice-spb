@@ -1,0 +1,171 @@
+{
+  "scriptId": "490",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/jszip/3.10.1/lib/zipEntry.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 11544,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 11543,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 11537,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "findCompression",
+      "ranges": [
+        {
+          "startOffset": 776,
+          "endOffset": 1091,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ZipEntry",
+      "ranges": [
+        {
+          "startOffset": 1288,
+          "endOffset": 1395,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isEncrypted",
+      "ranges": [
+        {
+          "startOffset": 1562,
+          "endOffset": 1655,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "useUTF8",
+      "ranges": [
+        {
+          "startOffset": 1821,
+          "endOffset": 1915,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "readLocalPart",
+      "ranges": [
+        {
+          "startOffset": 2079,
+          "endOffset": 4511,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "readCentralPart",
+      "ranges": [
+        {
+          "startOffset": 4680,
+          "endOffset": 5833,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "processAttributes",
+      "ranges": [
+        {
+          "startOffset": 5951,
+          "endOffset": 6904,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseZIP64ExtraField",
+      "ranges": [
+        {
+          "startOffset": 7081,
+          "endOffset": 7957,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "readExtraFields",
+      "ranges": [
+        {
+          "startOffset": 8125,
+          "endOffset": 8792,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "handleUTF8",
+      "ranges": [
+        {
+          "startOffset": 8873,
+          "endOffset": 9981,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "findExtraFieldUnicodePath",
+      "ranges": [
+        {
+          "startOffset": 10155,
+          "endOffset": 10731,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "findExtraFieldUnicodeComment",
+      "ranges": [
+        {
+          "startOffset": 10914,
+          "endOffset": 11504,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

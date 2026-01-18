@@ -1,0 +1,160 @@
+{
+  "scriptId": "731",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/compress-commons/4.1.2/lib/archivers/archive-output-stream.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2988,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2987,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2981,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 643,
+          "endOffset": 902,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ArchiveOutputStream._appendBuffer",
+      "ranges": [
+        {
+          "startOffset": 994,
+          "endOffset": 1048,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ArchiveOutputStream._appendStream",
+      "ranges": [
+        {
+          "startOffset": 1097,
+          "endOffset": 1151,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ArchiveOutputStream._emitErrorCallback",
+      "ranges": [
+        {
+          "startOffset": 1205,
+          "endOffset": 1268,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ArchiveOutputStream._finish",
+      "ranges": [
+        {
+          "startOffset": 1311,
+          "endOffset": 1346,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ArchiveOutputStream._normalizeEntry",
+      "ranges": [
+        {
+          "startOffset": 1397,
+          "endOffset": 1432,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ArchiveOutputStream._transform",
+      "ranges": [
+        {
+          "startOffset": 1478,
+          "endOffset": 1542,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ArchiveOutputStream.entry",
+      "ranges": [
+        {
+          "startOffset": 1583,
+          "endOffset": 2558,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ArchiveOutputStream.finish",
+      "ranges": [
+        {
+          "startOffset": 2600,
+          "endOffset": 2716,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ArchiveOutputStream.getBytesWritten",
+      "ranges": [
+        {
+          "startOffset": 2767,
+          "endOffset": 2803,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ArchiveOutputStream.write",
+      "ranges": [
+        {
+          "startOffset": 2844,
+          "endOffset": 2978,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

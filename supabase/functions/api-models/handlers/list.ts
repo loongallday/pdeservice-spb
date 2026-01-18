@@ -2,7 +2,7 @@
  * List models handler
  */
 
-import { success } from '../../_shared/response.ts';
+import { successWithPagination } from '../../_shared/response.ts';
 import { requireMinLevel } from '../../_shared/auth.ts';
 import { parsePaginationParams } from '../../_shared/validation.ts';
 import { ModelService } from '../services/modelService.ts';
@@ -20,6 +20,6 @@ export async function list(req: Request, employee: Employee) {
   // Get models from service
   const result = await ModelService.getAll({ page, limit, search });
 
-  return success(result);
+  return successWithPagination(result.data, result.pagination);
 }
 

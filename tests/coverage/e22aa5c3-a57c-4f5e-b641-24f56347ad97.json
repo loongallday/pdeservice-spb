@@ -1,0 +1,171 @@
+{
+  "scriptId": "762",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/buffers/0.1.1/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 7287,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 7286,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 7280,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Buffers",
+      "ranges": [
+        {
+          "startOffset": 248,
+          "endOffset": 473,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Buffers.push",
+      "ranges": [
+        {
+          "startOffset": 500,
+          "endOffset": 872,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Buffers.unshift",
+      "ranges": [
+        {
+          "startOffset": 903,
+          "endOffset": 1281,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Buffers.copy",
+      "ranges": [
+        {
+          "startOffset": 1309,
+          "endOffset": 1416,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Buffers.splice",
+      "ranges": [
+        {
+          "startOffset": 1446,
+          "endOffset": 3995,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Buffers.slice",
+      "ranges": [
+        {
+          "startOffset": 4025,
+          "endOffset": 4837,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Buffers.pos",
+      "ranges": [
+        {
+          "startOffset": 4864,
+          "endOffset": 5164,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 5191,
+          "endOffset": 5289,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set",
+      "ranges": [
+        {
+          "startOffset": 5316,
+          "endOffset": 5420,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Buffers.indexOf",
+      "ranges": [
+        {
+          "startOffset": 5451,
+          "endOffset": 7087,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Buffers.toBuffer",
+      "ranges": [
+        {
+          "startOffset": 7119,
+          "endOffset": 7158,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Buffers.toString",
+      "ranges": [
+        {
+          "startOffset": 7189,
+          "endOffset": 7277,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

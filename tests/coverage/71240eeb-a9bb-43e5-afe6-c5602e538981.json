@@ -1,0 +1,38 @@
+{
+  "scriptId": "335",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-employee-site-trainings/handlers/list.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 861,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "list",
+      "ranges": [
+        {
+          "startOffset": 338,
+          "endOffset": 860,
+          "count": 3
+        },
+        {
+          "startOffset": 604,
+          "endOffset": 616,
+          "count": 2
+        },
+        {
+          "startOffset": 667,
+          "endOffset": 679,
+          "count": 2
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

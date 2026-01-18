@@ -1,0 +1,160 @@
+{
+  "scriptId": "372",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-models/services/modelService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 12539,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "sanitizeModelData",
+      "ranges": [
+        {
+          "startOffset": 1846,
+          "endOffset": 2127,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getAll",
+      "ranges": [
+        {
+          "startOffset": 2183,
+          "endOffset": 3244,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getById",
+      "ranges": [
+        {
+          "startOffset": 3292,
+          "endOffset": 3599,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getByModel",
+      "ranges": [
+        {
+          "startOffset": 3648,
+          "endOffset": 3967,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "create",
+      "ranges": [
+        {
+          "startOffset": 4009,
+          "endOffset": 4580,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "update",
+      "ranges": [
+        {
+          "startOffset": 4618,
+          "endOffset": 5210,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "delete",
+      "ranges": [
+        {
+          "startOffset": 5248,
+          "endOffset": 5673,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "search",
+      "ranges": [
+        {
+          "startOffset": 5774,
+          "endOffset": 7906,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getPackage",
+      "ranges": [
+        {
+          "startOffset": 8164,
+          "endOffset": 9610,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addPackageComponent",
+      "ranges": [
+        {
+          "startOffset": 9679,
+          "endOffset": 10791,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "removePackageComponent",
+      "ranges": [
+        {
+          "startOffset": 10865,
+          "endOffset": 11168,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addPackageService",
+      "ranges": [
+        {
+          "startOffset": 11222,
+          "endOffset": 12192,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "removePackageService",
+      "ranges": [
+        {
+          "startOffset": 12251,
+          "endOffset": 12536,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

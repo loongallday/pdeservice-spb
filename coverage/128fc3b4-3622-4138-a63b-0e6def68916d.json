@@ -1,0 +1,193 @@
+{
+  "scriptId": "763",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/traverse/0.3.9/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 9324,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 9323,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 9317,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Traverse",
+      "ranges": [
+        {
+          "startOffset": 248,
+          "endOffset": 360,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Traverse.get",
+      "ranges": [
+        {
+          "startOffset": 387,
+          "endOffset": 661,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Traverse.set",
+      "ranges": [
+        {
+          "startOffset": 689,
+          "endOffset": 955,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Traverse.map",
+      "ranges": [
+        {
+          "startOffset": 983,
+          "endOffset": 1039,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Traverse.forEach",
+      "ranges": [
+        {
+          "startOffset": 1071,
+          "endOffset": 1157,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Traverse.reduce",
+      "ranges": [
+        {
+          "startOffset": 1188,
+          "endOffset": 1434,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Traverse.deepEqual",
+      "ranges": [
+        {
+          "startOffset": 1468,
+          "endOffset": 4107,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Traverse.paths",
+      "ranges": [
+        {
+          "startOffset": 4137,
+          "endOffset": 4256,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Traverse.nodes",
+      "ranges": [
+        {
+          "startOffset": 4286,
+          "endOffset": 4404,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Traverse.clone",
+      "ranges": [
+        {
+          "startOffset": 4434,
+          "endOffset": 5134,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "walk",
+      "ranges": [
+        {
+          "startOffset": 5137,
+          "endOffset": 8340,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 8382,
+          "endOffset": 8561,
+          "count": 9
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Traverse.<computed>",
+      "ranges": [
+        {
+          "startOffset": 8419,
+          "endOffset": 8558,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "copy",
+      "ranges": [
+        {
+          "startOffset": 8565,
+          "endOffset": 9314,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

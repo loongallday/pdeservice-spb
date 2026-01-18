@@ -1,0 +1,116 @@
+{
+  "scriptId": "675",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/@fast-csv/parse/4.3.6/build/src/parser/Token.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1350,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 1349,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 1343,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Token",
+      "ranges": [
+        {
+          "startOffset": 340,
+          "endOffset": 504,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isTokenRowDelimiter",
+      "ranges": [
+        {
+          "startOffset": 516,
+          "endOffset": 662,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isTokenCarriageReturn",
+      "ranges": [
+        {
+          "startOffset": 674,
+          "endOffset": 786,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isTokenComment",
+      "ranges": [
+        {
+          "startOffset": 798,
+          "endOffset": 941,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isTokenEscapeCharacter",
+      "ranges": [
+        {
+          "startOffset": 953,
+          "endOffset": 1062,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isTokenQuote",
+      "ranges": [
+        {
+          "startOffset": 1074,
+          "endOffset": 1168,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isTokenDelimiter",
+      "ranges": [
+        {
+          "startOffset": 1180,
+          "endOffset": 1282,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

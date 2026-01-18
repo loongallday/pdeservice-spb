@@ -1,0 +1,126 @@
+{
+  "scriptId": "771",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bluebird/3.4.7/js/release/schedule.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2339,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2338,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2332,
+          "count": 1
+        },
+        {
+          "startOffset": 739,
+          "endOffset": 792,
+          "count": 0
+        },
+        {
+          "startOffset": 795,
+          "endOffset": 2302,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "noAsyncScheduler",
+      "ranges": [
+        {
+          "startOffset": 302,
+          "endOffset": 415,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "schedule",
+      "ranges": [
+        {
+          "startOffset": 669,
+          "endOffset": 722,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "schedule",
+      "ranges": [
+        {
+          "startOffset": 741,
+          "endOffset": 792,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "schedule",
+      "ranges": [
+        {
+          "startOffset": 966,
+          "endOffset": 1018,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1233,
+          "endOffset": 2027,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "schedule",
+      "ranges": [
+        {
+          "startOffset": 2097,
+          "endOffset": 2144,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "schedule",
+      "ranges": [
+        {
+          "startOffset": 2209,
+          "endOffset": 2257,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

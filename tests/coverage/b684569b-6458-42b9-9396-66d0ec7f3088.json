@@ -1,0 +1,39 @@
+{
+  "scriptId": "380",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/services/ticketHelperService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 4485,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "logTicketAudit",
+      "ranges": [
+        {
+          "startOffset": 1942,
+          "endOffset": 3099,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "linkMerchandiseToTicket",
+      "ranges": [
+        {
+          "startOffset": 3145,
+          "endOffset": 4484,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

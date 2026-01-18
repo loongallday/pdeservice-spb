@@ -1,0 +1,138 @@
+{
+  "scriptId": "445",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/readable-stream/2.3.8/lib/_stream_transform.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 7972,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 7971,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 7965,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "afterTransform",
+      "ranges": [
+        {
+          "startOffset": 3952,
+          "endOffset": 4477,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Transform",
+      "ranges": [
+        {
+          "startOffset": 4479,
+          "endOffset": 5404,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "prefinish",
+      "ranges": [
+        {
+          "startOffset": 5406,
+          "endOffset": 5612,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Transform.push",
+      "ranges": [
+        {
+          "startOffset": 5641,
+          "endOffset": 5777,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Transform._transform",
+      "ranges": [
+        {
+          "startOffset": 6260,
+          "endOffset": 6348,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Transform._write",
+      "ranges": [
+        {
+          "startOffset": 6380,
+          "endOffset": 6693,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Transform._read",
+      "ranges": [
+        {
+          "startOffset": 6865,
+          "endOffset": 7251,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Transform._destroy",
+      "ranges": [
+        {
+          "startOffset": 7285,
+          "endOffset": 7437,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "done",
+      "ranges": [
+        {
+          "startOffset": 7440,
+          "endOffset": 7963,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

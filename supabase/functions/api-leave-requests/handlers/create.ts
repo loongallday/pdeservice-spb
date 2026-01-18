@@ -21,6 +21,7 @@ export async function create(req: Request, employee: Employee) {
   validateRequired(body.leave_type_id, 'Leave Type ID');
   validateRequired(body.start_date, 'Start Date');
   validateRequired(body.end_date, 'End Date');
+  validateRequired(body.total_days, 'Total Days');
 
   // Prepare data for insertion - only include half_day_type if it has a valid value
   // This helps avoid schema cache issues with PostgREST

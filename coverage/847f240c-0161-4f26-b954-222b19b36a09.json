@@ -1,0 +1,94 @@
+{
+  "scriptId": "487",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/jszip/3.10.1/lib/reader/ArrayReader.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1817,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 1816,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 1810,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "ArrayReader",
+      "ranges": [
+        {
+          "startOffset": 311,
+          "endOffset": 462,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ArrayReader.byteAt",
+      "ranges": [
+        {
+          "startOffset": 569,
+          "endOffset": 621,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ArrayReader.lastIndexOfSignature",
+      "ranges": [
+        {
+          "startOffset": 716,
+          "endOffset": 1108,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ArrayReader.readAndCheckSignature",
+      "ranges": [
+        {
+          "startOffset": 1205,
+          "endOffset": 1481,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ArrayReader.readData",
+      "ranges": [
+        {
+          "startOffset": 1552,
+          "endOffset": 1776,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

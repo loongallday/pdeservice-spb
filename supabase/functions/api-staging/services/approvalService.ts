@@ -5,7 +5,7 @@
 import { createServiceClient } from '../../_shared/supabase.ts';
 import { NotFoundError, DatabaseError, ValidationError, AuthorizationError } from '../../_shared/error.ts';
 import { StagingService } from './stagingService.ts';
-import type { StagedFile, ApproveFileInput, RejectFileInput, BulkApproveInput } from '../types.ts';
+import type { StagedFile, ApproveFileInput, RejectFileInput, BulkApproveInput, BulkDeleteInput } from '../types.ts';
 
 export class ApprovalService {
   /**
@@ -166,13 +166,13 @@ export class ApprovalService {
       throw new ValidationError('ไฟล์นี้ต้องอยู่ในสถานะ "linked" ก่อนปฏิเสธ');
     }
 
-    // Update staged file status
+    // Update staged file status - set approved_by for rejection tracking
     const { data: updatedFile, error: updateError } = await supabase
       .from('main_staged_files')
       .update({
         status: 'rejected',
-        approved_by: approverId, // Reusing field for "rejected by"
-        approved_at: new Date().toISOString(), // Reusing field for "rejected at"
+        approved_by: approverId, // Track who rejected the file
+        approved_at: new Date().toISOString(), // Track when file was rejected
         rejection_reason: input.reason.trim(),
       })
       .eq('id', id)
@@ -393,6 +393,68 @@ export class ApprovalService {
     }
 
     return { approved, failed };
+  }
+
+  /**
+   * Bulk delete multiple staged files
+   */
+  static async bulkDelete(
+    input: BulkDeleteInput
+  ): Promise<{ deleted: string[]; failed: Array<{ id: string; error: string }> }> {
+    if (!input.file_ids || input.file_ids.length === 0) {
+      throw new ValidationError('กรุณาระบุรายการไฟล์ที่ต้องการลบ');
+    }
+
+    const supabase = createServiceClient();
+    const deleted: string[] = [];
+    const failed: Array<{ id: string; error: string }> = [];
+
+    // Fetch all files at once to validate
+    const { data: files, error: fetchError } = await supabase
+      .from('main_staged_files')
+      .select('id, status')
+      .in('id', input.file_ids);
+
+    if (fetchError) {
+      throw new DatabaseError(`ไม่สามารถดึงข้อมูลไฟล์ได้: ${fetchError.message}`);
+    }
+
+    // Check for files not found
+    const foundIds = new Set((files || []).map(f => f.id));
+    for (const fileId of input.file_ids) {
+      if (!foundIds.has(fileId)) {
+        failed.push({ id: fileId, error: 'ไม่พบไฟล์' });
+      }
+    }
+
+    // Validate files - only pending or linked can be deleted
+    const deletableIds: string[] = [];
+    for (const file of files || []) {
+      if (file.status === 'approved') {
+        failed.push({ id: file.id, error: 'ไม่สามารถลบไฟล์ที่อนุมัติแล้วได้' });
+      } else {
+        deletableIds.push(file.id);
+      }
+    }
+
+    // Delete all valid files
+    if (deletableIds.length > 0) {
+      const { error: deleteError } = await supabase
+        .from('main_staged_files')
+        .delete()
+        .in('id', deletableIds);
+
+      if (deleteError) {
+        // If bulk delete fails, mark all as failed
+        for (const id of deletableIds) {
+          failed.push({ id, error: `ไม่สามารถลบไฟล์ได้: ${deleteError.message}` });
+        }
+      } else {
+        deleted.push(...deletableIds);
+      }
+    }
+
+    return { deleted, failed };
   }
 
   /**

@@ -1,0 +1,38 @@
+{
+  "scriptId": "339",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-package-services/handlers/delete.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 655,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "deletePackageService",
+      "ranges": [
+        {
+          "startOffset": 297,
+          "endOffset": 654,
+          "count": 3
+        },
+        {
+          "startOffset": 462,
+          "endOffset": 591,
+          "count": 2
+        },
+        {
+          "startOffset": 591,
+          "endOffset": 653,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

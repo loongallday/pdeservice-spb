@@ -1,0 +1,43 @@
+{
+  "scriptId": "336",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-sites/handlers/globalSearch.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1435,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "globalSearch",
+      "ranges": [
+        {
+          "startOffset": 337,
+          "endOffset": 1434,
+          "count": 1
+        },
+        {
+          "startOffset": 701,
+          "endOffset": 713,
+          "count": 0
+        },
+        {
+          "startOffset": 1043,
+          "endOffset": 1079,
+          "count": 0
+        },
+        {
+          "startOffset": 1141,
+          "endOffset": 1177,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

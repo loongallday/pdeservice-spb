@@ -1,10 +1,32 @@
 /**
- * LINE Webhook Edge Function
- * Receives webhook events from LINE Platform and processes them
+ * @fileoverview LINE Webhook Edge Function - LINE platform event handler
+ * @module api-line-webhook
  *
- * Environment Variables Required:
- * - LINE_CHANNEL_SECRET: For webhook signature verification
- * - LINE_CHANNEL_ACCESS_TOKEN: For calling LINE APIs
+ * @description
+ * Receives webhook events from LINE Platform and processes them asynchronously.
+ * Supports message, postback, follow, and unfollow events.
+ *
+ * Event Types:
+ * - message: Text/image/sticker messages from users
+ * - postback: Button clicks with postback data
+ * - follow: User follows the official account
+ * - unfollow: User unfollows the official account
+ *
+ * Processing Flow:
+ * 1. Verify x-line-signature header with channel secret
+ * 2. Parse webhook body as JSON
+ * 3. Respond immediately with 200 OK (LINE expects quick response)
+ * 4. Process events asynchronously in background
+ *
+ * @endpoints
+ * ## Webhook Receiver
+ * - POST   /   - Receive LINE webhook events (no auth, signature verified)
+ *
+ * @auth LINE signature verification (x-line-signature header)
+ * @env LINE_CHANNEL_SECRET - For webhook signature verification
+ * @env LINE_CHANNEL_ACCESS_TOKEN - For calling LINE Messaging API
+ * @table child_employee_line_accounts - LINE user to employee mapping
+ * @table main_staged_files - Staged file uploads from LINE
  */
 
 import { handleCORS } from '../_shared/cors.ts';

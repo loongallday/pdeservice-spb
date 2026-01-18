@@ -1,0 +1,39 @@
+{
+  "scriptId": "373",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/_shared/supabase.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1297,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "createServiceClient",
+      "ranges": [
+        {
+          "startOffset": 299,
+          "endOffset": 709,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createUserClient",
+      "ranges": [
+        {
+          "startOffset": 806,
+          "endOffset": 1296,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

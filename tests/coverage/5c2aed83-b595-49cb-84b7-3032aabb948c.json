@@ -1,0 +1,98 @@
+{
+  "scriptId": "685",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/archiver/5.3.2/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2414,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2413,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2407,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "vending",
+      "ranges": [
+        {
+          "startOffset": 684,
+          "endOffset": 755,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "vending.create",
+      "ranges": [
+        {
+          "startOffset": 957,
+          "endOffset": 1254,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "vending.registerFormat",
+      "ranges": [
+        {
+          "startOffset": 1478,
+          "endOffset": 1946,
+          "count": 3
+        },
+        {
+          "startOffset": 1528,
+          "endOffset": 1609,
+          "count": 0
+        },
+        {
+          "startOffset": 1647,
+          "endOffset": 1724,
+          "count": 0
+        },
+        {
+          "startOffset": 1830,
+          "endOffset": 1915,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "vending.isRegisteredFormat",
+      "ranges": [
+        {
+          "startOffset": 2105,
+          "endOffset": 2191,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

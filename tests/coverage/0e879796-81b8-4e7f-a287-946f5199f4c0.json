@@ -1,0 +1,53 @@
+{
+  "scriptId": "336",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-roles/handlers/create.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1376,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "create",
+      "ranges": [
+        {
+          "startOffset": 404,
+          "endOffset": 1375,
+          "count": 2
+        },
+        {
+          "startOffset": 532,
+          "endOffset": 1134,
+          "count": 1
+        },
+        {
+          "startOffset": 1170,
+          "endOffset": 1177,
+          "count": 1
+        },
+        {
+          "startOffset": 1201,
+          "endOffset": 1208,
+          "count": 0
+        },
+        {
+          "startOffset": 1248,
+          "endOffset": 1255,
+          "count": 1
+        },
+        {
+          "startOffset": 1328,
+          "endOffset": 1374,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

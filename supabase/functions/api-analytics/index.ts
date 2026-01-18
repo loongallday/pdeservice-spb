@@ -1,6 +1,39 @@
 /**
- * API Analytics Edge Function
- * Provides comprehensive analytics endpoints focused on technician utilization
+ * @fileoverview Analytics API Edge Function - Technician utilization analytics
+ * @module api-analytics
+ *
+ * @description
+ * Provides comprehensive analytics endpoints focused on technician utilization.
+ * Used by planners and managers to track workforce efficiency.
+ *
+ * Analytics Types:
+ * - Utilization: Percentage of time technicians are assigned/working
+ * - Workload: Number of tickets/appointments per technician
+ * - Trends: Historical patterns over time
+ * - Distribution: Workload spread across team
+ *
+ * Time Periods:
+ * - Daily: Single day analysis
+ * - Weekly: 7-day rolling window
+ * - Monthly: Calendar month analysis
+ *
+ * @endpoints
+ * ## Utilization Analytics
+ * - GET    /technicians/utilization          - Get utilization by date
+ * - GET    /technicians/utilization/summary  - Get utilization summary
+ *
+ * ## Workload Analytics
+ * - GET    /technicians/workload             - Get workload by date
+ * - GET    /technicians/workload/distribution - Get workload distribution
+ *
+ * ## Trends & Details
+ * - GET    /technicians/trends               - Get historical trends
+ * - GET    /technicians/:id                  - Get individual detail
+ *
+ * @auth Level 1+ required (Assigner, PM, Sales and above)
+ * @table main_tickets - Ticket data for analytics
+ * @table main_appointments - Appointment data
+ * @table main_employees - Technician data
  */
 
 import { handleCORS } from '../_shared/cors.ts';

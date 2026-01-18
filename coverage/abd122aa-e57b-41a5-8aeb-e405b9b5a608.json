@@ -1,0 +1,105 @@
+{
+  "scriptId": "379",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-reports/services/chartDataService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3070,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "buildAllCharts",
+      "ranges": [
+        {
+          "startOffset": 830,
+          "endOffset": 1204,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "buildStatusPieChart",
+      "ranges": [
+        {
+          "startOffset": 1257,
+          "endOffset": 1487,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "buildWorkTypeBarChart",
+      "ranges": [
+        {
+          "startOffset": 1561,
+          "endOffset": 1910,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "buildRegionDonutChart",
+      "ranges": [
+        {
+          "startOffset": 1965,
+          "endOffset": 2319,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "buildWeekTrendChart",
+      "ranges": [
+        {
+          "startOffset": 2377,
+          "endOffset": 2660,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getStatusColor",
+      "ranges": [
+        {
+          "startOffset": 2711,
+          "endOffset": 2794,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getWorkTypeColor",
+      "ranges": [
+        {
+          "startOffset": 2848,
+          "endOffset": 2939,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getRegionColor",
+      "ranges": [
+        {
+          "startOffset": 2988,
+          "endOffset": 3067,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

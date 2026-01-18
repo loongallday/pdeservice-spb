@@ -1,0 +1,38 @@
+{
+  "scriptId": "336",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-contacts/handlers/get.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 806,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 279,
+          "endOffset": 805,
+          "count": 2
+        },
+        {
+          "startOffset": 617,
+          "endOffset": 731,
+          "count": 1
+        },
+        {
+          "startOffset": 757,
+          "endOffset": 770,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

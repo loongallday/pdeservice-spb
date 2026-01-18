@@ -1,0 +1,171 @@
+{
+  "scriptId": "488",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/jszip/3.10.1/lib/reader/DataReader.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3939,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 3938,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 3932,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "DataReader",
+      "ranges": [
+        {
+          "startOffset": 269,
+          "endOffset": 419,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "checkOffset",
+      "ranges": [
+        {
+          "startOffset": 654,
+          "endOffset": 724,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "checkIndex",
+      "ranges": [
+        {
+          "startOffset": 932,
+          "endOffset": 1173,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "setIndex",
+      "ranges": [
+        {
+          "startOffset": 1337,
+          "endOffset": 1429,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "skip",
+      "ranges": [
+        {
+          "startOffset": 1601,
+          "endOffset": 1659,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "byteAt",
+      "ranges": [
+        {
+          "startOffset": 1808,
+          "endOffset": 1857,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "readInt",
+      "ranges": [
+        {
+          "startOffset": 2046,
+          "endOffset": 2317,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "readString",
+      "ranges": [
+        {
+          "startOffset": 2509,
+          "endOffset": 2596,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "readData",
+      "ranges": [
+        {
+          "startOffset": 2802,
+          "endOffset": 2851,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "lastIndexOfSignature",
+      "ranges": [
+        {
+          "startOffset": 3082,
+          "endOffset": 3131,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "readAndCheckSignature",
+      "ranges": [
+        {
+          "startOffset": 3384,
+          "endOffset": 3433,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "readDate",
+      "ranges": [
+        {
+          "startOffset": 3523,
+          "endOffset": 3897,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

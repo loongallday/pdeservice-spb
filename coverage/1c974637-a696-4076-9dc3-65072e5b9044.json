@@ -1,0 +1,33 @@
+{
+  "scriptId": "340",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-companies/handlers/delete.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 769,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "deleteCompany",
+      "ranges": [
+        {
+          "startOffset": 379,
+          "endOffset": 768,
+          "count": 2
+        },
+        {
+          "startOffset": 530,
+          "endOffset": 767,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "scriptId": "368",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-reports/services/dailyReportService.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 10437,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "generateReport",
+      "ranges": [
+        {
+          "startOffset": 1088,
+          "endOffset": 3254,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "buildMeta",
+      "ranges": [
+        {
+          "startOffset": 3301,
+          "endOffset": 3571,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "formatThaiDate",
+      "ranges": [
+        {
+          "startOffset": 3623,
+          "endOffset": 3943,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "buildSummary",
+      "ranges": [
+        {
+          "startOffset": 3998,
+          "endOffset": 5196,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "buildGeographicWithComparison",
+      "ranges": [
+        {
+          "startOffset": 5259,
+          "endOffset": 6166,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "buildTechnicianWithComparison",
+      "ranges": [
+        {
+          "startOffset": 6229,
+          "endOffset": 6476,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "buildAppointmentData",
+      "ranges": [
+        {
+          "startOffset": 6524,
+          "endOffset": 8425,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "buildPrecautions",
+      "ranges": [
+        {
+          "startOffset": 8475,
+          "endOffset": 10434,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

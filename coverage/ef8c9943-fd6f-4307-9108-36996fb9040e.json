@@ -1,0 +1,149 @@
+{
+  "scriptId": "790",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/bluebird/3.4.7/js/release/timers.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2625,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 2624,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 2618,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "module.exports",
+      "ranges": [
+        {
+          "startOffset": 252,
+          "endOffset": 2614,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "HandleWrapper",
+      "ranges": [
+        {
+          "startOffset": 361,
+          "endOffset": 422,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "HandleWrapper._resultCancelled",
+      "ranges": [
+        {
+          "startOffset": 467,
+          "endOffset": 512,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "afterValue",
+      "ranges": [
+        {
+          "startOffset": 532,
+          "endOffset": 590,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.delay",
+      "ranges": [
+        {
+          "startOffset": 620,
+          "endOffset": 1221,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.delay",
+      "ranges": [
+        {
+          "startOffset": 1250,
+          "endOffset": 1295,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "afterTimeout",
+      "ranges": [
+        {
+          "startOffset": 1317,
+          "endOffset": 1787,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "successClear",
+      "ranges": [
+        {
+          "startOffset": 1790,
+          "endOffset": 1871,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "failureClear",
+      "ranges": [
+        {
+          "startOffset": 1873,
+          "endOffset": 1955,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Promise.timeout",
+      "ranges": [
+        {
+          "startOffset": 1985,
+          "endOffset": 2610,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "scriptId": "658",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/lodash.escaperegexp/4.1.2/index.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 4628,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 4627,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 4621,
+          "count": 1
+        },
+        {
+          "startOffset": 1315,
+          "endOffset": 1326,
+          "count": 0
+        },
+        {
+          "startOffset": 1327,
+          "endOffset": 1355,
+          "count": 0
+        },
+        {
+          "startOffset": 1785,
+          "endOffset": 1796,
+          "count": 0
+        },
+        {
+          "startOffset": 1854,
+          "endOffset": 1865,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "baseToString",
+      "ranges": [
+        {
+          "startOffset": 2075,
+          "endOffset": 2429,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isObjectLike",
+      "ranges": [
+        {
+          "startOffset": 2928,
+          "endOffset": 3006,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "isSymbol",
+      "ranges": [
+        {
+          "startOffset": 3365,
+          "endOffset": 3500,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toString",
+      "ranges": [
+        {
+          "startOffset": 3916,
+          "endOffset": 3995,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "escapeRegExp",
+      "ranges": [
+        {
+          "startOffset": 4417,
+          "endOffset": 4586,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

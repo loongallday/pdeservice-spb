@@ -1,0 +1,204 @@
+{
+  "scriptId": "746",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/tar-stream/2.2.0/headers.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 8199,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 8198,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 8192,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "clamp",
+      "ranges": [
+        {
+          "startOffset": 640,
+          "endOffset": 891,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toType",
+      "ranges": [
+        {
+          "startOffset": 906,
+          "endOffset": 1444,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "toTypeflag",
+      "ranges": [
+        {
+          "startOffset": 1463,
+          "endOffset": 1850,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "indexOf",
+      "ranges": [
+        {
+          "startOffset": 1866,
+          "endOffset": 2001,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "cksum",
+      "ranges": [
+        {
+          "startOffset": 2015,
+          "endOffset": 2165,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "encodeOct",
+      "ranges": [
+        {
+          "startOffset": 2183,
+          "endOffset": 2339,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parse256",
+      "ranges": [
+        {
+          "startOffset": 2541,
+          "endOffset": 3131,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "decodeOct",
+      "ranges": [
+        {
+          "startOffset": 3149,
+          "endOffset": 3711,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "decodeStr",
+      "ranges": [
+        {
+          "startOffset": 3729,
+          "endOffset": 3861,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "addLength",
+      "ranges": [
+        {
+          "startOffset": 3879,
+          "endOffset": 4076,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.decodeLongPath",
+      "ranges": [
+        {
+          "startOffset": 4103,
+          "endOffset": 4180,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.encodePax",
+      "ranges": [
+        {
+          "startOffset": 4202,
+          "endOffset": 4578,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.decodePax",
+      "ranges": [
+        {
+          "startOffset": 4600,
+          "endOffset": 5032,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.encode",
+      "ranges": [
+        {
+          "startOffset": 5051,
+          "endOffset": 6363,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "exports.decode",
+      "ranges": [
+        {
+          "startOffset": 6382,
+          "endOffset": 8189,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

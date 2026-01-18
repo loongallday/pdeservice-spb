@@ -1,6 +1,65 @@
 /**
- * Tickets API Edge Function
- * Handles all ticket CRUD operations
+ * @fileoverview Tickets API Edge Function - Core ticket management system
+ * @module api-tickets
+ *
+ * Central API for field service ticket operations including work orders,
+ * technician assignments, scheduling, comments, attachments, and ratings.
+ *
+ * @endpoints
+ *
+ * ## Core Ticket Operations
+ * - GET    /search                    - Search tickets with filters and pagination
+ * - GET    /search-duration           - Search tickets by duration/time range
+ * - GET    /summaries                 - Get ticket summaries grouped by technician
+ * - GET    /:id                       - Get single ticket by ID
+ * - POST   /                          - Create new ticket
+ * - PUT    /:id                       - Update ticket
+ * - DELETE /:id                       - Delete ticket
+ *
+ * ## Technician Management
+ * - GET    /:id/confirmed-technicians - Get confirmed technicians for ticket
+ * - POST   /:id/confirm-technicians   - Confirm technician assignments
+ * - DELETE /employees                 - Remove technician from ticket
+ *
+ * ## Comments
+ * - GET    /:id/comments              - Get all comments for ticket
+ * - POST   /:id/comments              - Add comment to ticket
+ * - PUT    /:id/comments/:commentId   - Update a comment
+ * - DELETE /:id/comments/:commentId   - Delete a comment
+ *
+ * ## Watchers
+ * - GET    /:id/watchers              - Get watchers for ticket
+ * - POST   /:id/watch                 - Add current user as watcher
+ * - DELETE /:id/watch                 - Remove current user from watchers
+ *
+ * ## Attachments
+ * - GET    /:id/attachments           - Get attachments for ticket
+ * - POST   /:id/attachments           - Add attachments to ticket
+ * - DELETE /:id/attachments/:id       - Delete an attachment
+ *
+ * ## Ratings
+ * - GET    /:id/rating                - Get rating for ticket
+ * - POST   /:id/rating                - Create rating
+ * - PUT    /:id/rating                - Update rating
+ * - DELETE /:id/rating                - Delete rating
+ *
+ * ## Extra Fields (Custom Fields)
+ * - GET    /:id/extra-fields          - Get extra fields for ticket
+ * - POST   /:id/extra-fields          - Create extra field
+ * - POST   /:id/extra-fields/bulk     - Bulk upsert extra fields
+ * - PUT    /:id/extra-fields/:id      - Update extra field
+ * - DELETE /:id/extra-fields/:id      - Delete extra field
+ *
+ * ## Audit & Admin
+ * - GET    /audit                     - Get recent audit logs (admin)
+ * - GET    /:id/audit                 - Get audit logs for specific ticket
+ * - GET    /backfill-summaries        - Check backfill job status
+ * - POST   /backfill-summaries        - Regenerate AI summaries
+ *
+ * ## Utility
+ * - GET    /warmup                    - Keep function warm (no auth)
+ *
+ * @auth JWT required for all endpoints except /warmup
  */
 
 import { handleCORS } from '../_shared/cors.ts';
@@ -23,28 +82,38 @@ import { getWatchers, addWatch, removeWatch } from './handlers/watchers.ts';
 import { getAttachments, addAttachments, deleteAttachment } from './handlers/attachments.ts';
 import { backfillSummaries } from './handlers/backfillSummaries.ts';
 import { getRating, createRating, updateRating, deleteRating } from './handlers/ratings.ts';
+import { getExtraFields, createExtraField, updateExtraField, deleteExtraField, bulkUpsertExtraFields } from './handlers/extraFields.ts';
+
+import { corsHeaders } from '../_shared/cors.ts';
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
   const corsResponse = handleCORS(req);
   if (corsResponse) return corsResponse;
 
+  // Parse URL early for warmup check
+  let url: URL;
+  try {
+    url = new URL(req.url);
+  } catch {
+    return error('Invalid URL', 400);
+  }
+
+  const pathParts = url.pathname.split('/').filter(Boolean);
+  const functionIndex = pathParts.indexOf('api-tickets');
+  const relativePath = functionIndex >= 0 ? pathParts.slice(functionIndex + 1) : [];
+
+  // GET /warmup - Keep function warm (no auth required)
+  if (req.method === 'GET' && relativePath.length === 1 && relativePath[0] === 'warmup') {
+    return new Response(
+      JSON.stringify({ status: 'warm', timestamp: new Date().toISOString() }),
+      { headers: { 'Content-Type': 'application/json', ...corsHeaders } }
+    );
+  }
+
   try {
     // Authenticate user
     const { employee } = await authenticate(req);
-
-    // Route to appropriate handler
-    let url: URL;
-    try {
-      url = new URL(req.url);
-    } catch (err) {
-      return error('Invalid URL', 400);
-    }
-    
-    const pathParts = url.pathname.split('/').filter(Boolean);
-    // Find the function name in the path and slice after it
-    const functionIndex = pathParts.indexOf('api-tickets');
-    const relativePath = functionIndex >= 0 ? pathParts.slice(functionIndex + 1) : [];
     const method = req.method;
 
     switch (method) {
@@ -110,6 +179,12 @@ Deno.serve(async (req) => {
           return await getRating(req, employee, id);
         }
 
+        // GET /:id/extra-fields - Get extra fields for a ticket
+        if (relativePath.length === 2 && relativePath[1] === 'extra-fields') {
+          const id = relativePath[0];
+          return await getExtraFields(req, employee, id);
+        }
+
         // GET /:id - Get single ticket
         if (relativePath.length === 1) {
           const id = relativePath[0];
@@ -157,6 +232,18 @@ Deno.serve(async (req) => {
           return await createRating(req, employee, id);
         }
 
+        // POST /:id/extra-fields/bulk - Bulk upsert extra fields
+        if (relativePath.length === 3 && relativePath[1] === 'extra-fields' && relativePath[2] === 'bulk') {
+          const id = relativePath[0];
+          return await bulkUpsertExtraFields(req, employee, id);
+        }
+
+        // POST /:id/extra-fields - Create extra field
+        if (relativePath.length === 2 && relativePath[1] === 'extra-fields') {
+          const id = relativePath[0];
+          return await createExtraField(req, employee, id);
+        }
+
         // POST / - Create ticket
         if (relativePath.length === 0) {
           return await create(req, employee);
@@ -175,6 +262,13 @@ Deno.serve(async (req) => {
         if (relativePath.length === 2 && relativePath[1] === 'rating') {
           const id = relativePath[0];
           return await updateRating(req, employee, id);
+        }
+
+        // PUT /:id/extra-fields/:fieldId - Update extra field
+        if (relativePath.length === 3 && relativePath[1] === 'extra-fields') {
+          const ticketId = relativePath[0];
+          const fieldId = relativePath[2];
+          return await updateExtraField(req, employee, ticketId, fieldId);
         }
 
         // PUT /:id - Update ticket
@@ -216,6 +310,13 @@ Deno.serve(async (req) => {
           return await deleteRating(req, employee, id);
         }
 
+        // DELETE /:id/extra-fields/:fieldId - Delete extra field
+        if (relativePath.length === 3 && relativePath[1] === 'extra-fields') {
+          const ticketId = relativePath[0];
+          const fieldId = relativePath[2];
+          return await deleteExtraField(req, employee, ticketId, fieldId);
+        }
+
         // DELETE /:id - Delete ticket
         if (relativePath.length === 1) {
           const id = relativePath[0];
@@ -230,8 +331,8 @@ Deno.serve(async (req) => {
 
     return error('Not found', 404);
   } catch (err) {
-    const { message, statusCode } = handleError(err);
-    return error(message, statusCode);
+    const { message, statusCode, code } = handleError(err);
+    return error(message, statusCode, code);
   }
 });
 

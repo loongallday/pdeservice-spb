@@ -1,0 +1,39 @@
+{
+  "scriptId": "376",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/_shared/sanitize.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 950,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "sanitizeData",
+      "ranges": [
+        {
+          "startOffset": 323,
+          "endOffset": 520,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getValidFields",
+      "ranges": [
+        {
+          "startOffset": 783,
+          "endOffset": 949,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

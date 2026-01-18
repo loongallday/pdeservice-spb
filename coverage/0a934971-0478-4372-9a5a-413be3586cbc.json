@@ -1,0 +1,99 @@
+{
+  "scriptId": "802",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/unzipper/0.10.14/lib/PullStream.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 4218,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 4217,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 4211,
+          "count": 1
+        },
+        {
+          "startOffset": 492,
+          "endOffset": 528,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "PullStream",
+      "ranges": [
+        {
+          "startOffset": 530,
+          "endOffset": 835,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PullStream._write",
+      "ranges": [
+        {
+          "startOffset": 909,
+          "endOffset": 1023,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PullStream.stream",
+      "ranges": [
+        {
+          "startOffset": 1216,
+          "endOffset": 2831,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PullStream.pull",
+      "ranges": [
+        {
+          "startOffset": 2862,
+          "endOffset": 4133,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "PullStream._read",
+      "ranges": [
+        {
+          "startOffset": 4165,
+          "endOffset": 4177,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

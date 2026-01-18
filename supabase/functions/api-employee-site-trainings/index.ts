@@ -1,6 +1,27 @@
 /**
- * Employee-site trainings API Edge Function
- * Handles CRUD for training assignments between employees and sites
+ * @fileoverview Employee-Site Trainings API Edge Function - Training assignment tracking
+ * @module api-employee-site-trainings
+ *
+ * @description
+ * Manages training assignments between employees and sites.
+ * Tracks which employees have been trained on which customer sites.
+ *
+ * Use Cases:
+ * - Record site-specific training completion
+ * - Track technician certifications for equipment at sites
+ * - Manage safety training requirements
+ *
+ * @endpoints
+ * ## Training Operations
+ * - GET    /      - List trainings (with filters)
+ * - GET    /:id   - Get training by ID
+ * - POST   /      - Create new training assignment
+ * - PUT    /:id   - Update training assignment
+ *
+ * @auth All endpoints require JWT authentication
+ * @table jct_employee_site_trainings - Training assignment junction table
+ * @table main_employees - Employee reference
+ * @table main_sites - Site reference
  */
 
 import { handleCORS } from '../_shared/cors.ts';

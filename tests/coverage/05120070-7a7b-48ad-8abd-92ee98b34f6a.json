@@ -1,0 +1,33 @@
+{
+  "scriptId": "337",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-companies/handlers/hint.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 619,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "hint",
+      "ranges": [
+        {
+          "startOffset": 270,
+          "endOffset": 618,
+          "count": 1
+        },
+        {
+          "startOffset": 508,
+          "endOffset": 513,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "scriptId": "337",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-announcements/handlers/create.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 880,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "create",
+      "ranges": [
+        {
+          "startOffset": 288,
+          "endOffset": 879,
+          "count": 2
+        },
+        {
+          "startOffset": 420,
+          "endOffset": 523,
+          "count": 1
+        },
+        {
+          "startOffset": 525,
+          "endOffset": 587,
+          "count": 0
+        },
+        {
+          "startOffset": 587,
+          "endOffset": 622,
+          "count": 1
+        },
+        {
+          "startOffset": 622,
+          "endOffset": 700,
+          "count": 0
+        },
+        {
+          "startOffset": 700,
+          "endOffset": 878,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

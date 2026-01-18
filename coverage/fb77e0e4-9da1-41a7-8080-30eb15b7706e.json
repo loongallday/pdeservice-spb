@@ -1,0 +1,149 @@
+{
+  "scriptId": "383",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-tickets/services/locationResolver.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 15371,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "initializeProvinces",
+      "ranges": [
+        {
+          "startOffset": 10139,
+          "endOffset": 10320,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "loadDistricts",
+      "ranges": [
+        {
+          "startOffset": 10370,
+          "endOffset": 10855,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "loadSubDistricts",
+      "ranges": [
+        {
+          "startOffset": 10909,
+          "endOffset": 11439,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getProvinceName",
+      "ranges": [
+        {
+          "startOffset": 11484,
+          "endOffset": 11657,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getProvince",
+      "ranges": [
+        {
+          "startOffset": 11697,
+          "endOffset": 11828,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getDistrictName",
+      "ranges": [
+        {
+          "startOffset": 11873,
+          "endOffset": 12066,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getDistrict",
+      "ranges": [
+        {
+          "startOffset": 12106,
+          "endOffset": 12257,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getSubDistrictName",
+      "ranges": [
+        {
+          "startOffset": 12306,
+          "endOffset": 12517,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "getSubDistrict",
+      "ranges": [
+        {
+          "startOffset": 12561,
+          "endOffset": 12724,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "resolveLocation",
+      "ranges": [
+        {
+          "startOffset": 12776,
+          "endOffset": 13863,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "batchResolveLocations",
+      "ranges": [
+        {
+          "startOffset": 13999,
+          "endOffset": 15201,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "clearCache",
+      "ranges": [
+        {
+          "startOffset": 15273,
+          "endOffset": 15370,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "scriptId": "338",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-analytics/handlers/technicianDetail.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1901,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getTechnicianDetail",
+      "ranges": [
+        {
+          "startOffset": 491,
+          "endOffset": 1900,
+          "count": 6
+        },
+        {
+          "startOffset": 715,
+          "endOffset": 726,
+          "count": 5
+        },
+        {
+          "startOffset": 728,
+          "endOffset": 801,
+          "count": 1
+        },
+        {
+          "startOffset": 801,
+          "endOffset": 952,
+          "count": 5
+        },
+        {
+          "startOffset": 952,
+          "endOffset": 1013,
+          "count": 1
+        },
+        {
+          "startOffset": 1013,
+          "endOffset": 1116,
+          "count": 4
+        },
+        {
+          "startOffset": 1116,
+          "endOffset": 1143,
+          "count": 3
+        },
+        {
+          "startOffset": 1145,
+          "endOffset": 1229,
+          "count": 1
+        },
+        {
+          "startOffset": 1229,
+          "endOffset": 1282,
+          "count": 3
+        },
+        {
+          "startOffset": 1282,
+          "endOffset": 1365,
+          "count": 1
+        },
+        {
+          "startOffset": 1365,
+          "endOffset": 1574,
+          "count": 2
+        },
+        {
+          "startOffset": 1574,
+          "endOffset": 1756,
+          "count": 1
+        },
+        {
+          "startOffset": 1756,
+          "endOffset": 1815,
+          "count": 0
+        },
+        {
+          "startOffset": 1815,
+          "endOffset": 1899,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

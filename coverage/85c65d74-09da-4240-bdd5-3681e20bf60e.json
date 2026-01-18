@@ -1,0 +1,99 @@
+{
+  "scriptId": "335",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-analytics/handlers/utilization.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 2245,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getUtilization",
+      "ranges": [
+        {
+          "startOffset": 436,
+          "endOffset": 956,
+          "count": 3
+        },
+        {
+          "startOffset": 574,
+          "endOffset": 636,
+          "count": 1
+        },
+        {
+          "startOffset": 636,
+          "endOffset": 704,
+          "count": 2
+        },
+        {
+          "startOffset": 704,
+          "endOffset": 955,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getUtilizationSummary",
+      "ranges": [
+        {
+          "startOffset": 1137,
+          "endOffset": 2244,
+          "count": 5
+        },
+        {
+          "startOffset": 1349,
+          "endOffset": 1360,
+          "count": 4
+        },
+        {
+          "startOffset": 1362,
+          "endOffset": 1435,
+          "count": 1
+        },
+        {
+          "startOffset": 1435,
+          "endOffset": 1538,
+          "count": 4
+        },
+        {
+          "startOffset": 1538,
+          "endOffset": 1565,
+          "count": 3
+        },
+        {
+          "startOffset": 1567,
+          "endOffset": 1651,
+          "count": 1
+        },
+        {
+          "startOffset": 1651,
+          "endOffset": 1704,
+          "count": 3
+        },
+        {
+          "startOffset": 1704,
+          "endOffset": 1787,
+          "count": 1
+        },
+        {
+          "startOffset": 1787,
+          "endOffset": 1996,
+          "count": 2
+        },
+        {
+          "startOffset": 1996,
+          "endOffset": 2243,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

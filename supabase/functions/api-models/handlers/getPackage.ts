@@ -1,5 +1,5 @@
 /**
- * Get model package handler - returns items and services for a model
+ * Get model package handler - returns component models and services for a model
  */
 
 import { success } from '../../_shared/response.ts';
@@ -15,7 +15,7 @@ export async function getPackage(req: Request, employee: Employee, modelId: stri
   // Validate ID
   validateUUID(modelId, 'Model ID');
 
-  // Fetch package (items + services)
+  // Fetch package (components + services)
   const packageData = await ModelService.getPackage(modelId);
 
   return success(packageData);

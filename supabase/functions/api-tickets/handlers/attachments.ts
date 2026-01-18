@@ -1,5 +1,19 @@
 /**
- * Attachment handlers for ticket file/photo attachments
+ * @fileoverview Ticket attachment handlers for photos and files
+ * @module api-tickets/handlers/attachments
+ *
+ * Provides attachment functionality for tickets:
+ * - GET /:id/attachments - List all attachments (photos and files)
+ * - POST /:id/attachments - Add photos and/or files
+ * - DELETE /:id/attachments/:attachmentId - Delete attachment (author or admin)
+ *
+ * @auth All operations require Level 0+ authentication
+ *
+ * @description
+ * Attachments are categorized as photos (images) or files (documents).
+ * Each type is stored separately but managed through unified endpoints.
+ * The upload process expects pre-signed URLs - actual file upload is
+ * handled client-side directly to storage.
  */
 
 import { success } from '../../_shared/response.ts';

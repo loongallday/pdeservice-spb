@@ -1,5 +1,38 @@
 /**
- * Notification Service - Business logic for in-app notifications
+ * @fileoverview In-app notification service - Event-driven user notifications
+ * @module api-tickets/services/notificationService
+ *
+ * Provides notification management and event-specific notification creators:
+ *
+ * Core Methods:
+ * - create(): Create single notification
+ * - createBulk(): Create multiple notifications
+ * - createBulkWithDedup(): Deduplicated bulk creation
+ * - getByRecipient(): Get notifications for user with pagination
+ * - markAsRead(): Mark notifications as read
+ *
+ * Event Creators:
+ * - createWatcherNotifications(): Notify watchers of ticket changes
+ * - createApprovalNotifications(): Notify technicians of approval status
+ * - createTechnicianConfirmationNotifications(): Notify confirmed technicians
+ * - createCommentNotifications(): Notify mentions and previous commenters
+ * - createUnapprovalNotificationToApprover(): Notify when ticket auto-unapproved
+ * - createApprovalRequestNotifications(): Notify approvers of new tickets
+ *
+ * @description
+ * Notification Types:
+ * - approval: Appointment approved
+ * - unapproval: Appointment approval revoked
+ * - technician_confirmed: User confirmed for job
+ * - new_comment: New comment on watched/participated ticket
+ * - mention: User @mentioned in comment
+ * - ticket_update: General ticket update for watchers
+ * - approval_request: New ticket pending approval
+ *
+ * Deduplication:
+ * - Uses audit_id for exact deduplication
+ * - Falls back to type+ticket+title within time window
+ * - Prevents duplicate notifications from system race conditions
  */
 
 import { createServiceClient } from '../../_shared/supabase.ts';

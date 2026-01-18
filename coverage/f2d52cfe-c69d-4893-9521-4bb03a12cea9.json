@@ -1,0 +1,302 @@
+{
+  "scriptId": "712",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/minimatch/3.1.2/minimatch.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 26496,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 26495,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 26489,
+          "count": 1
+        },
+        {
+          "startOffset": 355,
+          "endOffset": 372,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 293,
+          "endOffset": 351,
+          "count": 1
+        },
+        {
+          "startOffset": 338,
+          "endOffset": 350,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "charSet",
+      "ranges": [
+        {
+          "startOffset": 1369,
+          "endOffset": 1483,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1420,
+          "endOffset": 1476,
+          "count": 14
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "filter",
+      "ranges": [
+        {
+          "startOffset": 1558,
+          "endOffset": 1701,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "ext",
+      "ranges": [
+        {
+          "startOffset": 1703,
+          "endOffset": 1886,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "minimatch.defaults",
+      "ranges": [
+        {
+          "startOffset": 1909,
+          "endOffset": 2930,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Minimatch.defaults",
+      "ranges": [
+        {
+          "startOffset": 2953,
+          "endOffset": 3014,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "minimatch",
+      "ranges": [
+        {
+          "startOffset": 3016,
+          "endOffset": 3289,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Minimatch",
+      "ranges": [
+        {
+          "startOffset": 3291,
+          "endOffset": 3897,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Minimatch.debug",
+      "ranges": [
+        {
+          "startOffset": 3927,
+          "endOffset": 3941,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "make",
+      "ranges": [
+        {
+          "startOffset": 3975,
+          "endOffset": 5226,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parseNegate",
+      "ranges": [
+        {
+          "startOffset": 5274,
+          "endOffset": 5659,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "minimatch.braceExpand",
+      "ranges": [
+        {
+          "startOffset": 5935,
+          "endOffset": 6005,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "braceExpand",
+      "ranges": [
+        {
+          "startOffset": 6054,
+          "endOffset": 6595,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "assertValidPattern",
+      "ranges": [
+        {
+          "startOffset": 6657,
+          "endOffset": 6860,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "parse",
+      "ranges": [
+        {
+          "startOffset": 7558,
+          "endOffset": 18053,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "minimatch.makeRe",
+      "ranges": [
+        {
+          "startOffset": 18074,
+          "endOffset": 18161,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "makeRe",
+      "ranges": [
+        {
+          "startOffset": 18199,
+          "endOffset": 19386,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "minimatch.match",
+      "ranges": [
+        {
+          "startOffset": 19406,
+          "endOffset": 19660,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "match",
+      "ranges": [
+        {
+          "startOffset": 19690,
+          "endOffset": 21162,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Minimatch.matchOne",
+      "ranges": [
+        {
+          "startOffset": 21413,
+          "endOffset": 26302,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "globUnescape",
+      "ranges": [
+        {
+          "startOffset": 26336,
+          "endOffset": 26400,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "regExpEscape",
+      "ranges": [
+        {
+          "startOffset": 26402,
+          "endOffset": 26486,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

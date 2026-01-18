@@ -1,0 +1,17 @@
+{
+  "scriptId": "372",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/_shared/constants.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 788,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

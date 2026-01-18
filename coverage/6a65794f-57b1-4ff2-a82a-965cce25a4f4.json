@@ -1,0 +1,153 @@
+{
+  "scriptId": "501",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/readable-stream/3.6.2/lib/_stream_duplex.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 4611,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 4610,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 4604,
+          "count": 1
+        },
+        {
+          "startOffset": 1640,
+          "endOffset": 1732,
+          "count": 0
+        },
+        {
+          "startOffset": 2036,
+          "endOffset": 2157,
+          "count": 11
+        },
+        {
+          "startOffset": 2099,
+          "endOffset": 2153,
+          "count": 7
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "objectKeys",
+      "ranges": [
+        {
+          "startOffset": 1643,
+          "endOffset": 1732,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "Duplex",
+      "ranges": [
+        {
+          "startOffset": 2160,
+          "endOffset": 2595,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 2825,
+          "endOffset": 2891,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 3118,
+          "endOffset": 3205,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 3432,
+          "endOffset": 3491,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "onend",
+      "ranges": [
+        {
+          "startOffset": 3526,
+          "endOffset": 3756,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "onEndNT",
+      "ranges": [
+        {
+          "startOffset": 3757,
+          "endOffset": 3797,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "get",
+      "ranges": [
+        {
+          "startOffset": 4015,
+          "endOffset": 4218,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "set",
+      "ranges": [
+        {
+          "startOffset": 4227,
+          "endOffset": 4598,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

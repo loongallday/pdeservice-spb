@@ -1,0 +1,33 @@
+{
+  "scriptId": "336",
+  "url": "file:///Users/loongallday/pdeservice-spb/supabase/functions/api-notifications/handlers/markAsRead.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 902,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "markAsRead",
+      "ranges": [
+        {
+          "startOffset": 555,
+          "endOffset": 901,
+          "count": 2
+        },
+        {
+          "startOffset": 777,
+          "endOffset": 899,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

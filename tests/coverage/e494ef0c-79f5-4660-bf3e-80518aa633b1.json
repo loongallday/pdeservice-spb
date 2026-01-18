@@ -1,0 +1,257 @@
+{
+  "scriptId": "735",
+  "url": "file:///Users/loongallday/Library/Caches/deno/npm/registry.npmjs.org/crc-32/1.2.2/crc32.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 3796,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 1,
+          "endOffset": 3795,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 214,
+          "endOffset": 3789,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 337,
+          "endOffset": 781,
+          "count": 1
+        },
+        {
+          "startOffset": 513,
+          "endOffset": 699,
+          "count": 0
+        },
+        {
+          "startOffset": 702,
+          "endOffset": 735,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 579,
+          "endOffset": 658,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 782,
+          "endOffset": 3783,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "signed_crc_table",
+      "ranges": [
+        {
+          "startOffset": 848,
+          "endOffset": 1483,
+          "count": 1
+        },
+        {
+          "startOffset": 944,
+          "endOffset": 1405,
+          "count": 256
+        },
+        {
+          "startOffset": 968,
+          "endOffset": 994,
+          "count": 128
+        },
+        {
+          "startOffset": 995,
+          "endOffset": 1006,
+          "count": 128
+        },
+        {
+          "startOffset": 1022,
+          "endOffset": 1048,
+          "count": 128
+        },
+        {
+          "startOffset": 1049,
+          "endOffset": 1060,
+          "count": 128
+        },
+        {
+          "startOffset": 1076,
+          "endOffset": 1102,
+          "count": 128
+        },
+        {
+          "startOffset": 1103,
+          "endOffset": 1114,
+          "count": 128
+        },
+        {
+          "startOffset": 1130,
+          "endOffset": 1156,
+          "count": 128
+        },
+        {
+          "startOffset": 1157,
+          "endOffset": 1168,
+          "count": 128
+        },
+        {
+          "startOffset": 1184,
+          "endOffset": 1210,
+          "count": 128
+        },
+        {
+          "startOffset": 1211,
+          "endOffset": 1222,
+          "count": 128
+        },
+        {
+          "startOffset": 1238,
+          "endOffset": 1264,
+          "count": 128
+        },
+        {
+          "startOffset": 1265,
+          "endOffset": 1276,
+          "count": 128
+        },
+        {
+          "startOffset": 1292,
+          "endOffset": 1318,
+          "count": 128
+        },
+        {
+          "startOffset": 1319,
+          "endOffset": 1330,
+          "count": 128
+        },
+        {
+          "startOffset": 1346,
+          "endOffset": 1372,
+          "count": 128
+        },
+        {
+          "startOffset": 1373,
+          "endOffset": 1384,
+          "count": 128
+        },
+        {
+          "startOffset": 1473,
+          "endOffset": 1480,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "slice_by_16_tables",
+      "ranges": [
+        {
+          "startOffset": 1514,
+          "endOffset": 2008,
+          "count": 1
+        },
+        {
+          "startOffset": 1638,
+          "endOffset": 1655,
+          "count": 0
+        },
+        {
+          "startOffset": 1686,
+          "endOffset": 1702,
+          "count": 256
+        },
+        {
+          "startOffset": 1730,
+          "endOffset": 1825,
+          "count": 256
+        },
+        {
+          "startOffset": 1783,
+          "endOffset": 1822,
+          "count": 3840
+        },
+        {
+          "startOffset": 1867,
+          "endOffset": 1993,
+          "count": 15
+        },
+        {
+          "startOffset": 1955,
+          "endOffset": 1992,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "crc32_bstr",
+      "ranges": [
+        {
+          "startOffset": 2247,
+          "endOffset": 2404,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "crc32_buf",
+      "ranges": [
+        {
+          "startOffset": 2406,
+          "endOffset": 2858,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "crc32_str",
+      "ranges": [
+        {
+          "startOffset": 2860,
+          "endOffset": 3647,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}

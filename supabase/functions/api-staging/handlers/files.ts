@@ -45,6 +45,7 @@ export async function listFiles(
 
 /**
  * GET /files/grouped - List files grouped by ticket
+ * Returns { groups, summary } without data wrapper for this specific endpoint
  */
 export async function listFilesGrouped(
   req: Request,
@@ -71,7 +72,8 @@ export async function listFilesGrouped(
 
   const result = await StagingService.listGroupedByTicket(options);
 
-  return success(result);
+  // Return groups and summary directly (no data wrapper for grouped response)
+  return success({ groups: result.groups, summary: result.summary });
 }
 
 /**

@@ -102,6 +102,10 @@ export interface BulkApproveInput {
   comment_content?: string;
 }
 
+export interface BulkDeleteInput {
+  file_ids: string[];
+}
+
 export interface CreateLineAccountInput {
   employee_id: string;
   line_user_id: string;

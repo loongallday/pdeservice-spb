@@ -1,6 +1,30 @@
 /**
- * Companies API Edge Function
- * Handles all company CRUD operations
+ * @fileoverview Companies API Edge Function - Company management system
+ * @module api-companies
+ *
+ * @description
+ * Manages company data including CRUD operations, search, and comments.
+ * Companies are identified by tax_id (13-digit Thai tax ID) as natural key.
+ *
+ * @endpoints
+ * ## Company Operations
+ * - GET    /global-search              - Search companies (paginated)
+ * - GET    /hint                       - Quick search (up to 5 results)
+ * - GET    /:id                        - Get company by ID
+ * - POST   /                           - Create new company
+ * - POST   /create-or-update           - Upsert by tax_id
+ * - PUT    /:id                        - Update company
+ * - DELETE /:id                        - Delete company
+ *
+ * ## Comments
+ * - GET    /:id/comments               - Get company comments
+ * - POST   /:id/comments               - Add comment
+ * - PUT    /:id/comments/:commentId    - Update comment
+ * - DELETE /:id/comments/:commentId    - Delete comment
+ *
+ * @auth All endpoints require JWT authentication
+ * @table main_companies - Primary company data
+ * @table child_company_comments - Company comments (1:N)
  */
 
 import { handleCORS } from '../_shared/cors.ts';

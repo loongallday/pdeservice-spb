@@ -1,0 +1,147 @@
+{
+  "scriptId": "337",
+  "url": "file:///Users/loongallday/pdeservice-spb/tests/_shared/mocks.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 4220,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "createMockEmployee",
+      "ranges": [
+        {
+          "startOffset": 106,
+          "endOffset": 580,
+          "count": 5
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "createMockEmployeeWithLevel",
+      "ranges": [
+        {
+          "startOffset": 829,
+          "endOffset": 1194,
+          "count": 5
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "createMockRequest",
+      "ranges": [
+        {
+          "startOffset": 1242,
+          "endOffset": 1554,
+          "count": 5
+        },
+        {
+          "startOffset": 1512,
+          "endOffset": 1534,
+          "count": 2
+        },
+        {
+          "startOffset": 1535,
+          "endOffset": 1546,
+          "count": 3
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "createMockJsonRequest",
+      "ranges": [
+        {
+          "startOffset": 1610,
+          "endOffset": 1781,
+          "count": 2
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "createMockUnauthorizedRequest",
+      "ranges": [
+        {
+          "startOffset": 1844,
+          "endOffset": 2007,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "assertSuccessResponse",
+      "ranges": [
+        {
+          "startOffset": 2056,
+          "endOffset": 2451,
+          "count": 2
+        },
+        {
+          "startOffset": 2169,
+          "endOffset": 2315,
+          "count": 0
+        },
+        {
+          "startOffset": 2372,
+          "endOffset": 2429,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "assertErrorResponse",
+      "ranges": [
+        {
+          "startOffset": 2498,
+          "endOffset": 2900,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createMockSupabaseSuccess",
+      "ranges": [
+        {
+          "startOffset": 2962,
+          "endOffset": 3048,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "createMockSupabaseError",
+      "ranges": [
+        {
+          "startOffset": 3106,
+          "endOffset": 3234,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "assertRejectsWithErrorType",
+      "ranges": [
+        {
+          "startOffset": 3390,
+          "endOffset": 4219,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    }
+  ]
+}
